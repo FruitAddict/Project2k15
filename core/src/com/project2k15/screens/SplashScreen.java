@@ -6,10 +6,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.project2k15.utilities.ScreenStorage;
+import com.project2k15.assets.Assets;
+import com.project2k15.test.TestGameScreen;
 
 /**
- * Created by FruitAddict on 2014-11-04.
+ * Splash screen, appears for 5 seconds when the program is started.
  */
 public class SplashScreen implements Screen {
 
@@ -20,8 +21,9 @@ public class SplashScreen implements Screen {
     private float disappearThreshold;
 
     public SplashScreen(Game game){
+        Assets.loadSplashScreen();
         this.game = game;
-        splashImage = new Texture(Gdx.files.internal("splashtoday.jpg"));
+        splashImage = Assets.manager.get("splashtoday.jpg");
         batch = new SpriteBatch();
         timePassed = 0f;
         disappearThreshold = 5f;
@@ -40,7 +42,11 @@ public class SplashScreen implements Screen {
 
         if(timePassed > disappearThreshold) {
             this.dispose();
-            game.setScreen(ScreenStorage.getGameScreen(game));
+            Assets.disposeAll();
+            /**
+             * REDIRECT TO TEST GAME SCREEN.
+             */
+            game.setScreen(new TestGameScreen(game));
         }
     }
 
@@ -71,7 +77,6 @@ public class SplashScreen implements Screen {
 
     @Override
     public void dispose() {
-        splashImage.dispose();
         batch.dispose();
     }
 }

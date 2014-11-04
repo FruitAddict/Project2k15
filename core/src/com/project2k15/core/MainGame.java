@@ -1,7 +1,6 @@
 package com.project2k15.core;
 
 import com.badlogic.gdx.Game;
-import com.project2k15.screens.GameScreen;
 import com.project2k15.utilities.ScreenStorage;
 
 /**

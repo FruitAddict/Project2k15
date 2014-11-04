@@ -26,7 +26,7 @@ public class SplashScreen implements Screen {
         splashImage = Assets.manager.get("splashtoday.jpg");
         batch = new SpriteBatch();
         timePassed = 0f;
-        disappearThreshold = 10f;
+        disappearThreshold = 15f;
     }
 
     @Override

@@ -30,10 +30,11 @@ public class TestGameScreen implements Screen {
         this.game = game;
         batch = new SpriteBatch();
         Assets.loadTestMap();
-        cam = new OrthographicCamera(100,100);
+        cam = new OrthographicCamera(30, 30 * (Gdx.graphics.getWidth() / Gdx.graphics.getHeight()));
         cam.setToOrtho(false);
         map = Assets.manager.get("testmap2.tmx");
         renderer = new OrthogonalTiledMapRenderer(map,batch);
+        renderer.setView(cam);
         testProc = new TestInputProcessor(cam);
         Gdx.input.setInputProcessor(testProc);
     }
@@ -52,6 +53,16 @@ public class TestGameScreen implements Screen {
 
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
             cam.translate(-1,0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            if (cam.zoom > 0.2) {
+                cam.zoom -= 0.03;
+            }
+            System.out.println(cam.zoom);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            cam.zoom += 0.03;
+            System.out.println(cam.zoom);
         }
 
     }

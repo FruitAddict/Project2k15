@@ -10,6 +10,7 @@ public class DesktopLauncher {
         config.width = 800;
         config.height = 480;
         config.title = "Work in progress.";
+        config.vSyncEnabled = true;
         new LwjglApplication(new MainGame(), config);
     }
 }

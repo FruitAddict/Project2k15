@@ -2,10 +2,10 @@ package com.project2k15.test;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -24,24 +24,31 @@ public class TestGameScreen implements Screen {
     TestInputProcessor testProc;
     TiledMap map;
     TiledMapRenderer renderer;
+    Player player;
+    ObjectManager manager;
 
 
     public TestGameScreen(Game game){
         this.game = game;
         batch = new SpriteBatch();
         Assets.loadTestMap();
-        cam = new OrthographicCamera(30, 30 * (Gdx.graphics.getWidth() / Gdx.graphics.getHeight()));
+        cam = new OrthographicCamera();
         cam.setToOrtho(false);
-        map = Assets.manager.get("testmap2.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map,batch);
+        map = Assets.manager.get("map.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map, batch);
         renderer.setView(cam);
-        testProc = new TestInputProcessor(cam);
+        player = new Player(200, 2500);
+        testProc = new TestInputProcessor(cam, player);
+        cam.zoom = 0.5f;
         Gdx.input.setInputProcessor(testProc);
+        manager = new ObjectManager(map.getLayers().get("collisionObjects"));
+        manager.objectList.add(player);
     }
     @Override
     public void render(float delta) {
         testProc.translateCamera();
         cam.update();
+        manager.update(delta);
         Gdx.gl.glClearColor(0, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(cam);
@@ -49,21 +56,9 @@ public class TestGameScreen implements Screen {
         batch.begin();
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get(0));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get(1));
+        renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get(2));
+        batch.draw((Texture) Assets.manager.get("playersheet.png"), player.position.x, player.position.y, player.width, player.height);
         batch.end();
-
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            cam.translate(-1,0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            if (cam.zoom > 0.2) {
-                cam.zoom -= 0.03;
-            }
-            System.out.println(cam.zoom);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            cam.zoom += 0.03;
-            System.out.println(cam.zoom);
-        }
 
     }
 

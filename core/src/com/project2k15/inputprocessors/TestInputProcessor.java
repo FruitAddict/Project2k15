@@ -1,24 +1,25 @@
 package com.project2k15.inputprocessors;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector3;
+import com.project2k15.test.Player;
 
 /**
  * Created by FruitAddict on 2014-11-04.
  */
 public class TestInputProcessor implements InputProcessor {
     OrthographicCamera camera;
-    boolean tLeft,tRight,tUp,tDown = false;
+    Player player;
+    boolean tLeft, tRight, tUp, tDown, zUp, zDown = false;
 
-    public TestInputProcessor(OrthographicCamera cam){
+    public TestInputProcessor(OrthographicCamera cam, Player player) {
         camera = cam;
+        this.player = player;
     }
 
 
-    @Override
+    /*@Override
     public boolean keyDown(int keycode) {
         switch(keycode){
             case Input.Keys.D: {
@@ -35,6 +36,14 @@ public class TestInputProcessor implements InputProcessor {
             }
             case Input.Keys.S :{
                 tDown=true;
+                return true;
+            }
+            case Input.Keys.UP :{
+                zUp = true;
+                return true;
+            }
+            case Input.Keys.DOWN :{
+                zDown = true;
                 return true;
             }
 
@@ -61,8 +70,63 @@ public class TestInputProcessor implements InputProcessor {
                 tDown=false;
                 return true;
             }
+            case Input.Keys.UP :{
+                zUp = false;
+                return true;
+            }
+            case Input.Keys.DOWN :{
+                zDown = false;
+                return true;
+            }
 
         }
+        return false;
+    }*/
+
+    @Override
+    public boolean keyDown(int keycode) {
+        switch (keycode) {
+            case Input.Keys.D: {
+                tRight = true;
+                return true;
+            }
+            case Input.Keys.A: {
+                tLeft = true;
+                return true;
+            }
+            case Input.Keys.W: {
+                tUp = true;
+                return true;
+            }
+            case Input.Keys.S: {
+                tDown = true;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        switch (keycode) {
+            case Input.Keys.D: {
+                tRight = false;
+                return true;
+            }
+            case Input.Keys.A: {
+                tLeft = false;
+                return true;
+            }
+            case Input.Keys.W: {
+                tUp = false;
+                return true;
+            }
+            case Input.Keys.S: {
+                tDown = false;
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -97,17 +161,25 @@ public class TestInputProcessor implements InputProcessor {
     }
 
     public void translateCamera(){
+        camera.position.set(player.getPosition(), 0.5f);
+
         if(tRight){
-            camera.translate(5,0);
+            player.moveRight();
         }
         if(tLeft){
-            camera.translate(-5,0);
+            player.moveLeft();
         }
         if(tUp){
-            camera.translate(0,5);
+            player.moveUp();
         }
         if(tDown){
-            camera.translate(0,-5);
+            player.moveDown();
+        }
+        if (zUp) {
+            camera.zoom -= 0.03;
+        }
+        if (zDown) {
+            camera.zoom += 0.03;
         }
     }
 }

@@ -22,7 +22,8 @@ public class Assets {
     }
 
     public static void loadTestMap(){
-        manager.load("testmap2.tmx", TiledMap.class);
+        manager.load("map.tmx", TiledMap.class);
+        manager.load("playersheet.png", Texture.class);
         manager.finishLoading();
     }
 

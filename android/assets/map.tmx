@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tileset CRAPPY AS FUCK 2" tilewidth="32" tileheight="32" spacing="2">
+  <image source="tilesetT.png" width="66" height="66"/>
+ </tileset>
+ <layer name="grass" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt0UENwDAAA7GWP+m9g+C0ypZCIHfPOfeBvaL+UY9V/6jHqn/UY9U/6rHqH/VY9Y96rPpHPVb9ox6r/lGPVf+ox6p/1GPVP+qx6h/1WPWPeqz6Rz1W/aMeq/5Rj1X/qMeqf9Rj1T/qseof9Vj1j3qs+kc9Vv2jHqv+UY9V/6jHqn/UAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPibD9I/BXk=
+  </data>
+ </layer>
+ <layer name="collision" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt2TEKhEAUREHx/ofe6Me6MypNUwUT67NBBM/jOM7Nc9fudZ64h3QNLQ0No6GloWE0tDQ0jIaWhobR0NLQML5qefN7yR5r17HHNXtksUeWlfaVZ2ePe77a400J9/AUe2SxRxZ7ZLFHFntksUeWhpaGhtHQ0tAwklpW34NJDbuSWuyR1WKPrBZ7dLQ0NIyGloaG0dDS0DD+/U+0+9/orQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwlR9XCQHv
+  </data>
+ </layer>
+ <layer name="bubbles" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt2dEKg0AMBECh///PfSpIaUVPI+tlBgSf9JIloueyXOe1cXDcaO+2crgqj045n+nlnixGeldxzScZrb0yjz33mFVVX6vXM6vUetfrSFxfleQ6u83HE2rslMdHan3d5iPd97vWr3Pu828m5AEAAD35ds5hLyOHvaUcXf8VJZMJnGNucniO5dD/HOYBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAmNUbnzsCZQ==
+  </data>
+ </layer>
+ <objectgroup name="collisionObjects">
+  <object x="559" y="107" width="3"/>
+  <object x="868.333" y="2" width="730" height="29.3333"/>
+  <object x="865.667" y="861.333" width="730" height="29.3333"/>
+  <object x="1568.33" y="33.3334" width="28.6667" height="829.333"/>
+  <object x="384.333" y="317.334" width="162" height="258.666"/>
+  <object x="833.667" y="190.667" width="379.333" height="161.333"/>
+  <object x="1117.67" y="642.667" width="128.667" height="122.666"/>
+  <object x="1.66665" y="0.000166667" width="28.6667" height="894.666"/>
+  <object x="32.3333" y="866.667" width="476.667" height="31.9997"/>
+  <object x="29.6665" y="1.33348" width="515.334" height="30.6664"/>
+ </objectgroup>
+</map>

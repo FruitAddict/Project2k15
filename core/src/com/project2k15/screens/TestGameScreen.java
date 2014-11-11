@@ -1,4 +1,4 @@
-package com.project2k15.test;
+package com.project2k15.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -9,10 +9,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.project2k15.assets.Assets;
-import com.project2k15.inputprocessors.TestInputProcessor;
+import com.project2k15.entities.Player;
+import com.project2k15.utilities.Assets;
+import com.project2k15.utilities.ObjectManager;
+import com.project2k15.utilities.TestInputProcessor;
 
 /**
  * Various tests are performed here
@@ -32,12 +33,12 @@ public class TestGameScreen implements Screen {
         this.game = game;
         batch = new SpriteBatch();
         Assets.loadTestMap();
-        cam = new OrthographicCamera();
-        cam.setToOrtho(false);
+        cam = new OrthographicCamera(30, 30 * (Gdx.graphics.getWidth() / Gdx.graphics.getHeight()));
+        cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         map = Assets.manager.get("map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, batch);
         renderer.setView(cam);
-        player = new Player(200, 2500);
+        player = new Player(124, 250);
         testProc = new TestInputProcessor(cam, player);
         cam.zoom = 0.5f;
         Gdx.input.setInputProcessor(testProc);
@@ -53,11 +54,9 @@ public class TestGameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(cam);
         batch.setProjectionMatrix(cam.combined);
+        renderer.render();
         batch.begin();
-        renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get(0));
-        renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get(1));
-        renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get(2));
-        batch.draw((Texture) Assets.manager.get("playersheet.png"), player.position.x, player.position.y, player.width, player.height);
+        batch.draw((Texture) Assets.manager.get("playersheet.png"), player.getPosition().x, player.getPosition().y, player.getWidth(), player.getHeight());
         batch.end();
 
     }

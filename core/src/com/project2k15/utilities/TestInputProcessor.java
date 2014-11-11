@@ -1,9 +1,9 @@
-package com.project2k15.inputprocessors;
+package com.project2k15.utilities;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.project2k15.test.Player;
+import com.project2k15.entities.Player;
 
 /**
  * Created by FruitAddict on 2014-11-04.
@@ -11,7 +11,7 @@ import com.project2k15.test.Player;
 public class TestInputProcessor implements InputProcessor {
     OrthographicCamera camera;
     Player player;
-    boolean tLeft, tRight, tUp, tDown, zUp, zDown = false;
+    boolean tLeft, tRight, tUp, tDown, zUp, zDown, sUp, sDown = false;
 
     public TestInputProcessor(OrthographicCamera cam, Player player) {
         camera = cam;
@@ -102,6 +102,22 @@ public class TestInputProcessor implements InputProcessor {
                 tDown = true;
                 return true;
             }
+            case Input.Keys.UP: {
+                zUp = true;
+                return true;
+            }
+            case Input.Keys.DOWN: {
+                zDown = true;
+                return true;
+            }
+            case Input.Keys.LEFT: {
+                sUp = true;
+                return true;
+            }
+            case Input.Keys.RIGHT: {
+                sDown = true;
+                return true;
+            }
         }
         return false;
     }
@@ -123,6 +139,22 @@ public class TestInputProcessor implements InputProcessor {
             }
             case Input.Keys.S: {
                 tDown = false;
+                return true;
+            }
+            case Input.Keys.UP: {
+                zUp = false;
+                return true;
+            }
+            case Input.Keys.DOWN: {
+                zDown = false;
+                return true;
+            }
+            case Input.Keys.LEFT: {
+                sUp = false;
+                return true;
+            }
+            case Input.Keys.RIGHT: {
+                sDown = false;
                 return true;
             }
         }
@@ -161,7 +193,7 @@ public class TestInputProcessor implements InputProcessor {
     }
 
     public void translateCamera(){
-        camera.position.set(player.getPosition(), 0.5f);
+        camera.position.set(player.getPosition(), camera.zoom);
 
         if(tRight){
             player.moveRight();
@@ -180,6 +212,14 @@ public class TestInputProcessor implements InputProcessor {
         }
         if (zDown) {
             camera.zoom += 0.03;
+        }
+        if (sUp) {
+            if (player.getScalar() < 1.0f)
+                player.setScalar(player.getScalar() + 0.005f);
+        }
+        if (sDown) {
+            if (player.getScalar() > 0)
+                player.setScalar(player.getScalar() - 0.005f);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.project2k15.test;
+package com.project2k15.utilities;
 
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Pool;
+import com.project2k15.entities.MovingObject;
 
 import java.util.ArrayList;
 

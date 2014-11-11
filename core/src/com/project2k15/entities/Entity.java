@@ -1,13 +1,10 @@
-package com.project2k15.test;
+package com.project2k15.entities;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
-/**
- * Created by FruitAddict on 2014-11-10.
- */
 public abstract class Entity {
     protected Vector2 velocity = new Vector2();
     protected Vector2 position = new Vector2();

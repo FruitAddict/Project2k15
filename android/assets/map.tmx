@@ -19,7 +19,6 @@
   </data>
  </layer>
  <objectgroup name="collisionObjects">
-  <object x="559" y="107" width="3"/>
   <object x="863.958" y="2.625" width="730" height="29.3333"/>
   <object x="864.667" y="863.833" width="730" height="29.3333"/>
   <object x="1568.14" y="32.1459" width="28.6667" height="829.333"/>
@@ -29,5 +28,7 @@
   <object x="3.29165" y="-0.0623333" width="28.6667" height="894.666"/>
   <object x="35.1969" y="863.894" width="476.667" height="31.9997"/>
   <object x="29.6665" y="1.33348" width="515.334" height="30.6664"/>
+  <object x="534" y="-7" width="359" height="10"/>
+  <object x="503.5" y="880" width="359" height="10"/>
  </objectgroup>
 </map>

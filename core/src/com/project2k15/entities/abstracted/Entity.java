@@ -1,4 +1,4 @@
-package com.project2k15.entities;
+package com.project2k15.entities.abstracted;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -28,5 +28,9 @@ public abstract class Entity {
 
     public void setCollisionRectangles(ArrayList<Rectangle> recs) {
         collisionRectangles = recs;
+    }
+
+    public ArrayList<Rectangle> getCollisionRectangles() {
+        return collisionRectangles;
     }
 }

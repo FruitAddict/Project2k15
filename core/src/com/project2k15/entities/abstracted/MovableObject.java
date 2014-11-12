@@ -1,4 +1,4 @@
-package com.project2k15.entities;
+package com.project2k15.entities.abstracted;
 
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
-public class MovingObject extends Entity {
+public class MovableObject extends Entity {
 
     protected float maxVelocity = 200;
     protected float speed = 50;
@@ -44,6 +44,7 @@ public class MovingObject extends Entity {
 
                 }
             }
+            System.out.println(collisionsFound);
         }
         return collisionsFound;
     }

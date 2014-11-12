@@ -6,7 +6,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Pool;
-import com.project2k15.entities.MovingObject;
+import com.project2k15.entities.abstracted.MovableObject;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class ObjectManager {
 
-    public ArrayList<MovingObject> objectList = new ArrayList<MovingObject>();
+    public ArrayList<MovableObject> objectList = new ArrayList<MovableObject>();
     private Pool<Rectangle> rectanglePool = new Pool<Rectangle>() {
         @Override
         protected Rectangle newObject() {
@@ -44,9 +44,14 @@ public class ObjectManager {
 
     public void update(float delta) {
         if (objectList.size() > 0) {
-            for (MovingObject o : objectList) {
+            for (MovableObject o : objectList) {
                 o.update(delta, stupidPlaceholder);
             }
         }
+    }
+
+    public void addObject(MovableObject obj) {
+        objectList.add(obj);
+        stupidPlaceholder.add(obj.getCollisionRectangles().get(0));
     }
 }

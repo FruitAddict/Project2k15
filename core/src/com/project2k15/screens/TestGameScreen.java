@@ -7,16 +7,21 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.project2k15.entities.MindlessBlob;
+import com.project2k15.entities.MindlessWalker;
 import com.project2k15.entities.Player;
 import com.project2k15.utilities.Assets;
 import com.project2k15.utilities.ObjectManager;
 import com.project2k15.utilities.TestInputProcessor;
+
+import java.util.ArrayList;
 
 /**
  * Various tests are performed here
@@ -40,8 +45,16 @@ public class TestGameScreen implements Screen {
 
     MindlessBlob blob;
 
+    ArrayList<MindlessBlob> blobList;
+    ArrayList<MindlessWalker> walkerList;
+    MindlessWalker walker;
+
+    BitmapFont bitMapFont;
+
+    float testTime = 0;
 
     public TestGameScreen(Game game){
+        bitMapFont = new BitmapFont();
         this.game = game;
         batch = new SpriteBatch();
         Assets.loadTestMap();
@@ -51,13 +64,11 @@ public class TestGameScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map, batch);
         renderer.setView(cam);
         player = new Player(124, 250);
-        blob = new MindlessBlob(200, 250, player);
+        blob = new MindlessBlob(200, 250, 25, 25, 50, player);
         testProc = new TestInputProcessor(cam, player);
         cam.zoom = 0.5f;
         Gdx.input.setInputProcessor(testProc);
         manager = new ObjectManager(map.getLayers().get("collisionObjects"));
-        manager.objectList.add(player);
-        manager.objectList.add(blob);
 
         Texture testT = Assets.manager.get("test.gif");
         TextureRegion[][] tmp = TextureRegion.split(testT, testT.getWidth() / 2, testT.getHeight());
@@ -65,7 +76,7 @@ public class TestGameScreen implements Screen {
         walkFrames[0] = tmp[0][0];
         walkFrames[1] = tmp[0][1];
 
-        playerAnimation = new Animation(0.3f, walkFrames);
+        playerAnimation = new Animation(0.1f, walkFrames);
 
         Texture testM = Assets.manager.get("pet.png");
         TextureRegion[][] tmpM = TextureRegion.split(testM, testM.getWidth() / 8, testM.getHeight() / 4);
@@ -75,6 +86,25 @@ public class TestGameScreen implements Screen {
         }
 
         mobAnimation = new Animation(0.1f, mobWalk);
+        blobList = new ArrayList<MindlessBlob>();
+        manager.addObject(player);
+        manager.addObject(blob);
+        blobList.add(blob);
+        walkerList = new ArrayList<MindlessWalker>();
+
+        walker = new MindlessWalker(100, 100, 20, 20, 40, player);
+        walkerList.add(walker);
+        manager.addObject(walker);
+        /**
+         Random rng = new Random();
+         for(int i=0; i <10;i++){
+         MindlessBlob blob = new MindlessBlob(100+10*i,100+10*i,10+rng.nextInt(50),10+rng.nextInt(50),10+rng.nextInt(25),player);
+         blobList.add(blob);
+         manager.objectList.add(blob);
+
+         }
+         blobList.add(blob);
+         */
 
     }
     @Override
@@ -88,10 +118,29 @@ public class TestGameScreen implements Screen {
         batch.setProjectionMatrix(cam.combined);
         renderer.render();
         batch.begin();
+
+        for (int i = 0; i < blobList.size(); i++) {
+            batch.draw(mobAnimation.getKeyFrame(stateTime, true), blobList.get(i).getPosition().x, blobList.get(i).getPosition().y, blobList.get(i).getWidth(), blobList.get(i).getHeight());
+        }
+        for (int i = 0; i < walkerList.size(); i++) {
+            batch.draw(mobAnimation.getKeyFrame(stateTime, true), walkerList.get(i).getPosition().x, walkerList.get(i).getPosition().y, walkerList.get(i).getWidth(), walkerList.get(i).getHeight());
+        }
+
         batch.draw(playerAnimation.getKeyFrame(stateTime, true), player.getPosition().x, player.getPosition().y, player.getWidth(), player.getHeight());
-        batch.draw(mobAnimation.getKeyFrame(stateTime, true), blob.getPosition().x, blob.getPosition().y, blob.getWidth(), blob.getHeight());
+        bitMapFont.draw(batch, Float.toString(Gdx.graphics.getFramesPerSecond()), player.getPosition().x, player.getPosition().y);
+        bitMapFont.draw(batch, Float.toString(blobList.size()), player.getPosition().x, player.getPosition().y - 10);
         batch.end();
         stateTime += delta;
+
+        if (Gdx.input.isTouched() && testTime > 1) {
+            testTime = 0;
+            Vector3 coords = cam.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            MindlessWalker blobs = MindlessWalker.getRandomWalker(coords.x, coords.y);
+            manager.addObject(blobs);
+            walkerList.add(blobs);
+        } else {
+            testTime += delta;
+        }
 
     }
 

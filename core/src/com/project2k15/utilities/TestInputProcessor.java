@@ -193,7 +193,7 @@ public class TestInputProcessor implements InputProcessor {
     }
 
     public void translateCamera(){
-        camera.position.set(player.getPosition(), camera.zoom);
+        camera.position.set(player.getPosition().x + player.getWidth() / 2, player.getPosition().y + player.getHeight() / 2, camera.zoom);
 
         if(tRight){
             player.moveRight();
@@ -208,6 +208,7 @@ public class TestInputProcessor implements InputProcessor {
             player.moveDown();
         }
         if (zUp) {
+            if (camera.zoom > 0.1)
             camera.zoom -= 0.03;
         }
         if (zDown) {

@@ -132,14 +132,12 @@ public class TestGameScreen implements Screen {
         batch.end();
         stateTime += delta;
 
-        if (Gdx.input.isTouched() && testTime > 1) {
+        if (Gdx.input.isTouched()) {
             testTime = 0;
             Vector3 coords = cam.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-            MindlessWalker blobs = MindlessWalker.getRandomWalker(coords.x, coords.y);
+            MindlessBlob blobs = MindlessBlob.getRandomBlob(coords.x, coords.y);
             manager.addObject(blobs);
-            walkerList.add(blobs);
-        } else {
-            testTime += delta;
+            blobList.add(blobs);
         }
 
     }

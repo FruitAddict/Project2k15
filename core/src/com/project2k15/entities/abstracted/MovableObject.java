@@ -15,8 +15,11 @@ public class MovableObject extends Entity {
     public boolean facingLeft, facingRight, facingNorth, facingSouth;
     protected float scalar;
 
-    protected String resolveCollision(ArrayList<Rectangle> collisionRects) {
-        String collisionsFound = "";
+    protected boolean[] resolveCollision(ArrayList<Rectangle> collisionRects) {
+        boolean[] result = new boolean[4];
+        for (int i = 0; i < 4; i++) {
+            result[i] = false;
+        }
 
         if (collisionRectangles.size() > 0) {
             for (Rectangle r : collisionRectangles) {
@@ -26,27 +29,26 @@ public class MovableObject extends Entity {
                     if (intersection.width > 0 || intersection.height > 0) {
                         if (intersection.x > r.x) {
                             //Intersects with right side
-                            collisionsFound += "R";
+                            result[0] = true;
                         }
                         if (intersection.y > r.y) {
                             //Intersects with top side
-                            collisionsFound += "T";
+                            result[1] = true;
                         }
                         if (intersection.x + intersection.width < r.x + r.width) {
                             //Intersects with left side
-                            collisionsFound += "L";
+                            result[2] = true;
                         }
                         if (intersection.y + intersection.height < r.y + r.height) {
                             //Intersects with bottom side
-                            collisionsFound += "B";
+                            result[3] = true;
                         }
                     }
 
                 }
             }
-            System.out.println(collisionsFound);
         }
-        return collisionsFound;
+        return result;
     }
 
     public void update(float delta, ArrayList<Rectangle> checkRectangles) {
@@ -54,22 +56,82 @@ public class MovableObject extends Entity {
         Vector2 oldPosition = position.cpy();
         position.add(newVeloc);
         collisionRectangles.get(0).setPosition(position.x, position.y);
-        String collisions = resolveCollision(checkRectangles);
-        if (collisions.contains("R")) {
-            position.x = oldPosition.x;
-            velocity.x = 0;
-        }
-        if (collisions.contains("T")) {
-            position.y = oldPosition.y;
-            velocity.y = 0;
-        }
-        if (collisions.contains("L")) {
-            position.x = oldPosition.x;
-            velocity.x = 0;
-        }
-        if (collisions.contains("B")) {
-            position.y = oldPosition.y;
-            velocity.y = 0;
+        boolean[] collisions = resolveCollision(checkRectangles);
+        if (collisions[0] && collisions[1]) {
+            //right-top
+            if (velocity.x > 0 && velocity.y < 0) {
+                velocity.x = 0;
+                position.x = oldPosition.x;
+            } else if (velocity.y > 0 && velocity.x < 0) {
+                velocity.y = 0;
+                position.y = oldPosition.y;
+            } else {
+                velocity.x = 0;
+                velocity.y = 0;
+                position = oldPosition;
+            }
+        } else if (collisions[0] && collisions[3]) {
+            //right-bottom
+            if (velocity.x > 0 && velocity.y > 0) {
+                velocity.x = 0;
+                position.x = oldPosition.x;
+            } else if (velocity.y < 0 && velocity.x < 0) {
+                velocity.y = 0;
+                position.y = oldPosition.y;
+            } else {
+                velocity.x = 0;
+                velocity.y = 0;
+                position = oldPosition;
+            }
+
+        } else if (collisions[2] && collisions[1]) {
+            //left-top
+            if (velocity.x < 0 && velocity.y < 0) {
+                velocity.x = 0;
+                position.x = oldPosition.x;
+            } else if (velocity.y > 0 && velocity.x > 0) {
+                velocity.y = 0;
+                position.y = oldPosition.y;
+            } else {
+                velocity.x = 0;
+                velocity.y = 0;
+                position = oldPosition;
+            }
+        } else if (collisions[2] && collisions[3]) {
+            //left-bottom
+            if (velocity.x < 0 && velocity.y > 0) {
+                velocity.x = 0;
+                position.x = oldPosition.x;
+            } else if (velocity.y < 0 && velocity.x > 0) {
+                velocity.y = 0;
+                position.y = oldPosition.y;
+            } else {
+                velocity.x = 0;
+                velocity.y = 0;
+                position = oldPosition;
+            }
+
+        } else {
+            if (collisions[0]) {
+                //right
+                position.x = oldPosition.x;
+                velocity.x = 0;
+            }
+            if (collisions[1]) {
+                //top
+                position.y = oldPosition.y;
+                velocity.y = 0;
+            }
+            if (collisions[2]) {
+                //left
+                position.x = oldPosition.x;
+                velocity.x = 0;
+            }
+            if (collisions[3]) {
+                //bottom
+                position.y = oldPosition.y;
+                velocity.y = 0;
+            }
         }
         velocity.scl(scalar);
     }

@@ -27,7 +27,7 @@ public class MindlessBlob extends MovableObject {
         super.update(delta, checkRectangles);
 
         float distance = (float) (Math.sqrt(Math.pow(position.x - player.getPosition().x, 2) + Math.pow(position.y - player.getPosition().y, 2)));
-        if (distance > 50) {
+        if (distance > 100) {
             if (player.getPosition().x > position.x) {
                 moveRight();
             } else if (player.getPosition().x < position.x) {
@@ -43,6 +43,6 @@ public class MindlessBlob extends MovableObject {
 
     public static MindlessBlob getRandomBlob(float x, float y) {
         Random rng = new Random();
-        return new MindlessBlob(x, y, 10 + rng.nextInt(50), 10 + rng.nextInt(50), 5 + rng.nextInt(30), player);
+        return new MindlessBlob(x, y, 10 + rng.nextInt(50), 10 + rng.nextInt(50), 5 + rng.nextInt(50), player);
     }
 }

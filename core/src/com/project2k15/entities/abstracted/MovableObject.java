@@ -8,12 +8,12 @@ import java.util.ArrayList;
 
 public class MovableObject extends Entity {
 
-    protected float maxVelocity = 200;
-    protected float speed = 50;
     protected float width = 26;
     protected float height = 48;
     public boolean facingLeft, facingRight, facingNorth, facingSouth;
     protected float scalar;
+    protected float maxVelocity = 200;
+    protected float speed = 50;
 
     protected boolean[] resolveCollision(ArrayList<Rectangle> collisionRects) {
         boolean[] result = new boolean[4];
@@ -136,27 +136,6 @@ public class MovableObject extends Entity {
         velocity.scl(scalar);
     }
 
-    public void moveRight() {
-        if (velocity.x < maxVelocity)
-            velocity.add(speed, 0);
-    }
-
-    public void moveLeft() {
-        if (velocity.x > -maxVelocity)
-            velocity.add(-speed, 0);
-    }
-
-    public void moveUp() {
-        if (velocity.y < maxVelocity) {
-            velocity.add(0, speed);
-        }
-    }
-
-    public void moveDown() {
-        if (velocity.y > -maxVelocity) {
-            velocity.add(0, -speed);
-        }
-    }
 
     public float getWidth() {
         return width;
@@ -165,6 +144,44 @@ public class MovableObject extends Entity {
     public float getHeight() {
         return height;
     }
+    public void moveRight() {
+        facingRight = true;
+        facingLeft = false;
+        facingNorth = false;
+        facingSouth = false;
+        if (velocity.x < maxVelocity)
+            velocity.add(speed, 0);
+    }
+
+    public void moveLeft() {
+        facingRight = false;
+        facingLeft = true;
+        facingNorth = false;
+        facingSouth = false;
+        if (velocity.x > -maxVelocity)
+            velocity.add(-speed, 0);
+    }
+
+    public void moveUp() {
+        facingRight = false;
+        facingLeft = false;
+        facingNorth = true;
+        facingSouth = false;
+        if (velocity.y < maxVelocity) {
+            velocity.add(0, speed);
+        }
+    }
+
+    public void moveDown() {
+        facingRight = false;
+        facingLeft = false;
+        facingNorth = false;
+        facingSouth = true;
+        if (velocity.y > -maxVelocity) {
+            velocity.add(0, -speed);
+        }
+    }
+
 
     public float getMaxVelocity() {
         return maxVelocity;

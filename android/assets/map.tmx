@@ -31,8 +31,8 @@
   <object x="534" y="-7" width="359" height="10"/>
   <object x="503.5" y="880" width="359" height="10"/>
   <object x="832.25" y="352.5" width="31.5" height="159.25"/>
-  <object x="864.5" y="480.25" width="191.75" height="31.25"/>
-  <object x="1120.25" y="479.5" width="95.75" height="32"/>
-  <object x="1184.5" y="352.5" width="31.25" height="127.25"/>
+  <object x="841.197" y="480.159" width="214.295" height="32.3106"/>
+  <object x="1120.16" y="480.045" width="95.75" height="32"/>
+  <object x="1184.14" y="351.682" width="31.5758" height="160.023"/>
  </objectgroup>
 </map>

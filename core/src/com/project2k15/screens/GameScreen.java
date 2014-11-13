@@ -4,12 +4,14 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.project2k15.utilities.ObjectManager;
 
 /**
  * Created by FruitAddict on 2014-11-04.
  */
 public class GameScreen implements Screen {
     Game game;
+    ObjectManager manager;
 
     public GameScreen(Game game){
         this.game = game;

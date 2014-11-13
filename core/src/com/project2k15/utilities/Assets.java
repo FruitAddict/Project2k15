@@ -26,6 +26,7 @@ public class Assets {
         manager.load("playersheet.png", Texture.class);
         manager.load("test.gif", Texture.class);
         manager.load("pet.png", Texture.class);
+        manager.load("testBox.png", Texture.class);
         manager.finishLoading();
     }
 

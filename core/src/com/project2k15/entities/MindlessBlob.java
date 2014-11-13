@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.project2k15.entities.abstracted.MovableObject;
+import com.project2k15.entities.abstracted.Character;
 import com.project2k15.utilities.Assets;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.Random;
 /**
  * Created by FruitAddict on 2014-11-11.
  */
-public class MindlessBlob extends MovableObject {
+public class MindlessBlob extends Character {
     static Player player;
     TextureRegion[] mobWalkSouth;
     TextureRegion[] mobWalkNorth;
@@ -72,31 +72,12 @@ public class MindlessBlob extends MovableObject {
         if (distance > 100) {
             if (player.getPosition().x > position.x) {
                 moveRight();
-                facingRight = true;
-                facingLeft = false;
-                facingNorth = false;
-                facingSouth = false;
             } else if (player.getPosition().x < position.x) {
                 moveLeft();
-
-                facingRight = false;
-                facingLeft = true;
-                facingNorth = false;
-                facingSouth = false;
             }
             if (player.getPosition().y > position.y) {
-
-                facingRight = false;
-                facingLeft = false;
-                facingNorth = true;
-                facingSouth = false;
                 moveUp();
             } else if (player.getPosition().y < position.y) {
-
-                facingRight = false;
-                facingLeft = false;
-                facingNorth = false;
-                facingSouth = true;
                 moveDown();
             }
         }

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.project2k15.entities.abstracted.MovableObject;
+import com.project2k15.entities.abstracted.Character;
 import com.project2k15.utilities.Assets;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.Random;
 /**
  * Created by FruitAddict on 2014-11-12.
  */
-public class MindlessWalker extends MovableObject {
+public class MindlessWalker extends Character {
     static Player player;
     static Random rng = new Random();
     float timeSpentDoingShit;
@@ -75,38 +75,18 @@ public class MindlessWalker extends MovableObject {
             switch (random) {
                 case 0: {
                     moveDown();
-
-                    facingRight = false;
-                    facingLeft = false;
-                    facingNorth = false;
-                    facingSouth = true;
                     break;
                 }
                 case 1: {
                     moveRight();
-
-                    facingRight = true;
-                    facingLeft = false;
-                    facingNorth = false;
-                    facingSouth = false;
                     break;
                 }
                 case 2: {
                     moveUp();
-
-                    facingRight = false;
-                    facingLeft = false;
-                    facingNorth = true;
-                    facingSouth = false;
                     break;
                 }
                 case 3: {
                     moveLeft();
-
-                    facingRight = false;
-                    facingLeft = true;
-                    facingNorth = false;
-                    facingSouth = false;
                     break;
                 }
             }

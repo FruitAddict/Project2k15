@@ -164,6 +164,11 @@ public class TestInputProcessor implements InputProcessor {
 
     @Override
     public boolean keyTyped(char character) {
+        switch (character) {
+            case 'g': {
+                player.holding = !player.holding;
+            }
+        }
         return false;
     }
 

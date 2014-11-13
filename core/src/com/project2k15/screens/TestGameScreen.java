@@ -16,6 +16,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.project2k15.entities.MindlessBlob;
 import com.project2k15.entities.MindlessWalker;
+import com.project2k15.entities.MovableBox;
 import com.project2k15.entities.Player;
 import com.project2k15.utilities.Assets;
 import com.project2k15.utilities.ObjectManager;
@@ -40,16 +41,14 @@ public class TestGameScreen implements Screen {
     TextureRegion[] walkFrames;
     float stateTime;
 
-    Animation mobAnimation;
-    TextureRegion[] mobWalkSouth;
-    TextureRegion[] mobWalkNorth;
-    TextureRegion[] mobWalkLeft;
-    TextureRegion[] mobWalkRight;
+    Texture boxTexture;
 
     MindlessBlob blob;
+    MovableBox box;
 
     ArrayList<MindlessBlob> blobList;
     ArrayList<MindlessWalker> walkerList;
+    ArrayList<MovableBox> boxList;
     MindlessWalker walker;
 
     BitmapFont bitMapFont;
@@ -86,6 +85,12 @@ public class TestGameScreen implements Screen {
         blobList.add(blob);
         walkerList = new ArrayList<MindlessWalker>();
 
+        boxTexture = Assets.manager.get("testBox.png");
+        box = new MovableBox(player, 300, 300);
+        manager.addObject(box);
+
+        boxList = new ArrayList<MovableBox>();
+
         walker = new MindlessWalker(100, 100, 20, 20, 40, player);
         walkerList.add(walker);
         manager.addObject(walker);
@@ -119,17 +124,19 @@ public class TestGameScreen implements Screen {
         for (int i = 0; i < walkerList.size(); i++) {
             batch.draw(walkerList.get(i).getCurrentFrame(), walkerList.get(i).getPosition().x, walkerList.get(i).getPosition().y, walkerList.get(i).getWidth(), walkerList.get(i).getHeight());
         }
-
+        for (int i = 0; i < boxList.size(); i++) {
+            batch.draw(boxTexture, boxList.get(i).getPosition().x, boxList.get(i).getPosition().y, boxList.get(i).getWidth(), boxList.get(i).getHeight());
+        }
         batch.draw(playerAnimation.getKeyFrame(stateTime, true), player.getPosition().x, player.getPosition().y, player.getWidth(), player.getHeight());
         batch.end();
         stateTime += delta;
 
-        if (Gdx.input.isTouched() && testTime > 1) {
+        if (Gdx.input.isTouched() && testTime > 0.1) {
             testTime = 0;
             Vector3 coords = cam.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-            MindlessWalker blobs = MindlessWalker.getRandomWalker(coords.x, coords.y);
+            MovableBox blobs = new MovableBox(player, coords.x, coords.y);
             manager.addObject(blobs);
-            walkerList.add(blobs);
+            boxList.add(blobs);
             testTime = 0;
         } else {
             testTime += delta;

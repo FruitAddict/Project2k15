@@ -6,10 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -37,8 +35,6 @@ public class TestGameScreen implements Screen {
     Player player;
     ObjectManager manager;
 
-    Animation playerAnimation;
-    TextureRegion[] walkFrames;
     float stateTime;
 
     Texture boxTexture;
@@ -72,13 +68,6 @@ public class TestGameScreen implements Screen {
         Gdx.input.setInputProcessor(testProc);
         manager = new ObjectManager(map.getLayers().get("collisionObjects"));
 
-        Texture testT = Assets.manager.get("test.gif");
-        TextureRegion[][] tmp = TextureRegion.split(testT, testT.getWidth() / 2, testT.getHeight());
-        walkFrames = new TextureRegion[2];
-        walkFrames[0] = tmp[0][0];
-        walkFrames[1] = tmp[0][1];
-
-        playerAnimation = new Animation(0.1f, walkFrames);
         blobList = new ArrayList<MindlessBlob>();
         manager.addObject(player);
         manager.addObject(blob);
@@ -86,8 +75,7 @@ public class TestGameScreen implements Screen {
         walkerList = new ArrayList<MindlessWalker>();
 
         boxTexture = Assets.manager.get("testBox.png");
-        box = new MovableBox(player, 300, 300);
-        manager.addObject(box);
+
 
         boxList = new ArrayList<MovableBox>();
 
@@ -127,7 +115,7 @@ public class TestGameScreen implements Screen {
         for (int i = 0; i < boxList.size(); i++) {
             batch.draw(boxTexture, boxList.get(i).getPosition().x, boxList.get(i).getPosition().y, boxList.get(i).getWidth(), boxList.get(i).getHeight());
         }
-        batch.draw(playerAnimation.getKeyFrame(stateTime, true), player.getPosition().x, player.getPosition().y, player.getWidth(), player.getHeight());
+        batch.draw(player.getCurrentFrame(), player.getPosition().x, player.getPosition().y, player.getWidth(), player.getHeight());
         batch.end();
         stateTime += delta;
 

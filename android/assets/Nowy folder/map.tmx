@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="28" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tileset CRAPPY AS FUCK 2" tilewidth="32" tileheight="32" spacing="2">
+  <image source="tilesetT.png" width="66" height="66"/>
+ </tileset>
+ <layer name="grass" width="50" height="28">
+  <data encoding="base64" compression="zlib">
+   eJztwwEJAAAMBKH7/qWXY6Dgqqmqqqqq+u4B9MUFeQ==
+  </data>
+ </layer>
+ <layer name="collision" width="50" height="28">
+  <data encoding="base64" compression="zlib">
+   eJzt11kKACEMBNHg/Q/tFbK1tFAFfjrmgQx4IuIMV7bpOVtzuIbDKxxevXQo/z046uHIf3s6T3ffjw5lOHAowoFDkcsc03Bo6t5XHJpweDm64fCq+rbZeu8o1gV+ugHv
+  </data>
+ </layer>
+ <layer name="bubbles" width="50" height="28">
+  <data encoding="base64" compression="zlib">
+   eJztl9sKgCAQRIX+/5+jh0C6yDZN6+42BwSfdI6rlq3xWAbNE3TOUX6Wh2XcNxksDogLOiaa40sPyxxeeVDY9ZhNnwPxiIS1HpEddp6e2YjMPqssjnfXVT8DdzXI5iGEEOJM9m/tRpV/huweEd5bLCq5/IUKdaqw37Lm7vFe/xWdxQJl
+  </data>
+ </layer>
+ <objectgroup name="collisionObjects">
+  <object x="559" y="107" width="3"/>
+  <object x="864.833" y="2" width="730" height="29.3333"/>
+  <object x="864.667" y="863.833" width="730" height="29.3333"/>
+  <object x="1568.33" y="33.3334" width="28.6667" height="829.333"/>
+  <object x="384.333" y="319.334" width="160.5" height="256.666"/>
+  <object x="832.167" y="192.667" width="383.833" height="160.333"/>
+  <object x="1120.67" y="640.667" width="126.167" height="128.166"/>
+  <object x="1.66665" y="0.000166667" width="28.6667" height="894.666"/>
+  <object x="34.8333" y="865.167" width="476.667" height="31.9997"/>
+  <object x="29.6665" y="1.33348" width="515.334" height="30.6664"/>
+ </objectgroup>
+</map>

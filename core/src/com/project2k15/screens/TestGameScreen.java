@@ -41,7 +41,10 @@ public class TestGameScreen implements Screen {
     float stateTime;
 
     Animation mobAnimation;
-    TextureRegion[] mobWalk;
+    TextureRegion[] mobWalkSouth;
+    TextureRegion[] mobWalkNorth;
+    TextureRegion[] mobWalkLeft;
+    TextureRegion[] mobWalkRight;
 
     MindlessBlob blob;
 
@@ -77,15 +80,6 @@ public class TestGameScreen implements Screen {
         walkFrames[1] = tmp[0][1];
 
         playerAnimation = new Animation(0.1f, walkFrames);
-
-        Texture testM = Assets.manager.get("pet.png");
-        TextureRegion[][] tmpM = TextureRegion.split(testM, testM.getWidth() / 8, testM.getHeight() / 4);
-        mobWalk = new TextureRegion[8];
-        for (int i = 0; i < 8; i++) {
-            mobWalk[i] = tmpM[0][i];
-        }
-
-        mobAnimation = new Animation(0.1f, mobWalk);
         blobList = new ArrayList<MindlessBlob>();
         manager.addObject(player);
         manager.addObject(blob);
@@ -120,24 +114,25 @@ public class TestGameScreen implements Screen {
         batch.begin();
 
         for (int i = 0; i < blobList.size(); i++) {
-            batch.draw(mobAnimation.getKeyFrame(stateTime, true), blobList.get(i).getPosition().x, blobList.get(i).getPosition().y, blobList.get(i).getWidth(), blobList.get(i).getHeight());
+            batch.draw(blobList.get(i).getCurrentFrame(), blobList.get(i).getPosition().x, blobList.get(i).getPosition().y, blobList.get(i).getWidth(), blobList.get(i).getHeight());
         }
         for (int i = 0; i < walkerList.size(); i++) {
-            batch.draw(mobAnimation.getKeyFrame(stateTime, true), walkerList.get(i).getPosition().x, walkerList.get(i).getPosition().y, walkerList.get(i).getWidth(), walkerList.get(i).getHeight());
+            batch.draw(walkerList.get(i).getCurrentFrame(), walkerList.get(i).getPosition().x, walkerList.get(i).getPosition().y, walkerList.get(i).getWidth(), walkerList.get(i).getHeight());
         }
 
         batch.draw(playerAnimation.getKeyFrame(stateTime, true), player.getPosition().x, player.getPosition().y, player.getWidth(), player.getHeight());
-        bitMapFont.draw(batch, Float.toString(Gdx.graphics.getFramesPerSecond()), player.getPosition().x, player.getPosition().y);
-        bitMapFont.draw(batch, Float.toString(blobList.size()), player.getPosition().x, player.getPosition().y - 10);
         batch.end();
         stateTime += delta;
 
-        if (Gdx.input.isTouched()) {
+        if (Gdx.input.isTouched() && testTime > 1) {
             testTime = 0;
             Vector3 coords = cam.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-            MindlessBlob blobs = MindlessBlob.getRandomBlob(coords.x, coords.y);
+            MindlessWalker blobs = MindlessWalker.getRandomWalker(coords.x, coords.y);
             manager.addObject(blobs);
-            blobList.add(blobs);
+            walkerList.add(blobs);
+            testTime = 0;
+        } else {
+            testTime += delta;
         }
 
     }

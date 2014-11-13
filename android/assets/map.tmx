@@ -10,7 +10,7 @@
  </layer>
  <layer name="collision" width="50" height="28">
   <data encoding="base64" compression="zlib">
-   eJzt11kKACEMBNHg/Q/tFbK1tFAFfjrmgQx4IuIMV7bpOVtzuIbDKxxevXQo/z046uHIf3s6T3ffjw5lOHAowoFDkcsc03Bo6t5XHJpweDm64fCq+rbZeu8o1gV+ugHv
+   eJztl0EKwCAMBIP0/2/uvZSqm6Rs6QzkZnQHVMiIiJGsVbLnVOVwBQ8v8PDiTY/OvwePffBY3zubR+37qsdxqae1SialBw88ZpmUnsp3frdGyaT0qGd28GcPR/DoQb2vePSAh5eHCh5e7M42VfNOR53kvgJT
   </data>
  </layer>
  <layer name="bubbles" width="50" height="28">
@@ -30,5 +30,9 @@
   <object x="29.6665" y="1.33348" width="515.334" height="30.6664"/>
   <object x="534" y="-7" width="359" height="10"/>
   <object x="503.5" y="880" width="359" height="10"/>
+  <object x="832.25" y="352.5" width="31.5" height="159.25"/>
+  <object x="864.5" y="480.25" width="191.75" height="31.25"/>
+  <object x="1120.25" y="479.5" width="95.75" height="32"/>
+  <object x="1184.5" y="352.5" width="31.25" height="127.25"/>
  </objectgroup>
 </map>

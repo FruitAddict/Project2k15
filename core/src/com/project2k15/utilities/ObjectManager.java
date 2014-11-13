@@ -52,5 +52,6 @@ public class ObjectManager {
 
     public void addObject(MovableObject obj) {
         objectList.add(obj);
+        stupidPlaceholder.add(obj.getCollisionRectangles().get(0));
     }
 }

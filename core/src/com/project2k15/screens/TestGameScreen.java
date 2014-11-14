@@ -119,9 +119,10 @@ public class TestGameScreen implements Screen {
         batch.end();
         stateTime += delta;
 
-        if (Gdx.input.isTouched() && testTime > 0.1) {
+
+        if (testTime > 0.5 && Gdx.input.isTouched(1)) {
             testTime = 0;
-            Vector3 coords = cam.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            Vector3 coords = cam.unproject(new Vector3(Gdx.input.getX(0), Gdx.input.getY(0), 0));
             MovableBox blobs = new MovableBox(player, coords.x, coords.y);
             manager.addObject(blobs);
             boxList.add(blobs);
@@ -129,6 +130,7 @@ public class TestGameScreen implements Screen {
         } else {
             testTime += delta;
         }
+
 
     }
 

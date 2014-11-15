@@ -4,8 +4,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.project2k15.entities.Player;
+
+;
 
 /**
  * Created by FruitAddict on 2014-11-04.
@@ -17,13 +20,18 @@ public class TestInputProcessor implements InputProcessor {
     Vector3 touchDownPosition;
     Vector3 currentPosition;
     float speedSaved;
+    float mapHeight;
+    float mapWidth;
+    Rectangle[] camBorderRectangles;
 
-    public TestInputProcessor(OrthographicCamera cam, Player player) {
+    public TestInputProcessor(OrthographicCamera cam, Player player, float mapWidth, float mapHeight) {
         camera = cam;
         this.player = player;
         touchDownPosition = new Vector3(-1, -1, 0);
         currentPosition = new Vector3();
         speedSaved = player.getSpeed();
+        this.mapWidth = mapWidth;
+        this.mapHeight = mapHeight;
     }
 
 
@@ -132,7 +140,6 @@ public class TestInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        System.out.println("Dragged");
         currentPosition.set(screenX, screenY, 0);
         return false;
     }
@@ -148,7 +155,37 @@ public class TestInputProcessor implements InputProcessor {
     }
 
     public void translateCamera(){
+        float old = camera.zoom;
+        if (zUp) {
+            if (camera.zoom > 0.1)
+                camera.zoom -= 0.03;
+        }
+        if (zDown) {
+            camera.zoom += 0.03;
+        }
+
         camera.position.set(player.getPosition().x + player.getWidth() / 2, player.getPosition().y + player.getHeight() / 2, camera.zoom);
+
+        float cameraLeft = camera.position.x - camera.viewportWidth * camera.zoom / 2;
+        float cameraRight = camera.position.x + camera.viewportWidth * camera.zoom / 2;
+        float cameraBottom = camera.position.y - camera.viewportHeight * camera.zoom / 2;
+        float cameraTop = camera.position.y + camera.viewportHeight * camera.zoom / 2;
+
+// Horizontal axis
+        if (cameraLeft <= 0) {
+            camera.position.x = camera.viewportWidth * camera.zoom / 2;
+        } else if (cameraRight >= mapWidth) {
+            camera.position.x = mapWidth - camera.viewportWidth * camera.zoom / 2;
+        }
+
+// Vertical axis
+        if (cameraBottom <= 0) {
+            camera.position.y = camera.viewportHeight * camera.zoom / 2;
+        } else if (cameraTop >= mapHeight) {
+            camera.position.y = mapHeight - camera.viewportHeight * camera.zoom / 2;
+        }
+
+
 
         if(tRight){
             player.idle = false;
@@ -165,13 +202,6 @@ public class TestInputProcessor implements InputProcessor {
         } else {
             player.idle = true;
         }
-        if (zUp) {
-            if (camera.zoom > 0.1)
-            camera.zoom -= 0.03;
-        }
-        if (zDown) {
-            camera.zoom += 0.03;
-        }
         if (sUp) {
             if (player.getScalar() < 1.0f)
                 player.setScalar(player.getScalar() + 0.005f);
@@ -182,7 +212,7 @@ public class TestInputProcessor implements InputProcessor {
         }
         if (touchDownPosition.x != -1 && touchDownPosition.y != -1) {
             float angle = (float) (MathUtils.atan2(currentPosition.y - touchDownPosition.y, currentPosition.x - touchDownPosition.x) * 180 / Math.PI);
-            float length = (float) Math.sqrt(Math.pow(currentPosition.x - touchDownPosition.x, 2) + Math.pow(currentPosition.y - touchDownPosition.y, 2));
+            //float length = (float) Math.sqrt(Math.pow(currentPosition.x - touchDownPosition.x, 2) + Math.pow(currentPosition.y - touchDownPosition.y, 2));
             /**if(length<50){
              player.setSpeed(speedSaved/4);
              }else {

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.project2k15.entities.MindlessBlob;
 import com.project2k15.entities.MindlessWalker;
 import com.project2k15.entities.MovableBox;
@@ -50,7 +51,7 @@ public class TestGameScreen implements Screen {
 
     boolean spawnMode = true;
 
-    float testTime = 0;
+    float mapWidth, mapHeight;
 
     public TestGameScreen(Game game){
         bitMapFont = new BitmapFont();
@@ -60,11 +61,23 @@ public class TestGameScreen implements Screen {
         cam = new OrthographicCamera(30, 30 * (Gdx.graphics.getWidth() / Gdx.graphics.getHeight()));
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         map = Assets.manager.get("map.tmx");
+        mapWidth = Float.parseFloat(map.getProperties().get("width").toString()) * 32;
+        mapHeight = Float.parseFloat(map.getProperties().get("height").toString()) * 32;
+
+        System.out.println(mapWidth + " " + mapHeight);
         renderer = new OrthogonalTiledMapRenderer(map, batch);
         renderer.setView(cam);
         player = new Player(124, 250);
         blob = new MindlessBlob(200, 250, 25, 25, 20, player);
-        testProc = new TestInputProcessor(cam, player);
+
+
+        Rectangle[] borderRecs = new Rectangle[4];
+        borderRecs[0] = new Rectangle(-10, 0, 10, mapHeight);
+        borderRecs[1] = new Rectangle(0, mapHeight, mapWidth, 10);
+        borderRecs[2] = new Rectangle(mapWidth, 0, 10, mapHeight);
+        borderRecs[3] = new Rectangle(0, -10, mapWidth, 10);
+
+        testProc = new TestInputProcessor(cam, player, mapWidth, mapHeight);
         cam.zoom = 0.5f;
         Gdx.input.setInputProcessor(testProc);
         manager = new ObjectManager(map.getLayers().get("collisionObjects"));

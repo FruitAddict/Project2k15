@@ -16,12 +16,14 @@ public class TestInputProcessor implements InputProcessor {
     boolean tLeft, tRight, tUp, tDown, zUp, zDown, sUp, sDown = false;
     Vector3 touchDownPosition;
     Vector3 currentPosition;
+    float speedSaved;
 
     public TestInputProcessor(OrthographicCamera cam, Player player) {
         camera = cam;
         this.player = player;
         touchDownPosition = new Vector3(-1, -1, 0);
         currentPosition = new Vector3();
+        speedSaved = player.getSpeed();
     }
 
 
@@ -107,25 +109,24 @@ public class TestInputProcessor implements InputProcessor {
 
     @Override
     public boolean keyTyped(char character) {
-        switch (character) {
-            case 'g': {
-                player.holding = !player.holding;
-            }
-        }
         return false;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         System.out.println("Touch down");
-        touchDownPosition.set(screenX, screenY, 0);
+        if (pointer == 0) {
+            touchDownPosition.set(screenX, screenY, 0);
+        }
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         System.out.println("Touch up");
-        touchDownPosition.set(-1, -1, 0);
+        if (pointer == 0) {
+            touchDownPosition.set(-1, -1, 0);
+        }
         return false;
     }
 
@@ -150,16 +151,19 @@ public class TestInputProcessor implements InputProcessor {
         camera.position.set(player.getPosition().x + player.getWidth() / 2, player.getPosition().y + player.getHeight() / 2, camera.zoom);
 
         if(tRight){
+            player.idle = false;
             player.moveRight();
-        }
-        if(tLeft){
+        } else if (tLeft) {
+            player.idle = false;
             player.moveLeft();
-        }
-        if(tUp){
+        } else if (tUp) {
+            player.idle = false;
             player.moveUp();
-        }
-        if(tDown){
+        } else if (tDown) {
+            player.idle = false;
             player.moveDown();
+        } else {
+            player.idle = true;
         }
         if (zUp) {
             if (camera.zoom > 0.1)
@@ -178,34 +182,42 @@ public class TestInputProcessor implements InputProcessor {
         }
         if (touchDownPosition.x != -1 && touchDownPosition.y != -1) {
             float angle = (float) (MathUtils.atan2(currentPosition.y - touchDownPosition.y, currentPosition.x - touchDownPosition.x) * 180 / Math.PI);
-            System.out.println(angle);
+            float length = (float) Math.sqrt(Math.pow(currentPosition.x - touchDownPosition.x, 2) + Math.pow(currentPosition.y - touchDownPosition.y, 2));
+            /**if(length<50){
+             player.setSpeed(speedSaved/4);
+             }else {
+             player.setSpeed(speedSaved);
+             }*/
             if (angle < 22.5 && angle >= -22.5) {
+                player.idle = false;
                 player.moveRight();
-            }
-            if (angle < -22.5 && angle >= -67.5) {
+            } else if (angle < -22.5 && angle >= -67.5) {
+                player.idle = false;
                 player.moveRight();
                 player.moveUp();
-            }
-            if (angle < -67.5 && angle >= -112.5) {
+            } else if (angle < -67.5 && angle >= -112.5) {
+                player.idle = false;
                 player.moveUp();
-            }
-            if (angle < -112.5 && angle >= -157.5) {
+            } else if (angle < -112.5 && angle >= -157.5) {
+                player.idle = false;
                 player.moveLeft();
                 player.moveUp();
-            }
-            if (angle < -157.5 || angle >= 157.5) {
+            } else if (angle < -157.5 || angle >= 157.5) {
+                player.idle = false;
                 player.moveLeft();
-            }
-            if (angle < 157.5 && angle >= 112.5) {
+            } else if (angle < 157.5 && angle >= 112.5) {
+                player.idle = false;
                 player.moveLeft();
                 player.moveDown();
-            }
-            if (angle < 112.5 && angle >= 67.5) {
+            } else if (angle < 112.5 && angle >= 67.5) {
+                player.idle = false;
                 player.moveDown();
-            }
-            if (angle < 67.5 && angle >= 22.5) {
+            } else if (angle < 67.5 && angle >= 22.5) {
+                player.idle = false;
                 player.moveDown();
                 player.moveRight();
+            } else {
+                player.idle = true;
             }
         }
     }

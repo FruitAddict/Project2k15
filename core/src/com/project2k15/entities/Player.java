@@ -26,7 +26,6 @@ public class Player extends Character {
     TextureRegion[] eastRegion = new TextureRegion[3];
     TextureRegion[] westRegion = new TextureRegion[3];
     float stateTime;
-    char lastFacing;
 
 
     public Player(float positionX, float positionY) {
@@ -36,14 +35,12 @@ public class Player extends Character {
         colRect = new Rectangle(positionX, positionY, 24, 16);
         collisionRectangles.add(colRect);
         speed = 20;
-        maxVelocity = 100;
+        maxVelocity = 75;
         scalar = 0.88f;
 
         facingSouth = true;
-        lastFacing = 'S';
-
         Texture testT = Assets.manager.get("redheady.png");
-        TextureRegion[][] tmp = TextureRegion.split(testT, testT.getWidth() / 3, testT.getHeight() / 3);
+        TextureRegion[][] tmp = TextureRegion.split(testT, testT.getWidth() / 3, testT.getHeight() / 4);
         southRegion = new TextureRegion[3];
         northRegion = new TextureRegion[3];
         eastRegion = new TextureRegion[3];
@@ -52,7 +49,7 @@ public class Player extends Character {
             southRegion[i] = tmp[0][i];
             westRegion[i] = tmp[1][i];
             northRegion[i] = tmp[2][i];
-            eastRegion[i] = tmp[1][i];
+            eastRegion[i] = tmp[3][i];
         }
 
 
@@ -68,22 +65,12 @@ public class Player extends Character {
     public void update(float delta, ArrayList<Rectangle> collisionRecs) {
         super.update(delta, collisionRecs);
         stateTime += delta;
-        if (facingRight && lastFacing != 'R') {
-            lastFacing = 'R';
-            for (int i = 0; i < 3; i++) {
-                westRegion[i].flip(true, false);
-            }
-        } else if (facingLeft && lastFacing != 'L') {
-            lastFacing = 'L';
-            for (int i = 0; i < 3; i++) {
-                westRegion[i].flip(true, false);
-            }
-        }
-
     }
 
     public TextureRegion getCurrentFrame() {
-        if (facingNorth) {
+        if (idle) {
+            return southRegion[1];
+        } else if (facingNorth) {
             return animationNorth.getKeyFrame(stateTime, true);
         } else if (facingSouth) {
             return animationSouth.getKeyFrame(stateTime, true);

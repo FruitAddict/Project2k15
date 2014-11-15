@@ -10,7 +10,6 @@ public class MovableObject extends Entity {
 
     protected float width = 26;
     protected float height = 48;
-    public boolean facingLeft, facingRight, facingNorth, facingSouth;
     protected float scalar;
     protected float maxVelocity = 200;
     protected float speed = 50;
@@ -145,38 +144,22 @@ public class MovableObject extends Entity {
         return height;
     }
     public void moveRight() {
-        facingRight = true;
-        facingLeft = false;
-        facingNorth = false;
-        facingSouth = false;
         if (velocity.x < maxVelocity)
             velocity.add(speed, 0);
     }
 
     public void moveLeft() {
-        facingRight = false;
-        facingLeft = true;
-        facingNorth = false;
-        facingSouth = false;
         if (velocity.x > -maxVelocity)
             velocity.add(-speed, 0);
     }
 
     public void moveUp() {
-        facingRight = false;
-        facingLeft = false;
-        facingNorth = true;
-        facingSouth = false;
         if (velocity.y < maxVelocity) {
             velocity.add(0, speed);
         }
     }
 
     public void moveDown() {
-        facingRight = false;
-        facingLeft = false;
-        facingNorth = false;
-        facingSouth = true;
         if (velocity.y > -maxVelocity) {
             velocity.add(0, -speed);
         }
@@ -189,6 +172,10 @@ public class MovableObject extends Entity {
 
     public float getSpeed() {
         return speed;
+    }
+
+    public void setSpeed(float s) {
+        speed = s;
     }
 
     public void setScalar(Float s) {

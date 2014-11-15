@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector3;
 import com.project2k15.entities.MindlessBlob;
 import com.project2k15.entities.MindlessWalker;
 import com.project2k15.entities.MovableBox;
@@ -49,6 +48,8 @@ public class TestGameScreen implements Screen {
 
     BitmapFont bitMapFont;
 
+    boolean spawnMode = true;
+
     float testTime = 0;
 
     public TestGameScreen(Game game){
@@ -62,7 +63,7 @@ public class TestGameScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map, batch);
         renderer.setView(cam);
         player = new Player(124, 250);
-        blob = new MindlessBlob(200, 250, 25, 25, 50, player);
+        blob = new MindlessBlob(200, 250, 25, 25, 20, player);
         testProc = new TestInputProcessor(cam, player);
         cam.zoom = 0.5f;
         Gdx.input.setInputProcessor(testProc);
@@ -119,16 +120,14 @@ public class TestGameScreen implements Screen {
         batch.end();
         stateTime += delta;
 
+        if (Gdx.input.isTouched()) {
+            if (Gdx.input.getX() <= 50 && Gdx.input.getY() < 50)
+                spawnMode = !spawnMode;
+        }
 
-        if (testTime > 0.5 && Gdx.input.isTouched(1)) {
-            testTime = 0;
-            Vector3 coords = cam.unproject(new Vector3(Gdx.input.getX(0), Gdx.input.getY(0), 0));
-            MovableBox blobs = new MovableBox(player, coords.x, coords.y);
-            manager.addObject(blobs);
-            boxList.add(blobs);
-            testTime = 0;
-        } else {
-            testTime += delta;
+
+        if (Gdx.input.isTouched(0) && Gdx.input.getX() < 50 && Gdx.input.getY() < 50) {
+            Gdx.input.setOnscreenKeyboardVisible(true);
         }
 
 

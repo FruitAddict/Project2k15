@@ -4,14 +4,21 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.project2k15.utilities.ObjectManager;
 
 /**
- * Created by FruitAddict on 2014-11-04.
+ * Main game screen. Contains main gameloop.
  */
 public class GameScreen implements Screen {
+    /**
+     * Game - instance received from the MainGame class, needed to change screens. (Eg. go back to main menu).
+     * OrthographicCamera - camera to manage all the wizardy connecting game world with the view port on the screen
+     * ObjectManager - Manager for updating all in-game objects. At the moment entities handle their own animations
+     */
     Game game;
-    ObjectManager manager;
+    ObjectManager objectManager;
+    OrthographicCamera mainCamera;
 
     public GameScreen(Game game){
         this.game = game;
@@ -30,7 +37,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
+        /**
+         * Initializer
+         */
+        objectManager = new ObjectManager(null);
+        mainCamera = new OrthographicCamera();
     }
 
     @Override

@@ -71,7 +71,6 @@ public class MindlessWalker extends Character {
         if (timeSpentDoingShit == 0) {
             random = rng.nextInt(4);
             stateTime += delta;
-            System.out.println(random);
             switch (random) {
                 case 0: {
                     moveDown();

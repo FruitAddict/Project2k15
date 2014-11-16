@@ -2,6 +2,7 @@ package com.project2k15.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.project2k15.entities.abstracted.Character;
@@ -27,9 +28,10 @@ public class MindlessWalker extends Character {
     Animation rightAnimation;
     Animation leftAnimation;
     float stateTime;
+    SpriteBatch batch;
 
 
-    public MindlessWalker(float positionX, float positionY, float width, float height, float speed, Player player) {
+    public MindlessWalker(float positionX, float positionY, float width, float height, float speed, Player player, SpriteBatch batch) {
         position.set(positionX, positionY);
         this.width = width;
         this.height = height;
@@ -37,6 +39,8 @@ public class MindlessWalker extends Character {
         collisionRectangles.add(new Rectangle(position.x, position.y, width, height));
         this.speed = speed;
         maxVelocity = 100;
+
+        this.batch = batch;
 
         Texture testM = Assets.manager.get("pet.png");
         TextureRegion[][] tmpM = TextureRegion.split(testM, testM.getWidth() / 8, testM.getHeight() / 4);
@@ -115,11 +119,13 @@ public class MindlessWalker extends Character {
         } else {
             timeSpentDoingShit = 0;
         }
+
+        batch.draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());
     }
 
-    public static MindlessWalker getRandomWalker(float x, float y) {
+    public static MindlessWalker getRandomWalker(float x, float y, SpriteBatch batch) {
         Random rng = new Random();
-        return new MindlessWalker(x, y, 10 + rng.nextInt(50), 10 + rng.nextInt(50), 5 + rng.nextInt(30), player);
+        return new MindlessWalker(x, y, 10 + rng.nextInt(50), 10 + rng.nextInt(50), 5 + rng.nextInt(30), player, batch);
     }
 
 

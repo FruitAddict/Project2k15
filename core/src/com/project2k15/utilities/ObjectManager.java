@@ -3,10 +3,10 @@ package com.project2k15.utilities;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Pool;
 import com.project2k15.entities.abstracted.MovableObject;
+import com.project2k15.utilities.quadtree.QuadRectangle;
+import com.project2k15.utilities.quadtree.Quadtree;
 
 import java.util.ArrayList;
 
@@ -15,43 +15,49 @@ import java.util.ArrayList;
  */
 public class ObjectManager {
 
-    public ArrayList<MovableObject> objectList = new ArrayList<MovableObject>();
-    private Pool<Rectangle> rectanglePool = new Pool<Rectangle>() {
-        @Override
-        protected Rectangle newObject() {
-            return new Rectangle();
-        }
-    };
-    private ArrayList<Rectangle> stupidPlaceholder = new ArrayList<Rectangle>();
+    private ArrayList<MovableObject> objectList = new ArrayList<MovableObject>();
+    private ArrayList<Rectangle> passRectangleList;
+    private MapObjects collisionObjects;
+    private Quadtree quadtree;
 
-    private TiledMapTileLayer collisionLayer;
+    public ObjectManager(MapLayer t, int mapWidth, int mapHeight) {
+        collisionObjects = t.getObjects();
+        quadtree = new Quadtree(0, new QuadRectangle(0, 0, mapWidth, mapHeight));
+        passRectangleList = new ArrayList<Rectangle>();
 
-    public ObjectManager(MapLayer t) {
-        MapObjects collisionObjects = t.getObjects();
-
-        for (int i = 0; i < collisionObjects.getCount(); i++) {
-            RectangleMapObject obj = (RectangleMapObject) collisionObjects.get(i);
-            Rectangle rect = obj.getRectangle();
-            stupidPlaceholder.add(rect);
-            System.out.println("adding rectangle to cols" + rect.getWidth() + " " + rect.getHeight());
-        }
     }
 
-    public void setCollisionLayer(TiledMapTileLayer til) {
-        collisionLayer = til;
+    public void setCollisionObjects(MapLayer til) {
+        collisionObjects = null;
+        collisionObjects = til.getObjects();
     }
 
 
     public void update(float delta) {
+        passRectangleList.clear();
+        quadtree.clear();
+        for (int i = 0; i < collisionObjects.getCount(); i++) {
+            RectangleMapObject obj = (RectangleMapObject) collisionObjects.get(i);
+            quadtree.insert(obj.getRectangle());
+        }
+        for (int i = 0; i < objectList.size(); i++) {
+            quadtree.insert(objectList.get(i).getCollisionRectangles().get(0));
+        }
         if (objectList.size() > 0) {
             for (MovableObject o : objectList) {
-                o.update(delta, stupidPlaceholder);
+                passRectangleList.clear();
+                o.update(delta, quadtree.retrieve(passRectangleList, o.getCollisionRectangles().get(0)));
             }
         }
     }
 
+    public Quadtree getTree() {
+        return quadtree;
+    }
+
     public void addObject(MovableObject obj) {
         objectList.add(obj);
-        stupidPlaceholder.add(obj.getCollisionRectangles().get(0));
+
     }
+
 }

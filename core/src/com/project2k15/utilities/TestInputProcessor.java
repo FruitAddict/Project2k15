@@ -4,7 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.project2k15.entities.Player;
 
@@ -22,7 +22,10 @@ public class TestInputProcessor implements InputProcessor {
     float speedSaved;
     float mapHeight;
     float mapWidth;
-    Rectangle[] camBorderRectangles;
+    Vector2 point1;
+    Vector2 point2;
+    float lengthBetweenPointers;
+    boolean pointer1, pointer2 = false;
 
     public TestInputProcessor(OrthographicCamera cam, Player player, float mapWidth, float mapHeight) {
         camera = cam;
@@ -32,6 +35,8 @@ public class TestInputProcessor implements InputProcessor {
         speedSaved = player.getSpeed();
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
+        point1 = new Vector2();
+        point2 = new Vector2();
     }
 
 
@@ -125,6 +130,13 @@ public class TestInputProcessor implements InputProcessor {
         System.out.println("Touch down");
         if (pointer == 0) {
             touchDownPosition.set(screenX, screenY, 0);
+            point1.set(screenX, screenY);
+            pointer1 = true;
+        }
+        if (pointer == 1) {
+            pointer2 = true;
+            point2.set(screenX, screenY);
+            lengthBetweenPointers = (float) Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2));
         }
         return false;
     }
@@ -134,13 +146,29 @@ public class TestInputProcessor implements InputProcessor {
         System.out.println("Touch up");
         if (pointer == 0) {
             touchDownPosition.set(-1, -1, 0);
+
+        }
+        if (pointer == 0) {
+            pointer1 = false;
+            lengthBetweenPointers = 0;
+        }
+        if (pointer == 1) {
+            pointer2 = false;
+            lengthBetweenPointers = 0;
         }
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        currentPosition.set(screenX, screenY, 0);
+
+        if (pointer == 0) {
+            point1.set(screenX, screenY);
+            currentPosition.set(screenX, screenY, 0);
+        }
+        if (pointer == 1) {
+            point2.set(screenX, screenY);
+        }
         return false;
     }
 
@@ -156,12 +184,20 @@ public class TestInputProcessor implements InputProcessor {
 
     public void translateCamera(){
         float old = camera.zoom;
-        if (zUp) {
-            if (camera.zoom > 0.1)
-                camera.zoom -= 0.03;
+        if (zUp && camera.zoom > 0.1) {
+            camera.zoom -= 0.03;
         }
-        if (zDown) {
+        if (zDown && camera.zoom < 1.2) {
             camera.zoom += 0.03;
+        }
+
+        if (pointer1 && pointer2) {
+            float newScale = camera.zoom * (float) Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2)) / lengthBetweenPointers;
+            if (newScale > 0.1 && newScale < 1.2 && lengthBetweenPointers != 0) {
+                camera.zoom = newScale;
+                lengthBetweenPointers = (float) Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2));
+
+            }
         }
 
         camera.position.set(player.getPosition().x + player.getWidth() / 2, player.getPosition().y + player.getHeight() / 2, camera.zoom);
@@ -171,14 +207,14 @@ public class TestInputProcessor implements InputProcessor {
         float cameraBottom = camera.position.y - camera.viewportHeight * camera.zoom / 2;
         float cameraTop = camera.position.y + camera.viewportHeight * camera.zoom / 2;
 
-// Horizontal axis
+        // Horizontal axis
         if (cameraLeft <= 0) {
             camera.position.x = camera.viewportWidth * camera.zoom / 2;
         } else if (cameraRight >= mapWidth) {
             camera.position.x = mapWidth - camera.viewportWidth * camera.zoom / 2;
         }
 
-// Vertical axis
+        // Vertical axis
         if (cameraBottom <= 0) {
             camera.position.y = camera.viewportHeight * camera.zoom / 2;
         } else if (cameraTop >= mapHeight) {
@@ -212,40 +248,38 @@ public class TestInputProcessor implements InputProcessor {
         }
         if (touchDownPosition.x != -1 && touchDownPosition.y != -1) {
             float angle = (float) (MathUtils.atan2(currentPosition.y - touchDownPosition.y, currentPosition.x - touchDownPosition.x) * 180 / Math.PI);
-            //float length = (float) Math.sqrt(Math.pow(currentPosition.x - touchDownPosition.x, 2) + Math.pow(currentPosition.y - touchDownPosition.y, 2));
-            /**if(length<50){
-             player.setSpeed(speedSaved/4);
-             }else {
-             player.setSpeed(speedSaved);
-             }*/
-            if (angle < 22.5 && angle >= -22.5) {
-                player.idle = false;
-                player.moveRight();
-            } else if (angle < -22.5 && angle >= -67.5) {
-                player.idle = false;
-                player.moveRight();
-                player.moveUp();
-            } else if (angle < -67.5 && angle >= -112.5) {
-                player.idle = false;
-                player.moveUp();
-            } else if (angle < -112.5 && angle >= -157.5) {
-                player.idle = false;
-                player.moveLeft();
-                player.moveUp();
-            } else if (angle < -157.5 || angle >= 157.5) {
-                player.idle = false;
-                player.moveLeft();
-            } else if (angle < 157.5 && angle >= 112.5) {
-                player.idle = false;
-                player.moveLeft();
-                player.moveDown();
-            } else if (angle < 112.5 && angle >= 67.5) {
-                player.idle = false;
-                player.moveDown();
-            } else if (angle < 67.5 && angle >= 22.5) {
-                player.idle = false;
-                player.moveDown();
-                player.moveRight();
+            float length = (float) Math.sqrt(Math.pow(currentPosition.x - touchDownPosition.x, 2) + Math.pow(currentPosition.y - touchDownPosition.y, 2));
+            if (length > 25) {
+
+                if (angle < 22.5 && angle >= -22.5) {
+                    player.idle = false;
+                    player.moveRight();
+                } else if (angle < -22.5 && angle >= -67.5) {
+                    player.idle = false;
+                    player.moveRight();
+                    player.moveUp();
+                } else if (angle < -67.5 && angle >= -112.5) {
+                    player.idle = false;
+                    player.moveUp();
+                } else if (angle < -112.5 && angle >= -157.5) {
+                    player.idle = false;
+                    player.moveLeft();
+                    player.moveUp();
+                } else if (angle < -157.5 || angle >= 157.5) {
+                    player.idle = false;
+                    player.moveLeft();
+                } else if (angle < 157.5 && angle >= 112.5) {
+                    player.idle = false;
+                    player.moveLeft();
+                    player.moveDown();
+                } else if (angle < 112.5 && angle >= 67.5) {
+                    player.idle = false;
+                    player.moveDown();
+                } else if (angle < 67.5 && angle >= 22.5) {
+                    player.idle = false;
+                    player.moveDown();
+                    player.moveRight();
+                }
             } else {
                 player.idle = true;
             }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.project2k15.entities.MindlessBlob;
 import com.project2k15.entities.MindlessWalker;
 import com.project2k15.entities.MovableBox;
@@ -43,7 +44,6 @@ public class TestGameScreen implements Screen {
     MovableBox box;
 
     ArrayList<MindlessBlob> blobList;
-    ArrayList<MindlessWalker> walkerList;
     ArrayList<MovableBox> boxList;
     MindlessWalker walker;
 
@@ -64,10 +64,11 @@ public class TestGameScreen implements Screen {
         mapWidth = Float.parseFloat(map.getProperties().get("width").toString()) * 32;
         mapHeight = Float.parseFloat(map.getProperties().get("height").toString()) * 32;
 
+
         System.out.println(mapWidth + " " + mapHeight);
         renderer = new OrthogonalTiledMapRenderer(map, batch);
         renderer.setView(cam);
-        player = new Player(124, 250);
+        player = new Player(124, 250, batch);
         blob = new MindlessBlob(200, 250, 25, 25, 20, player);
 
 
@@ -80,22 +81,13 @@ public class TestGameScreen implements Screen {
         testProc = new TestInputProcessor(cam, player, mapWidth, mapHeight);
         cam.zoom = 0.5f;
         Gdx.input.setInputProcessor(testProc);
-        manager = new ObjectManager(map.getLayers().get("collisionObjects"));
+        manager = new ObjectManager(map.getLayers().get("collisionObjects"), (int) mapWidth, (int) mapHeight);
 
         blobList = new ArrayList<MindlessBlob>();
         manager.addObject(player);
-        manager.addObject(blob);
-        blobList.add(blob);
-        walkerList = new ArrayList<MindlessWalker>();
 
         boxTexture = Assets.manager.get("testBox.png");
 
-
-        boxList = new ArrayList<MovableBox>();
-
-        walker = new MindlessWalker(100, 100, 20, 20, 40, player);
-        walkerList.add(walker);
-        manager.addObject(walker);
         /**
          Random rng = new Random();
          for(int i=0; i <10;i++){
@@ -112,7 +104,6 @@ public class TestGameScreen implements Screen {
     public void render(float delta) {
         testProc.translateCamera();
         cam.update();
-        manager.update(delta);
         Gdx.gl.glClearColor(0, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(cam);
@@ -123,25 +114,18 @@ public class TestGameScreen implements Screen {
         for (int i = 0; i < blobList.size(); i++) {
             batch.draw(blobList.get(i).getCurrentFrame(), blobList.get(i).getPosition().x, blobList.get(i).getPosition().y, blobList.get(i).getWidth(), blobList.get(i).getHeight());
         }
-        for (int i = 0; i < walkerList.size(); i++) {
-            batch.draw(walkerList.get(i).getCurrentFrame(), walkerList.get(i).getPosition().x, walkerList.get(i).getPosition().y, walkerList.get(i).getWidth(), walkerList.get(i).getHeight());
-        }
-        for (int i = 0; i < boxList.size(); i++) {
-            batch.draw(boxTexture, boxList.get(i).getPosition().x, boxList.get(i).getPosition().y, boxList.get(i).getWidth(), boxList.get(i).getHeight());
-        }
-        batch.draw(player.getCurrentFrame(), player.getPosition().x, player.getPosition().y, player.getWidth(), player.getHeight());
+        manager.update(delta);
+        manager.getTree().debugDraw(batch);
+        bitMapFont.draw(batch, Float.toString(Gdx.graphics.getFramesPerSecond()), player.getPosition().x, player.getPosition().y - 20);
         batch.end();
         stateTime += delta;
 
-        if (Gdx.input.isTouched()) {
-            if (Gdx.input.getX() <= 50 && Gdx.input.getY() < 50)
-                spawnMode = !spawnMode;
+        if (Gdx.input.isTouched(0) && stateTime > 0.1) {
+            Vector3 unprojected2 = cam.unproject(new Vector3(Gdx.input.getX(0), Gdx.input.getY(0), 0));
+            manager.addObject(MindlessWalker.getRandomWalker(unprojected2.x, unprojected2.y, batch));
+            stateTime = 0;
         }
 
-
-        if (Gdx.input.isTouched(0) && Gdx.input.getX() < 50 && Gdx.input.getY() < 50) {
-            Gdx.input.setOnscreenKeyboardVisible(true);
-        }
 
 
     }

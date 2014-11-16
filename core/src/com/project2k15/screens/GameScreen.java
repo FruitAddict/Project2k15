@@ -40,7 +40,6 @@ public class GameScreen implements Screen {
         /**
          * Initializer
          */
-        objectManager = new ObjectManager(null);
         mainCamera = new OrthographicCamera();
     }
 

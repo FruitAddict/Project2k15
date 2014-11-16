@@ -2,6 +2,7 @@ package com.project2k15.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.project2k15.entities.abstracted.Character;
@@ -26,9 +27,10 @@ public class Player extends Character {
     TextureRegion[] eastRegion = new TextureRegion[3];
     TextureRegion[] westRegion = new TextureRegion[3];
     float stateTime;
+    SpriteBatch batch;
 
 
-    public Player(float positionX, float positionY) {
+    public Player(float positionX, float positionY, SpriteBatch batch) {
         width = 24;
         height = 32;
         position.set(positionX, positionY);
@@ -37,6 +39,7 @@ public class Player extends Character {
         speed = 20;
         maxVelocity = 75;
         scalar = 0.88f;
+        this.batch = batch;
 
         facingSouth = true;
         Texture testT = Assets.manager.get("redheady.png");
@@ -65,6 +68,7 @@ public class Player extends Character {
     public void update(float delta, ArrayList<Rectangle> collisionRecs) {
         super.update(delta, collisionRecs);
         stateTime += delta;
+        batch.draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());
     }
 
     public TextureRegion getCurrentFrame() {

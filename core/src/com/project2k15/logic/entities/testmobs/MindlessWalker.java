@@ -1,14 +1,15 @@
-package com.project2k15.entities;
+package com.project2k15.logic.entities.testmobs;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
-import com.project2k15.entities.abstracted.Character;
-import com.project2k15.utilities.Assets;
+import com.badlogic.gdx.utils.Array;
+import com.project2k15.logic.entities.Player;
+import com.project2k15.logic.entities.abstracted.Character;
+import com.project2k15.logic.quadtree.PropertyRectangle;
+import com.project2k15.rendering.Assets;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -36,7 +37,7 @@ public class MindlessWalker extends Character {
         this.width = width;
         this.height = height;
         this.player = player;
-        collisionRectangles.add(new Rectangle(position.x, position.y, width, height));
+        collisionRectangles.add(new PropertyRectangle(position.x, position.y, width, height, PropertyRectangle.MOVING_OBJECT));
         this.speed = speed;
         maxVelocity = 100;
 
@@ -70,7 +71,7 @@ public class MindlessWalker extends Character {
     }
 
     @Override
-    public void update(float delta, ArrayList<Rectangle> checkRectangles) {
+    public void update(float delta, Array<PropertyRectangle> checkRectangles) {
         super.update(delta, checkRectangles);
         if (timeSpentDoingShit == 0) {
             random = rng.nextInt(4);
@@ -124,8 +125,7 @@ public class MindlessWalker extends Character {
     }
 
     public static MindlessWalker getRandomWalker(float x, float y, SpriteBatch batch) {
-        Random rng = new Random();
-        return new MindlessWalker(x, y, 10 + rng.nextInt(50), 10 + rng.nextInt(50), 5 + rng.nextInt(30), player, batch);
+        return new MindlessWalker(x, y, 25, 25, 25, player, batch);
     }
 
 

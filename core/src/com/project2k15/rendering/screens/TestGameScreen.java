@@ -1,4 +1,4 @@
-package com.project2k15.screens;
+package com.project2k15.rendering.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -13,13 +13,13 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.project2k15.entities.MindlessBlob;
-import com.project2k15.entities.MindlessWalker;
-import com.project2k15.entities.MovableBox;
-import com.project2k15.entities.Player;
-import com.project2k15.utilities.Assets;
-import com.project2k15.utilities.ObjectManager;
-import com.project2k15.utilities.TestInputProcessor;
+import com.project2k15.logic.ObjectManager;
+import com.project2k15.logic.TestInputProcessor;
+import com.project2k15.logic.entities.Player;
+import com.project2k15.logic.entities.testmobs.MindlessBlob;
+import com.project2k15.logic.entities.testmobs.MindlessWalker;
+import com.project2k15.logic.entities.testmobs.MovableBox;
+import com.project2k15.rendering.Assets;
 
 import java.util.ArrayList;
 
@@ -110,20 +110,24 @@ public class TestGameScreen implements Screen {
         batch.setProjectionMatrix(cam.combined);
         renderer.render();
         batch.begin();
-
         for (int i = 0; i < blobList.size(); i++) {
             batch.draw(blobList.get(i).getCurrentFrame(), blobList.get(i).getPosition().x, blobList.get(i).getPosition().y, blobList.get(i).getWidth(), blobList.get(i).getHeight());
         }
         manager.update(delta);
-        manager.getTree().debugDraw(batch);
         bitMapFont.draw(batch, Float.toString(Gdx.graphics.getFramesPerSecond()), player.getPosition().x, player.getPosition().y - 20);
         batch.end();
         stateTime += delta;
 
-        if (Gdx.input.isTouched(0) && stateTime > 0.1) {
-            Vector3 unprojected2 = cam.unproject(new Vector3(Gdx.input.getX(0), Gdx.input.getY(0), 0));
-            manager.addObject(MindlessWalker.getRandomWalker(unprojected2.x, unprojected2.y, batch));
+        if (Gdx.input.isTouched(1) && stateTime > 0.1 && spawnMode) {
+            Vector3 unprojected = cam.unproject(new Vector3(Gdx.input.getX(1), Gdx.input.getY(1), 0));
+            MindlessWalker walker = MindlessWalker.getRandomWalker(unprojected.x, unprojected.y, batch);
+            manager.addObject(walker);
             stateTime = 0;
+        }
+        if (Gdx.input.isTouched(0)) {
+            if (Gdx.input.getX() < 50 && Gdx.input.getY() < 50) {
+                spawnMode = !spawnMode;
+            }
         }
 
 
@@ -132,7 +136,6 @@ public class TestGameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override

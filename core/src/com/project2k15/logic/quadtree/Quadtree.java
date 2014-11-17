@@ -1,27 +1,26 @@
-package com.project2k15.utilities.quadtree;
+package com.project2k15.logic.quadtree;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.project2k15.utilities.Assets;
-
-import java.util.ArrayList;
+import com.badlogic.gdx.utils.Array;
+import com.project2k15.rendering.Assets;
 
 /**
  * Quad tree to use with collision detection algorithm
  */
 public class Quadtree {
     private int MAX_OBJECTS = 5;
-    private int MAX_LEVELS = 5;
+    private int MAX_LEVELS = 10;
 
     private int level;
-    private ArrayList<Rectangle> objects;
+    private Array<PropertyRectangle> objects;
     private QuadRectangle bounds;
     private Quadtree[] nodes;
 
     public Quadtree(int pLevel, QuadRectangle pBounds) {
         level = pLevel;
-        objects = new ArrayList<Rectangle>();
+        objects = new Array<PropertyRectangle>();
         bounds = pBounds;
         nodes = new Quadtree[4];
     }
@@ -81,7 +80,7 @@ public class Quadtree {
         return index;
     }
 
-    public void insert(Rectangle pRect) {
+    public void insert(PropertyRectangle pRect) {
         if (nodes[0] != null) {
             int index = getIndex(pRect);
 
@@ -93,15 +92,15 @@ public class Quadtree {
 
         objects.add(pRect);
 
-        if (objects.size() > MAX_OBJECTS && level < MAX_LEVELS) {
+        if (objects.size > MAX_OBJECTS && level < MAX_LEVELS) {
             if (nodes[0] == null) {
                 split();
             }
             int i = 0;
-            while (i < objects.size()) {
+            while (i < objects.size) {
                 int index = getIndex(objects.get(i));
                 if (index != -1) {
-                    nodes[index].insert(objects.remove(i));
+                    nodes[index].insert(objects.removeIndex(i));
                 } else {
                     i++;
                 }
@@ -109,7 +108,7 @@ public class Quadtree {
         }
     }
 
-    public ArrayList<Rectangle> retrieve(ArrayList<Rectangle> returnObjects, Rectangle pRect) {
+    public Array<PropertyRectangle> retrieve(Array<PropertyRectangle> returnObjects, PropertyRectangle pRect) {
         int index = getIndex(pRect);
         if (index != -1 && nodes[0] != null) {
             nodes[index].retrieve(returnObjects, pRect);

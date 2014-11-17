@@ -1,8 +1,8 @@
-package com.project2k15.utilities;
+package com.project2k15.logic;
 
 import com.badlogic.gdx.Game;
-import com.project2k15.screens.GameScreen;
-import com.project2k15.screens.SplashScreen;
+import com.project2k15.rendering.screens.GameScreen;
+import com.project2k15.rendering.screens.SplashScreen;
 
 /**
  * Singleton class for storing screens nad other things that can be reused.

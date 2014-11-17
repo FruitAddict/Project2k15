@@ -1,11 +1,11 @@
-package com.project2k15.screens;
+package com.project2k15.rendering.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.project2k15.utilities.ObjectManager;
+import com.project2k15.logic.ObjectManager;
 
 /**
  * Main game screen. Contains main gameloop.

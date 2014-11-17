@@ -1,4 +1,4 @@
-package com.project2k15.screens;
+package com.project2k15.rendering.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.project2k15.utilities.Assets;
+import com.project2k15.rendering.Assets;
 
 /**
  * Splash screen, appears for 5 seconds when the program is started.

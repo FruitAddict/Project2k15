@@ -1,9 +1,9 @@
-package com.project2k15.entities.abstracted;
+package com.project2k15.logic.entities.abstracted;
 
-/**
- * Created by FruitAddict on 2014-11-13.
- */
-public class Character extends MovableObject {
+public abstract class Character extends MovableObject {
+    /**
+     * Abstract character class, contains facing booleans for use with drawing
+     */
     public boolean facingLeft, facingRight, facingNorth, facingSouth, idle;
 
     @Override

@@ -1,4 +1,4 @@
-package com.project2k15.utilities.quadtree;
+package com.project2k15.logic.quadtree;
 
 /**
  * Created by FruitAddict on 2014-11-16.

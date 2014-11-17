@@ -1,13 +1,14 @@
-package com.project2k15.entities;
+package com.project2k15.logic.entities.testmobs;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
-import com.project2k15.entities.abstracted.Character;
-import com.project2k15.utilities.Assets;
+import com.badlogic.gdx.utils.Array;
+import com.project2k15.logic.entities.Player;
+import com.project2k15.logic.entities.abstracted.Character;
+import com.project2k15.logic.quadtree.PropertyRectangle;
+import com.project2k15.rendering.Assets;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -30,10 +31,10 @@ public class MindlessBlob extends Character {
         this.width = width;
         this.height = height;
         this.player = player;
-        collisionRectangles.add(new Rectangle(position.x, position.y, width, height));
+        collisionRectangles.add(new PropertyRectangle(position.x, position.y, width, height, PropertyRectangle.MOVING_OBJECT));
         this.speed = speed;
         maxVelocity = 100;
-        setScalar(0.82f);
+        setClamping(0.82f);
         stateTime = 0;
 
         Texture testM = Assets.manager.get("pet.png");
@@ -65,7 +66,7 @@ public class MindlessBlob extends Character {
     }
 
     @Override
-    public void update(float delta, ArrayList<Rectangle> checkRectangles) {
+    public void update(float delta, Array<PropertyRectangle> checkRectangles) {
         super.update(delta, checkRectangles);
         stateTime += delta;
         float distance = (float) (Math.sqrt(Math.pow(position.x - player.getPosition().x, 2) + Math.pow(position.y - player.getPosition().y, 2)));

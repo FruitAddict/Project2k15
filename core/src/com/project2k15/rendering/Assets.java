@@ -1,4 +1,4 @@
-package com.project2k15.utilities;
+package com.project2k15.rendering;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;

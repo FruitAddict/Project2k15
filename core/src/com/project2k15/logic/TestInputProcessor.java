@@ -1,4 +1,4 @@
-package com.project2k15.utilities;
+package com.project2k15.logic;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.project2k15.entities.Player;
+import com.project2k15.logic.entities.Player;
 
 ;
 
@@ -239,12 +239,12 @@ public class TestInputProcessor implements InputProcessor {
             player.idle = true;
         }
         if (sUp) {
-            if (player.getScalar() < 1.0f)
-                player.setScalar(player.getScalar() + 0.005f);
+            if (player.getClamping() < 1.0f)
+                player.setClamping(player.getClamping() + 0.005f);
         }
         if (sDown) {
-            if (player.getScalar() > 0)
-                player.setScalar(player.getScalar() - 0.005f);
+            if (player.getClamping() > 0)
+                player.setClamping(player.getClamping() - 0.005f);
         }
         if (touchDownPosition.x != -1 && touchDownPosition.y != -1) {
             float angle = (float) (MathUtils.atan2(currentPosition.y - touchDownPosition.y, currentPosition.x - touchDownPosition.x) * 180 / Math.PI);

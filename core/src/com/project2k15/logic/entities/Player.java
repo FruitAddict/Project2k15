@@ -1,21 +1,20 @@
-package com.project2k15.entities;
+package com.project2k15.logic.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
-import com.project2k15.entities.abstracted.Character;
-import com.project2k15.utilities.Assets;
-
-import java.util.ArrayList;
+import com.badlogic.gdx.utils.Array;
+import com.project2k15.logic.entities.abstracted.Character;
+import com.project2k15.logic.quadtree.PropertyRectangle;
+import com.project2k15.rendering.Assets;
 
 /**
  * Test player class
  */
 public class Player extends Character {
 
-    private Rectangle colRect;
+    private PropertyRectangle colRect;
     public boolean holding = false;
     public boolean holdingSomething = false;
     Animation animationNorth;
@@ -34,11 +33,11 @@ public class Player extends Character {
         width = 24;
         height = 32;
         position.set(positionX, positionY);
-        colRect = new Rectangle(positionX, positionY, 24, 16);
+        colRect = new PropertyRectangle(positionX, positionY, 24, 16, PropertyRectangle.MOVING_OBJECT);
         collisionRectangles.add(colRect);
         speed = 20;
         maxVelocity = 75;
-        scalar = 0.88f;
+        clamping = 0.88f;
         this.batch = batch;
 
         facingSouth = true;
@@ -65,7 +64,7 @@ public class Player extends Character {
     }
 
     @Override
-    public void update(float delta, ArrayList<Rectangle> collisionRecs) {
+    public void update(float delta, Array<PropertyRectangle> collisionRecs) {
         super.update(delta, collisionRecs);
         stateTime += delta;
         batch.draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());

@@ -4,10 +4,10 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.utils.Array;
+import com.project2k15.logic.collision.PropertyRectangle;
+import com.project2k15.logic.collision.QuadRectangle;
+import com.project2k15.logic.collision.Quadtree;
 import com.project2k15.logic.entities.abstracted.MovableObject;
-import com.project2k15.logic.quadtree.PropertyRectangle;
-import com.project2k15.logic.quadtree.QuadRectangle;
-import com.project2k15.logic.quadtree.Quadtree;
 
 /**
  * Object Manager
@@ -58,6 +58,14 @@ public class ObjectManager {
 
     public void addObject(MovableObject obj) {
         objectList.add(obj);
+    }
+
+    public void removeObject(MovableObject obj) {
+        objectList.removeValue(obj, true);
+    }
+
+    public int getNumberOfObjects() {
+        return objectList.size;
     }
 
 }

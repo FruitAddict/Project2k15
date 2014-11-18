@@ -2,8 +2,7 @@ package com.project2k15.logic.entities.abstracted;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.project2k15.logic.entities.CollisionResolver;
-import com.project2k15.logic.quadtree.PropertyRectangle;
+import com.project2k15.logic.collision.PropertyRectangle;
 
 /**
  * Abstract MovableObject class. Contains methods to move the entity around
@@ -24,9 +23,7 @@ public abstract class MovableObject extends Entity {
     protected float maxVelocity = 200;
     protected float speed = 50;
 
-    public void update(float delta, Array<PropertyRectangle> checkRectangles) {
-        CollisionResolver.resolveCollisionsWithTerrain(delta, checkRectangles, this);
-    }
+    public abstract void update(float delta, Array<PropertyRectangle> checkRectangles);
 
     /**
      * Set of methods to move this entity around. When invoked, checks if the velocity is below the max velocity

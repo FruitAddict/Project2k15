@@ -4,10 +4,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.project2k15.logic.ObjectManager;
+import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.entities.abstracted.Character;
-import com.project2k15.logic.quadtree.PropertyRectangle;
 import com.project2k15.rendering.Assets;
+import com.project2k15.test.testmobs.Projectile;
 
 /**
  * Test player class
@@ -26,20 +29,23 @@ public class Player extends Character {
     TextureRegion[] eastRegion = new TextureRegion[3];
     TextureRegion[] westRegion = new TextureRegion[3];
     float stateTime;
+    float lastAttack = 0;
+    float timeBetweenAttacks = 0.01f;
     SpriteBatch batch;
+    ObjectManager manager;
 
 
-    public Player(float positionX, float positionY, SpriteBatch batch) {
+    public Player(float positionX, float positionY, SpriteBatch batch, ObjectManager manager) {
         width = 24;
         height = 32;
         position.set(positionX, positionY);
-        colRect = new PropertyRectangle(positionX, positionY, 24, 16, PropertyRectangle.MOVING_OBJECT);
+        colRect = new PropertyRectangle(positionX, positionY, 24, 16, PropertyRectangle.PLAYER);
         collisionRectangles.add(colRect);
         speed = 20;
         maxVelocity = 75;
         clamping = 0.88f;
         this.batch = batch;
-
+        this.manager = manager;
         facingSouth = true;
         Texture testT = Assets.manager.get("redheady.png");
         TextureRegion[][] tmp = TextureRegion.split(testT, testT.getWidth() / 3, testT.getHeight() / 4);
@@ -65,9 +71,16 @@ public class Player extends Character {
 
     @Override
     public void update(float delta, Array<PropertyRectangle> collisionRecs) {
-        super.update(delta, collisionRecs);
+        CollisionResolver.resolveCollisionsWithTerrain(delta, collisionRecs, this);
         stateTime += delta;
         batch.draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());
+    }
+
+    public void attack(Vector2 direction) {
+        if (stateTime - lastAttack > timeBetweenAttacks) {
+            manager.addObject(new Projectile(position.x, position.y, 12, 12, direction, manager, batch));
+            lastAttack = stateTime;
+        }
     }
 
     public TextureRegion getCurrentFrame() {

@@ -4,8 +4,8 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.entities.abstracted.MovableObject;
-import com.project2k15.logic.quadtree.PropertyRectangle;
 
 /**
  * Created by FruitAddict on 2014-11-17.
@@ -57,7 +57,7 @@ public class CollisionResolver {
         return result;
     }
 
-    public static void resolveCollisionsWithTerrain(float delta, Array<PropertyRectangle> checkRectangles, MovableObject obj) {
+    public static boolean resolveCollisionsWithTerrain(float delta, Array<PropertyRectangle> checkRectangles, MovableObject obj) {
         /**
          * Terrain Collision resolver method, takes delta time (time between frames) and array of rectangles to check
          * collisions with. Scales the velocity with delta time, copies the position of the player, moves the player
@@ -70,6 +70,14 @@ public class CollisionResolver {
         obj.getPosition().add(newVeloc);
         obj.getCollisionRectangles().get(0).setPosition(obj.getPosition().x, obj.getPosition().y);
         boolean[] collisions = getCollisionTable(checkRectangles, obj, PropertyRectangle.TERRAIN);
+
+        boolean returnValue = false;
+        for (int i = 0; i < collisions.length; i++) {
+            if (collisions[i]) {
+                returnValue = true;
+            }
+        }
+
         if (collisions[0] && collisions[1]) {
             //right-top
             if (obj.getVelocity().x > 0 && obj.getVelocity().y < 0) {
@@ -147,5 +155,18 @@ public class CollisionResolver {
             }
         }
         obj.getVelocity().scl(obj.getClamping());
+
+        return returnValue;
+    }
+
+    public static boolean resolveCollisionsWithTerrainSimple(Array<PropertyRectangle> checkRectangles, MovableObject obj) {
+        for (PropertyRectangle rec : checkRectangles) {
+            if (rec.getType() == PropertyRectangle.TERRAIN) {
+                if (obj.getCollisionRectangles().get(0).overlaps(rec)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

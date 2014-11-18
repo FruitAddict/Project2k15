@@ -1,11 +1,11 @@
-package com.project2k15.logic;
+package com.project2k15.test.testmobs;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.project2k15.logic.ObjectManager;
 import com.project2k15.logic.entities.Player;
 
 ;
@@ -26,6 +26,7 @@ public class TestInputProcessor implements InputProcessor {
     Vector2 point2;
     float lengthBetweenPointers;
     boolean pointer1, pointer2 = false;
+    ObjectManager objectManager;
 
     public TestInputProcessor(OrthographicCamera cam, Player player, float mapWidth, float mapHeight) {
         camera = cam;
@@ -190,15 +191,15 @@ public class TestInputProcessor implements InputProcessor {
         if (zDown && camera.zoom < 1.2) {
             camera.zoom += 0.03;
         }
-
-        if (pointer1 && pointer2) {
+        /**
+         if (pointer1 && pointer2 ) {
             float newScale = camera.zoom * (float) Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2)) / lengthBetweenPointers;
             if (newScale > 0.1 && newScale < 1.2 && lengthBetweenPointers != 0) {
                 camera.zoom = newScale;
                 lengthBetweenPointers = (float) Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2));
 
             }
-        }
+         }*/
 
         camera.position.set(player.getPosition().x + player.getWidth() / 2, player.getPosition().y + player.getHeight() / 2, camera.zoom);
 
@@ -246,43 +247,12 @@ public class TestInputProcessor implements InputProcessor {
             if (player.getClamping() > 0)
                 player.setClamping(player.getClamping() - 0.005f);
         }
-        if (touchDownPosition.x != -1 && touchDownPosition.y != -1) {
-            float angle = (float) (MathUtils.atan2(currentPosition.y - touchDownPosition.y, currentPosition.x - touchDownPosition.x) * 180 / Math.PI);
-            float length = (float) Math.sqrt(Math.pow(currentPosition.x - touchDownPosition.x, 2) + Math.pow(currentPosition.y - touchDownPosition.y, 2));
-            if (length > 25) {
 
-                if (angle < 22.5 && angle >= -22.5) {
-                    player.idle = false;
-                    player.moveRight();
-                } else if (angle < -22.5 && angle >= -67.5) {
-                    player.idle = false;
-                    player.moveRight();
-                    player.moveUp();
-                } else if (angle < -67.5 && angle >= -112.5) {
-                    player.idle = false;
-                    player.moveUp();
-                } else if (angle < -112.5 && angle >= -157.5) {
-                    player.idle = false;
-                    player.moveLeft();
-                    player.moveUp();
-                } else if (angle < -157.5 || angle >= 157.5) {
-                    player.idle = false;
-                    player.moveLeft();
-                } else if (angle < 157.5 && angle >= 112.5) {
-                    player.idle = false;
-                    player.moveLeft();
-                    player.moveDown();
-                } else if (angle < 112.5 && angle >= 67.5) {
-                    player.idle = false;
-                    player.moveDown();
-                } else if (angle < 67.5 && angle >= 22.5) {
-                    player.idle = false;
-                    player.moveDown();
-                    player.moveRight();
-                }
-            } else {
-                player.idle = true;
-            }
+        if (touchDownPosition.x != -1 && touchDownPosition.y != -1) {
+            Vector2 velocityNormalized = new Vector2();
+            velocityNormalized.set(currentPosition.x - touchDownPosition.x, currentPosition.y - touchDownPosition.y);
+            velocityNormalized.nor();
+            player.attack(velocityNormalized.cpy());
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.project2k15.logic.quadtree;
+package com.project2k15.logic.collision;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

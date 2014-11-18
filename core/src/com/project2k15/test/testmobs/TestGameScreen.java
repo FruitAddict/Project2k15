@@ -1,5 +1,6 @@
-package com.project2k15.rendering.screens;
+package com.project2k15.test.testmobs;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,13 +13,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import com.project2k15.logic.ObjectManager;
-import com.project2k15.logic.TestInputProcessor;
+import com.project2k15.logic.WorldInputProcessor;
 import com.project2k15.logic.entities.Player;
-import com.project2k15.logic.entities.testmobs.MindlessBlob;
-import com.project2k15.logic.entities.testmobs.MindlessWalker;
-import com.project2k15.logic.entities.testmobs.MovableBox;
 import com.project2k15.rendering.Assets;
 
 import java.util.ArrayList;
@@ -30,7 +27,7 @@ public class TestGameScreen implements Screen {
     Game game;
     SpriteBatch batch;
     OrthographicCamera cam;
-    TestInputProcessor testProc;
+    WorldInputProcessor proc;
     TiledMap map;
     TiledMapRenderer renderer;
     Player player;
@@ -53,6 +50,8 @@ public class TestGameScreen implements Screen {
 
     float mapWidth, mapHeight;
 
+    TestInputProcessor proc2;
+
     public TestGameScreen(Game game){
         bitMapFont = new BitmapFont();
         this.game = game;
@@ -68,7 +67,6 @@ public class TestGameScreen implements Screen {
         System.out.println(mapWidth + " " + mapHeight);
         renderer = new OrthogonalTiledMapRenderer(map, batch);
         renderer.setView(cam);
-        player = new Player(124, 250, batch);
         blob = new MindlessBlob(200, 250, 25, 25, 20, player);
 
 
@@ -78,15 +76,20 @@ public class TestGameScreen implements Screen {
         borderRecs[2] = new Rectangle(mapWidth, 0, 10, mapHeight);
         borderRecs[3] = new Rectangle(0, -10, mapWidth, 10);
 
-        testProc = new TestInputProcessor(cam, player, mapWidth, mapHeight);
         cam.zoom = 0.5f;
-        Gdx.input.setInputProcessor(testProc);
         manager = new ObjectManager(map.getLayers().get("collisionObjects"), (int) mapWidth, (int) mapHeight);
-
+        player = new Player(124, 250, batch, manager);
         blobList = new ArrayList<MindlessBlob>();
         manager.addObject(player);
 
         boxTexture = Assets.manager.get("testBox.png");
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            proc = new WorldInputProcessor(cam, player, mapWidth, mapHeight);
+            Gdx.input.setInputProcessor(proc);
+        } else {
+            proc2 = new TestInputProcessor(cam, player, mapWidth, mapHeight);
+            Gdx.input.setInputProcessor(proc2);
+        }
 
         /**
          Random rng = new Random();
@@ -102,7 +105,11 @@ public class TestGameScreen implements Screen {
     }
     @Override
     public void render(float delta) {
-        testProc.translateCamera();
+        if (proc != null) {
+            proc.update();
+        } else {
+            proc2.translateCamera();
+        }
         cam.update();
         Gdx.gl.glClearColor(0, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -115,22 +122,9 @@ public class TestGameScreen implements Screen {
         }
         manager.update(delta);
         bitMapFont.draw(batch, Float.toString(Gdx.graphics.getFramesPerSecond()), player.getPosition().x, player.getPosition().y - 20);
+        bitMapFont.draw(batch, Integer.toString(manager.getNumberOfObjects()), player.getPosition().x, player.getPosition().y - 40);
         batch.end();
         stateTime += delta;
-
-        if (Gdx.input.isTouched(1) && stateTime > 0.1 && spawnMode) {
-            Vector3 unprojected = cam.unproject(new Vector3(Gdx.input.getX(1), Gdx.input.getY(1), 0));
-            MindlessWalker walker = MindlessWalker.getRandomWalker(unprojected.x, unprojected.y, batch);
-            manager.addObject(walker);
-            stateTime = 0;
-        }
-        if (Gdx.input.isTouched(0)) {
-            if (Gdx.input.getX() < 50 && Gdx.input.getY() < 50) {
-                spawnMode = !spawnMode;
-            }
-        }
-
-
 
     }
 

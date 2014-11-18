@@ -29,6 +29,7 @@ public class Assets {
         manager.load("testBox.png", Texture.class);
         manager.load("redheady.png", Texture.class);
         manager.load("playersheet.png", Texture.class);
+        manager.load("projectile.png", Texture.class);
         manager.finishLoading();
     }
 

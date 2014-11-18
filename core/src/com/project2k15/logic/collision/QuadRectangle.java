@@ -1,4 +1,4 @@
-package com.project2k15.logic.quadtree;
+package com.project2k15.logic.collision;
 
 /**
  * Created by FruitAddict on 2014-11-16.

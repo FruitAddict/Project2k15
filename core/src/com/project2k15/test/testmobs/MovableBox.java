@@ -1,9 +1,9 @@
-package com.project2k15.logic.entities.testmobs;
+package com.project2k15.test.testmobs;
 
 import com.badlogic.gdx.utils.Array;
+import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.entities.Player;
 import com.project2k15.logic.entities.abstracted.MovableObject;
-import com.project2k15.logic.quadtree.PropertyRectangle;
 
 /**
  * Created by FruitAddict on 2014-11-13.
@@ -26,7 +26,6 @@ public class MovableBox extends MovableObject {
 
     @Override
     public void update(float delta, Array<PropertyRectangle> test) {
-        super.update(delta, test);
 
         if (player.getCollisionRectangles().get(0).overlaps(getCollisionRectangles().get(0))) {
             System.out.println("Overlapping");

@@ -1,12 +1,12 @@
-package com.project2k15.logic.entities.testmobs;
+package com.project2k15.test.testmobs;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.entities.Player;
 import com.project2k15.logic.entities.abstracted.Character;
-import com.project2k15.logic.quadtree.PropertyRectangle;
 import com.project2k15.rendering.Assets;
 
 import java.util.Random;
@@ -67,7 +67,6 @@ public class MindlessBlob extends Character {
 
     @Override
     public void update(float delta, Array<PropertyRectangle> checkRectangles) {
-        super.update(delta, checkRectangles);
         stateTime += delta;
         float distance = (float) (Math.sqrt(Math.pow(position.x - player.getPosition().x, 2) + Math.pow(position.y - player.getPosition().y, 2)));
         if (distance > 100) {

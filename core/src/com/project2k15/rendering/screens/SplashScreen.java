@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.project2k15.rendering.Assets;
+import com.project2k15.test.testmobs.TestGameScreen;
 
 /**
  * Splash screen, appears for 5 seconds when the program is started.
@@ -56,7 +57,6 @@ public class SplashScreen implements Screen {
 
     @Override
     public void show() {
-
     }
 
     @Override

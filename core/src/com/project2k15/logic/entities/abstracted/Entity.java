@@ -2,7 +2,7 @@ package com.project2k15.logic.entities.abstracted;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.project2k15.logic.quadtree.PropertyRectangle;
+import com.project2k15.logic.collision.PropertyRectangle;
 
 /**
  * Abstract entity class from which all in-game objects will inherit from. Contains position vector and

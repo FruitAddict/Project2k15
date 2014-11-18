@@ -18,7 +18,7 @@ public class MovableBox extends MovableObject {
         position.y = y;
         width = 32;
         height = 32;
-        collisionRectangles.add(new PropertyRectangle(position.x, position.y, width, height, PropertyRectangle.MOVING_OBJECT));
+        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height, PropertyRectangle.MOVING_OBJECT);
         maxVelocity = player.getMaxVelocity();
         speed = player.getSpeed();
         clamping = player.getClamping();
@@ -27,7 +27,7 @@ public class MovableBox extends MovableObject {
     @Override
     public void update(float delta, Array<PropertyRectangle> test) {
 
-        if (player.getCollisionRectangles().get(0).overlaps(getCollisionRectangles().get(0))) {
+        if (player.getCollisionRectangle().overlaps(getCollisionRectangle())) {
             System.out.println("Overlapping");
 
             if (player.facingNorth) {

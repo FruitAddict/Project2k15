@@ -17,47 +17,41 @@ public class CollisionResolver {
          * This method checks for physical collisions
          * between this entity's collision rectangles and those passed as arguement.
          * returns a boolean table in the form [right,top,left,bottom], each indicating
-         * if collision on this side happened.
+         * if collision on this side happened. Used only for terrain collisions atm
          *
          */
         boolean[] result = new boolean[4];
         for (int i = 0; i < 4; i++) {
             result[i] = false;
         }
-
-        if (obj.getCollisionRectangles().size > 0) {
-            for (PropertyRectangle r : obj.getCollisionRectangles()) {
-                for (PropertyRectangle cR : collisionRects) {
-                    if (cR.getType() == type) {
-                        Rectangle intersection = new Rectangle();
-                        Intersector.intersectRectangles(r, cR, intersection);
-                        if (intersection.width > 0 || intersection.height > 0) {
-                            if (intersection.x > r.x) {
-                                //Intersects with right side
-                                result[0] = true;
-                            }
-                            if (intersection.y > r.y) {
-                                //Intersects with top side
-                                result[1] = true;
-                            }
-                            if (intersection.x + intersection.width < r.x + r.width) {
-                                //Intersects with left side
-                                result[2] = true;
-                            }
-                            if (intersection.y + intersection.height < r.y + r.height) {
-                                //Intersects with bottom side
-                                result[3] = true;
-                            }
-                        }
+        for (PropertyRectangle cR : collisionRects) {
+            if (cR.getType() == type) {
+                Rectangle intersection = new Rectangle();
+                Intersector.intersectRectangles(obj.getCollisionRectangle(), cR, intersection);
+                if (intersection.width > 0 || intersection.height > 0) {
+                    if (intersection.x > obj.getCollisionRectangle().x) {
+                        //Intersects with right side
+                        result[0] = true;
                     }
-
+                    if (intersection.y > obj.getCollisionRectangle().y) {
+                        //Intersects with top side
+                        result[1] = true;
+                    }
+                    if (intersection.x + intersection.width < obj.getCollisionRectangle().x + obj.getCollisionRectangle().width) {
+                        //Intersects with left side
+                        result[2] = true;
+                    }
+                    if (intersection.y + intersection.height < obj.getCollisionRectangle().y + obj.getCollisionRectangle().height) {
+                        //Intersects with bottom side
+                        result[3] = true;
+                    }
                 }
             }
         }
         return result;
     }
 
-    public static boolean resolveCollisionsWithTerrain(float delta, Array<PropertyRectangle> checkRectangles, MovableObject obj) {
+    public static boolean resolveCollisions(float delta, Array<PropertyRectangle> checkRectangles, MovableObject obj) {
         /**
          * Terrain Collision resolver method, takes delta time (time between frames) and array of rectangles to check
          * collisions with. Scales the velocity with delta time, copies the position of the player, moves the player
@@ -68,7 +62,7 @@ public class CollisionResolver {
         Vector2 newVeloc = obj.getVelocity().cpy().scl(delta);
         Vector2 oldPosition = obj.getPosition().cpy();
         obj.getPosition().add(newVeloc);
-        obj.getCollisionRectangles().get(0).setPosition(obj.getPosition().x, obj.getPosition().y);
+        obj.getCollisionRectangle().setPosition(obj.getPosition().x, obj.getPosition().y);
         boolean[] collisions = getCollisionTable(checkRectangles, obj, PropertyRectangle.TERRAIN);
 
         boolean returnValue = false;
@@ -159,14 +153,16 @@ public class CollisionResolver {
         return returnValue;
     }
 
-    public static boolean resolveCollisionsWithTerrainSimple(Array<PropertyRectangle> checkRectangles, MovableObject obj) {
+    public static PropertyRectangle resolveCollisionsProjectile(Array<PropertyRectangle> checkRectangles, MovableObject obj) {
+        /**
+         * Simple collision checking, returns rectangle it collided with
+         */
         for (PropertyRectangle rec : checkRectangles) {
-            if (rec.getType() == PropertyRectangle.TERRAIN) {
-                if (obj.getCollisionRectangles().get(0).overlaps(rec)) {
-                    return true;
-                }
+            if (rec.getType() != PropertyRectangle.PROJECTILE && obj.getCollisionRectangle().overlaps(rec)) {
+                System.out.println(rec.getType());
+                return rec;
             }
         }
-        return false;
+        return null;
     }
 }

@@ -30,7 +30,7 @@ public class Player extends Character {
     TextureRegion[] westRegion = new TextureRegion[3];
     float stateTime;
     float lastAttack = 0;
-    float timeBetweenAttacks = 0.01f;
+    float timeBetweenAttacks = 0.1f;
     SpriteBatch batch;
     ObjectManager manager;
 
@@ -39,8 +39,8 @@ public class Player extends Character {
         width = 24;
         height = 32;
         position.set(positionX, positionY);
-        colRect = new PropertyRectangle(positionX, positionY, 24, 16, PropertyRectangle.PLAYER);
-        collisionRectangles.add(colRect);
+        colRect = new PropertyRectangle(positionX, positionY, 24, 16, this, PropertyRectangle.PLAYER);
+        collisionRectangle = colRect;
         speed = 20;
         maxVelocity = 75;
         clamping = 0.88f;
@@ -71,7 +71,7 @@ public class Player extends Character {
 
     @Override
     public void update(float delta, Array<PropertyRectangle> collisionRecs) {
-        CollisionResolver.resolveCollisionsWithTerrain(delta, collisionRecs, this);
+        CollisionResolver.resolveCollisions(delta, collisionRecs, this);
         stateTime += delta;
         batch.draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());
     }

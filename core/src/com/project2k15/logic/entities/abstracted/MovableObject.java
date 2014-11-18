@@ -23,8 +23,6 @@ public abstract class MovableObject extends Entity {
     protected float maxVelocity = 200;
     protected float speed = 50;
 
-    public abstract void update(float delta, Array<PropertyRectangle> checkRectangles);
-
     /**
      * Set of methods to move this entity around. When invoked, checks if the velocity is below the max velocity
      * and then adds the speed variable to the current velocity.

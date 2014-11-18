@@ -81,6 +81,8 @@ public class TestGameScreen implements Screen {
         player = new Player(124, 250, batch, manager);
         blobList = new ArrayList<MindlessBlob>();
         manager.addObject(player);
+        manager.addObject(new WalkerSpawner(200, 200, manager, batch));
+        manager.addObject(new WalkerSpawner(400, 190, manager, batch));
 
         boxTexture = Assets.manager.get("testBox.png");
         if (Gdx.app.getType() == Application.ApplicationType.Android) {

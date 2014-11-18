@@ -2,9 +2,12 @@ package com.project2k15.logic.entities.abstracted;
 
 public abstract class Character extends MovableObject {
     /**
-     * Abstract character class, contains facing booleans for use with drawing
+     * Abstract character class, contains facing booleans for use with drawing,
+     * and health points. ( Please notice the oxford coma here).
      */
     public boolean facingLeft, facingRight, facingNorth, facingSouth, idle;
+
+    protected float healthPoints;
 
     @Override
     public void moveRight() {
@@ -37,5 +40,13 @@ public abstract class Character extends MovableObject {
         facingLeft = false;
         facingNorth = false;
         facingSouth = true;
+    }
+
+    public float getHealthPoints() {
+        return healthPoints;
+    }
+
+    public void setHealthPoints(float healthPoints) {
+        this.healthPoints = healthPoints;
     }
 }

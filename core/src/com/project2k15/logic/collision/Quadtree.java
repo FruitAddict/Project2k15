@@ -108,6 +108,19 @@ public class Quadtree {
         }
     }
 
+    public Array<PropertyRectangle> retrieveByType(Array<PropertyRectangle> returnObjects, PropertyRectangle pRect, int type) {
+        int index = getIndex(pRect);
+        if (index != -1 && nodes[0] != null) {
+            nodes[index].retrieveByType(returnObjects, pRect, type);
+        }
+        for (PropertyRectangle obj : objects) {
+            if (obj.getType() == type) {
+                returnObjects.add(obj);
+            }
+        }
+        return returnObjects;
+    }
+
     public Array<PropertyRectangle> retrieve(Array<PropertyRectangle> returnObjects, PropertyRectangle pRect) {
         int index = getIndex(pRect);
         if (index != -1 && nodes[0] != null) {

@@ -41,13 +41,13 @@ public class ObjectManager {
         }
 
         for (int i = 0; i < objectList.size; i++) {
-            quadtree.insert(objectList.get(i).getCollisionRectangles().get(0));
+            quadtree.insert(objectList.get(i).getCollisionRectangle());
         }
 
         if (objectList.size > 0) {
             for (MovableObject o : objectList) {
                 passRectangleList.clear();
-                o.update(delta, quadtree.retrieve(passRectangleList, o.getCollisionRectangles().get(0)));
+                o.update(delta, quadtree.retrieve(passRectangleList, o.getCollisionRectangle()));
             }
         }
     }
@@ -56,8 +56,12 @@ public class ObjectManager {
         return quadtree;
     }
 
-    public void addObject(MovableObject obj) {
-        objectList.add(obj);
+    public boolean addObject(MovableObject obj) {
+        if (objectList.size < 200) {
+            objectList.add(obj);
+            return true;
+        }
+        return false;
     }
 
     public void removeObject(MovableObject obj) {

@@ -11,7 +11,9 @@ import com.project2k15.logic.collision.PropertyRectangle;
  */
 public abstract class Entity {
     protected Vector2 position = new Vector2();
-    protected Array<PropertyRectangle> collisionRectangles = new Array<PropertyRectangle>();
+    protected PropertyRectangle collisionRectangle = new PropertyRectangle(0, 0, 0, 0, 0);
+
+    public abstract void update(float delta, Array<PropertyRectangle> checkRectangles);
 
     /**
      * Setters and getters
@@ -24,11 +26,11 @@ public abstract class Entity {
         return position;
     }
 
-    public void setCollisionRectangles(Array<PropertyRectangle> recs) {
-        collisionRectangles = recs;
+    public void setCollisionRectangle(PropertyRectangle rec) {
+        collisionRectangle = rec;
     }
 
-    public Array<PropertyRectangle> getCollisionRectangles() {
-        return collisionRectangles;
+    public PropertyRectangle getCollisionRectangle() {
+        return collisionRectangle;
     }
 }

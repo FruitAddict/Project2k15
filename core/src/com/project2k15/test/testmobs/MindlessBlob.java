@@ -31,7 +31,7 @@ public class MindlessBlob extends Character {
         this.width = width;
         this.height = height;
         this.player = player;
-        collisionRectangles.add(new PropertyRectangle(position.x, position.y, width, height, PropertyRectangle.MOVING_OBJECT));
+        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height, PropertyRectangle.MOVING_OBJECT);
         this.speed = speed;
         maxVelocity = 100;
         setClamping(0.82f);

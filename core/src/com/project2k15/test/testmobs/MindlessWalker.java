@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.project2k15.logic.ObjectManager;
 import com.project2k15.logic.collision.PropertyRectangle;
+import com.project2k15.logic.entities.CollisionResolver;
 import com.project2k15.logic.entities.Player;
 import com.project2k15.logic.entities.abstracted.Character;
 import com.project2k15.rendering.Assets;
@@ -30,18 +32,20 @@ public class MindlessWalker extends Character {
     Animation leftAnimation;
     float stateTime;
     SpriteBatch batch;
+    ObjectManager manager;
 
 
-    public MindlessWalker(float positionX, float positionY, float width, float height, float speed, Player player, SpriteBatch batch) {
+    public MindlessWalker(float positionX, float positionY, float width, float height, float speed, Player player, SpriteBatch batch, ObjectManager manager) {
         position.set(positionX, positionY);
         this.width = width;
         this.height = height;
         this.player = player;
-        collisionRectangles.add(new PropertyRectangle(position.x, position.y, width, height, PropertyRectangle.MOVING_OBJECT));
+        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height, this, PropertyRectangle.CHARACTER);
         this.speed = speed;
         maxVelocity = 100;
-
+        healthPoints = 5;
         this.batch = batch;
+        this.manager = manager;
 
         Texture testM = Assets.manager.get("pet.png");
         TextureRegion[][] tmpM = TextureRegion.split(testM, testM.getWidth() / 8, testM.getHeight() / 4);
@@ -72,6 +76,10 @@ public class MindlessWalker extends Character {
 
     @Override
     public void update(float delta, Array<PropertyRectangle> checkRectangles) {
+        if (healthPoints < 1) {
+            manager.removeObject(this);
+        }
+        CollisionResolver.resolveCollisions(delta, checkRectangles, this);
         if (timeSpentDoingShit == 0) {
             random = rng.nextInt(4);
             stateTime += delta;
@@ -123,8 +131,8 @@ public class MindlessWalker extends Character {
         batch.draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());
     }
 
-    public static MindlessWalker getRandomWalker(float x, float y, SpriteBatch batch) {
-        return new MindlessWalker(x, y, 25, 25, 25, player, batch);
+    public static MindlessWalker getRandomWalker(float x, float y, SpriteBatch batch, ObjectManager manager) {
+        return new MindlessWalker(x, y, 25, 25, 25, player, batch, manager);
     }
 
 

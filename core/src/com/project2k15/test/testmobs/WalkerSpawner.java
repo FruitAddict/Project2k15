@@ -31,7 +31,7 @@ public class WalkerSpawner extends MovableObject {
     @Override
     public void update(float delta, Array<PropertyRectangle> checkRectangles) {
         stateTime += delta;
-        if (stateTime > 5) {
+        if (stateTime > 1) {
             manager.addObject(MindlessWalker.getRandomWalker(position.x + random.nextInt(50), position.y + random.nextInt(50), batch, manager));
             stateTime = 0;
         }

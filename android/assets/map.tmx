@@ -19,20 +19,17 @@
   </data>
  </layer>
  <objectgroup name="collisionObjects">
-  <object x="863.958" y="2.625" width="730" height="29.3333"/>
-  <object x="864.042" y="864.02" width="730" height="29.3333"/>
-  <object x="1568.05" y="31.9459" width="30.2917" height="832.583"/>
-  <object x="383.969" y="320.061" width="160.005" height="255.963"/>
-  <object x="831.894" y="192.031" width="383.924" height="159.697"/>
-  <object x="1120.03" y="640.031" width="128.076" height="128.075"/>
-  <object x="3.29165" y="-0.0623333" width="28.6667" height="894.666"/>
-  <object x="28.7906" y="864.238" width="483.229" height="32.6247"/>
-  <object x="29.6665" y="1.33348" width="515.334" height="30.6664"/>
-  <object x="534" y="-7" width="359" height="10"/>
-  <object x="503.5" y="880" width="361.438" height="10.75"/>
-  <object x="832.25" y="352.5" width="31.5" height="159.25"/>
-  <object x="841.197" y="480.159" width="214.295" height="32.3106"/>
-  <object x="1120.16" y="480.045" width="95.75" height="32"/>
-  <object x="1184.14" y="351.682" width="31.5758" height="160.023"/>
+  <object x="0" y="0" width="1600" height="32"/>
+  <object x="0" y="0" width="32" height="896"/>
+  <object x="1568" y="0" width="32" height="896"/>
+  <object x="0" y="864" width="1600" height="32"/>
+  <object x="384" y="320" width="160" height = "256"/>
+  <object x="832" y="192" width="384" height = "160"/>
+  <object x="832" y="320" width="32" height="192"/>
+  <object x="1184" y="320" width="32" height="192"/>
+  <object x="832" y="480" width="224" height="32"/>
+  <object x="1120" y="480" width="96" height="32"/>
+  <object x="1120" y="640" width="128" height="128"/>
+  
  </objectgroup>
 </map>

@@ -7,27 +7,36 @@ import com.badlogic.gdx.utils.Array;
 import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.collision.QuadRectangle;
 import com.project2k15.logic.collision.Quadtree;
-import com.project2k15.logic.entities.abstracted.MovableObject;
+import com.project2k15.logic.entities.Player;
+import com.project2k15.logic.entities.abstracted.Entity;
+
+import java.util.Iterator;
 
 /**
  * Object Manager
  */
 public class ObjectManager {
 
-    private Array<MovableObject> objectList = new Array<MovableObject>();
+    private Array<Entity> objectList = new Array<Entity>();
     private Array<PropertyRectangle> passRectangleList;
     private MapObjects collisionObjects;
     private Quadtree quadtree;
+    private Player player;
 
     public ObjectManager(MapLayer t, int mapWidth, int mapHeight) {
         collisionObjects = t.getObjects();
         quadtree = new Quadtree(0, new QuadRectangle(0, 0, mapWidth, mapHeight));
         passRectangleList = new Array<PropertyRectangle>();
+        this.player = player;
     }
 
     public void setCollisionObjects(MapLayer til) {
         collisionObjects = null;
         collisionObjects = til.getObjects();
+    }
+
+    public void setPlayer(Player p) {
+        player = p;
     }
 
 
@@ -45,9 +54,20 @@ public class ObjectManager {
         }
 
         if (objectList.size > 0) {
-            for (MovableObject o : objectList) {
+            for (Entity o : objectList) {
                 passRectangleList.clear();
                 o.update(delta, quadtree.retrieve(passRectangleList, o.getCollisionRectangle()));
+            }
+        }
+    }
+
+    public void clear() {
+        Iterator<Entity> i = objectList.iterator();
+        while (i.hasNext()) {
+            System.out.println("Clearing...");
+            Entity g = i.next();
+            if (g.getCollisionRectangle().getType() == PropertyRectangle.CHARACTER || g.getCollisionRectangle().getType() == PropertyRectangle.PROJECTILE) {
+                removeObject(g);
             }
         }
     }
@@ -56,15 +76,15 @@ public class ObjectManager {
         return quadtree;
     }
 
-    public boolean addObject(MovableObject obj) {
-        if (objectList.size < 200) {
+    public boolean addObject(Entity obj) {
+        if (objectList.size < 400) {
             objectList.add(obj);
             return true;
         }
         return false;
     }
 
-    public void removeObject(MovableObject obj) {
+    public void removeObject(Entity obj) {
         objectList.removeValue(obj, true);
     }
 

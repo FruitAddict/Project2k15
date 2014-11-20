@@ -40,7 +40,7 @@ public class MindlessWalker extends Character {
         this.width = width;
         this.height = height;
         this.player = player;
-        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height, this, PropertyRectangle.CHARACTER);
+        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height / 2, this, PropertyRectangle.CHARACTER);
         this.speed = speed;
         maxVelocity = 100;
         healthPoints = 5;
@@ -133,6 +133,13 @@ public class MindlessWalker extends Character {
 
     public static MindlessWalker getRandomWalker(float x, float y, SpriteBatch batch, ObjectManager manager) {
         return new MindlessWalker(x, y, 25, 25, 25, player, batch, manager);
+    }
+
+    public void setSize(float width, float height) {
+        this.width = width;
+        this.height = height;
+        getCollisionRectangle().setSize(width, height / 2);
+
     }
 
 

@@ -18,8 +18,7 @@ import com.project2k15.test.testmobs.Projectile;
 public class Player extends Character {
 
     private PropertyRectangle colRect;
-    public boolean holding = false;
-    public boolean holdingSomething = false;
+    public boolean piercingShotsDebug = false;
     Animation animationNorth;
     Animation animationSouth;
     Animation animationWest;
@@ -78,7 +77,7 @@ public class Player extends Character {
 
     public void attack(Vector2 direction) {
         if (stateTime - lastAttack > timeBetweenAttacks) {
-            manager.addObject(new Projectile(position.x, position.y, 12, 12, direction, manager, batch));
+            manager.addObject(new Projectile(position.x, position.y, 12, 12, direction, manager, batch, piercingShotsDebug));
             lastAttack = stateTime;
         }
     }

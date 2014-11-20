@@ -26,9 +26,10 @@ public class Projectile extends MovableObject {
     Vector2 direction;
     boolean dead = false;
     float timeDead = 0;
+    boolean pierce = false;
 
-
-    public Projectile(float originX, float originY, int width, int height, Vector2 direction, ObjectManager objectManager, SpriteBatch batch) {
+    public Projectile(float originX, float originY, int width, int height, Vector2 direction, ObjectManager objectManager, SpriteBatch batch, boolean piercing) {
+        pierce = piercing;
         this.width = width;
         this.direction = direction;
         this.height = height;
@@ -78,9 +79,11 @@ public class Projectile extends MovableObject {
                     Character ch = (Character) rec.getOwner();
                     ch.setHealthPoints(ch.getHealthPoints() - 1);
                     ch.getVelocity().add(this.velocity.x * 50, this.velocity.y * 50);
-                    dead = true;
-                    width *= 1.5;
-                    height *= 1.5;
+                    if (!pierce) {
+                        dead = true;
+                    }
+                    width *= 1.05;
+                    height *= 1.05;
 
                 }
             } else {

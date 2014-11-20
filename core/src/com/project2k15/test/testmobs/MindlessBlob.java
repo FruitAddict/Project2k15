@@ -61,7 +61,7 @@ public class MindlessBlob extends Character {
         rightAnimation = new Animation(0.1f, mobWalkRight);
         leftAnimation = new Animation(0.1f, mobWalkLeft);
 
-        facingSouth = true;
+        facingDown = true;
 
     }
 
@@ -89,9 +89,9 @@ public class MindlessBlob extends Character {
     }
 
     public TextureRegion getCurrentFrame() {
-        if (facingNorth) {
+        if (facingUp) {
             return northAnimation.getKeyFrame(stateTime, true);
-        } else if (facingSouth) {
+        } else if (facingDown) {
             return southAnimation.getKeyFrame(stateTime, true);
         } else if (facingRight) {
             return rightAnimation.getKeyFrame(stateTime, true);

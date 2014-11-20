@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.project2k15.logic.ObjectManager;
+import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.entities.CollisionResolver;
 import com.project2k15.logic.entities.Player;
@@ -71,7 +71,7 @@ public class MindlessWalker extends Character {
         rightAnimation = new Animation(0.1f, mobWalkRight);
         leftAnimation = new Animation(0.1f, mobWalkLeft);
 
-        facingSouth = true;
+        facingDown = true;
     }
 
     @Override
@@ -144,9 +144,9 @@ public class MindlessWalker extends Character {
 
 
     public TextureRegion getCurrentFrame() {
-        if (facingNorth) {
+        if (facingUp) {
             return northAnimation.getKeyFrame(stateTime, true);
-        } else if (facingSouth) {
+        } else if (facingDown) {
             return southAnimation.getKeyFrame(stateTime, true);
         } else if (facingRight) {
             return rightAnimation.getKeyFrame(stateTime, true);

@@ -1,4 +1,4 @@
-package com.project2k15.logic;
+package com.project2k15.logic.input;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -123,6 +123,11 @@ public class WorldInputProcessor implements InputProcessor {
         return false;
     }
 
+    public void setMapSize(float width, float height){
+        mapWidth=width;
+        mapHeight=height;
+    }
+
     public void update() {
         /**
          * Camera translating algorithm. Initially moves the camera to the player position (centered), then checks whether the current camera
@@ -187,9 +192,13 @@ public class WorldInputProcessor implements InputProcessor {
                     player.moveDown();
                     player.moveRight();
                 }
-            } else {
-                player.idle = true;
+             } else {
+                player.setFacings(false);
+                player.idle=true;
             }
+        } else {
+            player.setFacings(false);
+            player.idle=true;
         }
 
         /**

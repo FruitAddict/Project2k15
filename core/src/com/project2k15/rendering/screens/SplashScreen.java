@@ -46,7 +46,7 @@ public class SplashScreen implements Screen {
             /**
              * REDIRECT TO TEST GAME SCREEN.
              */
-            game.setScreen(new TestGameScreen(game));
+            game.setScreen(new GameScreen(game));
         }
     }
 

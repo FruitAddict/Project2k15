@@ -2,7 +2,7 @@ package com.project2k15.test.testmobs;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
-import com.project2k15.logic.ObjectManager;
+import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.entities.abstracted.MovableObject;
 
@@ -31,7 +31,7 @@ public class WalkerSpawner extends MovableObject {
     @Override
     public void update(float delta, Array<PropertyRectangle> checkRectangles) {
         stateTime += delta;
-        if (stateTime > 1) {
+        if (stateTime > 5) {
             manager.addObject(MindlessWalker.getRandomWalker(position.x + random.nextInt(50), position.y + random.nextInt(50), batch, manager));
             stateTime = 0;
         }

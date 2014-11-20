@@ -9,14 +9,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.project2k15.logic.ObjectManager;
-import com.project2k15.logic.WorldInputProcessor;
+import com.project2k15.logic.managers.ObjectManager;
+import com.project2k15.logic.input.WorldInputProcessor;
 import com.project2k15.logic.entities.Player;
 import com.project2k15.rendering.Assets;
 
@@ -62,8 +59,8 @@ public class TestGameScreen implements Screen {
         this.game = game;
         batch = new SpriteBatch();
         Assets.loadTestMap();
-        cam = new OrthographicCamera(30, 30 * (Gdx.graphics.getWidth() / Gdx.graphics.getHeight()));
-        cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        cam = new OrthographicCamera();
+        cam.setToOrtho(false, 300, 300 * (Gdx.graphics.getWidth() / Gdx.graphics.getHeight()));
         map = Assets.manager.get("map.tmx");
         mapWidth = Float.parseFloat(map.getProperties().get("width").toString()) * 32;
         mapHeight = Float.parseFloat(map.getProperties().get("height").toString()) * 32;
@@ -73,7 +70,6 @@ public class TestGameScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map, batch);
         renderer.setView(cam);
 
-        cam.zoom = 0.5f;
         manager = new ObjectManager(map.getLayers().get("collisionObjects"), (int) mapWidth, (int) mapHeight);
         player = new Player(124, 250, batch, manager);
         manager.setPlayer(player);
@@ -115,6 +111,12 @@ public class TestGameScreen implements Screen {
         skin.add("default", labelStyle);
         skin.add("nofancy", textButtonStyle1);
         skin.add("default", textButtonStyle);
+
+        Slider.SliderStyle sliderStyle = new Slider.SliderStyle();
+        sliderStyle.background = skin.newDrawable("white",Color.WHITE);
+        sliderStyle.knob = skin.newDrawable("white",Color.RED);
+        skin.add("default-horizontal",sliderStyle);
+
         // Create a table that fills the screen. Everything else will go inside this table.
         VerticalGroup table = new VerticalGroup();
         table.setFillParent(true);
@@ -123,6 +125,8 @@ public class TestGameScreen implements Screen {
         final TextButton button = new TextButton("Clear Moving Objects", textButtonStyle1);
         final TextButton button2 = new TextButton("Piercing projectiles", skin);
         final TextButton button3 = new TextButton("Spawn boss", textButtonStyle1);
+        final Slider slider = new Slider(0,1,0.05f,false,skin);
+        slider.setSize(100,30);
 
         firstLabel = new Label("", skin);
         secondLabel = new Label("", skin);
@@ -131,6 +135,7 @@ public class TestGameScreen implements Screen {
         table.addActor(button3);
         table.addActor(firstLabel);
         table.addActor(secondLabel);
+        table.addActor(slider);
         table.align(Align.topRight);
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
         // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
@@ -154,6 +159,12 @@ public class TestGameScreen implements Screen {
                 walker.setHealthPoints(1000);
                 walker.setSize(100, 100);
                 manager.addObject(walker);
+            }
+        });
+        slider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                player.setClamping(slider.getValue());
             }
         });
         inputMultiplexer = new InputMultiplexer();
@@ -185,9 +196,9 @@ public class TestGameScreen implements Screen {
         renderer.render();
         batch.begin();
         manager.update(delta);
+        manager.getTree().debugDraw(batch);
         batch.end();
         stateTime += delta;
-
         firstLabel.setText(Float.toString(Gdx.graphics.getFramesPerSecond()) + " FPS");
         secondLabel.setText(manager.getNumberOfObjects() + " objects");
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
@@ -197,6 +208,7 @@ public class TestGameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        cam.setToOrtho(false, 300, 300 *(Gdx.graphics.getWidth()/Gdx.graphics.getHeight()));
         stage.getViewport().update(width, height, true);
     }
 

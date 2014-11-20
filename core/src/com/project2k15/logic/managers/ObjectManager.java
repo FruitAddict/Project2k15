@@ -1,4 +1,4 @@
-package com.project2k15.logic;
+package com.project2k15.logic.managers;
 
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
@@ -27,7 +27,6 @@ public class ObjectManager {
         collisionObjects = t.getObjects();
         quadtree = new Quadtree(0, new QuadRectangle(0, 0, mapWidth, mapHeight));
         passRectangleList = new Array<PropertyRectangle>();
-        this.player = player;
     }
 
     public void setCollisionObjects(MapLayer til) {
@@ -77,7 +76,7 @@ public class ObjectManager {
     }
 
     public boolean addObject(Entity obj) {
-        if (objectList.size < 400) {
+        if (objectList.size < 200) {
             objectList.add(obj);
             return true;
         }

@@ -5,41 +5,33 @@ public abstract class Character extends MovableObject {
      * Abstract character class, contains facing booleans for use with drawing,
      * and health points. ( Please notice the oxford coma here).
      */
-    public boolean facingLeft, facingRight, facingNorth, facingSouth, idle;
+    public boolean facingLeft, facingRight, facingUp, facingDown, idle;
 
     protected float healthPoints;
 
     @Override
     public void moveRight() {
         super.moveRight();
-        facingRight = true;
-        facingLeft = false;
-        facingNorth = false;
-        facingSouth = false;
+        setFacings(false);
+        facingRight=true;
     }
 
     public void moveLeft() {
         super.moveLeft();
-        facingRight = false;
-        facingLeft = true;
-        facingNorth = false;
-        facingSouth = false;
+        setFacings(false);
+        facingLeft=true;
     }
 
     public void moveUp() {
         super.moveUp();
-        facingRight = false;
-        facingLeft = false;
-        facingNorth = true;
-        facingSouth = false;
+        setFacings(false);
+        facingUp =true;
     }
 
     public void moveDown() {
         super.moveDown();
-        facingRight = false;
-        facingLeft = false;
-        facingNorth = false;
-        facingSouth = true;
+        setFacings(false);
+        facingDown =true;
     }
 
     public float getHealthPoints() {
@@ -48,5 +40,12 @@ public abstract class Character extends MovableObject {
 
     public void setHealthPoints(float healthPoints) {
         this.healthPoints = healthPoints;
+    }
+
+    public void setFacings(boolean bool){
+        facingLeft = bool;
+        facingUp = bool;
+        facingRight = bool;
+        facingDown = bool;
     }
 }

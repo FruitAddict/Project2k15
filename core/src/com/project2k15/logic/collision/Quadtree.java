@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.project2k15.rendering.Assets;
 
+import java.util.Iterator;
+
 /**
  * Quad tree to use with collision detection algorithm
  */

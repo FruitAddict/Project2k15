@@ -62,8 +62,9 @@ public class GameScreen implements Screen {
         /**
          * Resizes stage and the camera viewport (again according to the viewport)
          */
-        gameCamera.setToOrtho(false, 300, 300 * (Gdx.graphics.getWidth() / Gdx.graphics.getHeight()));
+        gameCamera.setToOrtho(false, 300, 300*(Gdx.graphics.getWidth()/Gdx.graphics.getHeight()));
         guiStage.getViewport().update(width, height, true);
+        System.out.println(300*(width/height));
     }
 
     @Override
@@ -85,7 +86,7 @@ public class GameScreen implements Screen {
          * Sets the viewport to 300 pixels wide and 300 pixels * aspect ratio height
          * ( correct proportions, squares are squares)
          */
-        gameCamera.setToOrtho(false, 300, 300 * (Gdx.graphics.getWidth() / Gdx.graphics.getHeight()));
+        gameCamera.setToOrtho(false, 300, 300*(Gdx.graphics.getWidth()/Gdx.graphics.getHeight()));
         /**
          * Setting the input processors
          * The input first goes to guiStage, then reroutes to game screen if not used.

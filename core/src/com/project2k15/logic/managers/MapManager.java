@@ -17,7 +17,7 @@ public class MapManager {
 
     public MapManager(){
         Assets.loadTestMap();
-        currentMap = Assets.manager.get("map.tmx");
+        currentMap = Assets.manager.get("64map.tmx");
         spawnPosition = new Vector2(300,300);
     }
 
@@ -37,11 +37,11 @@ public class MapManager {
     }
 
     public float getMapWidth() {
-        return Float.parseFloat(currentMap.getProperties().get("width").toString()) * 32;
+        return Float.parseFloat(currentMap.getProperties().get("width").toString()) * 64;
     }
 
     public float getMapHeight() {
-        return Float.parseFloat(currentMap.getProperties().get("height").toString()) * 32;
+        return Float.parseFloat(currentMap.getProperties().get("height").toString()) * 64;
     }
 
     public Vector2 getSpawnPosition() {

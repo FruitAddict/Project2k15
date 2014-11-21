@@ -40,6 +40,7 @@ public class ObjectManager {
 
 
     public void update(float delta) {
+        float startTime = System.nanoTime();
         passRectangleList.clear();
         quadtree.clear();
 
@@ -58,6 +59,7 @@ public class ObjectManager {
                 o.update(delta, quadtree.retrieve(passRectangleList, o.getCollisionRectangle()));
             }
         }
+        System.out.println(System.nanoTime()-startTime);
     }
 
     public void clear() {

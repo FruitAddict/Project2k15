@@ -4,6 +4,7 @@ public abstract class Character extends MovableObject {
     /**
      * Abstract character class, contains facing booleans for use with drawing,
      * and health points. ( Please notice the oxford coma here).
+     * Will contain hooks for operating on AI objects etc
      */
     public boolean facingLeft, facingRight, facingUp, facingDown, idle;
 

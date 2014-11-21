@@ -35,13 +35,13 @@ public class Player extends Character {
 
 
     public Player(float positionX, float positionY, SpriteBatch batch, ObjectManager manager) {
-        width = 24;
-        height = 32;
+        width = 48;
+        height = 64;
         position.set(positionX, positionY);
-        colRect = new PropertyRectangle(positionX, positionY, 24, 16, this, PropertyRectangle.PLAYER);
+        colRect = new PropertyRectangle(positionX, positionY, 48, 32, this, PropertyRectangle.PLAYER);
         collisionRectangle = colRect;
         speed = 20;
-        maxVelocity = 75;
+        maxVelocity = 150;
         clamping = 0.88f;
         this.batch = batch;
         this.manager = manager;
@@ -78,6 +78,8 @@ public class Player extends Character {
     public void attack(Vector2 direction) {
         if (stateTime - lastAttack > timeBetweenAttacks) {
             manager.addObject(new Projectile(position.x, position.y, 12, 12, direction, manager, batch, piercingShotsDebug));
+            manager.addObject(new Projectile(position.x, position.y, 12, 12, direction.cpy().add(-0.1f,-0.1f), manager, batch, piercingShotsDebug));
+            manager.addObject(new Projectile(position.x, position.y, 12, 12, direction.cpy().add(0.1f,0.1f), manager, batch, piercingShotsDebug));
             lastAttack = stateTime;
         }
     }

@@ -22,15 +22,14 @@ public class Assets {
     }
 
     public static void loadTestMap(){
-        manager.load("map.tmx", TiledMap.class);
+        manager.load("64map.tmx", TiledMap.class);
+        manager.load("pet.png",Texture.class);
         manager.load("playersheet.png", Texture.class);
-        manager.load("test.gif", Texture.class);
-        manager.load("pet.png", Texture.class);
-        manager.load("testBox.png", Texture.class);
         manager.load("redheady.png", Texture.class);
         manager.load("playersheet.png", Texture.class);
         manager.load("projectile.png", Texture.class);
         manager.load("deadfireball.png", Texture.class);
+        manager.load("frontwalk.png",Texture.class);
         manager.finishLoading();
     }
 

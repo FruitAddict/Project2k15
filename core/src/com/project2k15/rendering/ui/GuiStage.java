@@ -122,7 +122,7 @@ public class GuiStage extends Stage {
         final TextButton button2 = new TextButton("Piercing projectiles", skin);
         final TextButton spawnerButton = new TextButton("Mob Spawner", skin);
         final Slider slider = new Slider(0,1,0.05f,false,skin);
-        final Slider sliderZoom = new Slider(0.05f,1,0.05f,false,skin);
+        final Slider sliderZoom = new Slider(0.05f,2,0.05f,false,skin);
         slider.getStyle().knob.setMinHeight(50);
         slider.getStyle().knob.setMinWidth(10);
         slider.setValue(player.getClamping());

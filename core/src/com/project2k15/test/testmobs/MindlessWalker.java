@@ -48,11 +48,21 @@ public class MindlessWalker extends Character {
         this.manager = manager;
 
         Texture testM = Assets.manager.get("pet.png");
+        Texture test2m = Assets.manager.get("frontwalk.png");
         TextureRegion[][] tmpM = TextureRegion.split(testM, testM.getWidth() / 8, testM.getHeight() / 4);
+
+        TextureRegion[][] tmp2 = TextureRegion.split(test2m, test2m.getWidth()/8, test2m.getHeight());
         mobWalkSouth = new TextureRegion[8];
         mobWalkNorth = new TextureRegion[8];
         mobWalkRight = new TextureRegion[8];
         mobWalkLeft = new TextureRegion[8];
+
+        TextureRegion[] walkTest = new TextureRegion[8];
+
+        for(int i=0;i<8;i++){
+            walkTest[i] = tmp2[0][i];
+        }
+
         for (int i = 0; i < 8; i++) {
             mobWalkSouth[i] = tmpM[0][i];
         }
@@ -66,10 +76,10 @@ public class MindlessWalker extends Character {
             mobWalkRight[i] = tmpM[3][i];
         }
 
-        northAnimation = new Animation(0.1f, mobWalkNorth);
-        southAnimation = new Animation(0.1f, mobWalkSouth);
-        rightAnimation = new Animation(0.1f, mobWalkRight);
-        leftAnimation = new Animation(0.1f, mobWalkLeft);
+        northAnimation = new Animation(0.1f, walkTest);
+        southAnimation = new Animation(0.1f, walkTest);
+        rightAnimation = new Animation(0.1f, walkTest);
+        leftAnimation = new Animation(0.1f,walkTest);
 
         facingDown = true;
     }

@@ -1,5 +1,7 @@
 package com.project2k15.logic.collision;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -19,6 +21,18 @@ public class Quadtree {
     private Array<PropertyRectangle> objects;
     private QuadRectangle bounds;
     private Quadtree[] nodes;
+
+
+    /**
+     * Debug drawing texture
+     */
+    private static Texture redTexture;
+    static {
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.RED);
+        pixmap.fill();
+        redTexture = new Texture(pixmap);
+    }
 
     public Quadtree(int pLevel, QuadRectangle pBounds) {
         level = pLevel;
@@ -133,10 +147,10 @@ public class Quadtree {
     }
 
     public void debugDraw(SpriteBatch renderer) {
-        renderer.draw((Texture) Assets.manager.get("playersheet.png"), bounds.getX(), bounds.getY(), bounds.getWidth(), 1);
-        renderer.draw((Texture) Assets.manager.get("playersheet.png"), bounds.getX(), bounds.getY(), 1, bounds.getY());
-        renderer.draw((Texture) Assets.manager.get("playersheet.png"), bounds.getX(), bounds.getHeight() - 1, bounds.getX(), 1);
-        renderer.draw((Texture) Assets.manager.get("playersheet.png"), bounds.getWidth() - 1, bounds.getY(), 1, bounds.getHeight());
+        renderer.draw(redTexture,bounds.getX(),bounds.getY(),bounds.getWidth(),1);
+        renderer.draw(redTexture,bounds.getWidth(),bounds.getY(),1,bounds.getHeight());
+        renderer.draw(redTexture,bounds.getX(),bounds.getY(),1,bounds.getHeight());
+        renderer.draw(redTexture,bounds.getX(),bounds.getHeight(),bounds.getWidth(),1);
         if (nodes[0] != null) {
             for (int i = 0; i < 4; i++) {
                 nodes[i].debugDraw(renderer);

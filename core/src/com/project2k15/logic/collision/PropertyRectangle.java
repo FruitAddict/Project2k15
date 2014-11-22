@@ -7,26 +7,36 @@ import com.project2k15.logic.entities.abstracted.Entity;
  * Custom Rectangle, contains type for collision identification and owner
  */
 public class PropertyRectangle extends Rectangle {
-
-    public static final int NO_TYPE = 0;
-    public static final int TERRAIN = 1;
-    public static final int MOVING_OBJECT = 2;
-    public static final int PROJECTILE = 3;
-    public static final int CHARACTER = 4;
-    public static final int PLAYER = 5;
     private Entity owner;
-
     private int type;
+    private int linkID = -1; //Additional info, can really be anything. Used to identify portal links atm
+
+    /**
+     * Set of 4 constructors to use in different situations.
+     */
 
     public PropertyRectangle(float x, float y, float width, float height, int type) {
         super(x, y, width, height);
         this.type = type;
     }
 
+    public PropertyRectangle(float x, float y, float width, float height, int type, int linkID) {
+        super(x, y, width, height);
+        this.type = type;
+        this.linkID = linkID;
+    }
+
     public PropertyRectangle(float x, float y, float width, float height, Entity owner, int type) {
         super(x, y, width, height);
         this.owner = owner;
         this.type = type;
+    }
+
+    public PropertyRectangle(float x, float y, float width, float height, Entity owner, int type, int linkID) {
+        super(x, y, width, height);
+        this.owner = owner;
+        this.type = type;
+        this.linkID = linkID;
     }
 
     public PropertyRectangle(Rectangle rec, int type) {
@@ -44,6 +54,10 @@ public class PropertyRectangle extends Rectangle {
 
     public int getType() {
         return type;
+    }
+
+    public int getLinkID(){
+        return linkID;
     }
 
     public Entity getOwner() {

@@ -36,12 +36,7 @@ public class WorldInputProcessor implements InputProcessor {
     private Vector2 velocityNormalized;
 
 
-    public WorldInputProcessor(OrthographicCamera camera, Player player, float mapWidth, float mapHeight) {
-        this.camera = camera;
-        this.player = player;
-        this.mapWidth = mapWidth;
-        this.mapHeight = mapHeight;
-
+    public WorldInputProcessor() {
         //initiators
         firstMovementPosition = new Vector3(-1, -1, 0);
         secondMovementPosition = new Vector3();
@@ -71,7 +66,6 @@ public class WorldInputProcessor implements InputProcessor {
          * If the pointer is the first one or the second one ( id 0 or 1 ), sets the corresponding vector to those coordinates.
          */
         if (pointer == 0) {
-            System.out.println("Touch down");
             firstMovementPosition.set(screenX, screenY, 0);
             return true;
         } else if (pointer == 1) {
@@ -126,6 +120,15 @@ public class WorldInputProcessor implements InputProcessor {
     public void setMapSize(float width, float height){
         mapWidth=width;
         mapHeight=height;
+    }
+
+    public void setCamera(OrthographicCamera camera){
+        this.camera = camera;
+        camera.zoom = 1f;
+    }
+
+    public void setPlayer(Player player){
+        this.player = player;
     }
 
     public void update() {

@@ -44,6 +44,38 @@ public class GameScreen implements Screen {
 
     public GameScreen(Game game){
         this.game = game;
+
+        /**
+         * Setting the world input processor
+         */
+        WorldInputProcessor worldInputProcessor = new WorldInputProcessor();
+
+        /**
+         * Spaghetti bolonesse
+         * TODO make it readable.
+         */
+        gameCamera = new OrthographicCamera();
+        batch = new SpriteBatch();
+        objectManager = new ObjectManager();
+        mapManager = new MapManager();
+        worldInputProcessor.setMapSize(mapManager.getMapWidth(),mapManager.getMapHeight());
+        objectManager.setMap(mapManager.getCurrentMap());
+        mapManager.setObjectManager(objectManager);
+        mapManager.setWorldInputProcessor(worldInputProcessor);
+        worldInputProcessor.setCamera(gameCamera);
+        player = new Player(mapManager.getSpawnPosition().x, mapManager.getSpawnPosition().y,batch,objectManager);
+        player.setMapManager(mapManager);
+        worldInputProcessor.setPlayer(player);
+        objectManager.setPlayer(player);
+        guiStage = new GuiStage(objectManager,gameCamera,player,mapManager,batch);
+        worldRenderer = new WorldRenderer(mapManager.getCurrentMap().getCurrentRoom().getMap(),objectManager,guiStage,gameCamera,batch);
+
+        /**
+         * Setting up the input multiplexer to reroute GUI&gameworld input
+         */
+        inputMultiplexer = new CustomInputMultiplexer(guiStage, worldInputProcessor);
+        Gdx.input.setInputProcessor(inputMultiplexer);
+
     }
 
     @Override
@@ -62,7 +94,7 @@ public class GameScreen implements Screen {
         /**
          * Resizes stage and the camera viewport (again according to the viewport)
          */
-        gameCamera.setToOrtho(false, 300, 300*(Gdx.graphics.getWidth()/Gdx.graphics.getHeight()));
+        gameCamera.setToOrtho(false, 840, 480*(Gdx.graphics.getWidth()/Gdx.graphics.getHeight()));
         guiStage.getViewport().update(width, height, true);
         System.out.println(300*(width/height));
     }
@@ -70,31 +102,11 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         /**
-         * Initializer
-         */
-        gameCamera = new OrthographicCamera();
-        mapManager = new MapManager();
-        batch = new SpriteBatch();
-        objectManager = new ObjectManager(mapManager.getCollisionLayer(),(int)mapManager.getMapWidth(),(int)mapManager.getMapHeight());
-        player = new Player(mapManager.getSpawnPosition().x, mapManager.getSpawnPosition().y,batch,objectManager);
-        objectManager.addObject(player);
-        guiStage = new GuiStage(objectManager,gameCamera,player,mapManager,batch);
-        worldRenderer = new WorldRenderer(mapManager.getCurrentMap(),objectManager,guiStage,gameCamera,batch);
-
-        /**
          * Setting up the camera
          * Sets the viewport to 300 pixels wide and 300 pixels * aspect ratio height
          * ( correct proportions, squares are squares)
          */
-        gameCamera.setToOrtho(false, 300, 300*(Gdx.graphics.getWidth()/Gdx.graphics.getHeight()));
-        /**
-         * Setting the input processors
-         * The input first goes to guiStage, then reroutes to game screen if not used.
-         */
-        WorldInputProcessor worldInputProcessor = new WorldInputProcessor(gameCamera,player,mapManager.getMapWidth(),mapManager.getMapHeight());
-        inputMultiplexer = new CustomInputMultiplexer(guiStage, worldInputProcessor);
-        Gdx.input.setInputProcessor(inputMultiplexer);
-
+        gameCamera.setToOrtho(false, 840, 480*(Gdx.graphics.getWidth()/Gdx.graphics.getHeight()));
     }
 
     @Override

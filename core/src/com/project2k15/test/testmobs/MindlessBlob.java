@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.project2k15.logic.collision.PropertyRectangle;
+import com.project2k15.logic.collision.RectangleTypes;
 import com.project2k15.logic.entities.Player;
 import com.project2k15.logic.entities.abstracted.Character;
 import com.project2k15.rendering.Assets;
@@ -14,7 +15,7 @@ import java.util.Random;
 /**
  * Created by FruitAddict on 2014-11-11.
  */
-public class MindlessBlob extends Character {
+public class MindlessBlob extends Character implements RectangleTypes {
     static Player player;
     TextureRegion[] mobWalkSouth;
     TextureRegion[] mobWalkNorth;
@@ -31,7 +32,7 @@ public class MindlessBlob extends Character {
         this.width = width;
         this.height = height;
         this.player = player;
-        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height, PropertyRectangle.MOVING_OBJECT);
+        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height, MOVING_OBJECT);
         this.speed = speed;
         maxVelocity = 100;
         setClamping(0.82f);

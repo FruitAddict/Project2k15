@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.project2k15.logic.collision.RectangleTypes;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.entities.CollisionResolver;
@@ -16,7 +17,7 @@ import com.project2k15.rendering.Assets;
 /**
  * Test projectile
  */
-public class Projectile extends MovableObject {
+public class Projectile extends MovableObject implements RectangleTypes {
 
     Animation animation;
     Animation animationDead;
@@ -52,7 +53,7 @@ public class Projectile extends MovableObject {
             animRegion2[i] = tmpM2[0][i];
         }
         animationDead = new Animation(0.1f, animRegion2);
-        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height, PropertyRectangle.PROJECTILE);
+        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height, PROJECTILE);
     }
 
     @Override
@@ -68,14 +69,14 @@ public class Projectile extends MovableObject {
             velocity.set(direction.x, direction.y * -1).scl(maxVelocity);
             position.add(velocity.scl(delta));
             getCollisionRectangle().setPosition(position.x, position.y);
-            PropertyRectangle rec = CollisionResolver.resolveCollisionsProjectile(checkRectangles, this);
+            PropertyRectangle rec = CollisionResolver.resolveCollisionsByType(checkRectangles, this, CHARACTER,TERRAIN);
             if (rec != null) {
-                if (rec.getType() == PropertyRectangle.TERRAIN) {
+                if (rec.getType() == TERRAIN) {
                     dead = true;
                     width *= 1.5;
                     height *= 1.5;
                 }
-                if (rec.getType() == PropertyRectangle.CHARACTER) {
+                if (rec.getType() == CHARACTER) {
                     Character ch = (Character) rec.getOwner();
                     ch.setHealthPoints(ch.getHealthPoints() - 1);
                     ch.getVelocity().add(this.velocity.x * 50, this.velocity.y * 50);

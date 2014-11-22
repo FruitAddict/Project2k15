@@ -70,7 +70,7 @@ public class TestGameScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map, batch);
         renderer.setView(cam);
 
-        manager = new ObjectManager(map.getLayers().get("collisionObjects"), (int) mapWidth, (int) mapHeight);
+        manager = new ObjectManager();
         player = new Player(124, 250, batch, manager);
         manager.setPlayer(player);
         manager.addObject(player);
@@ -170,7 +170,7 @@ public class TestGameScreen implements Screen {
         inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(stage);
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            proc = new WorldInputProcessor(cam, player, mapWidth, mapHeight);
+            proc = new WorldInputProcessor();
             inputMultiplexer.addProcessor(proc);
         } else {
             proc2 = new TestInputProcessor(cam, player, mapWidth, mapHeight);

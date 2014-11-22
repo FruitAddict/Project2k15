@@ -1,51 +1,85 @@
+
 package com.project2k15.logic.managers;
 
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.utils.Array;
 import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.collision.QuadRectangle;
 import com.project2k15.logic.collision.Quadtree;
+import com.project2k15.logic.collision.RectangleTypes;
 import com.project2k15.logic.entities.Player;
 import com.project2k15.logic.entities.abstracted.Entity;
-
-import java.util.Iterator;
+import com.project2k15.logic.maps.Map;
 
 /**
  * Object Manager
  */
-public class ObjectManager {
-
+public class ObjectManager implements RectangleTypes {
+    /**
+     * ObjectList stores entities (not terrain)
+     * passRectangleList is reusable list that each entity uses to obtain its neighbours from the quadtree
+     * collisionObjects is list of terrain rectangles that are injected into the quadtree.
+     * QuadTree is just a regular quad tree data structure
+     * Player is stored to re-add him after clearing the objectList.
+     * Map references the map currently stored in the mapManager
+     */
     private Array<Entity> objectList = new Array<Entity>();
     private Array<PropertyRectangle> passRectangleList;
     private MapObjects collisionObjects;
     private Quadtree quadtree;
     private Player player;
+    private Map storedMap;
 
-    public ObjectManager(MapLayer t, int mapWidth, int mapHeight) {
-        collisionObjects = t.getObjects();
-        quadtree = new Quadtree(0, new QuadRectangle(0, 0, mapWidth, mapHeight));
+    public ObjectManager(){
         passRectangleList = new Array<PropertyRectangle>();
     }
 
-    public void setCollisionObjects(MapLayer til) {
-        collisionObjects = null;
-        collisionObjects = til.getObjects();
+    public void setMap(Map map){
+        storedMap = map;
+        onRoomChanged();
+    }
+
+    public void onRoomChanged(){
+        /**
+         * onRoomChanged method is used to change maps/rooms. Recreates the quadtree
+         * with new map width and height and changes the terrain collision objects to new one.
+         * Renderer is automatically working on the new map so no need to call it.
+         */
+        objectList.clear();
+        collisionObjects = storedMap.getCurrentRoom().getMap().getLayers().get("collisionObjects").getObjects();
+        int mapWidth = storedMap.getCurrentRoom().getMap().getProperties().get("width", Integer.class);
+        int mapHeight = storedMap.getCurrentRoom().getMap().getProperties().get("height", Integer.class);
+        quadtree = new Quadtree(0,new QuadRectangle(0,0,mapWidth,mapHeight));
     }
 
     public void setPlayer(Player p) {
+        /**
+         * Changes the player reference and adds it to the list
+         */
         player = p;
+        objectList.add(player);
     }
 
 
     public void update(float delta) {
-        float startTime = System.nanoTime();
+        /**
+         * ObjectManager update method
+         * Clears the passRectangleList (just in case) and the quadtree
+         * reinserts terrain collision rectangles into the quadtree with TERRAIN type
+         * inserts all objects from objectlist (they store their own types already)
+         * and finnaly updates all the entities on object list ( they draw themselves too atm so
+         * object overlapping is determined by their position in the objectList).
+         */
         passRectangleList.clear();
         quadtree.clear();
 
+        for(int i =0; i< storedMap.getCurrentRoom().getPortalRecs().size;i++){
+            quadtree.insert(storedMap.getCurrentRoom().getPortalRecs().get(i));
+        }
+
         for (int i = 0; i < collisionObjects.getCount(); i++) {
-            PropertyRectangle obj = new PropertyRectangle(((RectangleMapObject) collisionObjects.get(i)).getRectangle(), PropertyRectangle.TERRAIN);
+            PropertyRectangle obj = new PropertyRectangle(((RectangleMapObject) collisionObjects.get(i)).getRectangle(), TERRAIN);
             quadtree.insert(obj);
         }
 
@@ -59,18 +93,11 @@ public class ObjectManager {
                 o.update(delta, quadtree.retrieve(passRectangleList, o.getCollisionRectangle()));
             }
         }
-        System.out.println(System.nanoTime()-startTime);
     }
 
     public void clear() {
-        Iterator<Entity> i = objectList.iterator();
-        while (i.hasNext()) {
-            System.out.println("Clearing...");
-            Entity g = i.next();
-            if (g.getCollisionRectangle().getType() == PropertyRectangle.CHARACTER || g.getCollisionRectangle().getType() == PropertyRectangle.PROJECTILE) {
-                removeObject(g);
-            }
-        }
+        objectList.clear();
+        addObject(player);
     }
 
     public Quadtree getTree() {

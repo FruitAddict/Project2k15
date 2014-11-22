@@ -3,6 +3,8 @@ package com.project2k15.logic.managers;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
+import com.project2k15.logic.input.WorldInputProcessor;
+import com.project2k15.logic.maps.Map;
 import com.project2k15.rendering.Assets;
 
 /**
@@ -10,41 +12,59 @@ import com.project2k15.rendering.Assets;
  */
 public class MapManager {
     /**
-     * currentMap holds reference to the currently loaded map.
+     * currentMap holds reference to the currently loaded map and
+     * objectManager reference to recreate the quadtree each time the map is changed
+     * inputProcessor reference to change the map size for bounds check ( so the camera
+     * doesnt go over the edges)
      */
-    TiledMap currentMap;
-    Vector2 spawnPosition;
+    private Vector2 spawnPosition;
+    private ObjectManager objectManager;
+    private WorldInputProcessor worldInputProcessor;
+    private Map currentMap;
 
     public MapManager(){
         Assets.loadTestMap();
-        currentMap = Assets.manager.get("64map.tmx");
-        spawnPosition = new Vector2(300,300);
+        currentMap = new Map(this);
+        spawnPosition = currentMap.getCurrentRoom().getSpawnPosition();
     }
 
-    public MapLayer getCollisionLayer() {
-        /**
-         * Returns layer of rectangles that will be turned into PropertyRectangles and
-         * inserted into a quadtree.
-         */
-        return currentMap.getLayers().get("collisionObjects");
+    /**
+     * Test map
+     * TODO map generator
+     */
+
+
+    public void setWorldInputProcessor(WorldInputProcessor processor){
+        worldInputProcessor = processor;
     }
 
-    public TiledMap getCurrentMap(){
+    public void setObjectManager(ObjectManager objectManager){
+        this.objectManager = objectManager;
+    }
+
+    public Map getCurrentMap(){
         /**
          * Returns currently loaded map/room;
          */
         return currentMap;
     }
 
+    public void changeMap(Map map){
+        currentMap = map;
+        objectManager.setMap(currentMap);
+        worldInputProcessor.setMapSize(getMapWidth(),getMapHeight());
+    }
+
     public float getMapWidth() {
-        return Float.parseFloat(currentMap.getProperties().get("width").toString()) * 64;
+        return currentMap.getCurrentRoom().getWidth();
     }
 
     public float getMapHeight() {
-        return Float.parseFloat(currentMap.getProperties().get("height").toString()) * 64;
+        return currentMap.getCurrentRoom().getHeight();
     }
 
     public Vector2 getSpawnPosition() {
         return spawnPosition;
     }
 }
+

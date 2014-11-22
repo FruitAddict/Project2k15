@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.project2k15.logic.collision.RectangleTypes;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.entities.CollisionResolver;
@@ -17,7 +18,7 @@ import java.util.Random;
 /**
  * Created by FruitAddict on 2014-11-12.
  */
-public class MindlessWalker extends Character {
+public class MindlessWalker extends Character implements RectangleTypes {
     static Player player;
     static Random rng = new Random();
     float timeSpentDoingShit;
@@ -40,7 +41,7 @@ public class MindlessWalker extends Character {
         this.width = width;
         this.height = height;
         this.player = player;
-        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height / 2, this, PropertyRectangle.CHARACTER);
+        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height / 2, this, CHARACTER);
         this.speed = speed;
         maxVelocity = 100;
         healthPoints = 5;
@@ -89,7 +90,7 @@ public class MindlessWalker extends Character {
         if (healthPoints < 1) {
             manager.removeObject(this);
         }
-        CollisionResolver.resolveCollisions(delta, checkRectangles, this);
+        CollisionResolver.resolveCollisionsTerrain(delta, checkRectangles, this);
         if (timeSpentDoingShit == 0) {
             random = rng.nextInt(4);
             stateTime += delta;

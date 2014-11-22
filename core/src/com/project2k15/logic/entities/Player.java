@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.project2k15.logic.collision.RectangleTypes;
+import com.project2k15.logic.managers.MapManager;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.entities.abstracted.Character;
@@ -15,7 +17,7 @@ import com.project2k15.test.testmobs.Projectile;
 /**
  * Test player class
  */
-public class Player extends Character {
+public class  Player extends Character implements RectangleTypes {
 
     private PropertyRectangle colRect;
     public boolean piercingShotsDebug = false;
@@ -31,20 +33,21 @@ public class Player extends Character {
     float lastAttack = 0;
     float timeBetweenAttacks = 0.1f;
     SpriteBatch batch;
-    ObjectManager manager;
+    ObjectManager objectManager;
+    MapManager mapManager;
 
 
-    public Player(float positionX, float positionY, SpriteBatch batch, ObjectManager manager) {
+    public Player(float positionX, float positionY, SpriteBatch batch, ObjectManager objectManager) {
         width = 48;
         height = 64;
         position.set(positionX, positionY);
-        colRect = new PropertyRectangle(positionX, positionY, 48, 32, this, PropertyRectangle.PLAYER);
+        colRect = new PropertyRectangle(positionX, positionY, 48, 32, this, PLAYER);
         collisionRectangle = colRect;
         speed = 20;
         maxVelocity = 150;
         clamping = 0.88f;
         this.batch = batch;
-        this.manager = manager;
+        this.objectManager = objectManager;
         facingDown = true;
         Texture testT = Assets.manager.get("redheady.png");
         TextureRegion[][] tmp = TextureRegion.split(testT, testT.getWidth() / 3, testT.getHeight() / 4);
@@ -64,22 +67,32 @@ public class Player extends Character {
         animationNorth = new Animation(0.1f, northRegion);
         animationWest = new Animation(0.1f, westRegion);
         animationEast = new Animation(0.1f, eastRegion);
+    }
 
-
+    public void setMapManager(MapManager mapManager){
+        this.mapManager = mapManager;
     }
 
     @Override
     public void update(float delta, Array<PropertyRectangle> collisionRecs) {
-        CollisionResolver.resolveCollisions(delta, collisionRecs, this);
+        PropertyRectangle rec =CollisionResolver.resolveCollisionsByType(collisionRecs,this,PORTAL);
+        if(rec != null){
+            mapManager.getCurrentMap().changeRoom(rec.getLinkID());
+            objectManager.onRoomChanged();
+            position.set(mapManager.getCurrentMap().getCurrentRoom().getSpawnPosition());
+            objectManager.addObject(this);
+            System.out.println("portal");
+        }
+        CollisionResolver.resolveCollisionsTerrain(delta, collisionRecs, this);
         stateTime += delta;
         batch.draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());
     }
 
     public void attack(Vector2 direction) {
         if (stateTime - lastAttack > timeBetweenAttacks) {
-            manager.addObject(new Projectile(position.x, position.y, 12, 12, direction, manager, batch, piercingShotsDebug));
-            manager.addObject(new Projectile(position.x, position.y, 12, 12, direction.cpy().add(-0.1f,-0.1f), manager, batch, piercingShotsDebug));
-            manager.addObject(new Projectile(position.x, position.y, 12, 12, direction.cpy().add(0.1f,0.1f), manager, batch, piercingShotsDebug));
+            objectManager.addObject(new Projectile(position.x, position.y, 12, 12, direction, objectManager, batch, piercingShotsDebug));
+            objectManager.addObject(new Projectile(position.x, position.y, 12, 12, direction.cpy().add(-0.1f, -0.1f), objectManager, batch, piercingShotsDebug));
+            objectManager.addObject(new Projectile(position.x, position.y, 12, 12, direction.cpy().add(0.1f, 0.1f), objectManager, batch, piercingShotsDebug));
             lastAttack = stateTime;
         }
     }

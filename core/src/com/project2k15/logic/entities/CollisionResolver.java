@@ -5,12 +5,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.project2k15.logic.collision.PropertyRectangle;
+import com.project2k15.logic.collision.RectangleTypes;
 import com.project2k15.logic.entities.abstracted.MovableObject;
 
 /**
  * Created by FruitAddict on 2014-11-17.
  */
-public class CollisionResolver {
+public class CollisionResolver implements RectangleTypes {
 
     public static boolean[] getCollisionTable(Array<PropertyRectangle> collisionRects, MovableObject obj, int type) {
         /**
@@ -51,7 +52,7 @@ public class CollisionResolver {
         return result;
     }
 
-    public static boolean resolveCollisions(float delta, Array<PropertyRectangle> checkRectangles, MovableObject obj) {
+    public static boolean resolveCollisionsTerrain(float delta, Array<PropertyRectangle> checkRectangles, MovableObject obj) {
         /**
          * Terrain Collision resolver method, takes delta time (time between frames) and array of rectangles to check
          * collisions with. Scales the velocity with delta time, copies the position of the player, moves the player
@@ -63,7 +64,7 @@ public class CollisionResolver {
         Vector2 oldPosition = obj.getPosition().cpy();
         obj.getPosition().add(newVeloc);
         obj.getCollisionRectangle().setPosition(obj.getPosition().x, obj.getPosition().y);
-        boolean[] collisions = getCollisionTable(checkRectangles, obj, PropertyRectangle.TERRAIN);
+        boolean[] collisions = getCollisionTable(checkRectangles, obj, TERRAIN);
 
         boolean returnValue = false;
         for (int i = 0; i < collisions.length; i++) {
@@ -153,14 +154,18 @@ public class CollisionResolver {
         return returnValue;
     }
 
-    public static PropertyRectangle resolveCollisionsProjectile(Array<PropertyRectangle> checkRectangles, MovableObject obj) {
+    public static PropertyRectangle resolveCollisionsByType(Array<PropertyRectangle> checkRectangles, MovableObject obj, int... types) {
         /**
-         * Simple collision checking, returns rectangle it collided with
+         * Simple collision checking, returns rectangle it collided with if its type matches one provided in the arguments
          */
         for (PropertyRectangle rec : checkRectangles) {
-            if (rec.getType() != PropertyRectangle.PROJECTILE && obj.getCollisionRectangle().overlaps(rec)) {
-                System.out.println(rec.getType());
-                return rec;
+            if (rec.getOwner() != obj && obj.getCollisionRectangle().overlaps(rec)) {
+                for(int i : types) {
+                    if(rec.getType() == i) {
+                        System.out.println(rec.getType());
+                        return rec;
+                    }
+                }
             }
         }
         return null;

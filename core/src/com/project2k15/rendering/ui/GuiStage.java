@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.project2k15.logic.managers.MapManager;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.entities.Player;
-import com.project2k15.test.testmobs.MindlessWalker;
+import com.project2k15.rendering.WorldRenderer;
 import com.project2k15.test.testmobs.WalkerSpawner;
 
 /**
@@ -121,6 +121,7 @@ public class GuiStage extends Stage {
         final TextButton button = new TextButton("Clear Moving Objects", skin);
         final TextButton button2 = new TextButton("Piercing projectiles", skin);
         final TextButton spawnerButton = new TextButton("Mob Spawner", skin);
+        final TextButton enableQuadView = new TextButton("Quadtree view", skin);
         final Slider slider = new Slider(0,1,0.05f,false,skin);
         final Slider sliderZoom = new Slider(0.05f,2,0.05f,false,skin);
         slider.getStyle().knob.setMinHeight(50);
@@ -137,6 +138,7 @@ public class GuiStage extends Stage {
         table.addActor(button);
         table.addActor(button2);
         table.addActor(spawnerButton);
+        table.addActor(enableQuadView);
         table.addActor(firstLabel);
         table.addActor(secondLabel);
         table.addActor(posLabel);
@@ -174,6 +176,12 @@ public class GuiStage extends Stage {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 gameCamera.zoom = sliderZoom.getValue();
+            }
+        });
+        enableQuadView.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                WorldRenderer.debugEnabled = !WorldRenderer.debugEnabled;
             }
         });
     }

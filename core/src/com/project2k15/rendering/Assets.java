@@ -23,6 +23,8 @@ public class Assets {
 
     public static void loadTestMap(){
         manager.load("64map.tmx", TiledMap.class);
+        manager.load("testportal.png", Texture.class);
+        manager.load("map.tmx", TiledMap.class);
         manager.load("pet.png",Texture.class);
         manager.load("playersheet.png", Texture.class);
         manager.load("redheady.png", Texture.class);

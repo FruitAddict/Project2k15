@@ -23,16 +23,10 @@ public class MapManager {
     private Map currentMap;
 
     public MapManager(){
-        Assets.loadTestMap();
         currentMap = new Map(this);
-        spawnPosition = currentMap.getCurrentRoom().getSpawnPosition();
+        currentMap.createTestMap();
+        spawnPosition = currentMap.getCurrentRoom().getSpawnPositionCenter();
     }
-
-    /**
-     * Test map
-     * TODO map generator
-     */
-
 
     public void setWorldInputProcessor(WorldInputProcessor processor){
         worldInputProcessor = processor;

@@ -66,11 +66,10 @@ public class Quadtree {
         nodes[3] = new Quadtree(level + 1, new QuadRectangle(x + subWidth, y + subHeight, subWidth, subHeight));
     }
 
-    private int getIndex(Rectangle pRect) {
+    private int getIndex(PropertyRectangle pRect) {
         int index = -1;
         double verticalMidpoint = bounds.getX() + (bounds.getWidth() / 2);
         double horizontalMidpoint = bounds.getY() + (bounds.getHeight() / 2);
-
         // Object can completely fit within the top quadrants
         boolean topQuadrant = (pRect.getY() > horizontalMidpoint);
         // Object can completely fit within the bottom quadrants

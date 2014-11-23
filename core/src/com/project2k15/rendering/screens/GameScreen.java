@@ -66,9 +66,12 @@ public class GameScreen implements Screen {
         player = new Player(mapManager.getSpawnPosition().x, mapManager.getSpawnPosition().y,batch,objectManager);
         player.setMapManager(mapManager);
         worldInputProcessor.setPlayer(player);
-        objectManager.setPlayer(player);
         guiStage = new GuiStage(objectManager,gameCamera,player,mapManager,batch);
-        worldRenderer = new WorldRenderer(mapManager.getCurrentMap().getCurrentRoom().getMap(),objectManager,guiStage,gameCamera,batch);
+        worldRenderer = new WorldRenderer(mapManager,objectManager,guiStage,gameCamera,batch);
+        objectManager.setWorldRenderer(worldRenderer);
+        worldInputProcessor.setMapManager(mapManager);
+        objectManager.onRoomChanged();
+        objectManager.setPlayer(player);
 
         /**
          * Setting up the input multiplexer to reroute GUI&gameworld input

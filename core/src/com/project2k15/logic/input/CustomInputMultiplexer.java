@@ -1,6 +1,7 @@
 package com.project2k15.logic.input;
 
 import com.badlogic.gdx.InputMultiplexer;
+import com.project2k15.rendering.WorldRenderer;
 import com.project2k15.rendering.ui.GuiStage;
 
 /**
@@ -16,7 +17,7 @@ public class CustomInputMultiplexer extends InputMultiplexer {
         addProcessor(processor);
     }
 
-    public void updateInput(float delta){
+    public void updateInput(float delta) {
         processor.update();
     }
 }

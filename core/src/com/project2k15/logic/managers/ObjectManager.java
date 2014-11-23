@@ -11,6 +11,7 @@ import com.project2k15.logic.collision.RectangleTypes;
 import com.project2k15.logic.entities.Player;
 import com.project2k15.logic.entities.abstracted.Entity;
 import com.project2k15.logic.maps.Map;
+import com.project2k15.rendering.WorldRenderer;
 
 /**
  * Object Manager
@@ -23,6 +24,7 @@ public class ObjectManager implements RectangleTypes {
      * QuadTree is just a regular quad tree data structure
      * Player is stored to re-add him after clearing the objectList.
      * Map references the map currently stored in the mapManager
+     * WorldRenderer used to inform the map renderer about map/room change.
      */
     private Array<Entity> objectList = new Array<Entity>();
     private Array<PropertyRectangle> passRectangleList;
@@ -30,6 +32,7 @@ public class ObjectManager implements RectangleTypes {
     private Quadtree quadtree;
     private Player player;
     private Map storedMap;
+    private WorldRenderer worldRenderer;
 
     public ObjectManager(){
         passRectangleList = new Array<PropertyRectangle>();
@@ -37,7 +40,10 @@ public class ObjectManager implements RectangleTypes {
 
     public void setMap(Map map){
         storedMap = map;
-        onRoomChanged();
+    }
+
+    public void setWorldRenderer(WorldRenderer worldRenderer){
+        this.worldRenderer = worldRenderer;
     }
 
     public void onRoomChanged(){
@@ -47,16 +53,18 @@ public class ObjectManager implements RectangleTypes {
          * Renderer is automatically working on the new map so no need to call it.
          */
         objectList.clear();
-        collisionObjects = storedMap.getCurrentRoom().getMap().getLayers().get("collisionObjects").getObjects();
-        int mapWidth = storedMap.getCurrentRoom().getMap().getProperties().get("width", Integer.class);
-        int mapHeight = storedMap.getCurrentRoom().getMap().getProperties().get("height", Integer.class);
-        quadtree = new Quadtree(0,new QuadRectangle(0,0,mapWidth,mapHeight));
+        collisionObjects = storedMap.getCurrentRoom().getTiledMap().getLayers().get("collisionObjects").getObjects();
+        float mapWidth = storedMap.getCurrentRoom().getWidth();
+        float mapHeight = storedMap.getCurrentRoom().getHeight();
+        quadtree = new Quadtree(0,new QuadRectangle(0,0,(int)mapWidth,(int)mapHeight));
+        worldRenderer.onMapChanged();
     }
 
     public void setPlayer(Player p) {
         /**
          * Changes the player reference and adds it to the list
          */
+        objectList.removeValue(player,true);
         player = p;
         objectList.add(player);
     }

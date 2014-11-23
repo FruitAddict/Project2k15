@@ -5,7 +5,7 @@
  </tileset>
  <layer name="Ground" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJztw8EJAAAMA6F7ZP+Zu0dRcNVUVVXV1w83gBAB
+   eJzt1TEKACAMBMEI+f+bbS0k4CFJxC2mda+KbmYuGgH1zZf6uy3ZXQCApvpud/izKvqd2r/11x0VXQC4qcsdz9oRtU/6EyAhD1Y=
   </data>
  </layer>
  <layer name="Walls" width="32" height="32">

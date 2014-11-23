@@ -10,5 +10,8 @@ public interface RectangleTypes {
     public final int PROJECTILE = 3;
     public final int CHARACTER = 4;
     public final int PLAYER = 5;
-    public final int PORTAL = 6;
+    public final int PORTAL_NORTH = 6;
+    public final int PORTAL_EAST = 7;
+    public final int PORTAL_SOUTH = 8;
+    public final int PORTAL_WEST = 9;
 }

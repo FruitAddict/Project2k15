@@ -21,20 +21,20 @@ public class  Player extends Character implements RectangleTypes {
 
     private PropertyRectangle colRect;
     public boolean piercingShotsDebug = false;
-    Animation animationNorth;
-    Animation animationSouth;
-    Animation animationWest;
-    Animation animationEast;
-    TextureRegion[] southRegion = new TextureRegion[3];
-    TextureRegion[] northRegion = new TextureRegion[3];
-    TextureRegion[] eastRegion = new TextureRegion[3];
-    TextureRegion[] westRegion = new TextureRegion[3];
-    float stateTime;
-    float lastAttack = 0;
-    float timeBetweenAttacks = 0.1f;
-    SpriteBatch batch;
-    ObjectManager objectManager;
-    MapManager mapManager;
+    private Animation animationNorth;
+    private Animation animationSouth;
+    private Animation animationWest;
+    private Animation animationEast;
+    private TextureRegion[] southRegion = new TextureRegion[3];
+    private TextureRegion[] northRegion = new TextureRegion[3];
+    private TextureRegion[] eastRegion = new TextureRegion[3];
+    private TextureRegion[] westRegion = new TextureRegion[3];
+    private float stateTime;
+    private float lastAttack = 0;
+    private float timeBetweenAttacks = 0.1f;
+    private SpriteBatch batch;
+    private ObjectManager objectManager;
+    private MapManager mapManager;
 
 
     public Player(float positionX, float positionY, SpriteBatch batch, ObjectManager objectManager) {
@@ -75,14 +75,21 @@ public class  Player extends Character implements RectangleTypes {
 
     @Override
     public void update(float delta, Array<PropertyRectangle> collisionRecs) {
-        PropertyRectangle rec =CollisionResolver.resolveCollisionsByType(collisionRecs,this,PORTAL);
+        /**
+         * Check whether you're not colliding with a map transition portal
+         * if so, handle it
+         */
+        PropertyRectangle rec =CollisionResolver.resolveCollisionsByType(collisionRecs,this,PORTAL_EAST,PORTAL_NORTH,PORTAL_SOUTH,PORTAL_WEST);
         if(rec != null){
             mapManager.getCurrentMap().changeRoom(rec.getLinkID());
             objectManager.onRoomChanged();
-            position.set(mapManager.getCurrentMap().getCurrentRoom().getSpawnPosition());
+            position.set(mapManager.getCurrentMap().getCurrentRoom().getSpawnPositionByType(rec.getType()));
             objectManager.addObject(this);
             System.out.println("portal");
         }
+        /**
+         * Resolve terrain collisions
+         */
         CollisionResolver.resolveCollisionsTerrain(delta, collisionRecs, this);
         stateTime += delta;
         batch.draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());

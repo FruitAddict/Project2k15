@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.project2k15.logic.entities.Player;
+import com.project2k15.logic.managers.MapManager;
+import com.project2k15.rendering.WorldRenderer;
 
 /**
  * Game world input processor. Takes care of steering, attacking and other things not releated to GUI
@@ -34,6 +36,11 @@ public class WorldInputProcessor implements InputProcessor {
      * Vector to store normalized velocity derived in the attacking alghorithm in the update() method
      */
     private Vector2 velocityNormalized;
+
+    /**
+     * MapManager to obtain current map width/height
+     */
+    private MapManager mapManager;
 
 
     public WorldInputProcessor() {
@@ -127,6 +134,10 @@ public class WorldInputProcessor implements InputProcessor {
         camera.zoom = 1f;
     }
 
+    public void setMapManager(MapManager mapManager){
+        this.mapManager = mapManager;
+    }
+
     public void setPlayer(Player player){
         this.player = player;
     }
@@ -146,15 +157,15 @@ public class WorldInputProcessor implements InputProcessor {
         // Horizontal axis
         if (cameraLeft <= 0) {
             camera.position.x = camera.viewportWidth * camera.zoom / 2;
-        } else if (cameraRight >= mapWidth) {
-            camera.position.x = mapWidth - camera.viewportWidth * camera.zoom / 2;
+        } else if (cameraRight >= mapManager.getMapWidth()) {
+            camera.position.x = mapManager.getMapWidth() - camera.viewportWidth * camera.zoom / 2;
         }
 
         // Vertical axis
         if (cameraBottom <= 0) {
             camera.position.y = camera.viewportHeight * camera.zoom / 2;
-        } else if (cameraTop >= mapHeight) {
-            camera.position.y = mapHeight - camera.viewportHeight * camera.zoom / 2;
+        } else if (cameraTop >= mapManager.getMapHeight()) {
+            camera.position.y = mapManager.getMapHeight() - camera.viewportHeight * camera.zoom / 2;
         }
 
         /**

@@ -1,4 +1,4 @@
-package com.project2k15.logic.entities;
+package com.project2k15.logic.collision;
 
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
@@ -161,7 +161,7 @@ public class CollisionResolver implements RectangleTypes {
         for (PropertyRectangle rec : checkRectangles) {
             if (rec.getOwner() != obj && obj.getCollisionRectangle().overlaps(rec)) {
                 for(int i : types) {
-                    if(rec.getType() == i) {
+                    if(rec.getType() == i && rec != obj.getCollisionRectangle()) {
                         System.out.println(rec.getType());
                         return rec;
                     }
@@ -169,5 +169,14 @@ public class CollisionResolver implements RectangleTypes {
             }
         }
         return null;
+    }
+
+    public static boolean resolveCollisionSimple(Array<PropertyRectangle> checkRectangles, PropertyRectangle object){
+        for(PropertyRectangle rec: checkRectangles){
+            if(rec.overlaps(object)){
+                return true;
+            }
+        }
+        return false;
     }
 }

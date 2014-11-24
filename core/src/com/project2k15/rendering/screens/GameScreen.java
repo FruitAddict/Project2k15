@@ -60,6 +60,7 @@ public class GameScreen implements Screen {
         mapManager = new MapManager();
         worldInputProcessor.setMapSize(mapManager.getMapWidth(),mapManager.getMapHeight());
         objectManager.setMap(mapManager.getCurrentMap());
+        objectManager.setBatch(batch);
         mapManager.setObjectManager(objectManager);
         mapManager.setWorldInputProcessor(worldInputProcessor);
         worldInputProcessor.setCamera(gameCamera);
@@ -70,8 +71,11 @@ public class GameScreen implements Screen {
         worldRenderer = new WorldRenderer(mapManager,objectManager,guiStage,gameCamera,batch);
         objectManager.setWorldRenderer(worldRenderer);
         worldInputProcessor.setMapManager(mapManager);
-        objectManager.onRoomChanged();
         objectManager.setPlayer(player);
+        objectManager.onRoomChanged();
+        player.setCurrentRoom(mapManager.getCurrentMap().getCurrentRoom());
+        objectManager.clear();
+
 
         /**
          * Setting up the input multiplexer to reroute GUI&gameworld input

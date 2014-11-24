@@ -1,6 +1,7 @@
 
 package com.project2k15.logic.managers;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.utils.Array;
@@ -28,11 +29,15 @@ public class ObjectManager implements RectangleTypes {
      */
     private Array<Entity> objectList = new Array<Entity>();
     private Array<PropertyRectangle> passRectangleList;
-    private MapObjects collisionObjects;
     private Quadtree quadtree;
     private Player player;
     private Map storedMap;
     private WorldRenderer worldRenderer;
+
+
+    //TODO RREMVOE THSI REF
+    private SpriteBatch batch;
+    //TODO REMOVE THIS SHIT
 
     public ObjectManager(){
         passRectangleList = new Array<PropertyRectangle>();
@@ -53,20 +58,20 @@ public class ObjectManager implements RectangleTypes {
          * Renderer is automatically working on the new map so no need to call it.
          */
         objectList.clear();
-        collisionObjects = storedMap.getCurrentRoom().getTiledMap().getLayers().get("collisionObjects").getObjects();
+        objectList.addAll(storedMap.getCurrentRoom().getGameObjectList());
         float mapWidth = storedMap.getCurrentRoom().getWidth();
         float mapHeight = storedMap.getCurrentRoom().getHeight();
         quadtree = new Quadtree(0,new QuadRectangle(0,0,(int)mapWidth,(int)mapHeight));
         worldRenderer.onMapChanged();
+        player.setCurrentRoom(storedMap.getCurrentRoom());
     }
 
     public void setPlayer(Player p) {
         /**
          * Changes the player reference and adds it to the list
          */
-        objectList.removeValue(player,true);
         player = p;
-        objectList.add(player);
+        objectList.clear();
     }
 
 
@@ -81,14 +86,16 @@ public class ObjectManager implements RectangleTypes {
          */
         passRectangleList.clear();
         quadtree.clear();
-
         for(int i =0; i< storedMap.getCurrentRoom().getPortalRecs().size;i++){
             quadtree.insert(storedMap.getCurrentRoom().getPortalRecs().get(i));
         }
 
-        for (int i = 0; i < collisionObjects.getCount(); i++) {
-            PropertyRectangle obj = new PropertyRectangle(((RectangleMapObject) collisionObjects.get(i)).getRectangle(), TERRAIN);
-            quadtree.insert(obj);
+        for(int i =0;i<storedMap.getCurrentRoom().getGameObjectList().size;i++){
+            quadtree.insert(storedMap.getCurrentRoom().getGameObjectList().get(i).getCollisionRectangle());
+        }
+
+        for(PropertyRectangle rec : storedMap.getCurrentRoom().getTerrainCollisionRectangles()){
+            quadtree.insert(rec);
         }
 
         for (int i = 0; i < objectList.size; i++) {
@@ -106,6 +113,7 @@ public class ObjectManager implements RectangleTypes {
     public void clear() {
         objectList.clear();
         addObject(player);
+        objectList.addAll(storedMap.getCurrentRoom().getGameObjectList());
     }
 
     public Quadtree getTree() {
@@ -113,11 +121,15 @@ public class ObjectManager implements RectangleTypes {
     }
 
     public boolean addObject(Entity obj) {
-        if (objectList.size < 200) {
+        if (objectList.size < 250) {
             objectList.add(obj);
             return true;
         }
         return false;
+    }
+
+    public Player getPlayer(){
+        return player;
     }
 
     public void removeObject(Entity obj) {
@@ -126,6 +138,14 @@ public class ObjectManager implements RectangleTypes {
 
     public int getNumberOfObjects() {
         return objectList.size;
+    }
+
+    //TODO REMOVE
+    public void setBatch(SpriteBatch batch){
+        this.batch = batch;
+    }
+    public SpriteBatch getBatch(){
+        return batch;
     }
 
 }

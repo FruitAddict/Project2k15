@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.project2k15.logic.collision.RectangleTypes;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.collision.PropertyRectangle;
-import com.project2k15.logic.entities.CollisionResolver;
+import com.project2k15.logic.collision.CollisionResolver;
 import com.project2k15.logic.entities.abstracted.Character;
 import com.project2k15.logic.entities.abstracted.MovableObject;
 import com.project2k15.rendering.Assets;
@@ -28,8 +28,11 @@ public class Projectile extends MovableObject implements RectangleTypes {
     boolean dead = false;
     float timeDead = 0;
     boolean pierce = false;
+    int[] targetTypes;
+    float knockBackMultiplier;
 
-    public Projectile(float originX, float originY, int width, int height, Vector2 direction, ObjectManager objectManager, SpriteBatch batch, boolean piercing) {
+    public Projectile(float originX, float originY, int width, int height, Vector2 direction, ObjectManager objectManager, SpriteBatch batch, boolean piercing,float knockbackmultiplier, int... targetTypes) {
+        this.knockBackMultiplier = knockbackmultiplier;
         pierce = piercing;
         this.width = width;
         this.direction = direction;
@@ -39,6 +42,7 @@ public class Projectile extends MovableObject implements RectangleTypes {
         this.batch = batch;
         maxVelocity = 200;
         clamping = 1;
+        this.targetTypes = targetTypes;
         Texture testM = Assets.manager.get("projectile.png");
         TextureRegion[][] tmpM = TextureRegion.split(testM, testM.getWidth() / 4, testM.getHeight());
         TextureRegion[] animRegion = new TextureRegion[4];
@@ -61,7 +65,7 @@ public class Projectile extends MovableObject implements RectangleTypes {
         batch.draw(getCurrentFrame(), position.x, position.y, width, height);
         if (dead) {
             timeDead += delta;
-            if (timeDead > 3) {
+            if (timeDead > 1) {
                 System.out.println(timeDead);
                 objectManager.removeObject(this);
             }
@@ -69,17 +73,22 @@ public class Projectile extends MovableObject implements RectangleTypes {
             velocity.set(direction.x, direction.y * -1).scl(maxVelocity);
             position.add(velocity.scl(delta));
             getCollisionRectangle().setPosition(position.x, position.y);
-            PropertyRectangle rec = CollisionResolver.resolveCollisionsByType(checkRectangles, this, CHARACTER,TERRAIN);
+            PropertyRectangle rec = CollisionResolver.resolveCollisionsByType(checkRectangles, this,targetTypes);
             if (rec != null) {
                 if (rec.getType() == TERRAIN) {
                     dead = true;
                     width *= 1.5;
                     height *= 1.5;
                 }
-                if (rec.getType() == CHARACTER) {
-                    Character ch = (Character) rec.getOwner();
-                    ch.setHealthPoints(ch.getHealthPoints() - 1);
-                    ch.getVelocity().add(this.velocity.x * 50, this.velocity.y * 50);
+                else{
+                    if(rec.getOwner() instanceof Character) {
+                        Character ch = (Character) rec.getOwner();
+                        ch.setHealthPoints(ch.getHealthPoints() - 1);
+                        ch.hitByPlayer=true;
+                    }
+                    if(rec.getOwner() instanceof MovableObject) {
+                        ((MovableObject) (rec.getOwner())).getVelocity().add(this.velocity.x * 50 *knockBackMultiplier, this.velocity.y * 50*knockBackMultiplier);
+                    }
                     if (!pierce) {
                         dead = true;
                     }

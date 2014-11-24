@@ -9,7 +9,9 @@ import com.project2k15.rendering.Assets;
 
 public class Map {
     /**
-     * Map class. Contains rooms and their linking points
+     * Map class. Contains array of rooms and their linking points.
+     * Rooms hold entity lists etc, dispose method ensure that those references are properly
+     * handled by GC.
      */
     private Array<Room> roomArray;
     private Room currentRoom;

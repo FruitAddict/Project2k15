@@ -1,12 +1,28 @@
 package com.project2k15.logic.maps;
 
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.collision.RectangleTypes;
+import com.project2k15.logic.entities.abstracted.MovableObject;
 
 public class Room implements RectangleTypes {
+    /**
+     * Room class. Stores reference to it's tiled map representation.
+     * TiledMap - stores reference to the tiledmap (obtained from the mapmanager)
+     * exit rectangles - passed to the object manager (when player enters them it changes the room)
+     * exitPoints - explained in constructor
+     *
+     * spawnPosition vectors - center must always be created, others are created only when the map can be accessed from this side
+     * (an exit point exists and has a valid link id ).
+     *
+     * entityList - full list of gameobjects
+     *
+     * mapObjects - terrain collision objects of this room
+     */
     private TiledMap tiledMap;
     private PropertyRectangle exitNorth;
     private PropertyRectangle exitSouth;
@@ -24,10 +40,10 @@ public class Room implements RectangleTypes {
     private Vector2 spawnPositionWest;
     private Map parentMap;
 
-    /**
-     * Class representing a single room. Contains possible exit points ( Clockwise order
-     * NESW ), each linking to specifid ID ( in the map room list )
-     */
+    private Array<MovableObject> gameObjectList;
+    private Array<PropertyRectangle> terrainCollisionRecs;
+
+
     public Room(Map map, int[] exitPoints, TiledMap tiledMap, Vector2 spawnPos){
         /**
          * ExitPoints format: [idNorth, idEast, idSouth, idWest]
@@ -38,18 +54,18 @@ public class Room implements RectangleTypes {
         this.tiledMap = tiledMap;
         parentMap = map;
         this.exitPoints = exitPoints;
-        /**
-         * Sets the width and height of the current room (TiledMap).
-         */
+
+        //Sets the width and height of the current room (TiledMap).
+
         width = getTiledMap().getProperties().get("width", Integer.class)
                 * getTiledMap().getProperties().get("tilewidth", Integer.class);
 
         height = getTiledMap().getProperties().get("height",Integer.class)
                 * getTiledMap().getProperties().get("tileheight", Integer.class);
-        /**
-         * Creating portal rectangles, first checks whether those linked rooms exist at all in the parent map. then checks
-         * if those ids arent null references and finnaly creates those rectangles.
-         */
+
+        //Creating portal rectangles, first checks whether those linked rooms exist at all in the parent map. then checks
+        //if those ids arent null references and finnaly creates those rectangles.
+
         try {
             if (exitPoints[0] != -1 ) {
                 exitNorth = new PropertyRectangle(getWidth() / 2 - 64, getHeight() - 64, 128, 64, PORTAL_NORTH, exitPoints[0]);
@@ -81,9 +97,21 @@ public class Room implements RectangleTypes {
                 spawnPositionWest = new Vector2(65,getHeight()/2-64);
             }
         }catch(IndexOutOfBoundsException ex){
-            System.out.println("Id of the linekd room at west was out of bounds.");
+            System.out.println("Id of the linked room at west was out of bounds.");
         }
         spawnPositionCenter = spawnPos;
+
+        //Initalizies array holding the game objects in this room (items, mobs etc)
+        gameObjectList = new Array<MovableObject>();
+
+        //gets the collision objects
+        MapObjects collisionObjects = tiledMap.getLayers().get("collisionObjects").getObjects();
+        terrainCollisionRecs = new Array<PropertyRectangle>();
+        for (int i = 0; i < collisionObjects.getCount(); i++) {
+            PropertyRectangle obj = new PropertyRectangle(((RectangleMapObject) collisionObjects.get(i)).getRectangle(), TERRAIN);
+            terrainCollisionRecs.add(obj);
+        }
+
 
     }
 
@@ -110,6 +138,15 @@ public class Room implements RectangleTypes {
 
     public TiledMap getTiledMap(){
         return tiledMap;
+    }
+
+    public Array<MovableObject> getGameObjectList(){
+        return gameObjectList;
+    }
+
+    public void addGameObject(MovableObject o){
+        if(!gameObjectList.contains(o,true))
+        gameObjectList.add(o);
     }
 
     public float getWidth(){
@@ -158,6 +195,10 @@ public class Room implements RectangleTypes {
         } else {
             return getSpawnPositionCenter();
         }
+    }
+
+    public Array<PropertyRectangle> getTerrainCollisionRectangles(){
+        return terrainCollisionRecs;
     }
 
 }

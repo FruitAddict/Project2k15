@@ -90,4 +90,11 @@ public abstract class MovableObject extends Entity {
         return velocity;
     }
 
+    public void setWidth(float w){
+        width=w;
+    }
+    public void setHeight(float h){
+        height=h;
+    }
+
 }

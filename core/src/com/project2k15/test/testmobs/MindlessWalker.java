@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.project2k15.logic.collision.RectangleTypes;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.collision.PropertyRectangle;
-import com.project2k15.logic.entities.CollisionResolver;
+import com.project2k15.logic.collision.CollisionResolver;
 import com.project2k15.logic.entities.Player;
 import com.project2k15.logic.entities.abstracted.Character;
 import com.project2k15.rendering.Assets;
@@ -32,7 +32,7 @@ public class MindlessWalker extends Character implements RectangleTypes {
     Animation rightAnimation;
     Animation leftAnimation;
     float stateTime;
-    SpriteBatch batch;
+    static SpriteBatch batch;
     ObjectManager manager;
 
 
@@ -77,10 +77,10 @@ public class MindlessWalker extends Character implements RectangleTypes {
             mobWalkRight[i] = tmpM[3][i];
         }
 
-        northAnimation = new Animation(0.1f, walkTest);
-        southAnimation = new Animation(0.1f, walkTest);
-        rightAnimation = new Animation(0.1f, walkTest);
-        leftAnimation = new Animation(0.1f,walkTest);
+        northAnimation = new Animation(0.1f, mobWalkNorth);
+        southAnimation = new Animation(0.1f, mobWalkSouth);
+        rightAnimation = new Animation(0.1f, mobWalkRight);
+        leftAnimation = new Animation(0.1f,mobWalkLeft);
 
         facingDown = true;
     }
@@ -91,59 +91,83 @@ public class MindlessWalker extends Character implements RectangleTypes {
             manager.removeObject(this);
         }
         CollisionResolver.resolveCollisionsTerrain(delta, checkRectangles, this);
-        if (timeSpentDoingShit == 0) {
-            random = rng.nextInt(4);
-            stateTime += delta;
-            switch (random) {
-                case 0: {
-                    moveDown();
-                    break;
+        if(!hitByPlayer) {
+            if (timeSpentDoingShit == 0) {
+                random = rng.nextInt(4);
+                stateTime += delta;
+                switch (random) {
+                    case 0: {
+                        moveDown();
+                        break;
+                    }
+                    case 1: {
+                        moveRight();
+                        break;
+                    }
+                    case 2: {
+                        moveUp();
+                        break;
+                    }
+                    case 3: {
+                        moveLeft();
+                        break;
+                    }
                 }
-                case 1: {
-                    moveRight();
-                    break;
-                }
-                case 2: {
-                    moveUp();
-                    break;
-                }
-                case 3: {
-                    moveLeft();
-                    break;
-                }
-            }
-            timeSpentDoingShit += delta;
-        } else if (timeSpentDoingShit > 0 && timeSpentDoingShit < 1) {
-            stateTime += delta;
-            switch (random) {
-                case 0: {
-                    moveDown();
-                    break;
-                }
-                case 1: {
-                    moveRight();
-                    break;
-                }
-                case 2: {
-                    moveUp();
-                    break;
-                }
-                case 3: {
-                    moveLeft();
-                    break;
-                }
+                timeSpentDoingShit += delta;
+            } else if (timeSpentDoingShit > 0 && timeSpentDoingShit < 1) {
+                stateTime += delta;
+                switch (random) {
+                    case 0: {
+                        moveDown();
+                        break;
+                    }
+                    case 1: {
+                        moveRight();
+                        break;
+                    }
+                    case 2: {
+                        moveUp();
+                        break;
+                    }
+                    case 3: {
+                        moveLeft();
+                        break;
+                    }
 
+                }
+                timeSpentDoingShit += delta;
+            } else {
+                timeSpentDoingShit = 0;
             }
-            timeSpentDoingShit += delta;
+            batch.draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());
         } else {
-            timeSpentDoingShit = 0;
+            setWidth(64);
+            setHeight(64);
+            maxVelocity = 150;
+            speed = 75;
+            stateTime+=delta;
+            float distance = (float) (Math.sqrt(Math.pow(position.x - manager.getPlayer().getPosition().x, 2) + Math.pow(position.y - manager.getPlayer().getPosition().y, 2)));
+            if (distance > 10) {
+                if (manager.getPlayer().getPosition().x > position.x) {
+                    moveRight();
+                } else if (manager.getPlayer().getPosition().x < position.x) {
+                    moveLeft();
+                }
+                if (manager.getPlayer().getPosition().y > position.y) {
+                    moveUp();
+                } else if (manager.getPlayer().getPosition().y < position.y) {
+                    moveDown();
+                }
+            }
+            batch.setColor(1.0f,0.3f,0.3f,1);
+            batch.draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());
+            batch.setColor(1.0f,1.0f,1.0f,1);
         }
 
-        batch.draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());
     }
 
     public static MindlessWalker getRandomWalker(float x, float y, SpriteBatch batch, ObjectManager manager) {
-        return new MindlessWalker(x, y, 25, 25, 25, player, batch, manager);
+        return new MindlessWalker(x, y, 32, 32, 25, manager.getPlayer(), batch, manager);
     }
 
     public void setSize(float width, float height) {

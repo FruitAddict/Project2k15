@@ -10,6 +10,8 @@ public abstract class Character extends MovableObject {
 
     protected float healthPoints;
 
+    public boolean hitByPlayer=false;
+
     @Override
     public void moveRight() {
         super.moveRight();
@@ -49,4 +51,5 @@ public abstract class Character extends MovableObject {
         facingRight = bool;
         facingDown = bool;
     }
+
 }

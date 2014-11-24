@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.project2k15.logic.input.WorldInputProcessor;
 import com.project2k15.logic.maps.Map;
+import com.project2k15.logic.maps.RoomFiller;
 import com.project2k15.rendering.Assets;
 
 /**
@@ -34,6 +35,8 @@ public class MapManager {
 
     public void setObjectManager(ObjectManager objectManager){
         this.objectManager = objectManager;
+        RoomFiller.fillRoom(currentMap.getRoomArray().get(0),20,objectManager);
+        RoomFiller.fillRoom(currentMap.getRoomArray().get(1),20,objectManager);
     }
 
     public Map getCurrentMap(){

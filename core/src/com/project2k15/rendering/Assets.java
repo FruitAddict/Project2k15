@@ -7,7 +7,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 /**
- * Class for managing assets in the game.
+ * Class for managing assets in the game. Currently naively loads
+ * all resources and maps
+ * TODO rewrite of this class.
  */
 public class Assets {
     public static AssetManager manager = new AssetManager();

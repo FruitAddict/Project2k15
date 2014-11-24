@@ -6,11 +6,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.project2k15.logic.collision.CollisionResolver;
 import com.project2k15.logic.collision.RectangleTypes;
 import com.project2k15.logic.managers.MapManager;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.entities.abstracted.Character;
+import com.project2k15.logic.maps.Room;
 import com.project2k15.rendering.Assets;
 import com.project2k15.test.testmobs.Projectile;
 
@@ -35,6 +37,7 @@ public class  Player extends Character implements RectangleTypes {
     private SpriteBatch batch;
     private ObjectManager objectManager;
     private MapManager mapManager;
+    private Room currentRoom;
 
 
     public Player(float positionX, float positionY, SpriteBatch batch, ObjectManager objectManager) {
@@ -73,13 +76,17 @@ public class  Player extends Character implements RectangleTypes {
         this.mapManager = mapManager;
     }
 
+    public void setCurrentRoom(Room room){
+        currentRoom = room;
+    }
+
     @Override
     public void update(float delta, Array<PropertyRectangle> collisionRecs) {
         /**
          * Check whether you're not colliding with a map transition portal
          * if so, handle it
          */
-        PropertyRectangle rec =CollisionResolver.resolveCollisionsByType(collisionRecs,this,PORTAL_EAST,PORTAL_NORTH,PORTAL_SOUTH,PORTAL_WEST);
+        PropertyRectangle rec = CollisionResolver.resolveCollisionsByType(collisionRecs, this, PORTAL_EAST, PORTAL_NORTH, PORTAL_SOUTH, PORTAL_WEST);
         if(rec != null){
             mapManager.getCurrentMap().changeRoom(rec.getLinkID());
             objectManager.onRoomChanged();
@@ -97,9 +104,7 @@ public class  Player extends Character implements RectangleTypes {
 
     public void attack(Vector2 direction) {
         if (stateTime - lastAttack > timeBetweenAttacks) {
-            objectManager.addObject(new Projectile(position.x, position.y, 12, 12, direction, objectManager, batch, piercingShotsDebug));
-            objectManager.addObject(new Projectile(position.x, position.y, 12, 12, direction.cpy().add(-0.1f, -0.1f), objectManager, batch, piercingShotsDebug));
-            objectManager.addObject(new Projectile(position.x, position.y, 12, 12, direction.cpy().add(0.1f, 0.1f), objectManager, batch, piercingShotsDebug));
+            objectManager.addObject(new Projectile(position.x, position.y, 12, 12, direction, objectManager, batch, piercingShotsDebug,1,TERRAIN,CHARACTER));
             lastAttack = stateTime;
         }
     }

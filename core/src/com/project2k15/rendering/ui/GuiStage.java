@@ -17,6 +17,7 @@ import com.project2k15.logic.managers.MapManager;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.entities.Player;
 import com.project2k15.rendering.WorldRenderer;
+import com.project2k15.test.testmobs.Turret;
 import com.project2k15.test.testmobs.WalkerSpawner;
 
 /**
@@ -80,7 +81,7 @@ public class GuiStage extends Stage {
 
     private void test(){
         /**
-         * Placeholder fonts
+         * test method creates debug buttons/info labels and adds them to the stage.
          */
         BitmapFont font = new BitmapFont();
         font.scale(0.5f);
@@ -113,17 +114,30 @@ public class GuiStage extends Stage {
         sliderStyle.knob = skin.newDrawable("white",Color.RED);
         skin.add("default-horizontal",sliderStyle);
 
+        ScrollPane.ScrollPaneStyle scrollPaneStyle = new ScrollPane.ScrollPaneStyle();
+        scrollPaneStyle.hScrollKnob = skin.newDrawable("white",Color.RED);
+        scrollPaneStyle.vScrollKnob = skin.newDrawable("white",Color.BLUE);
+        skin.add("default",scrollPaneStyle);
+
         // Create a table that fills the screen. Everything else will go inside this table.
         VerticalGroup table = new VerticalGroup();
         table.setFillParent(true);
-        addActor(table);
+        table.align(Align.topLeft);
         // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
         final TextButton button = new TextButton("Clear Moving Objects", skin);
         final TextButton button2 = new TextButton("Piercing projectiles", skin);
         final TextButton spawnerButton = new TextButton("Mob Spawner", skin);
+        final TextButton turretButton = new TextButton("Place turret", skin);
         final TextButton enableQuadView = new TextButton("Quadtree view", skin);
         final Slider slider = new Slider(0,1,0.05f,false,skin);
         final Slider sliderZoom = new Slider(0.05f,1.5f,0.05f,false,skin);
+        final ScrollPane scrollPane = new ScrollPane(table,skin);
+        scrollPane.getStyle().hScrollKnob.setMinHeight(10);
+        scrollPane.getStyle().vScrollKnob.setMinWidth(10);
+        scrollPane.setSize(200, 300);
+
+        addActor(table);
+
         slider.getStyle().knob.setMinHeight(50);
         slider.getStyle().knob.setMinWidth(10);
         slider.setValue(player.getClamping());
@@ -139,6 +153,7 @@ public class GuiStage extends Stage {
         table.addActor(button2);
         table.addActor(spawnerButton);
         table.addActor(enableQuadView);
+        table.addActor(turretButton);
         table.addActor(firstLabel);
         table.addActor(secondLabel);
         table.addActor(posLabel);
@@ -182,6 +197,12 @@ public class GuiStage extends Stage {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 WorldRenderer.debugEnabled = !WorldRenderer.debugEnabled;
+            }
+        });
+        turretButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                objectManager.addObject(new Turret(player.getPosition().x,player.getPosition().y,objectManager,batch, player));
             }
         });
     }

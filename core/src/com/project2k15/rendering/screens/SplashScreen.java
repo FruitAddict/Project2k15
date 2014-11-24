@@ -39,16 +39,17 @@ public class SplashScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         timePassed+=delta;
-
-        if(Assets.manager.update()) {
-            this.dispose();
-            game.setScreen(new GameScreen(game));
+        if (Assets.manager.update()) {
+                this.dispose();
+                game.setScreen(new GameScreen(game));
         } else {
             batch.begin();
-            batch.draw(splashImage,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-            font.draw(batch,Float.toString(Assets.manager.getProgress()),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+            batch.draw(splashImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            font.draw(batch, Float.toString(Assets.manager.getProgress()), Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
             batch.end();
+            timePassed = 0;
         }
+
     }
 
     @Override

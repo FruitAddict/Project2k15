@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.project2k15.logic.collision.RectangleTypes;
+import com.project2k15.logic.managers.Controller;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.collision.CollisionResolver;
@@ -34,19 +35,20 @@ public class MindlessWalker extends Character implements RectangleTypes {
     float stateTime;
     static SpriteBatch batch;
     ObjectManager manager;
+    private Controller controller;
 
 
-    public MindlessWalker(float positionX, float positionY, float width, float height, float speed, Player player, SpriteBatch batch, ObjectManager manager) {
+    public MindlessWalker(float positionX, float positionY, float width, float height, float speed, SpriteBatch batch, ObjectManager manager, Controller controller) {
         position.set(positionX, positionY);
         this.width = width;
         this.height = height;
-        this.player = player;
         collisionRectangle = new PropertyRectangle(position.x, position.y, width, height / 2, this, CHARACTER);
         this.speed = speed;
         maxVelocity = 100;
         healthPoints = 5;
         this.batch = batch;
         this.manager = manager;
+        this.controller = controller;
 
         Texture testM = Assets.manager.get("pet.png");
         Texture test2m = Assets.manager.get("frontwalk.png");
@@ -89,6 +91,7 @@ public class MindlessWalker extends Character implements RectangleTypes {
     public void update(float delta, Array<PropertyRectangle> checkRectangles) {
         if (healthPoints < 1) {
             manager.removeObject(this);
+            controller.getMapManager().getCurrentMap().getCurrentRoom().getGameObjectList().removeValue(this,true);
         }
         CollisionResolver.resolveCollisionsTerrain(delta, checkRectangles, this);
         if(!hitByPlayer) {
@@ -146,16 +149,16 @@ public class MindlessWalker extends Character implements RectangleTypes {
             maxVelocity = 150;
             speed = 75;
             stateTime+=delta;
-            float distance = (float) (Math.sqrt(Math.pow(position.x - manager.getPlayer().getPosition().x, 2) + Math.pow(position.y - manager.getPlayer().getPosition().y, 2)));
+            float distance = (float) (Math.sqrt(Math.pow(position.x - controller.getPlayer().getPosition().x, 2) + Math.pow(position.y - controller.getPlayer().getPosition().y, 2)));
             if (distance > 10) {
-                if (manager.getPlayer().getPosition().x > position.x) {
+                if (controller.getPlayer().getPosition().x > position.x) {
                     moveRight();
-                } else if (manager.getPlayer().getPosition().x < position.x) {
+                } else if (controller.getPlayer().getPosition().x < position.x) {
                     moveLeft();
                 }
-                if (manager.getPlayer().getPosition().y > position.y) {
+                if (controller.getPlayer().getPosition().y > position.y) {
                     moveUp();
-                } else if (manager.getPlayer().getPosition().y < position.y) {
+                } else if (controller.getPlayer().getPosition().y < position.y) {
                     moveDown();
                 }
             }
@@ -166,8 +169,8 @@ public class MindlessWalker extends Character implements RectangleTypes {
 
     }
 
-    public static MindlessWalker getRandomWalker(float x, float y, SpriteBatch batch, ObjectManager manager) {
-        return new MindlessWalker(x, y, 32, 32, 25, manager.getPlayer(), batch, manager);
+    public static MindlessWalker getRandomWalker(float x, float y, SpriteBatch batch, ObjectManager manager, Controller con) {
+        return new MindlessWalker(x, y, 32, 32, 25, batch, manager, con);
     }
 
     public void setSize(float width, float height) {

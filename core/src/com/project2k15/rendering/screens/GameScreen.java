@@ -7,14 +7,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.project2k15.logic.input.CustomInputMultiplexer;
-import com.project2k15.logic.managers.Controller;
 import com.project2k15.logic.managers.MapManager;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.input.WorldInputProcessor;
 import com.project2k15.logic.entities.Player;
 import com.project2k15.rendering.WorldRenderer;
 import com.project2k15.rendering.ui.GuiStage;
-import com.project2k15.test.testmobs.WorldInputProcessorTest;
 
 /**
  * Main game screen. Contains main gameloop.
@@ -38,7 +36,6 @@ public class GameScreen implements Screen {
     Player player;
     SpriteBatch batch;
     CustomInputMultiplexer inputMultiplexer;
-    Controller controller;
 
     /**
      * WorldRenderer that hides ugly world rendering code from the game loop
@@ -48,45 +45,41 @@ public class GameScreen implements Screen {
     public GameScreen(Game game){
         this.game = game;
 
+        /**
+         * Setting the world input processor
+         */
+        WorldInputProcessor worldInputProcessor = new WorldInputProcessor();
 
-        //Creates all the needed managers/objects
-        controller = new Controller();
-        //TEST INPUT PROCESSOR
-        WorldInputProcessorTest worldInputProcessor = new WorldInputProcessorTest();
+        /**
+         * Spaghetti bolonesse
+         * TODO make it readable.
+         */
         gameCamera = new OrthographicCamera();
         batch = new SpriteBatch();
         objectManager = new ObjectManager();
         mapManager = new MapManager();
-        guiStage = new GuiStage();
-        worldRenderer = new WorldRenderer();
-        player = new Player();
-
-        //adds them to the controller
-        controller.setOrthographicCamera(gameCamera);
-        controller.setWorldInputProcessor(worldInputProcessor);
-        controller.setBatch(batch);
-        controller.setObjectManager(objectManager);
-        controller.setMapManager(mapManager);
-        controller.setGuiStage(guiStage);
-        controller.setWorldRenderer(worldRenderer);
-        controller.setPlayer(player);
-
-        //registers controller everywhere
-        worldInputProcessor.setController(controller);
-        objectManager.setController(controller);
-        mapManager.setController(controller);
-        guiStage.setController(controller);
-        player.setController(controller);
-        mapManager.createTestMap();
-        worldRenderer.setController(controller);
-
-        //creates gui and sets things in motion
-        guiStage.createGui();
+        worldInputProcessor.setMapSize(mapManager.getMapWidth(),mapManager.getMapHeight());
+        objectManager.setMap(mapManager.getCurrentMap());
+        objectManager.setBatch(batch);
+        mapManager.setObjectManager(objectManager);
+        mapManager.setWorldInputProcessor(worldInputProcessor);
+        worldInputProcessor.setCamera(gameCamera);
+        player = new Player(mapManager.getSpawnPosition().x, mapManager.getSpawnPosition().y,batch,objectManager);
+        player.setMapManager(mapManager);
+        worldInputProcessor.setPlayer(player);
+        guiStage = new GuiStage(objectManager,gameCamera,player,mapManager,batch);
+        worldRenderer = new WorldRenderer(mapManager,objectManager,guiStage,gameCamera,batch);
+        objectManager.setWorldRenderer(worldRenderer);
+        worldInputProcessor.setMapManager(mapManager);
+        objectManager.setPlayer(player);
         objectManager.onRoomChanged();
-        player.getPosition().set(mapManager.getSpawnPosition());
-        objectManager.addObject(player);
+        player.setCurrentRoom(mapManager.getCurrentMap().getCurrentRoom());
+        objectManager.clear();
 
-        //setting up the input multiplexer to reroute input
+
+        /**
+         * Setting up the input multiplexer to reroute GUI&gameworld input
+         */
         inputMultiplexer = new CustomInputMultiplexer(guiStage, worldInputProcessor);
         Gdx.input.setInputProcessor(inputMultiplexer);
 
@@ -110,6 +103,7 @@ public class GameScreen implements Screen {
          */
         gameCamera.setToOrtho(false, 840, 480*(Gdx.graphics.getWidth()/Gdx.graphics.getHeight()));
         guiStage.getViewport().update(width, height, true);
+        System.out.println(300*(width/height));
     }
 
     @Override

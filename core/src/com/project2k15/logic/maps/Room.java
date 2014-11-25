@@ -77,6 +77,7 @@ public class Room implements RectangleTypes {
         try {
             if (exitPoints[1] != -1) {
                 exitEast = new PropertyRectangle(getWidth()-64, getHeight() / 2 - 64, 64, 128, PORTAL_EAST, exitPoints[1]);
+                System.out.println(exitEast.getX()+" "+exitEast.getY()+" "+exitEast.getWidth()+" "+exitEast.getHeight());
                 spawnPositionEast = new Vector2(getWidth()-128,getHeight()/2-64);
             }
         }catch ( IndexOutOfBoundsException ex){

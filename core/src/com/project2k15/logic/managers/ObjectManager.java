@@ -19,22 +19,36 @@ import com.project2k15.rendering.WorldRenderer;
  */
 public class ObjectManager implements RectangleTypes {
     /**
-     * ObjectList stores entities that are not room-specific (like projectiles etc).
+     * ObjectList stores entities (not terrain)
      * passRectangleList is reusable list that each entity uses to obtain its neighbours from the quadtree
      * collisionObjects is list of terrain rectangles that are injected into the quadtree.
      * QuadTree is just a regular quad tree data structure
+     * Player is stored to re-add him after clearing the objectList.
+     * Map references the map currently stored in the mapManager
+     * WorldRenderer used to inform the map renderer about map/room change.
      */
     private Array<Entity> objectList = new Array<Entity>();
     private Array<PropertyRectangle> passRectangleList;
     private Quadtree quadtree;
-    private Controller controller;
+    private Player player;
+    private Map storedMap;
+    private WorldRenderer worldRenderer;
 
-    public void setController(Controller c){
-        controller=c;
-    }
+
+    //TODO RREMVOE THSI REF
+    private SpriteBatch batch;
+    //TODO REMOVE THIS SHIT
 
     public ObjectManager(){
         passRectangleList = new Array<PropertyRectangle>();
+    }
+
+    public void setMap(Map map){
+        storedMap = map;
+    }
+
+    public void setWorldRenderer(WorldRenderer worldRenderer){
+        this.worldRenderer = worldRenderer;
     }
 
     public void onRoomChanged(){
@@ -44,13 +58,22 @@ public class ObjectManager implements RectangleTypes {
          * Renderer is automatically working on the new map so no need to call it.
          */
         objectList.clear();
-        objectList.addAll(controller.getMapManager().getCurrentMap().getCurrentRoom().getGameObjectList());
-        float mapWidth = controller.getMapManager().getCurrentMap().getCurrentRoom().getWidth();
-        float mapHeight = controller.getMapManager().getCurrentMap().getCurrentRoom().getHeight();
+        objectList.addAll(storedMap.getCurrentRoom().getGameObjectList());
+        float mapWidth = storedMap.getCurrentRoom().getWidth();
+        float mapHeight = storedMap.getCurrentRoom().getHeight();
         quadtree = new Quadtree(0,new QuadRectangle(0,0,(int)mapWidth,(int)mapHeight));
-        controller.getWorldRenderer().onMapChanged();
-        System.out.println("Number of objects in room: "+ controller.getMapManager().getCurrentMap().getCurrentRoom().getGameObjectList().size);
+        worldRenderer.onMapChanged();
+        player.setCurrentRoom(storedMap.getCurrentRoom());
     }
+
+    public void setPlayer(Player p) {
+        /**
+         * Changes the player reference and adds it to the list
+         */
+        player = p;
+        objectList.clear();
+    }
+
 
     public void update(float delta) {
         /**
@@ -63,15 +86,15 @@ public class ObjectManager implements RectangleTypes {
          */
         passRectangleList.clear();
         quadtree.clear();
-        for(int i =0; i< controller.getMapManager().getCurrentMap().getCurrentRoom().getPortalRecs().size;i++){
-            quadtree.insert(controller.getMapManager().getCurrentMap().getCurrentRoom().getPortalRecs().get(i));
+        for(int i =0; i< storedMap.getCurrentRoom().getPortalRecs().size;i++){
+            quadtree.insert(storedMap.getCurrentRoom().getPortalRecs().get(i));
         }
 
-        for(int i =0;i<controller.getMapManager().getCurrentMap().getCurrentRoom().getGameObjectList().size;i++){
-            quadtree.insert(controller.getMapManager().getCurrentMap().getCurrentRoom().getGameObjectList().get(i).getCollisionRectangle());
+        for(int i =0;i<storedMap.getCurrentRoom().getGameObjectList().size;i++){
+            quadtree.insert(storedMap.getCurrentRoom().getGameObjectList().get(i).getCollisionRectangle());
         }
 
-        for(PropertyRectangle rec : controller.getMapManager().getCurrentMap().getCurrentRoom().getTerrainCollisionRectangles()){
+        for(PropertyRectangle rec : storedMap.getCurrentRoom().getTerrainCollisionRectangles()){
             quadtree.insert(rec);
         }
 
@@ -89,8 +112,8 @@ public class ObjectManager implements RectangleTypes {
 
     public void clear() {
         objectList.clear();
-        addObject(controller.getPlayer());
-        objectList.addAll(controller.getMapManager().getCurrentMap().getCurrentRoom().getGameObjectList());
+        addObject(player);
+        objectList.addAll(storedMap.getCurrentRoom().getGameObjectList());
     }
 
     public Quadtree getTree() {
@@ -105,12 +128,24 @@ public class ObjectManager implements RectangleTypes {
         return false;
     }
 
+    public Player getPlayer(){
+        return player;
+    }
+
     public void removeObject(Entity obj) {
         objectList.removeValue(obj, true);
     }
 
     public int getNumberOfObjects() {
         return objectList.size;
+    }
+
+    //TODO REMOVE
+    public void setBatch(SpriteBatch batch){
+        this.batch = batch;
+    }
+    public SpriteBatch getBatch(){
+        return batch;
     }
 
 }

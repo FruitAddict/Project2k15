@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.project2k15.logic.managers.Controller;
 import com.project2k15.logic.managers.MapManager;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.entities.Player;
@@ -25,27 +24,45 @@ import com.project2k15.test.testmobs.WalkerSpawner;
  * Gui stage, concentrates everything gui releated to free up space in the main game class
  */
 public class GuiStage extends Stage {
-    //hardcoded skin as placeholder
+    /**
+     * Holds objectmanager, player, batch and camera and mapmanager references to operate on
+     */
+    ObjectManager objectManager;
+    OrthographicCamera gameCamera;
+    Player player;
+    MapManager mapManager;
+    SpriteBatch batch;
+
+    /**
+     * Hardcoded skin as a placeholder
+     */
     Skin skin;
-    //debug labels
+
+    /**
+     * Debug labels
+     */
     Label firstLabel;
     Label secondLabel;
     Label posLabel;
-    private Controller controller;
 
-    public void setController(Controller con){
-        controller = con;
+    public GuiStage(ObjectManager man, OrthographicCamera cam, Player play, MapManager map, SpriteBatch batch){
+        objectManager = man;
+        gameCamera = cam;
+        player = play;
+        mapManager = map;
+        this.batch = batch;
+        createGui();
     }
 
     @Override
     public void act(float delta){
         super.act(delta);
         firstLabel.setText(Float.toString(Gdx.graphics.getFramesPerSecond())+" FPS");
-        secondLabel.setText("Objects: " + controller.getObjectManager().getNumberOfObjects());
-        posLabel.setText(String.format( "X: %.2f Y: %.2f",controller.getPlayer().getPosition().x,controller.getPlayer().getPosition().y));
+        secondLabel.setText("Objects: "+objectManager.getNumberOfObjects());
+        posLabel.setText(String.format( "X: %.2f Y: %.2f",player.getPosition().x,player.getPosition().y));
     }
 
-    public void createGui(){
+    private void createGui(){
         /**
          * Creates a new texture, simply a white pixel that can be colored.
          * TODO: JSON skin handling
@@ -104,12 +121,8 @@ public class GuiStage extends Stage {
 
         // Create a table that fills the screen. Everything else will go inside this table.
         VerticalGroup table = new VerticalGroup();
-        VerticalGroup buttonTable = new VerticalGroup();
-        buttonTable.setFillParent(true);
-        buttonTable.align(Align.topRight);
         table.setFillParent(true);
-        table.right();
-        buttonTable.left();
+        table.align(Align.topLeft);
         // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
         final TextButton button = new TextButton("Clear Moving Objects", skin);
         final TextButton button2 = new TextButton("Piercing projectiles", skin);
@@ -118,45 +131,34 @@ public class GuiStage extends Stage {
         final TextButton enableQuadView = new TextButton("Quadtree view", skin);
         final Slider slider = new Slider(0,1,0.05f,false,skin);
         final Slider sliderZoom = new Slider(0.05f,1.5f,0.05f,false,skin);
-        final Slider sliderCam = new Slider(0.0f,1f,0.05f,false,skin);
         final ScrollPane scrollPane = new ScrollPane(table,skin);
-        final Label infoGround = new Label("Sliding around level",skin);
-        final Label infoZoom = new Label("Zoom",skin);
-        final Label infoCam = new Label("Camera interpolation",skin);
         scrollPane.getStyle().hScrollKnob.setMinHeight(10);
         scrollPane.getStyle().vScrollKnob.setMinWidth(10);
         scrollPane.setSize(200, 300);
 
-        sliderCam.setValue(controller.getWorldInputProcessor().getLerpValue());
-
         addActor(table);
-        addActor(buttonTable);
 
         slider.getStyle().knob.setMinHeight(50);
         slider.getStyle().knob.setMinWidth(10);
-        slider.setValue(controller.getPlayer().getClamping());
+        slider.setValue(player.getClamping());
 
         sliderZoom.getStyle().knob.setMinWidth(10);
         sliderZoom.getStyle().knob.setMinHeight(50);
-        sliderZoom.setValue(controller.getOrthographicCamera().zoom);
+        sliderZoom.setValue(gameCamera.zoom);
 
         firstLabel = new Label("", skin);
         secondLabel = new Label("", skin);
         posLabel = new Label("",skin);
-        buttonTable.addActor(button);
-        buttonTable.addActor(button2);
-        buttonTable.addActor(spawnerButton);
-        buttonTable.addActor(enableQuadView);
-        buttonTable.addActor(turretButton);
+        table.addActor(button);
+        table.addActor(button2);
+        table.addActor(spawnerButton);
+        table.addActor(enableQuadView);
+        table.addActor(turretButton);
         table.addActor(firstLabel);
         table.addActor(secondLabel);
         table.addActor(posLabel);
-        table.addActor(infoGround);
         table.addActor(slider);
-        table.addActor(infoZoom);
         table.addActor(sliderZoom);
-        table.addActor(infoCam);
-        table.addActor(sliderCam);
         table.align(Align.topRight);
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
         // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
@@ -164,31 +166,31 @@ public class GuiStage extends Stage {
         // revert the checked state.
         button.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                controller.getObjectManager().clear();
+                objectManager.clear();
             }
         });
         button2.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                controller.getPlayer().piercingShotsDebug = !controller.getPlayer().piercingShotsDebug;
+                player.piercingShotsDebug = !player.piercingShotsDebug;
             }
         });
         slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                controller.getPlayer().setClamping(slider.getValue());
+                player.setClamping(slider.getValue());
             }
         });
         spawnerButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                controller.getObjectManager().addObject(new WalkerSpawner(controller.getPlayer().getPosition().x, controller.getPlayer().getPosition().y, controller.getObjectManager(), controller.getBatch(),controller));
+                objectManager.addObject(new WalkerSpawner(player.getPosition().x,player.getPosition().y,objectManager,batch));
             }
         });
         sliderZoom.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                controller.getOrthographicCamera().zoom = sliderZoom.getValue();
+                gameCamera.zoom = sliderZoom.getValue();
             }
         });
         enableQuadView.addListener(new ChangeListener() {
@@ -200,13 +202,7 @@ public class GuiStage extends Stage {
         turretButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                controller.getObjectManager().addObject(new Turret(controller.getPlayer().getPosition().x, controller.getPlayer().getPosition().y, controller.getObjectManager(),controller.getBatch(), controller.getPlayer()));
-            }
-        });
-        sliderCam.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                controller.getWorldInputProcessor().setLerpValue(sliderCam.getValue());
+                objectManager.addObject(new Turret(player.getPosition().x,player.getPosition().y,objectManager,batch, player));
             }
         });
     }

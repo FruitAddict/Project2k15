@@ -26,6 +26,10 @@ public abstract class Entity {
         return position;
     }
 
+    public void setCollisionRectangle(PropertyRectangle rec) {
+        collisionRectangle = rec;
+    }
+
     public PropertyRectangle getCollisionRectangle() {
         return collisionRectangle;
     }

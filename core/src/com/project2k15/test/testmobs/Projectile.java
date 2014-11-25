@@ -66,6 +66,7 @@ public class Projectile extends MovableObject implements RectangleTypes {
         if (dead) {
             timeDead += delta;
             if (timeDead > 1) {
+                System.out.println(timeDead);
                 objectManager.removeObject(this);
             }
         } else {

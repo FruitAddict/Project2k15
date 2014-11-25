@@ -162,7 +162,6 @@ public class CollisionResolver implements RectangleTypes {
             if (rec.getOwner() != obj && obj.getCollisionRectangle().overlaps(rec)) {
                 for(int i : types) {
                     if(rec.getType() == i && rec != obj.getCollisionRectangle()) {
-                        System.out.println(rec.getType());
                         return rec;
                     }
                 }

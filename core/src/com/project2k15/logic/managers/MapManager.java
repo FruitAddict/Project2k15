@@ -19,24 +19,19 @@ public class MapManager {
      * doesnt go over the edges)
      */
     private Vector2 spawnPosition;
-    private ObjectManager objectManager;
-    private WorldInputProcessor worldInputProcessor;
     private Map currentMap;
+    private Controller controller;
 
-    public MapManager(){
+    public void setController(Controller controller){
+        this.controller = controller;
+    }
+
+    public void createTestMap(){
         currentMap = new Map(this);
         currentMap.createTestMap();
         spawnPosition = currentMap.getCurrentRoom().getSpawnPositionCenter();
-    }
-
-    public void setWorldInputProcessor(WorldInputProcessor processor){
-        worldInputProcessor = processor;
-    }
-
-    public void setObjectManager(ObjectManager objectManager){
-        this.objectManager = objectManager;
-        RoomFiller.fillRoom(currentMap.getRoomArray().get(0),20,objectManager);
-        RoomFiller.fillRoom(currentMap.getRoomArray().get(1),20,objectManager);
+        RoomFiller.fillRoom(currentMap.getRoomArray().get(0),20,controller.getObjectManager(),controller);
+        RoomFiller.fillRoom(currentMap.getRoomArray().get(1),20,controller.getObjectManager(),controller);
     }
 
     public Map getCurrentMap(){
@@ -48,8 +43,7 @@ public class MapManager {
 
     public void changeMap(Map map){
         currentMap = map;
-        objectManager.setMap(currentMap);
-        worldInputProcessor.setMapSize(getMapWidth(),getMapHeight());
+        controller.getWorldInputProcessor().setMapSize(getMapWidth(),getMapHeight());
     }
 
     public float getMapWidth() {

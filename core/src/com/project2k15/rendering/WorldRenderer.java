@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.project2k15.logic.managers.Controller;
 import com.project2k15.logic.managers.MapManager;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.rendering.ui.GuiStage;
@@ -23,15 +24,18 @@ public class WorldRenderer {
     private TiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
     public static boolean debugEnabled = false;
+    private Controller controller;
 
-    public WorldRenderer(MapManager mapManager, ObjectManager manager, GuiStage guiStage, OrthographicCamera camera, SpriteBatch batch){
-        this.mapManager = mapManager;
-        this.objectManager=manager;
-        this.guiStage = guiStage;
-        this.camera= camera;
-        this.batch = batch;
+    public void setController(Controller controller){
+        this.controller = controller;
+        this.mapManager = controller.getMapManager();
+        this.objectManager= controller.getObjectManager();
+        this.guiStage = controller.getGuiStage();
+        this.camera= controller.getOrthographicCamera();
+        this.batch = controller.getBatch();
         map = mapManager.getCurrentMap().getCurrentRoom().getTiledMap();
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, batch);
+
     }
 
     public void onMapChanged(){

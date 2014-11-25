@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.project2k15.logic.entities.Player;
+import com.project2k15.logic.managers.Controller;
 import com.project2k15.logic.managers.MapManager;
-import com.project2k15.rendering.WorldRenderer;
 
 /**
  * Game world input processor. Takes care of steering, attacking and other things not releated to GUI
@@ -17,30 +17,24 @@ public class WorldInputProcessor implements InputProcessor {
      * Orthographic camera used in the game screen, used to translate the camera to follow the player
      * Player object, used for making the player move around during input
      * Width/height of the current map, used to bound the camera.
+     * Vectors used to save touch down position of the first&second touch events and to store their new positions
+     * after drag is detected. Used for movement & attacking
+     * Vector to store normalized velocity derived in the attacking alghorithm in the update() method
+     * MapManager to obtain current map width/height
+     * Controller containing references to everything else in this program
      */
     private OrthographicCamera camera;
     private Player player;
     private float mapWidth;
     private float mapHeight;
-
-    /**
-     * Vectors used to save touch down position of the first&second touch events and to store their new positions
-     * after drag is detected. Used for movement & attacking
-     */
     private Vector3 firstMovementPosition;
     private Vector3 secondMovementPosition;
     private Vector3 firstAttackingPosition;
     private Vector3 secondAttackingPosition;
-
-    /**
-     * Vector to store normalized velocity derived in the attacking alghorithm in the update() method
-     */
     private Vector2 velocityNormalized;
-
-    /**
-     * MapManager to obtain current map width/height
-     */
-    private MapManager mapManager;
+    private MapManager manager;
+    private Controller controller;
+    protected float lerpValue;
 
 
     public WorldInputProcessor() {
@@ -50,6 +44,7 @@ public class WorldInputProcessor implements InputProcessor {
         firstAttackingPosition = new Vector3(-1, -1, 0);
         secondAttackingPosition = new Vector3();
         velocityNormalized = new Vector2();
+        lerpValue = 0.1f;
     }
 
     @Override
@@ -129,25 +124,20 @@ public class WorldInputProcessor implements InputProcessor {
         mapHeight=height;
     }
 
-    public void setCamera(OrthographicCamera camera){
-        this.camera = camera;
-        camera.zoom = 1f;
-    }
-
-    public void setMapManager(MapManager mapManager){
-        this.mapManager = mapManager;
-    }
-
-    public void setPlayer(Player player){
-        this.player = player;
+    public void setController(Controller con){
+        controller = con;
     }
 
     public void update() {
+        player = controller.getPlayer();
+        camera = controller.getOrthographicCamera();
+        manager = controller.getMapManager();
         /**
          * Camera translating algorithm. Initially moves the camera to the player position (centered), then checks whether the current camera
          * position overlaps the map boundaries. If so, sets it to the corner
          */
-        camera.position.set(player.getPosition().x + player.getWidth() / 2, player.getPosition().y + player.getHeight() / 2, camera.zoom);
+        //camera.position.set(player.getPosition().x + player.getWidth() / 2, player.getPosition().y + player.getHeight() / 2, camera.zoom);
+        camera.position.lerp(new Vector3(player.getPosition().x + player.getWidth() / 2, player.getPosition().y + player.getHeight() / 2, 0), lerpValue);
 
         float cameraLeft = camera.position.x - camera.viewportWidth * camera.zoom / 2;
         float cameraRight = camera.position.x + camera.viewportWidth * camera.zoom / 2;
@@ -157,15 +147,15 @@ public class WorldInputProcessor implements InputProcessor {
         // Horizontal axis
         if (cameraLeft <= 0) {
             camera.position.x = camera.viewportWidth * camera.zoom / 2;
-        } else if (cameraRight >= mapManager.getMapWidth()) {
-            camera.position.x = mapManager.getMapWidth() - camera.viewportWidth * camera.zoom / 2;
+        } else if (cameraRight >= manager.getMapWidth()) {
+            camera.position.x = manager.getMapWidth() - camera.viewportWidth * camera.zoom / 2;
         }
 
         // Vertical axis
         if (cameraBottom <= 0) {
             camera.position.y = camera.viewportHeight * camera.zoom / 2;
-        } else if (cameraTop >= mapManager.getMapHeight()) {
-            camera.position.y = mapManager.getMapHeight() - camera.viewportHeight * camera.zoom / 2;
+        } else if (cameraTop >= manager.getMapHeight()) {
+            camera.position.y = manager.getMapHeight() - camera.viewportHeight * camera.zoom / 2;
         }
 
         /**
@@ -226,5 +216,13 @@ public class WorldInputProcessor implements InputProcessor {
         }
 
 
+    }
+
+    public float getLerpValue() {
+        return lerpValue;
+    }
+
+    public void setLerpValue(float lerpValue) {
+        this.lerpValue = lerpValue;
     }
 }

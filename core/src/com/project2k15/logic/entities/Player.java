@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.project2k15.logic.collision.CollisionResolver;
 import com.project2k15.logic.collision.RectangleTypes;
+import com.project2k15.logic.managers.Controller;
 import com.project2k15.logic.managers.MapManager;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.collision.PropertyRectangle;
@@ -34,23 +35,17 @@ public class  Player extends Character implements RectangleTypes {
     private float stateTime;
     private float lastAttack = 0;
     private float timeBetweenAttacks = 0.1f;
-    private SpriteBatch batch;
-    private ObjectManager objectManager;
-    private MapManager mapManager;
-    private Room currentRoom;
+    private Controller controller;
 
 
-    public Player(float positionX, float positionY, SpriteBatch batch, ObjectManager objectManager) {
+    public Player() {
         width = 48;
         height = 64;
-        position.set(positionX, positionY);
-        colRect = new PropertyRectangle(positionX, positionY, 48, 32, this, PLAYER);
+        colRect = new PropertyRectangle(0, 0, 48, 32, this, PLAYER);
         collisionRectangle = colRect;
         speed = 20;
         maxVelocity = 150;
         clamping = 0.88f;
-        this.batch = batch;
-        this.objectManager = objectManager;
         facingDown = true;
         Texture testT = Assets.manager.get("redheady.png");
         TextureRegion[][] tmp = TextureRegion.split(testT, testT.getWidth() / 3, testT.getHeight() / 4);
@@ -72,12 +67,8 @@ public class  Player extends Character implements RectangleTypes {
         animationEast = new Animation(0.1f, eastRegion);
     }
 
-    public void setMapManager(MapManager mapManager){
-        this.mapManager = mapManager;
-    }
-
-    public void setCurrentRoom(Room room){
-        currentRoom = room;
+    public void setController(Controller controller){
+        this.controller = controller;
     }
 
     @Override
@@ -88,23 +79,23 @@ public class  Player extends Character implements RectangleTypes {
          */
         PropertyRectangle rec = CollisionResolver.resolveCollisionsByType(collisionRecs, this, PORTAL_EAST, PORTAL_NORTH, PORTAL_SOUTH, PORTAL_WEST);
         if(rec != null){
-            mapManager.getCurrentMap().changeRoom(rec.getLinkID());
-            objectManager.onRoomChanged();
-            position.set(mapManager.getCurrentMap().getCurrentRoom().getSpawnPositionByType(rec.getType()));
-            objectManager.addObject(this);
-            System.out.println("portal");
+            controller.getMapManager().getCurrentMap().changeRoom(rec.getLinkID());
+            controller.getObjectManager().onRoomChanged();
+            position.set(controller.getMapManager().getCurrentMap().getCurrentRoom().getSpawnPositionByType(rec.getType()));
+            controller.getObjectManager().clear();
+            controller.getOrthographicCamera().position.set(position.x,position.y,0);
         }
         /**
          * Resolve terrain collisions
          */
         CollisionResolver.resolveCollisionsTerrain(delta, collisionRecs, this);
         stateTime += delta;
-        batch.draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());
+        controller.getBatch().draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());
     }
 
     public void attack(Vector2 direction) {
         if (stateTime - lastAttack > timeBetweenAttacks) {
-            objectManager.addObject(new Projectile(position.x, position.y, 12, 12, direction, objectManager, batch, piercingShotsDebug,1,TERRAIN,CHARACTER));
+            controller.getObjectManager().addObject(new Projectile(position.x, position.y, 12, 12, direction, controller.getObjectManager(), controller.getBatch(), piercingShotsDebug, 1, TERRAIN,CHARACTER));
             lastAttack = stateTime;
         }
     }

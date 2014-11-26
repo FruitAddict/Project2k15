@@ -33,7 +33,7 @@ public class Assets {
         manager.load("playersheet.png", Texture.class);
         manager.load("projectile.png", Texture.class);
         manager.load("deadfireball.png", Texture.class);
-        manager.load("frontwalk.png",Texture.class);
+        manager.load("front.png",Texture.class);
         manager.finishLoading();
     }
 

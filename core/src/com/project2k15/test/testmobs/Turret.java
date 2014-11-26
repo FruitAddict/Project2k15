@@ -20,7 +20,7 @@ public class Turret extends MovableObject implements RectangleTypes {
     private ObjectManager objectManager;
     private SpriteBatch batch;
     private float stateTime=0;
-    private float timeBetweenAttacks = 0.25f;
+    private float timeBetweenAttacks = 0.05f;
     private float lastAttack;
     private float rotationStart = 1;
     private float firstProj=0;

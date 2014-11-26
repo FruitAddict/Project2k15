@@ -51,7 +51,7 @@ public class MindlessWalker extends Character implements RectangleTypes {
         this.controller = controller;
 
         Texture testM = Assets.manager.get("pet.png");
-        Texture test2m = Assets.manager.get("frontwalk.png");
+        Texture test2m = Assets.manager.get("front.png");
         TextureRegion[][] tmpM = TextureRegion.split(testM, testM.getWidth() / 8, testM.getHeight() / 4);
 
         TextureRegion[][] tmp2 = TextureRegion.split(test2m, test2m.getWidth()/8, test2m.getHeight());
@@ -79,12 +79,12 @@ public class MindlessWalker extends Character implements RectangleTypes {
             mobWalkRight[i] = tmpM[3][i];
         }
 
-        northAnimation = new Animation(0.1f, mobWalkNorth);
-        southAnimation = new Animation(0.1f, mobWalkSouth);
-        rightAnimation = new Animation(0.1f, mobWalkRight);
-        leftAnimation = new Animation(0.1f,mobWalkLeft);
+        northAnimation = new Animation(0.1f, walkTest);
+        southAnimation = new Animation(0.1f, walkTest);
+        rightAnimation = new Animation(0.1f, walkTest);
+        leftAnimation = new Animation(0.1f,walkTest);
 
-        facingDown = true;
+        facingS = true;
     }
 
     @Override
@@ -100,19 +100,19 @@ public class MindlessWalker extends Character implements RectangleTypes {
                 stateTime += delta;
                 switch (random) {
                     case 0: {
-                        moveDown();
+                        moveSouth();
                         break;
                     }
                     case 1: {
-                        moveRight();
+                        moveEast();
                         break;
                     }
                     case 2: {
-                        moveUp();
+                        moveNorth();
                         break;
                     }
                     case 3: {
-                        moveLeft();
+                        moveWest();
                         break;
                     }
                 }
@@ -121,19 +121,19 @@ public class MindlessWalker extends Character implements RectangleTypes {
                 stateTime += delta;
                 switch (random) {
                     case 0: {
-                        moveDown();
+                        moveSouth();
                         break;
                     }
                     case 1: {
-                        moveRight();
+                        moveEast();
                         break;
                     }
                     case 2: {
-                        moveUp();
+                        moveNorth();
                         break;
                     }
                     case 3: {
-                        moveLeft();
+                        moveWest();
                         break;
                     }
 
@@ -152,14 +152,14 @@ public class MindlessWalker extends Character implements RectangleTypes {
             float distance = (float) (Math.sqrt(Math.pow(position.x - controller.getPlayer().getPosition().x, 2) + Math.pow(position.y - controller.getPlayer().getPosition().y, 2)));
             if (distance > 10) {
                 if (controller.getPlayer().getPosition().x > position.x) {
-                    moveRight();
+                    moveEast();
                 } else if (controller.getPlayer().getPosition().x < position.x) {
-                    moveLeft();
+                    moveWest();
                 }
                 if (controller.getPlayer().getPosition().y > position.y) {
-                    moveUp();
+                    moveNorth();
                 } else if (controller.getPlayer().getPosition().y < position.y) {
-                    moveDown();
+                    moveSouth();
                 }
             }
             batch.setColor(1.0f,0.3f,0.3f,1);
@@ -182,13 +182,13 @@ public class MindlessWalker extends Character implements RectangleTypes {
 
 
     public TextureRegion getCurrentFrame() {
-        if (facingUp) {
+        if (facingN) {
             return northAnimation.getKeyFrame(stateTime, true);
-        } else if (facingDown) {
+        } else if (facingS) {
             return southAnimation.getKeyFrame(stateTime, true);
-        } else if (facingRight) {
+        } else if (facingE) {
             return rightAnimation.getKeyFrame(stateTime, true);
-        } else if (facingLeft) {
+        } else if (facingW) {
             return leftAnimation.getKeyFrame(stateTime, true);
         }
 

@@ -9,7 +9,7 @@ import com.project2k15.logic.maps.RoomFiller;
 import com.project2k15.rendering.Assets;
 
 /**
- * Map manager. Holds all the references to rooms/maps and joins them together(TODO)
+ * Map manager. Holds all the references to rooms/maps and joins them together
  */
 public class MapManager {
     /**

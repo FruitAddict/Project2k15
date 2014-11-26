@@ -226,16 +226,16 @@ public class TestInputProcessor implements InputProcessor {
 
         if(tRight){
             player.idle = false;
-            player.moveRight();
+            player.moveEast();
         } else if (tLeft) {
             player.idle = false;
-            player.moveLeft();
+            player.moveWest();
         } else if (tUp) {
             player.idle = false;
-            player.moveUp();
+            player.moveNorth();
         } else if (tDown) {
             player.idle = false;
-            player.moveDown();
+            player.moveSouth();
         } else {
             player.idle = true;
         }

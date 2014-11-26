@@ -14,8 +14,8 @@ import java.util.Iterator;
  * Quad tree to use with collision detection algorithm
  */
 public class Quadtree {
-    private int MAX_OBJECTS = 5;
-    private int MAX_LEVELS = 10;
+    private int MAX_OBJECTS = 10;
+    private int MAX_LEVELS = 5;
 
     private int level;
     private Array<PropertyRectangle> objects;
@@ -70,12 +70,12 @@ public class Quadtree {
         int index = -1;
         double verticalMidpoint = bounds.getX() + (bounds.getWidth() / 2);
         double horizontalMidpoint = bounds.getY() + (bounds.getHeight() / 2);
-        // Object can completely fit within the top quadrants
+        // top q
         boolean topQuadrant = (pRect.getY() > horizontalMidpoint);
-        // Object can completely fit within the bottom quadrants
+        // bot q
         boolean bottomQuadrant = (pRect.getY() < horizontalMidpoint && pRect.getY() + pRect.getHeight() < horizontalMidpoint);
 
-        // Object can completely fit within the left quadrants
+        // left q
         if (pRect.getX() < verticalMidpoint && pRect.getX() + pRect.getWidth() < verticalMidpoint) {
             if (topQuadrant) {
                 index = 2;
@@ -83,7 +83,7 @@ public class Quadtree {
                 index = 0;
             }
         }
-        // Object can completely fit within the right quadrants
+        // right q
         else if (pRect.getX() > verticalMidpoint) {
             if (topQuadrant) {
                 index = 3;

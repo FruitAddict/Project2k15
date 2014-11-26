@@ -28,26 +28,46 @@ public abstract class MovableObject extends Entity {
      * and then adds the speed variable to the current velocity.
      */
 
-    public void moveRight() {
+    public void moveEast() {
         if (velocity.x < maxVelocity)
             velocity.add(speed, 0);
     }
 
-    public void moveLeft() {
+    public void moveWest() {
         if (velocity.x > -maxVelocity)
             velocity.add(-speed, 0);
     }
 
-    public void moveUp() {
+    public void moveNorth() {
         if (velocity.y < maxVelocity) {
             velocity.add(0, speed);
         }
     }
 
-    public void moveDown() {
+    public void moveSouth() {
         if (velocity.y > -maxVelocity) {
             velocity.add(0, -speed);
         }
+    }
+
+    public void moveNorthEast() {
+        moveNorth();
+        moveEast();
+    }
+
+    public void moveNorthWest(){
+        moveNorth();
+        moveWest();
+    }
+
+    public void moveSouthEast(){
+        moveSouth();
+        moveEast();
+    }
+
+    public void moveSouthWest(){
+        moveSouth();
+        moveWest();
     }
 
     /**

@@ -2,18 +2,14 @@ package com.project2k15.logic.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.project2k15.logic.collision.CollisionResolver;
 import com.project2k15.logic.collision.RectangleTypes;
 import com.project2k15.logic.managers.Controller;
-import com.project2k15.logic.managers.MapManager;
-import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.entities.abstracted.Character;
-import com.project2k15.logic.maps.Room;
 import com.project2k15.rendering.Assets;
 import com.project2k15.test.testmobs.Projectile;
 
@@ -46,7 +42,6 @@ public class  Player extends Character implements RectangleTypes {
         speed = 20;
         maxVelocity = 150;
         clamping = 0.88f;
-        facingDown = true;
         Texture testT = Assets.manager.get("redheady.png");
         TextureRegion[][] tmp = TextureRegion.split(testT, testT.getWidth() / 3, testT.getHeight() / 4);
         southRegion = new TextureRegion[3];
@@ -73,6 +68,8 @@ public class  Player extends Character implements RectangleTypes {
 
     @Override
     public void update(float delta, Array<PropertyRectangle> collisionRecs) {
+        //update facing method from the super class
+        updateFacing();
         /**
          * Check whether you're not colliding with a map transition portal
          * if so, handle it
@@ -103,17 +100,17 @@ public class  Player extends Character implements RectangleTypes {
     public TextureRegion getCurrentFrame() {
         if (idle) {
             return southRegion[1];
-        } else if (facingUp) {
+        } else if (facingN) {
             return animationNorth.getKeyFrame(stateTime, true);
-        } else if (facingDown) {
+        } else if (facingS) {
             return animationSouth.getKeyFrame(stateTime, true);
-        } else if (facingRight) {
+        } else if (facingE) {
             return animationEast.getKeyFrame(stateTime, true);
-        } else if (facingLeft) {
+        } else if (facingW) {
             return animationWest.getKeyFrame(stateTime, true);
+        } else {
+            return southRegion[1];
         }
-
-        return null;
     }
 
 

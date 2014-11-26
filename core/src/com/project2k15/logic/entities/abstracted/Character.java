@@ -6,36 +6,12 @@ public abstract class Character extends MovableObject {
      * and health points. ( Please notice the oxford coma here).
      * Will contain hooks for operating on AI objects etc
      */
-    public boolean facingLeft, facingRight, facingUp, facingDown, idle;
+    public boolean facingW, facingE, facingN, facingS,
+                    facingNE, facingNW, facingSE, facingSW, idle;
 
     protected float healthPoints;
 
     public boolean hitByPlayer=false;
-
-    @Override
-    public void moveRight() {
-        super.moveRight();
-        setFacings(false);
-        facingRight=true;
-    }
-
-    public void moveLeft() {
-        super.moveLeft();
-        setFacings(false);
-        facingLeft=true;
-    }
-
-    public void moveUp() {
-        super.moveUp();
-        setFacings(false);
-        facingUp =true;
-    }
-
-    public void moveDown() {
-        super.moveDown();
-        setFacings(false);
-        facingDown =true;
-    }
 
     public float getHealthPoints() {
         return healthPoints;
@@ -45,11 +21,53 @@ public abstract class Character extends MovableObject {
         this.healthPoints = healthPoints;
     }
 
+    public void addHealthPoints(float amount){
+        this.healthPoints += amount;
+    }
+
     public void setFacings(boolean bool){
-        facingLeft = bool;
-        facingUp = bool;
-        facingRight = bool;
-        facingDown = bool;
+        //sets all the facing booleans to @bool.
+        facingW = bool;
+        facingN = bool;
+        facingE = bool;
+        facingS = bool;
+        facingNE = bool;
+        facingNW = bool;
+        facingSE = bool;
+        facingSW = bool;
+        idle = bool;
+    }
+
+    public void updateFacing(){
+        //updates facing booleans based on valocity
+        if(velocity.x <=25 && velocity.x >=-25 && velocity.y<=25 && velocity.y >=-25){
+            setFacings(false);
+            idle = true;
+        }else if(velocity.y > maxVelocity/2 && velocity.x < maxVelocity/2 && velocity.x > -maxVelocity/2){
+            setFacings(false);
+            facingN = true;
+        }else if(velocity.y>maxVelocity/2 && velocity.x > maxVelocity/2){
+            setFacings(false);
+            facingNE = true;
+        }else if(velocity.y>maxVelocity/2 && velocity.x < -maxVelocity/2){
+            setFacings(false);
+            facingNW = true;
+        }else if(velocity.x>maxVelocity/2 && velocity.y <maxVelocity/2 && velocity.y>-maxVelocity/2){
+            setFacings(false);
+            facingE=true;
+        }else if(velocity.x <= -maxVelocity/2 && velocity.y < maxVelocity/2 && velocity.y >-maxVelocity/2){
+            setFacings(false);
+            facingW = true;
+        }else if(velocity.x <= -maxVelocity/2 && velocity.y <=-maxVelocity/2){
+            setFacings(false);
+            facingSW = true;
+        }else if(velocity.y < -maxVelocity/2 && velocity.x < maxVelocity/2 && velocity.x > -maxVelocity/2){
+            setFacings(false);
+            facingS = true;
+        }else if(velocity.x > maxVelocity/2 && velocity.y < -maxVelocity/2){
+            setFacings(false);
+            facingSE=true;
+        }
     }
 
 }

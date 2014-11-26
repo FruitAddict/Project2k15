@@ -22,7 +22,9 @@ public class WorldInputProcessor implements InputProcessor {
      * Vector to store normalized velocity derived in the attacking alghorithm in the update() method
      * MapManager to obtain current map width/height
      * Controller containing references to everything else in this program
+     * TODO Isaac-esque room changing effect (slides)
      */
+
     private OrthographicCamera camera;
     private Player player;
     private float mapWidth;
@@ -168,42 +170,26 @@ public class WorldInputProcessor implements InputProcessor {
             if (length > 25) {
 
                 if (angle < 22.5 && angle >= -22.5) {
-                    player.idle = false;
-                    player.moveRight();
+                    player.moveEast();
                 } else if (angle < -22.5 && angle >= -67.5) {
-                    player.idle = false;
-                    player.moveRight();
-                    player.moveUp();
+                    player.moveNorthEast();
                 } else if (angle < -67.5 && angle >= -112.5) {
-                    player.idle = false;
-                    player.moveUp();
+                    player.moveNorth();
                 } else if (angle < -112.5 && angle >= -157.5) {
-                    player.idle = false;
-                    player.moveLeft();
-                    player.moveUp();
+                    player.moveNorthWest();
                 } else if (angle < -157.5 || angle >= 157.5) {
-                    player.idle = false;
-                    player.moveLeft();
+                    player.moveWest();
                 } else if (angle < 157.5 && angle >= 112.5) {
-                    player.idle = false;
-                    player.moveLeft();
-                    player.moveDown();
+                    player.moveSouthWest();
                 } else if (angle < 112.5 && angle >= 67.5) {
-                    player.idle = false;
-                    player.moveDown();
+                    player.moveSouth();
                 } else if (angle < 67.5 && angle >= 22.5) {
-                    player.idle = false;
-                    player.moveDown();
-                    player.moveRight();
+                    player.moveSouthEast();
                 }
-             } else {
-                player.setFacings(false);
-                player.idle=true;
-            }
-        } else {
-            player.setFacings(false);
-            player.idle=true;
+             }
         }
+
+
 
         /**
          * Attacking alghorithm. Works like the movement, but instead of checking angles it normalizes the vectors and calls

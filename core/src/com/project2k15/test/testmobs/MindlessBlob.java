@@ -62,7 +62,7 @@ public class MindlessBlob extends Character implements RectangleTypes {
         rightAnimation = new Animation(0.1f, mobWalkRight);
         leftAnimation = new Animation(0.1f, mobWalkLeft);
 
-        facingDown = true;
+        facingS = true;
 
     }
 
@@ -72,14 +72,14 @@ public class MindlessBlob extends Character implements RectangleTypes {
         float distance = (float) (Math.sqrt(Math.pow(position.x - player.getPosition().x, 2) + Math.pow(position.y - player.getPosition().y, 2)));
         if (distance > 100) {
             if (player.getPosition().x > position.x) {
-                moveRight();
+                moveEast();
             } else if (player.getPosition().x < position.x) {
-                moveLeft();
+                moveWest();
             }
             if (player.getPosition().y > position.y) {
-                moveUp();
+                moveNorth();
             } else if (player.getPosition().y < position.y) {
-                moveDown();
+                moveSouth();
             }
         }
     }
@@ -90,13 +90,13 @@ public class MindlessBlob extends Character implements RectangleTypes {
     }
 
     public TextureRegion getCurrentFrame() {
-        if (facingUp) {
+        if (facingN) {
             return northAnimation.getKeyFrame(stateTime, true);
-        } else if (facingDown) {
+        } else if (facingS) {
             return southAnimation.getKeyFrame(stateTime, true);
-        } else if (facingRight) {
+        } else if (facingE) {
             return rightAnimation.getKeyFrame(stateTime, true);
-        } else if (facingLeft) {
+        } else if (facingW) {
             return leftAnimation.getKeyFrame(stateTime, true);
         }
 

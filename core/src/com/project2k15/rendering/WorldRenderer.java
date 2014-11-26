@@ -1,6 +1,8 @@
 package com.project2k15.rendering;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -10,6 +12,8 @@ import com.project2k15.logic.managers.Controller;
 import com.project2k15.logic.managers.MapManager;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.rendering.ui.GuiStage;
+
+import java.util.PriorityQueue;
 
 public class WorldRenderer {
     /**
@@ -25,6 +29,12 @@ public class WorldRenderer {
     private SpriteBatch batch;
     public static boolean debugEnabled = false;
     private Controller controller;
+    //test TODO various msg rendering
+    private PriorityQueue<String> messageQueue;
+
+    public WorldRenderer(){
+        messageQueue = new PriorityQueue<String>();
+    }
 
     public void setController(Controller controller){
         this.controller = controller;
@@ -35,11 +45,11 @@ public class WorldRenderer {
         this.batch = controller.getBatch();
         map = mapManager.getCurrentMap().getCurrentRoom().getTiledMap();
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, batch);
-
     }
 
     public void onMapChanged(){
         map = mapManager.getCurrentMap().getCurrentRoom().getTiledMap();
+        messageQueue.offer("Map changed...");
     }
 
     public void render(float delta){

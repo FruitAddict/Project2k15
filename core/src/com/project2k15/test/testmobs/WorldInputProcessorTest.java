@@ -1,17 +1,13 @@
 package com.project2k15.test.testmobs;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.project2k15.logic.entities.Player;
 import com.project2k15.logic.input.WorldInputProcessor;
 import com.project2k15.logic.managers.Controller;
 import com.project2k15.logic.managers.MapManager;
-import com.project2k15.logic.managers.ObjectManager;
-import com.project2k15.rendering.WorldRenderer;
 
 /**
  * Game world input processor. Takes care of steering, attacking and other things not releated to GUI
@@ -22,7 +18,7 @@ public class WorldInputProcessorTest extends WorldInputProcessor {
     private Controller controller;
     private OrthographicCamera camera;
     private MapManager mapManager;
-    private float lerpValue;
+    private float lerpValue = 0.05f;
 
 
     public WorldInputProcessorTest() {
@@ -154,16 +150,16 @@ public class WorldInputProcessorTest extends WorldInputProcessor {
          * TEST
          */
         if(upMove){
-            player.moveUp();
+            player.moveNorth();
         }
         if(downMove){
-            player.moveDown();
+            player.moveSouth();
         }
         if(rightMove){
-            player.moveLeft();
+            player.moveWest();
         }
         if(leftMove){
-            player.moveRight();
+            player.moveEast();
         }
         if(upAttack){
             player.attack(new Vector2(0,-1));

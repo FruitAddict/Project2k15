@@ -3,21 +3,16 @@ package com.project2k15.rendering.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.project2k15.logic.managers.Controller;
-import com.project2k15.logic.managers.MapManager;
-import com.project2k15.logic.managers.ObjectManager;
-import com.project2k15.logic.entities.Player;
-import com.project2k15.rendering.WorldRenderer;
+import com.project2k15.rendering.WorldUpdater;
 import com.project2k15.test.testmobs.Turret;
 import com.project2k15.test.testmobs.WalkerSpawner;
 
@@ -138,7 +133,7 @@ public class GuiStage extends Stage {
 
         sliderZoom.getStyle().knob.setMinWidth(10);
         sliderZoom.getStyle().knob.setMinHeight(50);
-        sliderZoom.setValue(controller.getOrthographicCamera().zoom);
+        sliderZoom.setValue(controller.getCam().zoom);
 
         firstLabel = new Label("", skin);
         secondLabel = new Label("", skin);
@@ -188,13 +183,13 @@ public class GuiStage extends Stage {
         sliderZoom.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                controller.getOrthographicCamera().zoom = sliderZoom.getValue();
+                controller.getCam().zoom = sliderZoom.getValue();
             }
         });
         enableQuadView.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                WorldRenderer.debugEnabled = !WorldRenderer.debugEnabled;
+                WorldUpdater.debugEnabled = !WorldUpdater.debugEnabled;
             }
         });
         turretButton.addListener(new ChangeListener() {

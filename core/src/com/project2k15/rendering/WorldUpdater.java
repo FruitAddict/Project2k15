@@ -1,8 +1,6 @@
 package com.project2k15.rendering;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -11,13 +9,14 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.project2k15.logic.managers.Controller;
 import com.project2k15.logic.managers.MapManager;
 import com.project2k15.logic.managers.ObjectManager;
+import com.project2k15.rendering.objectrenderer.ObjectRenderer;
 import com.project2k15.rendering.ui.GuiStage;
 
 import java.util.PriorityQueue;
 
-public class WorldRenderer {
+public class WorldUpdater {
     /**
-     * WorldRenderer class. Contaisn references to mapManager, object manager, gui camera and stores the tiled map renderer.
+     * WorldUpdater class. Contains references to mapManager, object manager, gui camera, objectrenderer and stores the tiled map renderer.
      * boolean debug enabled to use for quadtree drawing atm.
      */
     private MapManager mapManager;
@@ -29,10 +28,11 @@ public class WorldRenderer {
     private SpriteBatch batch;
     public static boolean debugEnabled = false;
     private Controller controller;
+    private ObjectRenderer objectRenderer;
     //test TODO various msg rendering
     private PriorityQueue<String> messageQueue;
 
-    public WorldRenderer(){
+    public WorldUpdater(){
         messageQueue = new PriorityQueue<String>();
     }
 
@@ -41,10 +41,11 @@ public class WorldRenderer {
         this.mapManager = controller.getMapManager();
         this.objectManager= controller.getObjectManager();
         this.guiStage = controller.getGuiStage();
-        this.camera= controller.getOrthographicCamera();
+        this.camera= controller.getCam();
         this.batch = controller.getBatch();
         map = mapManager.getCurrentMap().getCurrentRoom().getTiledMap();
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, batch);
+        objectRenderer = new ObjectRenderer();
     }
 
     public void onMapChanged(){
@@ -52,7 +53,7 @@ public class WorldRenderer {
         messageQueue.offer("Map changed...");
     }
 
-    public void render(float delta){
+    public void update(float delta){
         camera.update();
         tiledMapRenderer.setView(camera);
         batch.setProjectionMatrix(camera.combined);
@@ -61,6 +62,7 @@ public class WorldRenderer {
         tiledMapRenderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get(1));
         tiledMapRenderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get(2));
         objectManager.update(delta);
+        objectRenderer.render(delta, controller.getObjectManager().getObjectList(), batch);
         if(debugEnabled){
             objectManager.getTree().debugDraw(batch);
         }

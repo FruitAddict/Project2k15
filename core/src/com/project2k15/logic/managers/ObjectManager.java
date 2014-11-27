@@ -1,18 +1,12 @@
 
 package com.project2k15.logic.managers;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.utils.Array;
 import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.collision.QuadRectangle;
 import com.project2k15.logic.collision.Quadtree;
 import com.project2k15.logic.collision.RectangleTypes;
-import com.project2k15.logic.entities.Player;
 import com.project2k15.logic.entities.abstracted.Entity;
-import com.project2k15.logic.maps.Map;
-import com.project2k15.rendering.WorldRenderer;
 
 /**
  * Object Manager
@@ -48,7 +42,7 @@ public class ObjectManager implements RectangleTypes {
         float mapWidth = controller.getMapManager().getCurrentMap().getCurrentRoom().getWidth();
         float mapHeight = controller.getMapManager().getCurrentMap().getCurrentRoom().getHeight();
         quadtree = new Quadtree(0,new QuadRectangle(0,0,(int)mapWidth,(int)mapHeight));
-        controller.getWorldRenderer().onMapChanged();
+        controller.getWorldUpdater().onMapChanged();
         System.out.println("Number of objects in room: "+ controller.getMapManager().getCurrentMap().getCurrentRoom().getGameObjectList().size);
     }
 
@@ -67,11 +61,7 @@ public class ObjectManager implements RectangleTypes {
             quadtree.insert(controller.getMapManager().getCurrentMap().getCurrentRoom().getPortalRecs().get(i));
         }
 
-        for(int i =0;i<controller.getMapManager().getCurrentMap().getCurrentRoom().getGameObjectList().size;i++){
-            quadtree.insert(controller.getMapManager().getCurrentMap().getCurrentRoom().getGameObjectList().get(i).getCollisionRectangle());
-        }
-
-        for(PropertyRectangle rec : controller.getMapManager().getCurrentMap().getCurrentRoom().getTerrainCollisionRectangles()){
+        for(PropertyRectangle rec : controller.getMapManager().getCurrentMap().getTerrainRecs()){
             quadtree.insert(rec);
         }
 
@@ -111,6 +101,10 @@ public class ObjectManager implements RectangleTypes {
 
     public int getNumberOfObjects() {
         return objectList.size;
+    }
+
+    public Array<Entity> getObjectList(){
+        return objectList;
     }
 
 }

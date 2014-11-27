@@ -27,7 +27,7 @@ public class RoomFiller implements RectangleTypes {
             int posY = random.nextInt((int)room.getHeight());
             int width = 32;
             int height = 32;
-            PropertyRectangle testRec = new PropertyRectangle(posX,posY,width,height,CHARACTER);
+            PropertyRectangle testRec = new PropertyRectangle(posX,posY,width,height, CHARACTER_REC);
             if(!CollisionResolver.resolveCollisionSimple(recs,testRec)){
                 list.add(MindlessWalker.getRandomWalker(posX,posY,controller.getBatch(),manager,controller));
                 numbOfSpawn--;

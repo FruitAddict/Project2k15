@@ -6,18 +6,17 @@ import com.project2k15.logic.collision.PropertyRectangle;
 
 /**
  * Abstract entity class from which all in-game objects will inherit from. Contains position vector and
- * array of collision rectangles. (entity can have more than one hitbox, eg a player having different hitboxes for head
- * and torso, enables some complex mechanics later on
+ * array of collision rectangles. Each child class should have one unique id (for example, player = 10,
+ * mob1 = 11, projectileA =12, mob2 = 13 etc. So
  */
 public abstract class Entity {
     protected Vector2 position = new Vector2();
+    //default empty collision rectangle.
     protected PropertyRectangle collisionRectangle = new PropertyRectangle(0, 0, 0, 0, 0);
+    protected int typeID;
 
     public abstract void update(float delta, Array<PropertyRectangle> checkRectangles);
 
-    /**
-     * Setters and getters
-     */
     public void setPosition(Vector2 pos) {
         position = pos;
     }
@@ -28,5 +27,13 @@ public abstract class Entity {
 
     public PropertyRectangle getCollisionRectangle() {
         return collisionRectangle;
+    }
+
+    public void setTypeID(int type){
+        this.typeID = type;
+    }
+
+    public int getTypeID(){
+        return typeID;
     }
 }

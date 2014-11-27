@@ -13,6 +13,7 @@ import com.project2k15.logic.entities.Player;
 /**
  * Created by FruitAddict on 2014-11-04.
  */
+@Deprecated
 public class TestInputProcessor implements InputProcessor {
     OrthographicCamera camera;
     Player player;

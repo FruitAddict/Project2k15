@@ -1,25 +1,24 @@
 package com.project2k15.test.testmobs;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.project2k15.logic.collision.RectangleTypes;
+import com.project2k15.logic.entities.EntityTypes;
 import com.project2k15.logic.managers.Controller;
 import com.project2k15.logic.managers.ObjectManager;
 import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.collision.CollisionResolver;
 import com.project2k15.logic.entities.Player;
 import com.project2k15.logic.entities.abstracted.Character;
-import com.project2k15.rendering.Assets;
 
 import java.util.Random;
 
 /**
  * Created by FruitAddict on 2014-11-12.
  */
-public class MindlessWalker extends Character implements RectangleTypes {
+public class MindlessWalker extends Character implements RectangleTypes,EntityTypes {
     static Player player;
     static Random rng = new Random();
     float timeSpentDoingShit;
@@ -40,16 +39,17 @@ public class MindlessWalker extends Character implements RectangleTypes {
 
     public MindlessWalker(float positionX, float positionY, float width, float height, float speed, SpriteBatch batch, ObjectManager manager, Controller controller) {
         position.set(positionX, positionY);
+        setTypeID(MINDLESS_WALKER);
         this.width = width;
         this.height = height;
-        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height / 2, this, CHARACTER);
+        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height / 2, this, CHARACTER_REC);
         this.speed = speed;
         maxVelocity = 100;
         healthPoints = 5;
         this.batch = batch;
         this.manager = manager;
         this.controller = controller;
-
+        /**
         Texture testM = Assets.manager.get("pet.png");
         Texture test2m = Assets.manager.get("front.png");
         TextureRegion[][] tmpM = TextureRegion.split(testM, testM.getWidth() / 8, testM.getHeight() / 4);
@@ -83,12 +83,14 @@ public class MindlessWalker extends Character implements RectangleTypes {
         southAnimation = new Animation(0.1f, walkTest);
         rightAnimation = new Animation(0.1f, walkTest);
         leftAnimation = new Animation(0.1f,walkTest);
+         */
 
         facingS = true;
     }
 
     @Override
     public void update(float delta, Array<PropertyRectangle> checkRectangles) {
+        updateFacing();
         if (healthPoints < 1) {
             manager.removeObject(this);
             controller.getMapManager().getCurrentMap().getCurrentRoom().getGameObjectList().removeValue(this,true);
@@ -142,7 +144,6 @@ public class MindlessWalker extends Character implements RectangleTypes {
             } else {
                 timeSpentDoingShit = 0;
             }
-            batch.draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());
         } else {
             setWidth(64);
             setHeight(64);
@@ -162,15 +163,12 @@ public class MindlessWalker extends Character implements RectangleTypes {
                     moveSouth();
                 }
             }
-            batch.setColor(1.0f,0.3f,0.3f,1);
-            batch.draw(getCurrentFrame(), getPosition().x, getPosition().y, getWidth(), getHeight());
-            batch.setColor(1.0f,1.0f,1.0f,1);
         }
 
     }
 
     public static MindlessWalker getRandomWalker(float x, float y, SpriteBatch batch, ObjectManager manager, Controller con) {
-        return new MindlessWalker(x, y, 32, 32, 25, batch, manager, con);
+        return new MindlessWalker(x, y, 32, 32, 100, batch, manager, con);
     }
 
     public void setSize(float width, float height) {
@@ -180,19 +178,5 @@ public class MindlessWalker extends Character implements RectangleTypes {
 
     }
 
-
-    public TextureRegion getCurrentFrame() {
-        if (facingN) {
-            return northAnimation.getKeyFrame(stateTime, true);
-        } else if (facingS) {
-            return southAnimation.getKeyFrame(stateTime, true);
-        } else if (facingE) {
-            return rightAnimation.getKeyFrame(stateTime, true);
-        } else if (facingW) {
-            return leftAnimation.getKeyFrame(stateTime, true);
-        }
-
-        return null;
-    }
 
 }

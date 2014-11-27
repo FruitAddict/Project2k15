@@ -118,7 +118,7 @@ public class WorldInputProcessorTest extends WorldInputProcessor {
 
     public void update() {
         player = controller.getPlayer();
-        camera = controller.getOrthographicCamera();
+        camera = controller.getCam();
         mapManager = controller.getMapManager();
         /**
          * Camera translating algorithm. Initially moves the camera to the player position (centered), then checks whether the current camera

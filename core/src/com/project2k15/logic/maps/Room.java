@@ -68,7 +68,7 @@ public class Room implements RectangleTypes {
 
         try {
             if (exitPoints[0] != -1 ) {
-                exitNorth = new PropertyRectangle(getWidth() / 2 - 64, getHeight() - 64, 128, 64, PORTAL_NORTH, exitPoints[0]);
+                exitNorth = new PropertyRectangle(getWidth() / 2 - 64, getHeight() - 64, 128, 64, PORTAL_NORTH_REC, exitPoints[0]);
                 spawnPositionNorth = new Vector2(getWidth()/2-64,getHeight()-128);
             }
         } catch (IndexOutOfBoundsException ex){
@@ -76,7 +76,7 @@ public class Room implements RectangleTypes {
         }
         try {
             if (exitPoints[1] != -1) {
-                exitEast = new PropertyRectangle(getWidth()-64, getHeight() / 2 - 64, 64, 128, PORTAL_EAST, exitPoints[1]);
+                exitEast = new PropertyRectangle(getWidth()-64, getHeight() / 2 - 64, 64, 128, PORTAL_EAST_REC, exitPoints[1]);
                 spawnPositionEast = new Vector2(getWidth()-128,getHeight()/2-64);
             }
         }catch ( IndexOutOfBoundsException ex){
@@ -84,7 +84,7 @@ public class Room implements RectangleTypes {
         }
         try {
             if (exitPoints[2] != -1) {
-                exitSouth = new PropertyRectangle(getWidth() / 2 - 64, 0, 128, 64, PORTAL_SOUTH, exitPoints[2]);
+                exitSouth = new PropertyRectangle(getWidth() / 2 - 64, 0, 128, 64, PORTAL_SOUTH_REC, exitPoints[2]);
                 spawnPositionSouth = new Vector2(getWidth()/2-64,65);
             }
         }catch(IndexOutOfBoundsException ex){
@@ -92,7 +92,7 @@ public class Room implements RectangleTypes {
         }
         try {
             if (exitPoints[3] != -1) {
-                exitWest = new PropertyRectangle(0, getHeight() / 2 - 64, 64, 128, PORTAL_WEST, exitPoints[3]);
+                exitWest = new PropertyRectangle(0, getHeight() / 2 - 64, 64, 128, PORTAL_WEST_REC, exitPoints[3]);
                 spawnPositionWest = new Vector2(65,getHeight()/2-64);
             }
         }catch(IndexOutOfBoundsException ex){
@@ -107,7 +107,7 @@ public class Room implements RectangleTypes {
         MapObjects collisionObjects = tiledMap.getLayers().get("collisionObjects").getObjects();
         terrainCollisionRecs = new Array<PropertyRectangle>();
         for (int i = 0; i < collisionObjects.getCount(); i++) {
-            PropertyRectangle obj = new PropertyRectangle(((RectangleMapObject) collisionObjects.get(i)).getRectangle(), TERRAIN);
+            PropertyRectangle obj = new PropertyRectangle(((RectangleMapObject) collisionObjects.get(i)).getRectangle(), TERRAIN_REC);
             terrainCollisionRecs.add(obj);
         }
 
@@ -180,16 +180,16 @@ public class Room implements RectangleTypes {
          * Eg. player entered north portal of the room, so he receives
          * south spawn position of the new room etc.
          */
-        if(type == PORTAL_NORTH){
+        if(type == PORTAL_NORTH_REC){
             return getSpawnPositionSouth();
         }
-        else if(type == PORTAL_EAST){
+        else if(type == PORTAL_EAST_REC){
             return getSpawnPositionWest();
         }
-        else if(type == PORTAL_SOUTH){
+        else if(type == PORTAL_SOUTH_REC){
             return getSpawnPositionNorth();
         }
-        else if(type == PORTAL_WEST){
+        else if(type == PORTAL_WEST_REC){
             return getSpawnPositionEast();
         } else {
             return getSpawnPositionCenter();

@@ -13,6 +13,7 @@ import java.util.Random;
 /**
  * Created by FruitAddict on 2014-11-18.
  */
+@Deprecated
 public class WalkerSpawner extends MovableObject implements RectangleTypes {
 
     private float stateTime;
@@ -25,7 +26,7 @@ public class WalkerSpawner extends MovableObject implements RectangleTypes {
         width = 1;
         height = 1;
         position.set(positionX, positionY);
-        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height, this, MOVING_OBJECT);
+        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height, this, MOVING_OBJECT_REC);
         this.manager = manager;
         this.batch = batch;
         random = new Random();

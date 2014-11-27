@@ -3,6 +3,7 @@ package com.project2k15.logic.maps;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.managers.MapManager;
 import com.project2k15.rendering.Assets;
 
@@ -28,6 +29,10 @@ public class Map {
 
     public Room getCurrentRoom(){
         return currentRoom;
+    }
+
+    public Array<PropertyRectangle> getTerrainRecs(){
+        return currentRoom.getTerrainCollisionRectangles();
     }
 
     /**

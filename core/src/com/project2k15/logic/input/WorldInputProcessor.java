@@ -132,7 +132,7 @@ public class WorldInputProcessor implements InputProcessor {
 
     public void update() {
         player = controller.getPlayer();
-        camera = controller.getOrthographicCamera();
+        camera = controller.getCam();
         manager = controller.getMapManager();
         /**
          * Camera translating algorithm. Initially moves the camera to the player position (centered), then checks whether the current camera

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.project2k15.logic.entities.Player;
 import com.project2k15.logic.input.WorldInputProcessor;
-import com.project2k15.rendering.WorldRenderer;
+import com.project2k15.rendering.WorldUpdater;
 import com.project2k15.rendering.ui.GuiStage;
 
 /**
@@ -19,7 +19,7 @@ public class Controller {
     private WorldInputProcessor worldInputProcessor;
     private OrthographicCamera orthographicCamera;
     private GuiStage guiStage;
-    private WorldRenderer worldRenderer;
+    private WorldUpdater worldUpdater;
     private SpriteBatch batch;
     private Player player;
 
@@ -47,11 +47,11 @@ public class Controller {
         this.worldInputProcessor = worldInputProcessor;
     }
 
-    public OrthographicCamera getOrthographicCamera() {
+    public OrthographicCamera getCam() {
         return orthographicCamera;
     }
 
-    public void setOrthographicCamera(OrthographicCamera orthographicCamera) {
+    public void setCam(OrthographicCamera orthographicCamera) {
         this.orthographicCamera = orthographicCamera;
     }
 
@@ -63,12 +63,12 @@ public class Controller {
         this.guiStage = guiStage;
     }
 
-    public WorldRenderer getWorldRenderer() {
-        return worldRenderer;
+    public WorldUpdater getWorldUpdater() {
+        return worldUpdater;
     }
 
-    public void setWorldRenderer(WorldRenderer worldRenderer) {
-        this.worldRenderer = worldRenderer;
+    public void setWorldUpdater(WorldUpdater worldUpdater) {
+        this.worldUpdater = worldUpdater;
     }
 
     public SpriteBatch getBatch() {

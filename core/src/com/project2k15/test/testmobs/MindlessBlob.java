@@ -1,6 +1,5 @@
 package com.project2k15.test.testmobs;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
@@ -8,13 +7,13 @@ import com.project2k15.logic.collision.PropertyRectangle;
 import com.project2k15.logic.collision.RectangleTypes;
 import com.project2k15.logic.entities.Player;
 import com.project2k15.logic.entities.abstracted.Character;
-import com.project2k15.rendering.Assets;
 
 import java.util.Random;
 
 /**
  * Created by FruitAddict on 2014-11-11.
  */
+@Deprecated
 public class MindlessBlob extends Character implements RectangleTypes {
     static Player player;
     TextureRegion[] mobWalkSouth;
@@ -32,12 +31,12 @@ public class MindlessBlob extends Character implements RectangleTypes {
         this.width = width;
         this.height = height;
         this.player = player;
-        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height, MOVING_OBJECT);
+        collisionRectangle = new PropertyRectangle(position.x, position.y, width, height, MOVING_OBJECT_REC);
         this.speed = speed;
         maxVelocity = 100;
         setClamping(0.82f);
         stateTime = 0;
-
+        /**
         Texture testM = Assets.manager.get("pet.png");
         TextureRegion[][] tmpM = TextureRegion.split(testM, testM.getWidth() / 8, testM.getHeight() / 4);
         mobWalkSouth = new TextureRegion[8];
@@ -61,6 +60,7 @@ public class MindlessBlob extends Character implements RectangleTypes {
         southAnimation = new Animation(0.1f, mobWalkSouth);
         rightAnimation = new Animation(0.1f, mobWalkRight);
         leftAnimation = new Animation(0.1f, mobWalkLeft);
+         */
 
         facingS = true;
 
@@ -88,7 +88,7 @@ public class MindlessBlob extends Character implements RectangleTypes {
         Random rng = new Random();
         return new MindlessBlob(x, y, 10 + rng.nextInt(50), 10 + rng.nextInt(50), 5 + rng.nextInt(50), player);
     }
-
+    /**
     public TextureRegion getCurrentFrame() {
         if (facingN) {
             return northAnimation.getKeyFrame(stateTime, true);
@@ -101,5 +101,5 @@ public class MindlessBlob extends Character implements RectangleTypes {
         }
 
         return null;
-    }
+    }*/
 }

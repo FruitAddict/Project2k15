@@ -7,12 +7,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.project2k15.logic.input.CustomInputMultiplexer;
+import com.project2k15.logic.input.WorldInputProcessor;
 import com.project2k15.logic.managers.Controller;
 import com.project2k15.logic.managers.MapManager;
 import com.project2k15.logic.managers.ObjectManager;
-import com.project2k15.logic.input.WorldInputProcessor;
 import com.project2k15.logic.entities.Player;
-import com.project2k15.rendering.WorldRenderer;
+import com.project2k15.rendering.WorldUpdater;
 import com.project2k15.rendering.ui.GuiStage;
 import com.project2k15.test.testmobs.WorldInputProcessorTest;
 
@@ -43,7 +43,7 @@ public class GameScreen implements Screen {
     /**
      * WorldRenderer that hides ugly world rendering code from the game loop
      */
-    WorldRenderer worldRenderer;
+    WorldUpdater worldUpdater;
 
     public GameScreen(Game game){
         this.game = game;
@@ -52,23 +52,23 @@ public class GameScreen implements Screen {
         //Creates all the needed managers/objects
         controller = new Controller();
         //TEST INPUT PROCESSOR
-        WorldInputProcessorTest worldInputProcessor = new WorldInputProcessorTest();
+        WorldInputProcessor worldInputProcessor = new WorldInputProcessor();
         gameCamera = new OrthographicCamera();
         batch = new SpriteBatch();
         objectManager = new ObjectManager();
         mapManager = new MapManager();
         guiStage = new GuiStage();
-        worldRenderer = new WorldRenderer();
+        worldUpdater = new WorldUpdater();
         player = new Player();
 
         //adds them to the controller
-        controller.setOrthographicCamera(gameCamera);
+        controller.setCam(gameCamera);
         controller.setWorldInputProcessor(worldInputProcessor);
         controller.setBatch(batch);
         controller.setObjectManager(objectManager);
         controller.setMapManager(mapManager);
         controller.setGuiStage(guiStage);
-        controller.setWorldRenderer(worldRenderer);
+        controller.setWorldUpdater(worldUpdater);
         controller.setPlayer(player);
 
         //registers controller everywhere
@@ -78,7 +78,7 @@ public class GameScreen implements Screen {
         guiStage.setController(controller);
         player.setController(controller);
         mapManager.createTestMap();
-        worldRenderer.setController(controller);
+        worldUpdater.setController(controller);
 
         //creates gui and sets things in motion
         guiStage.createGui();
@@ -100,7 +100,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 1, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         inputMultiplexer.updateInput(delta);
-        worldRenderer.render(delta);
+        worldUpdater.update(delta);
     }
 
     @Override

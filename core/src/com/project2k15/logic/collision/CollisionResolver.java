@@ -64,7 +64,7 @@ public class CollisionResolver implements RectangleTypes {
         Vector2 oldPosition = obj.getPosition().cpy();
         obj.getPosition().add(newVeloc);
         obj.getCollisionRectangle().setPosition(obj.getPosition().x, obj.getPosition().y);
-        boolean[] collisions = getCollisionTable(checkRectangles, obj, TERRAIN);
+        boolean[] collisions = getCollisionTable(checkRectangles, obj, TERRAIN_REC);
 
         boolean returnValue = false;
         for (int i = 0; i < collisions.length; i++) {

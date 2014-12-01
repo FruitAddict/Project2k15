@@ -13,6 +13,8 @@ public class WorldUpdater {
     private ObjectManager objectManager;
     //current tiled map TODO map manager again
     private TiledMap currentTiledMap;
+    //stores game statetime - for how long this particular session was running for
+    private float stateTime;
 
 
     public WorldUpdater(){

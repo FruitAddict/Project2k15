@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="64" tileheight="64">
  <tileset firstgid="1" name="tileset" tilewidth="64" tileheight="64" spacing="1">
-  <image source="tileset.jpg" width="130" height="130"/>
+  <image source="tile1.jpg" width="192" height="192"/>
+ </tileset>
+ <tileset firstgid="5" name="tile2" tilewidth="64" tileheight="64" spacing="1">
+  <image source="tile2.jpg" width="192" height="192"/>
  </tileset>
  <layer name="Ground" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzt1TEKACAMBMEI+f+bbS0k4CFJxC2mda+KbmYuGgH1zZf6uy3ZXQCApvpud/izKvqd2r/11x0VXQC4qcsdz9oRtU/6EyAhD1Y=
+   eJztwwEJAAAMBKH7/qXXYyi4aqqqqurrBxngBAE=
   </data>
  </layer>
  <layer name="Walls" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJztljEKACAMA4v+/89OLoIlS5NCc5D5qgZshOnMAlLt30nU/jtD1T0hfiQMv/r8FV1A3pXVxd989tuv9LP+AjMHxa7x+tm7hv29/Mr+GTOBA0oUAY8=
-  </data>
- </layer>
- <layer name="groundlol" width="32" height="32">
-  <data encoding="base64" compression="zlib">
-   eJzt1FEKACAIREG7/6U7wVKBrpBvwN9WIY0AgBxLVGe+823H7C/5VU751dz/SvWAGZz3TN1Q527f9Nahe++Zf3Y+8JMNJLYAQQ==
+   eJztldsKwCAMQ53zYf//xXOwQZHO69IO2kBeVDgYUg3B9Wel7L3iBObH7K3iqMxv5bOaU4vf69mcRvjXWc37I7rQ0390F4/b3DrN52s+5Zb8Zw/J53hlFlL8N1nn0/lA/wUuO+LeXcl+cf+O5Hw5X5ev3T+Xy4JOKAgBkQ==
   </data>
  </layer>
  <objectgroup name="collisionObjects">
@@ -27,5 +25,35 @@
   <object x="0" y="0" width="4" height="2048"/>
   <object x="0" y="2044" width="2048" height="4"/>
   <object x="2044" y="0" width="4" height="2048"/>
+  <object x="982" y="18"/>
+  <object x="1006" y="42"/>
+  <object x="1018" y="36"/>
+ </objectgroup>
+ <layer name="groundlol" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztlsEOwCAIQ/Xm/3/xLjsQI5Sh1GTapJeF+VARLSWuJpyp5vAOJoPPVn19Ir+Wy5/lV8U7+ZH/R2fbc+a1+ctcrJxkXKTnrOL3MZJp5YD4aE+0mP77zBqgmkB8T316+V/vGVQDs+Od5ohGPQLVS7QfWer5cuzdfCsPFp85fw+XwWextTsym4v4oxwyZPGzZb1RLp+nP/Afd7AGwQ==
+  </data>
+ </layer>
+ <objectgroup name="portalObjects">
+  <object x="2008" y="960" width="40" height="188">
+   <properties>
+    <property name="PortalID" value="EAST"/>
+   </properties>
+  </object>
+  <object x="2" y="960" width="30" height="190">
+   <properties>
+    <property name="PortalID" value="WEST"/>
+   </properties>
+  </object>
+  <object x="956" y="-2" width="200" height="38">
+   <properties>
+    <property name="PortalID" value="NORTH"/>
+   </properties>
+  </object>
+  <object x="960" y="2012" width="192" height="40">
+   <properties>
+    <property name="PortalID" value="SOUTH"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

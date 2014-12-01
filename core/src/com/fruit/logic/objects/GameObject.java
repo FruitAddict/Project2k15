@@ -7,8 +7,12 @@ import com.fruit.logic.Constants;
 /**
  * Main abstract game object class from which all game entities will
  * inherit from.
+ * EVERY GAME OBJECT MUST TAKE OBJECT MANAGER IN THE CONSTRUCTOR
+ * AS THE MEANS TO DESTROY ITSELF.
  */
 public abstract class GameObject implements Constants {
+    //general boolean for debug purposes, can be used to make some additional functionality of the object available
+    public boolean debug = false;
     //Box2d rigid body representing this object.
     protected Body body;
     //body category bit, for use with collsiion filtering

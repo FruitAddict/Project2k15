@@ -65,6 +65,13 @@ public class ObjectManager {
         scheduledToRemove.add(o);
     }
 
+    public void removeAllObjects(boolean withPlayer){
+        scheduledToRemove.addAll(gameObjects);
+        if(!withPlayer) {
+            scheduledToRemove.removeValue(player, true);
+        }
+    }
+
     public Player getPlayer(){
         return player;
     }

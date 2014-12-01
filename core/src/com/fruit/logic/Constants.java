@@ -10,6 +10,7 @@ public interface Constants {
     public final int COLLECTIBLE_BIT = 0b1000;
     public final int CLUTTER_BIT = 0b10000;
     public final int PROJECTILE_BIT = 0b100000;
+    public final int NO_COLLISIONS = 0b1000000;
     //object types for use with rendering
     public final int PLAYER_TYPE = 101;
     public final int WALKER_TYPE = 102;

@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.fruit.logic.Constants;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.tests.Box;
 import com.fruit.tests.MindlessWalker;
@@ -108,14 +109,19 @@ public class UserInterface extends Stage {
         // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
         final Slider sliderZoom = new Slider(0.05f,1.5f,0.05f,false,skin);
         final ScrollPane scrollPane = new ScrollPane(table,skin);
+        final Label infoAttack = new Label("Attack speed",skin);
         final Label infoZoom = new Label("Zoom",skin);
+        final Slider sliderAttack = new Slider(0.01f,2.0f,0.05f,false,skin);
+        sliderAttack.setValue(updater.getObjectManager().getPlayer().getTimeBetweenAttacks());
         final TextButton addMob = new TextButton("Add mob",skin);
         final TextButton addBox = new TextButton("Add box",skin);
+        final TextButton clearObjects = new TextButton("Remove all objects",skin);
         scrollPane.getStyle().hScrollKnob.setMinHeight(10);
         scrollPane.getStyle().vScrollKnob.setMinWidth(10);
         scrollPane.setSize(200, 300);
         buttonTable.addActor(addMob);
         buttonTable.addActor(addBox);
+        buttonTable.addActor(clearObjects);
         addActor(table);
         addActor(buttonTable);
         sliderZoom.getStyle().knob.setMinWidth(10);
@@ -130,6 +136,8 @@ public class UserInterface extends Stage {
         table.addActor(posLabel);
         table.addActor(infoZoom);
         table.addActor(sliderZoom);
+        table.addActor(infoAttack);
+        table.addActor(sliderAttack);
         table.align(Align.topRight);
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
         // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
@@ -157,7 +165,17 @@ public class UserInterface extends Stage {
                         updater.getObjectManager().getPlayer().getBody().getPosition().y));
             }
         });
-
-
+        clearObjects.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                updater.getObjectManager().removeAllObjects(false);
+            }
+        });
+        sliderAttack.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                updater.getObjectManager().getPlayer().setTimeBetweenAttacks(sliderAttack.getValue());
+            }
+        });
     }
 }

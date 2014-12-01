@@ -1,9 +1,6 @@
 package com.fruit.visual;
 
-import box2dLight.PointLight;
-import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -29,7 +26,7 @@ public class WorldRenderer implements Constants {
         this.batch = batch;
         this.camera = camera;
         this.worldUpdater = worldUpdater;
-
+        
     }
     public void render(float delta){
         camera.update();

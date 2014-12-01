@@ -1,5 +1,11 @@
 package com.fruit.logic.objects;
 
+/**
+ * Movable game object abstract class. All moving objects will inherit from this.
+ * Contains easy methods to move the object around in the game world(logic)
+ * e.g. moveEast(), moveWest(). etc. Those methods will move the object automatically
+ * according to their speed and maxVelocity (the entity can still be pushed over its limit)
+ */
 public abstract class MovableGameObject extends GameObject {
     //Width and height of this game object. Only exists to be used with translating from
     //logic coordinates to screen coordinates (Bodies origin point is at their center, textures origin

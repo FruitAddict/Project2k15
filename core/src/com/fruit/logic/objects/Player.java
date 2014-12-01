@@ -6,13 +6,16 @@ import com.fruit.logic.Constants;
 import com.fruit.logic.ObjectManager;
 
 public class Player extends Character implements Constants {
-    private World world;
+    //coordinates at which the player is first spawned.
     private float spawnCoordX;
     private float spawnCoordY;
+    //object manager reference. Every object must have one as
     private ObjectManager objectManager;
-    //attacking times
-    private float lastAttack;
+    //objects life time is stored here
     private float stateTime;
+    //variables to help with attacking delay.
+    private float lastAttack;
+    private float timeBetweenAttacks;
 
     public Player(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height){
         this.width = width;
@@ -24,8 +27,6 @@ public class Player extends Character implements Constants {
 
     @Override
     public void addToWorld(World world){
-        this.world = world;
-
         //Player body definition
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(spawnCoordX,spawnCoordY);
@@ -71,10 +72,17 @@ public class Player extends Character implements Constants {
     }
 
     public void attack(Vector2 direction){
-        if(stateTime - lastAttack > 0.25f) {
+        if(stateTime - lastAttack > timeBetweenAttacks) {
             objectManager.addObject(new Projectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, direction));
             lastAttack = stateTime;
         }
     }
 
+    public float getTimeBetweenAttacks() {
+        return timeBetweenAttacks;
+    }
+
+    public void setTimeBetweenAttacks(float timeBetweenAttacks) {
+        this.timeBetweenAttacks = timeBetweenAttacks;
+    }
 }

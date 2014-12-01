@@ -1,5 +1,7 @@
 package com.fruit.screens;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenAccessor;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -7,12 +9,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.fruit.MainGame;
 import com.fruit.managers.Assets;
 
 /**
  * Splash screen, appears for 5 seconds when the program is started.
  */
-public class SplashScreen implements Screen {
+public class SplashScreen implements Screen,TweenAccessor<SplashScreen> {
 
     private Game game;
     private Texture splashImage;
@@ -25,6 +28,7 @@ public class SplashScreen implements Screen {
         Assets.loadSplashScreen();
         Assets.loadTestMap();
         this.game = game;
+        Tween.registerAccessor(SplashScreen.class, this);
         splashImage = (Texture)Assets.getAsset("splashtoday.jpg", Texture.class);
         batch = new SpriteBatch();
         timePassed = 0f;
@@ -38,7 +42,7 @@ public class SplashScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         timePassed+=delta;
-        if (Assets.manager.update()) {
+        if (Assets.manager.update() && timePassed > 5) {
             this.dispose();
             game.setScreen(new GameScreen(game));
         } else {
@@ -46,7 +50,6 @@ public class SplashScreen implements Screen {
             batch.draw(splashImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             font.draw(batch, Float.toString(Assets.manager.getProgress()), Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
             batch.end();
-            timePassed = 0;
         }
 
     }
@@ -78,5 +81,15 @@ public class SplashScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
+    }
+
+    @Override
+    public int getValues(SplashScreen splashScreen, int i, float[] floats) {
+        return 0;
+    }
+
+    @Override
+    public void setValues(SplashScreen splashScreen, int i, float[] floats) {
+
     }
 }

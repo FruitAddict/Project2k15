@@ -1,15 +1,14 @@
 package com.fruit.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.fruit.MainGame;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.logic.input.CustomInputMultiplexer;
 import com.fruit.logic.input.WorldInputProcessor;
-import com.fruit.logic.input.WorldInputProcessorTest;
-import com.fruit.managers.MapManager;
+import com.fruit.maps.MapManager;
 import com.fruit.visual.WorldRenderer;
 import com.fruit.visual.ui.UserInterface;
 
@@ -19,7 +18,7 @@ import com.fruit.visual.ui.UserInterface;
  */
 public class GameScreen implements Screen {
 
-    private Game game;
+    private MainGame game;
     //camera with fixed virtual viewport
     private OrthographicCamera camera;
     //map manager that holds abstracted map objects (they know what .tmx file represents each room. ,
@@ -39,13 +38,18 @@ public class GameScreen implements Screen {
     //User Interface in-game. Different than the main menu
     private UserInterface userInterface;
 
-    public GameScreen(Game game){
+    public GameScreen(MainGame game){
         this.game = game;
         worldUpdater = new WorldUpdater();
         camera = new OrthographicCamera();
         spriteBatch = new SpriteBatch();
         worldRenderer = new WorldRenderer(spriteBatch,camera, worldUpdater);
         userInterface = new UserInterface(camera,worldUpdater);
+
+        //registering world renderer to world updater
+        worldUpdater.registerRenderer(worldRenderer);
+
+        //input stuff
         WorldInputProcessor worldInputProcessor = new WorldInputProcessor(worldUpdater.getObjectManager().getPlayer(), camera);
         customInputMultiplexer = new CustomInputMultiplexer(userInterface, worldInputProcessor);
         Gdx.input.setInputProcessor(customInputMultiplexer);
@@ -62,7 +66,7 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         //Resize camera viewport
-        camera.setToOrtho(false, 840, 480 * (Gdx.graphics.getWidth() / Gdx.graphics.getHeight()));
+        camera.setToOrtho(false, 840, 480 * (Gdx.graphics.getWidth()/Gdx.graphics.getHeight()));
         userInterface.getViewport().update(width, height, true);
     }
 

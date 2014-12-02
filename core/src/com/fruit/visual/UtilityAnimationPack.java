@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.fruit.logic.Constants;
 import com.fruit.logic.objects.MovableGameObject;
-import com.fruit.managers.Assets;
 import com.fruit.tests.Box;
 
 public class UtilityAnimationPack implements Constants {

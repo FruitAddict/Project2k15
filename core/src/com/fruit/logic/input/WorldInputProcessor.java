@@ -146,7 +146,7 @@ public class WorldInputProcessor implements InputProcessor, Constants {
          * position overlaps the map boundaries. If so, sets it to the corner
          */
 
-        Vector3 lerpVector = new Vector3((player.getBody().getPosition().x*PIXELS_TO_METERS),
+        Vector3 lerpVector = new Vector3((((player.getBody().getPosition().x)*PIXELS_TO_METERS)),
                 (player.getBody().getPosition().y*PIXELS_TO_METERS), 0);
 
         camera.position.lerp(lerpVector, lerpValue);

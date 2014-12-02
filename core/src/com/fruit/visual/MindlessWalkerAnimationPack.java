@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.fruit.logic.Constants;
 import com.fruit.logic.objects.Character;
-import com.fruit.managers.Assets;
 
 
 public class MindlessWalkerAnimationPack implements Constants {
@@ -72,4 +71,5 @@ public class MindlessWalkerAnimationPack implements Constants {
             batch.draw(playerSouthRegion[1],pos.x,pos.y,character.getWidth(),character.getHeight());
         }
     }
+
 }

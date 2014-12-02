@@ -1,4 +1,4 @@
-package com.fruit.managers;
+package com.fruit.visual;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -28,17 +28,10 @@ public class Assets {
         manager.finishLoading();
     }
 
-    public static void loadTestMap(){
-        manager.load("64map.tmx", TiledMap.class);
-        manager.load("testportal.png", Texture.class);
-        manager.load("map.tmx", TiledMap.class);
-        manager.load("pet.png",Texture.class);
-        manager.load("playersheet.png", Texture.class);
-        manager.load("front.png",Texture.class);
-        manager.finishLoading();
-    }
-
     public static synchronized <T> Object getAsset(String name, Class<T> type){
+        //returns requested asset, if its not loaded forces it to load
+        //and then returns it. if not found, returns either debug texture
+        //or null
         try{
             return manager.get(name);
         }catch(GdxRuntimeException ex){
@@ -47,7 +40,14 @@ public class Assets {
                 manager.finishLoading();
                 return manager.get(name);
             }catch(GdxRuntimeException ex2){
-                return manager.get("notfound.png");
+                if(type == Texture.class) {
+                    return manager.get("notfound.png");
+                }
+                else if(type == TiledMap.class) {
+                    return null;
+                } else {
+                    return null;
+                }
             }
         }
     }
@@ -55,5 +55,11 @@ public class Assets {
     public static void disposeAll(){
         System.out.println("Disposing all assets");
         manager.clear();
+    }
+
+    public static void loadIntroLevel() {
+        manager.load("64map.tmx", TiledMap.class);
+        manager.load("64map2.tmx",TiledMap.class);
+        manager.finishLoading();
     }
 }

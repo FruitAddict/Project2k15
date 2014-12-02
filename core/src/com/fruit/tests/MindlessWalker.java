@@ -19,6 +19,7 @@ public class MindlessWalker extends Character implements Constants{
     private int random;
     private float spawnX;
     private float spawnY;
+    private float healthPoints=5;
 
     public MindlessWalker(ObjectManager objectManager, float spawnX, float spawnY){
         this.objectManager = objectManager;

@@ -21,12 +21,16 @@ public class WorldRenderer implements Constants {
 
 
     public WorldRenderer(SpriteBatch batch, OrthographicCamera camera, WorldUpdater worldUpdater){
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(worldUpdater.getCurrentTiledMap(), batch);
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getTiledMap(), batch);
         objectRenderer = new ObjectRenderer();
         this.batch = batch;
         this.camera = camera;
         this.worldUpdater = worldUpdater;
-        
+    }
+
+    public void changeRenderedMap(){
+        tiledMapRenderer= null;
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getTiledMap(),batch);
     }
     public void render(float delta){
         camera.update();

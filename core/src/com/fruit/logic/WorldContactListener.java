@@ -5,20 +5,66 @@ import com.fruit.logic.objects.Projectile;
 import com.fruit.tests.MindlessWalker;
 @SuppressWarnings("all")
 public class WorldContactListener implements ContactListener,Constants {
+
+    private final WorldUpdater worldUpdater;
+
+    public WorldContactListener(WorldUpdater worldUpdater){
+        this.worldUpdater = worldUpdater;
+    }
     @Override
     public void beginContact(Contact contact) {
         Fixture f1 = contact.getFixtureA();
         Fixture f2 = contact.getFixtureB();
 
-        System.out.println(f1.getFilterData().categoryBits);
-        System.out.println(f2.getFilterData().categoryBits);
-
         if(f1.getFilterData().categoryBits == PLAYER_BIT || f2.getFilterData().categoryBits == PLAYER_BIT){
+            if(f1.getFilterData().categoryBits == PORTAL_BIT || f2.getFilterData().categoryBits == PORTAL_BIT){
+                if(f1.getFilterData().categoryBits == PORTAL_BIT){
+                    switch((Integer)f1.getBody().getUserData()){
+                        case NORTH_DIR: {
+                            worldUpdater.getMapManager().requestChange(NORTH_DIR);
+                            break;
+                        }
+                        case SOUTH_DIR: {
+                            worldUpdater.getMapManager().requestChange(SOUTH_DIR);
+                            break;
+                        }
+                        case WEST_DIR: {
+                            worldUpdater.getMapManager().requestChange(WEST_DIR);
+                            break;
+                        }
+                        case EAST_DIR: {
+                            worldUpdater.getMapManager().requestChange(EAST_DIR);
+                            break;
+                        }
+                    }
+                }else {
+                    switch((Integer)f2.getBody().getUserData()){
+                        case NORTH_DIR: {
+                            worldUpdater.getMapManager().requestChange(NORTH_DIR);
+                            break;
+                        }
+                        case SOUTH_DIR: {
+                            worldUpdater.getMapManager().requestChange(SOUTH_DIR);
+                            break;
+                        }
+                        case WEST_DIR: {
+                            worldUpdater.getMapManager().requestChange(WEST_DIR);
+                            break;
+                        }
+                        case EAST_DIR: {
+                            worldUpdater.getMapManager().requestChange(EAST_DIR);
+                            break;
+                        }
+                    }
+                }
+            }
 
         }
+
         if(f1.getFilterData().categoryBits == CLUTTER_BIT || f2.getFilterData().categoryBits == CLUTTER_BIT){
 
         }
+
         if(f1.getFilterData().categoryBits == ENEMY_BIT || f2.getFilterData().categoryBits == ENEMY_BIT){
 
         }

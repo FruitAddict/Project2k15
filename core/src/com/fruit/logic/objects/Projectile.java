@@ -30,8 +30,8 @@ public class Projectile extends MovableGameObject {
     @Override
     public void addToWorld(World world) {
         //setting width and height
-        width = 12;
-        height = 12;
+        width = 24;
+        height = 24;
 
         //other stuff
         setTypeID(PROJECTILE_TYPE);

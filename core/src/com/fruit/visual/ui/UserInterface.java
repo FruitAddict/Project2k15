@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.fruit.logic.Constants;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.tests.Box;
 import com.fruit.tests.MindlessWalker;
@@ -74,7 +73,7 @@ public class UserInterface extends Stage {
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
         textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.checked = skin.newDrawable("white", Color.RED);
+        textButtonStyle.checked = skin.newDrawable("white", Color.DARK_GRAY);
         textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
         textButtonStyle.font = skin.getFont("default");
         /**
@@ -168,7 +167,7 @@ public class UserInterface extends Stage {
         clearObjects.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                updater.getObjectManager().removeAllObjects(false);
+                updater.getObjectManager().removeAllGameObjects(false);
             }
         });
         sliderAttack.addListener(new ChangeListener() {

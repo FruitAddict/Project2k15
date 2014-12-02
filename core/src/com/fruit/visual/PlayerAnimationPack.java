@@ -1,12 +1,10 @@
 package com.fruit.visual;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.fruit.logic.Constants;
 import com.fruit.logic.objects.Player;
-import com.fruit.managers.Assets;
 
 
 public class PlayerAnimationPack implements Constants {

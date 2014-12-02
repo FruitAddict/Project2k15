@@ -1,32 +1,34 @@
 package com.fruit.logic;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.fruit.managers.Assets;
-import com.fruit.utilities.MapObjectParser;
+import com.fruit.maps.MapManager;
+import com.fruit.visual.WorldRenderer;
 
 public class WorldUpdater {
     //Box2D world
     private World world;
     //Object manager
     private ObjectManager objectManager;
-    //current tiled map TODO map manager again
-    private TiledMap currentTiledMap;
-    //stores game statetime - for how long this particular session was running for
+    //stores game time - for how long this particular session was running for
     private float stateTime;
+    //Map manager
+    private MapManager mapManager;
+    //world renderer reference to call when map is changed
+    private WorldRenderer worldRenderer;
 
 
     public WorldUpdater(){
         //world init. with no gravity (0,0) and sleeping enabled
         world = new World(new Vector2(0,0), true);
-        world.setContactListener(new WorldContactListener());
-        setCurrentTiledMap((TiledMap) Assets.getAsset("64map.tmx", TiledMap.class));
-        MapObjectParser.addMapObjects(world,currentTiledMap);
+        world.setContactListener(new WorldContactListener(this));
+        mapManager = new MapManager(this, true);
         objectManager = new ObjectManager(this);
     }
 
     public void update(float delta){
+        //increase statetime
+        stateTime += delta;
         //update object manager by delta
         objectManager.update(delta);
         //update world by delta TODO fixed timestep with interpolation
@@ -37,16 +39,19 @@ public class WorldUpdater {
         return world;
     }
 
-
-    public TiledMap getCurrentTiledMap() {
-        return currentTiledMap;
-    }
-
-    public void setCurrentTiledMap(TiledMap currentTiledMap) {
-        this.currentTiledMap = currentTiledMap;
-    }
-
     public ObjectManager getObjectManager(){
         return objectManager;
+    }
+
+    public MapManager getMapManager(){
+        return mapManager;
+    }
+
+    public void registerRenderer(WorldRenderer worldRenderer){
+        this.worldRenderer = worldRenderer;
+    }
+
+    public WorldRenderer getWorldRenderer(){
+        return  worldRenderer;
     }
 }

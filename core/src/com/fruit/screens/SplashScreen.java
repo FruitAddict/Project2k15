@@ -36,7 +36,7 @@ public class SplashScreen implements Screen,TweenAccessor<SplashScreen> {
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
         Texture splashImage = (Texture)Assets.getAsset("playerhead.png", Texture.class);
         sprite = new Sprite(splashImage);
-        sprite.setPosition(Gdx.graphics.getWidth()/2-sprite.getWidth()/2,500-sprite.getHeight()/2);
+        sprite.setPosition(0,Gdx.graphics.getHeight()/2-sprite.getHeight()/2);
         batch = new SpriteBatch();
         //setting up tweens
         timePassed = 0f;
@@ -74,7 +74,7 @@ public class SplashScreen implements Screen,TweenAccessor<SplashScreen> {
     public void show() {
         Tween.set(sprite,SpriteAccessor.ALPHA).target(0).start(TweenUtils.tweenManager);
         Tween.to(sprite,SpriteAccessor.ALPHA,3).target(1).start(TweenUtils.tweenManager);
-        Tween.to(sprite,SpriteAccessor.POSITION_Y,3).target(400).start(TweenUtils.tweenManager);
+        Tween.to(sprite,SpriteAccessor.POSITION_X,3).target(Gdx.graphics.getWidth()).start(TweenUtils.tweenManager);
     }
 
     @Override

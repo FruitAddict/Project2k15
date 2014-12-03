@@ -1,8 +1,10 @@
 package com.fruit.visual;
 
+import android.graphics.Color;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Array;
@@ -16,11 +18,14 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 public class Assets {
 
     public static AssetManager manager = new AssetManager();
+    public static BitmapFont bitmapFont;
     private static Array<String> requests = new Array<String>();
 
     static {
         manager.setLoader(TiledMap.class , new TmxMapLoader( new InternalFileHandleResolver()));
         manager.load("notfound.png",Texture.class);
+        bitmapFont = new BitmapFont();
+        bitmapFont.setColor(1.0f,0.1f,0.1f,1f);
     }
 
     public static void loadSplashScreen(){

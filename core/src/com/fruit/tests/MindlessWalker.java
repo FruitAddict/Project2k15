@@ -29,6 +29,9 @@ public class MindlessWalker extends Character implements Constants{
 
     @Override
     public void update(float delta) {
+        if(healthPoints <= 0){
+            killYourself();
+        }
         updateFacing();
         if (timeSpentDoingShit == 0) {
             random = rng.nextInt(4);
@@ -124,5 +127,9 @@ public class MindlessWalker extends Character implements Constants{
     @Override
     public void killYourself(){
         objectManager.removeObject(this);
+    }
+
+    public void damage(float damage){
+        healthPoints+=damage;
     }
 }

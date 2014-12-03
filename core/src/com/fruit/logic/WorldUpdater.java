@@ -14,9 +14,6 @@ public class WorldUpdater {
     private float stateTime;
     //Map manager
     private MapManager mapManager;
-    //world renderer reference to call when map is changed
-    private WorldRenderer worldRenderer;
-
 
     public WorldUpdater(){
         //world init. with no gravity (0,0) and sleeping enabled
@@ -47,11 +44,4 @@ public class WorldUpdater {
         return mapManager;
     }
 
-    public void registerRenderer(WorldRenderer worldRenderer){
-        this.worldRenderer = worldRenderer;
-    }
-
-    public WorldRenderer getWorldRenderer(){
-        return  worldRenderer;
-    }
 }

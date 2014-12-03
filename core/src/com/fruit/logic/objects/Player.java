@@ -16,7 +16,7 @@ public class Player extends Character implements Constants {
     private float stateTime;
     //variables to help with attacking delay.
     private float lastAttack;
-    private float timeBetweenAttacks;
+    private float timeBetweenAttacks=0.25f;
 
     public Player(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height){
         this.width = width;

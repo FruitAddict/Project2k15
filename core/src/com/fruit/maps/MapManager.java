@@ -1,5 +1,6 @@
 package com.fruit.maps;
 
+import com.fruit.Controller;
 import com.fruit.logic.Constants;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.visual.Assets;
@@ -35,7 +36,7 @@ public class MapManager implements Constants {
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomNorth());
                     //we notify the world renderer that the room has changed and
                     //tiled map renderer should change maps
-                    worldUpdater.getWorldRenderer().changeRenderedMap();
+                    Controller.getWorldRenderer().changeRenderedMap();
                     //finally we schedule a change in player's position after this world step using opposite spawn points
                     //from the linekd room
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
@@ -47,7 +48,7 @@ public class MapManager implements Constants {
             case SOUTH_DIR:{
                 if(currentMap.getCurrentRoom().getLinkedRoomSouth()!=null) {
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomSouth());
-                    worldUpdater.getWorldRenderer().changeRenderedMap();
+                    Controller.getWorldRenderer().changeRenderedMap();
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
                             ,currentMap.getCurrentRoom().getLinkedRoomSouth().getSpawnPointNorth());
                     onMapChange();
@@ -57,7 +58,7 @@ public class MapManager implements Constants {
             case EAST_DIR:{
                 if(currentMap.getCurrentRoom().getLinkedRoomEast()!=null) {
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomEast());
-                    worldUpdater.getWorldRenderer().changeRenderedMap();
+                    Controller.getWorldRenderer().changeRenderedMap();
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
                             ,currentMap.getCurrentRoom().getLinkedRoomEast().getSpawnPointWest());
                     onMapChange();
@@ -67,7 +68,7 @@ public class MapManager implements Constants {
             case WEST_DIR:{
                 if(currentMap.getCurrentRoom().getLinkedRoomWest()!=null) {
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomWest());
-                    worldUpdater.getWorldRenderer().changeRenderedMap();
+                    Controller.getWorldRenderer().changeRenderedMap();
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
                             ,currentMap.getCurrentRoom().getLinkedRoomWest().getSpawnPointEast());
                     onMapChange();

@@ -64,6 +64,8 @@ public class UserInterface extends Stage {
         BitmapFont font = new BitmapFont();
         font.scale(0.5f);
         BitmapFont font2 = new BitmapFont();
+        font.setColor(Color.WHITE);
+        font2.setColor(Color.WHITE);
         skin.add("default", font);
         skin.add("font2", font2);
 
@@ -71,10 +73,10 @@ public class UserInterface extends Stage {
          * Default style for buttons
          */
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.checked = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
+        textButtonStyle.up = skin.newDrawable("white", Color.BLACK);
+        textButtonStyle.down = skin.newDrawable("white", Color.BLACK);
+        textButtonStyle.checked = skin.newDrawable("white", Color.BLACK);
+        textButtonStyle.over = skin.newDrawable("white", Color.BLACK);
         textButtonStyle.font = skin.getFont("default");
         /**
          * Default label style
@@ -99,12 +101,12 @@ public class UserInterface extends Stage {
 
         // Create a table that fills the screen. Everything else will go inside this table.
         VerticalGroup table = new VerticalGroup();
-        VerticalGroup buttonTable = new VerticalGroup();
+        HorizontalGroup buttonTable = new HorizontalGroup();
         buttonTable.setFillParent(true);
         buttonTable.align(Align.topRight);
         table.setFillParent(true);
         table.right();
-        buttonTable.left();
+        buttonTable.top();
         // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
         final Slider sliderZoom = new Slider(0.05f,1.5f,0.05f,false,skin);
         final ScrollPane scrollPane = new ScrollPane(table,skin);
@@ -112,9 +114,13 @@ public class UserInterface extends Stage {
         final Label infoZoom = new Label("Zoom",skin);
         final Slider sliderAttack = new Slider(0.01f,2.0f,0.05f,false,skin);
         sliderAttack.setValue(updater.getObjectManager().getPlayer().getTimeBetweenAttacks());
-        final TextButton addMob = new TextButton("Add mob",skin);
-        final TextButton addBox = new TextButton("Add box",skin);
+        sliderAttack.setValue(updater.getObjectManager().getPlayer().getTimeBetweenAttacks());
+        final TextButton addMob = new TextButton("Add mobs ",skin);
+        final TextButton addBox = new TextButton("Add box ",skin);
         final TextButton clearObjects = new TextButton("Remove all objects",skin);
+        addMob.setColor(addMob.getColor().r,addMob.getColor().g,addMob.getColor().b,0.5f);
+        addBox.setColor(addBox.getColor().r, addBox.getColor().g, addBox.getColor().b, 0.5f);
+        clearObjects.setColor(clearObjects.getColor().r, clearObjects.getColor().g, clearObjects.getColor().b, 0.5f);
         scrollPane.getStyle().hScrollKnob.setMinHeight(10);
         scrollPane.getStyle().vScrollKnob.setMinWidth(10);
         scrollPane.setSize(200, 300);

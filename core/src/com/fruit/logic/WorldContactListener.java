@@ -1,6 +1,7 @@
 package com.fruit.logic;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.fruit.Controller;
 import com.fruit.logic.objects.Projectile;
 import com.fruit.tests.MindlessWalker;
 @SuppressWarnings("all")
@@ -74,12 +75,17 @@ public class WorldContactListener implements ContactListener,Constants {
                     MindlessWalker walker = (MindlessWalker)f1.getBody().getUserData();
                     Projectile projectile = (Projectile)f2.getBody().getUserData();
                     projectile.killYourself();
-                    walker.killYourself();
+                    walker.damage(-1);
+                    Controller.addOnScreenMessage("1",f1.getBody().getPosition().x*PIXELS_TO_METERS,
+                            f1.getBody().getPosition().y*PIXELS_TO_METERS,1.5f);
                 }else if( f2.getBody().getUserData() instanceof MindlessWalker){
                     MindlessWalker walker = (MindlessWalker)f2.getBody().getUserData();
                     Projectile projectile = (Projectile)f1.getBody().getUserData();
                     projectile.killYourself();
-                    walker.killYourself();
+                    walker.damage(-1);
+                    Controller.addOnScreenMessage("1",f2.getBody().getPosition().x*PIXELS_TO_METERS,
+                            f2.getBody().getPosition().y*PIXELS_TO_METERS,1.5f);
+
                 }
             }
             else if(f1.getFilterData().categoryBits == TERRAIN_BIT || f2.getFilterData().categoryBits == TERRAIN_BIT){

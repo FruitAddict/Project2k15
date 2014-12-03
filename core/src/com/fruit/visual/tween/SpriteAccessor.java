@@ -17,11 +17,11 @@ public class SpriteAccessor implements TweenAccessor<Sprite> {
                 return 1;
             }
             case POSITION_X:{
-                floats[1] = sprite.getX();
+                floats[0] = sprite.getX();
                 return 2;
             }
             case POSITION_Y:{
-                floats[2] = sprite.getY();
+                floats[0] = sprite.getY();
                 return 3;
             }
             default: {
@@ -39,11 +39,11 @@ public class SpriteAccessor implements TweenAccessor<Sprite> {
                 break;
             }
             case POSITION_X:{
-                sprite.setPosition(floats[1],sprite.getY());
+                sprite.setPosition(floats[0],sprite.getY());
                 break;
             }
             case POSITION_Y:{
-                sprite.setPosition(sprite.getX(),floats[2]);
+                sprite.setPosition(sprite.getX(),floats[0]);
                 break;
             }
             default:

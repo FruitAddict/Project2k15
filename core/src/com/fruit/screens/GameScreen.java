@@ -4,10 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.fruit.Controller;
 import com.fruit.MainGame;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.logic.input.CustomInputMultiplexer;
 import com.fruit.logic.input.WorldInputProcessor;
+import com.fruit.logic.input.WorldInputProcessorTest;
 import com.fruit.maps.MapManager;
 import com.fruit.visual.WorldRenderer;
 import com.fruit.visual.ui.UserInterface;
@@ -46,8 +48,10 @@ public class GameScreen implements Screen {
         worldRenderer = new WorldRenderer(spriteBatch,camera, worldUpdater);
         userInterface = new UserInterface(camera,worldUpdater);
 
-        //registering world renderer to world updater
-        worldUpdater.registerRenderer(worldRenderer);
+        //registering rnderer and updater to controller utility class for communication between logic
+        //and rendering
+        Controller.registerWorldRenderer(worldRenderer);
+        Controller.registerWorldUpdater(worldUpdater);
 
         //input stuff
         WorldInputProcessor worldInputProcessor = new WorldInputProcessor(worldUpdater.getObjectManager().getPlayer(), camera);

@@ -13,7 +13,7 @@ import com.fruit.maps.Room;
 
 /**
  * Map object parser. Takes objects from the tiled map and parses them into rigid box2d
- * bodies. TODO: More than terrain
+ * bodies.
  */
 public class MapObjectParser implements Constants {
 

@@ -1,5 +1,6 @@
 package com.fruit.visual.messagess;
 
+import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -64,13 +65,15 @@ public class TextMessage {
     }
 
     public void startTween(){
-        Tween.to(this, TextMessageAccessor.POSITION_Y,lifeSpan).target(positionY+75).start(TweenUtils.tweenManager);
+        Timeline.createSequence().push(
+                Tween.to(this, TextMessageAccessor.POSITION_Y,lifeSpan*2/3).target(positionY+75)).push(
+                Tween.to(this, TextMessageAccessor.POSITION_Y,lifeSpan*1/3).target(positionY)
+        ).start(TweenUtils.tweenManager);
     }
 
     public void render(SpriteBatch batch, float delta){
         bitmapFont.draw(batch,message,positionX,positionY);
         stateTime+=delta;
-        System.out.println(positionX + " " + positionY);
     }
 
     public BitmapFont getBitmapFont() {

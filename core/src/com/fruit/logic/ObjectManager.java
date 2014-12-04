@@ -44,6 +44,8 @@ public class ObjectManager {
             for(GameObject o : scheduledToAdd){
                 o.addToWorld(worldUpdater.getWorld());
                 gameObjects.add(o);
+                //we also try to add it to the current room
+                worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().addGameObject(o);
             }
         }
         scheduledToAdd.clear();
@@ -54,6 +56,8 @@ public class ObjectManager {
                     //we check whether this object exists in the gameObject list
                     worldUpdater.getWorld().destroyBody(o.getBody());
                     gameObjects.removeValue(o, true);
+                    //we remove it from the current room
+                    worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().removeGameObject(o);
                 }
             }
         }
@@ -76,24 +80,34 @@ public class ObjectManager {
                 o.update(delta);
             }
         }
-
+        //if the world was flagged to be cleared(between room/map changes)
         if(removeFlag){
             Array<Body> bodies = new Array<>();
             worldUpdater.getWorld().getBodies(bodies);
+            //we get all the bodies from the world
             for(Body body : bodies){
                 if(!(body.getUserData() instanceof  Player)) {
+                    //and destroy them
                     worldUpdater.getWorld().destroyBody(body);
                 }
             }
+            //we clear the gameobject array (other lists are already clear
+            //as this is the last step of this loop)
             gameObjects.clear();
+            //we readd the player into it
             gameObjects.add(player);
             removeFlag=false;
-            MapObjectParser.addMapObjectsToWorld(worldUpdater.getWorld(),worldUpdater.getMapManager().getCurrentMap().getCurrentRoom());
+            //we add all the objects from the new room/map
+            MapObjectParser.addMapObjectsToWorld(worldUpdater, worldUpdater.getMapManager().getCurrentMap().getCurrentRoom());
         }
     }
 
     public void addObject(GameObject o){
         scheduledToAdd.add(o);
+    }
+
+    public void addObjects(Array<GameObject> o){
+        scheduledToAdd.addAll(o);
     }
 
     public void removeObject(GameObject o){

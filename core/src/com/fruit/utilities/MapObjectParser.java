@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.logic.Constants;
+import com.fruit.logic.WorldUpdater;
 import com.fruit.maps.Room;
 
 /**
@@ -17,7 +18,10 @@ import com.fruit.maps.Room;
  */
 public class MapObjectParser implements Constants {
 
-    public static void addMapObjectsToWorld(World world, Room room){
+    public static void addMapObjectsToWorld(WorldUpdater worldUpdater, Room room){
+
+        World world = worldUpdater.getWorld();
+
         //get tile width and height from the map
         int tileWidth = room.getTiledMap().getProperties().get("tilewidth", Integer.class);
         int tileHeight = room.getTiledMap().getProperties().get("tileheight", Integer.class);
@@ -140,7 +144,8 @@ public class MapObjectParser implements Constants {
             shape.dispose();
         }
 
-
+        //finally add all the objects stored in this room to the object manager
+        worldUpdater.getObjectManager().addObjects(room.getGameObjectsStored());
     }
 
     public static void addSpawnPointsToRoom(Room room){
@@ -154,7 +159,6 @@ public class MapObjectParser implements Constants {
         }
         for(int i =0;i<spawnPointRecs.size;i++){
             String request = spawnPoints.get(i).getProperties().get("type",String.class);
-            System.out.println(request);
             if(request!=null) {
                 switch (request) {
                     case "NORTH": {

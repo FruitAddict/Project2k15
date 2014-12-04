@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -14,18 +15,25 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.tests.Box;
 import com.fruit.tests.MindlessWalker;
+import com.fruit.visual.Assets;
 
 public class UserInterface extends Stage {
     private OrthographicCamera camera;
     private WorldUpdater updater;
-
+    //TODO KILL THIS CLASS WITH HOLY FIRE
     //hardcoded skin as placeholder
     Skin skin;
     //debug labels
     Label firstLabel;
     Label secondLabel;
     Label posLabel;
+    //transparent colors
+    private Color transRed;
+    private Color transWhite;
+    private Touchpad touchpadMove;
+    private Touchpad touchpadAttack;
 
+    private Vector2 attackDirectionNormalized;
     public UserInterface(OrthographicCamera camera, WorldUpdater worldUpdater){
         this.camera = camera;
         this.updater=  worldUpdater;
@@ -36,8 +44,20 @@ public class UserInterface extends Stage {
         super.act(delta);
         firstLabel.setText(Float.toString(Gdx.graphics.getFramesPerSecond())+" FPS");
         secondLabel.setText("Objects: " + updater.getObjectManager().getNumberOfObjects());
-        posLabel.setText(String.format( "X: %.2f Y: %.2f",updater.getObjectManager().getPlayer().getBody().getPosition().x,
+        posLabel.setText(String.format("X: %.2f Y: %.2f", updater.getObjectManager().getPlayer().getBody().getPosition().x,
                 updater.getObjectManager().getPlayer().getBody().getPosition().y));
+
+        //update movement
+        updater.getObjectManager().getPlayer().addLinearVelocity(touchpadMove.getKnobPercentX() * updater
+                .getObjectManager().getPlayer().getSpeed(), touchpadMove.getKnobPercentY() * updater.getObjectManager().getPlayer().getSpeed());
+        //update attacking
+        if(touchpadAttack.getKnobPercentY()!=0 && touchpadAttack.getKnobPercentX()!=0) {
+            attackDirectionNormalized.set(0 - touchpadAttack.getKnobPercentX(), 0 - touchpadAttack.getKnobPercentY());
+            attackDirectionNormalized.nor();
+            attackDirectionNormalized.x*=-1;
+            attackDirectionNormalized.y*=-1;
+            updater.getObjectManager().getPlayer().attack(attackDirectionNormalized);
+        }
     }
 
     public void createGui(){
@@ -49,7 +69,14 @@ public class UserInterface extends Stage {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
+        skin.add("touchBackground", Assets.getAsset("touchBackground.png", Texture.class));
+        skin.add("touchKnob", Assets.getAsset("touchKnob.png",Texture.class));
         skin.add("white", new Texture(pixmap));
+
+        transRed = new Color(1,0,0,0f);
+        transWhite = new Color(1,1,1,0.5f);
+
+        attackDirectionNormalized = new Vector2();
 
         /**
          * Debuggin&GUI tests
@@ -62,7 +89,7 @@ public class UserInterface extends Stage {
          * test method creates debug buttons/info labels and adds them to the stage.
          */
         BitmapFont font = new BitmapFont();
-        font.scale(0.5f);
+
         BitmapFont font2 = new BitmapFont();
         font.setColor(Color.WHITE);
         font2.setColor(Color.WHITE);
@@ -87,7 +114,15 @@ public class UserInterface extends Stage {
         skin.add("default",textButtonStyle);
 
         /**
-         * Default slider style
+         * touchpad style
+         */
+        Touchpad.TouchpadStyle touchpadStyle = new Touchpad.TouchpadStyle();
+        touchpadStyle.background = skin.newDrawable("touchBackground",transRed);
+        touchpadStyle.knob = skin.newDrawable("touchKnob", transWhite);
+        skin.add("default",touchpadStyle);
+
+        /**
+         * slider style
          */
         Slider.SliderStyle sliderStyle = new Slider.SliderStyle();
         sliderStyle.background = skin.newDrawable("white",Color.WHITE);
@@ -103,10 +138,11 @@ public class UserInterface extends Stage {
         VerticalGroup table = new VerticalGroup();
         HorizontalGroup buttonTable = new HorizontalGroup();
         buttonTable.setFillParent(true);
-        buttonTable.align(Align.topRight);
+        buttonTable.align(Align.topLeft);
         table.setFillParent(true);
-        table.right();
-        buttonTable.top();
+        table.align(Align.topRight);
+
+
         // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
         final Slider sliderZoom = new Slider(0.05f,1.5f,0.05f,false,skin);
         final ScrollPane scrollPane = new ScrollPane(table,skin);
@@ -129,10 +165,25 @@ public class UserInterface extends Stage {
         buttonTable.addActor(clearObjects);
         addActor(table);
         addActor(buttonTable);
+
+        Container<Touchpad> containerMove = new Container<>();
+        touchpadMove = new Touchpad(20,skin);
+        containerMove.setActor(touchpadMove);
+        containerMove.align(Align.bottomLeft);
+        containerMove.setFillParent(true);
+
+        Container<Touchpad> containerAttack = new Container<>();
+        touchpadAttack = new Touchpad(20,skin);
+        containerAttack.setActor(touchpadAttack);
+        containerAttack.align(Align.bottomRight);
+        containerAttack.setFillParent(true);
+
+        addActor(containerMove);
+        addActor(containerAttack);
+
         sliderZoom.getStyle().knob.setMinWidth(10);
         sliderZoom.getStyle().knob.setMinHeight(50);
         sliderZoom.setValue(camera.zoom);
-
         firstLabel = new Label("", skin);
         secondLabel = new Label("", skin);
         posLabel = new Label("",skin);
@@ -143,7 +194,6 @@ public class UserInterface extends Stage {
         table.addActor(sliderZoom);
         table.addActor(infoAttack);
         table.addActor(sliderAttack);
-        table.align(Align.topRight);
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
         // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
         // ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
@@ -182,5 +232,6 @@ public class UserInterface extends Stage {
                 updater.getObjectManager().getPlayer().setTimeBetweenAttacks(sliderAttack.getValue());
             }
         });
+
     }
 }

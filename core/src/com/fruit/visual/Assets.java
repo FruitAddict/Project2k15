@@ -1,10 +1,13 @@
 package com.fruit.visual;
 
 import android.graphics.Color;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.BitmapFontLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Array;
@@ -22,10 +25,14 @@ public class Assets {
     private static Array<String> requests = new Array<String>();
 
     static {
+
+        //todo change
         manager.setLoader(TiledMap.class , new TmxMapLoader( new InternalFileHandleResolver()));
-        manager.load("notfound.png",Texture.class);
+        manager.load("notfound.png", Texture.class);
         bitmapFont = new BitmapFont();
+        bitmapFont.setScale(1.5f,1f);
         bitmapFont.setColor(1.0f,0.1f,0.1f,1f);
+        bitmapFont.setScale(1.5f);
     }
 
     public static void loadSplashScreen(){

@@ -173,7 +173,7 @@ public class WorldInputProcessor implements InputProcessor, Constants {
         /**
          *  Movement update algorithm. Checks for the angle between first touch position and the dragged touch position and moves the player according to that
          *  angle.
-         */
+         *
         if (firstMovementPosition.x != -1 && firstMovementPosition.y != -1) {
             float angle = (float) (MathUtils.atan2(secondMovementPosition.y - firstMovementPosition.y, secondMovementPosition.x - firstMovementPosition.x) * 180 / Math.PI);
             float length = (float) Math.sqrt(Math.pow(secondMovementPosition.x - firstMovementPosition.x, 2) + Math.pow(secondMovementPosition.y - firstMovementPosition.y, 2));
@@ -204,14 +204,13 @@ public class WorldInputProcessor implements InputProcessor, Constants {
         /**
          * Attacking alghorithm. Works like the movement, but instead of checking angles it normalizes the vectors and calls
          * the attack() method of player class.
-         */
         if (firstAttackingPosition.x != -1 && firstAttackingPosition.y != -1) {
             velocityNormalized.set(secondAttackingPosition.x - firstAttackingPosition.x, secondAttackingPosition.y - firstAttackingPosition.y);
             velocityNormalized.nor();
             velocityNormalized.y*=-1;
             player.attack(velocityNormalized);
         }
-
+        */
 
     }
 }

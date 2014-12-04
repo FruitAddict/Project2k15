@@ -19,8 +19,8 @@ public class WorldUpdater {
         //world init. with no gravity (0,0) and sleeping enabled
         world = new World(new Vector2(0,0), true);
         world.setContactListener(new WorldContactListener(this));
-        mapManager = new MapManager(this, true);
         objectManager = new ObjectManager(this);
+        mapManager = new MapManager(this, true);
     }
 
     public void update(float delta){

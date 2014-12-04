@@ -80,6 +80,11 @@ public class Player extends Character implements Constants {
         }
     }
 
+    public void addLinearVelocity(float velX,float velY){
+        body.setLinearVelocity(body.getLinearVelocity().x + velX, body.getLinearVelocity().y);
+        body.setLinearVelocity(body.getLinearVelocity().x, body.getLinearVelocity().y+velY);
+    }
+
     public float getTimeBetweenAttacks() {
         return timeBetweenAttacks;
     }
@@ -91,4 +96,5 @@ public class Player extends Character implements Constants {
     public ObjectManager getObjectManager(){
         return objectManager;
     }
+
 }

@@ -7,11 +7,15 @@ import com.fruit.utilities.MapObjectParser;
 import com.fruit.visual.Assets;
 
 public class Map implements Constants {
+    //map must contain reference to the map manager
     private MapManager mapManager;
+    //list of all rooms in this map
     private Array<Room> roomArray; //not using it yet TODO
+    //current room (the one player is in)
     private Room currentRoom;
-    private int lastID;
 
+    //constructor takes MapManager reference and number of the circle to be generated. Right now there is
+    //no save-game capability.
     public Map(MapManager mapManager, int circleNumber){ //circle number is level to be generated
         this.mapManager = mapManager;
         roomArray = new Array<>();
@@ -22,11 +26,14 @@ public class Map implements Constants {
             }
             default:{
                 assert false : "Error";
+                System.out.println("Couldn't generate requested map.");
+                System.exit(1);
             }
         }
     }
 
     public void addRoom(Room room){
+        //Adds room to this map,
         if(roomArray!=null){
             roomArray.add(room);
         } else {
@@ -36,24 +43,18 @@ public class Map implements Constants {
     }
 
     public void changeRoom(Room room){
+        //changes the room to the requested one if it exists
+        //within current map. Map changes require greater effort
         if(roomArray.contains(room,true)){
             currentRoom=room;
         }
     }
 
-    public void changeRoom(int idNumber){
-        for(Room r : roomArray){
-            if(r.ID == idNumber){
-                currentRoom= r;
-            }
-        }
-    }
-
     public void createFirstCircleLevel(){
-        Room firstRoom = new Room((TiledMap)Assets.getAsset("64map.tmx",TiledMap.class),lastID++);
-        Room secondRoom = new Room((TiledMap)Assets.getAsset("64map2.tmx",TiledMap.class),lastID++);
-        roomArray.add(firstRoom);
-        roomArray.add(secondRoom);
+        Room firstRoom = new Room((TiledMap)Assets.getAsset("64map.tmx",TiledMap.class));
+        Room secondRoom = new Room((TiledMap)Assets.getAsset("64map2.tmx",TiledMap.class));
+        addRoom(firstRoom);
+        addRoom(secondRoom);
         MapObjectParser.addSpawnPointsToRoom(firstRoom);
         MapObjectParser.addSpawnPointsToRoom(secondRoom);
 
@@ -67,7 +68,8 @@ public class Map implements Constants {
         secondRoom.setLinkedRoomSouth(firstRoom);
 
         currentRoom = firstRoom;
-        MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater().getWorld(), firstRoom);
+        //initially add all the game objects manually as no references to managers exist yet.
+        MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater(), firstRoom);
     }
 
 

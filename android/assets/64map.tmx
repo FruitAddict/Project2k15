@@ -38,22 +38,14 @@
   </data>
  </layer>
  <objectgroup name="portalObjects">
-  <object type="EAST" x="2008" y="960" width="40" height="188">
-   <properties>
-    <property name="PortalID" value="EAST"/>
-   </properties>
-  </object>
+  <object type="EAST" x="2008" y="960" width="40" height="188"/>
   <object type="WEST" x="2" y="960" width="30" height="190">
    <properties>
     <property name="PortalID" value="WEST"/>
    </properties>
   </object>
   <object type="NORTH" x="956" y="-2" width="200" height="38"/>
-  <object type="SOUTH" x="960" y="2012" width="192" height="40">
-   <properties>
-    <property name="PortalID" value="SOUTH"/>
-   </properties>
-  </object>
+  <object type="SOUTH" x="960" y="2012" width="192" height="40"/>
  </objectgroup>
  <objectgroup name="spawnPoints">
   <object type="EAST" x="1921" y="1045" width="18" height="29">
@@ -65,5 +57,18 @@
   <object type="NORTH" x="1050" y="76"/>
   <object type="WEST" x="64" y="1061"/>
   <object type="CENTER" x="833" y="902"/>
+  <object x="1469.33" y="644"/>
+  <object x="1486.67" y="832"/>
+  <object x="280" y="510.667"/>
+  <object x="1486.67" y="1574.67"/>
+  <object x="361.333" y="1058.67"/>
+  <object x="598.667" y="1824"/>
+  <object x="1776" y="1354.67"/>
+ </objectgroup>
+ <objectgroup name="clutterLayer">
+  <object type="ROCK" x="777" y="1278" width="64" height="64"/>
+  <object type="ROCK" x="858" y="1280" width="64" height="64"/>
+  <object type="ROCK2" x="792" y="1370" width="64" height="64"/>
+  <object type="ROCK" x="866" y="1349" width="64" height="64"/>
  </objectgroup>
 </map>

@@ -44,8 +44,6 @@ public class ObjectManager {
             for(GameObject o : scheduledToAdd){
                 o.addToWorld(worldUpdater.getWorld());
                 gameObjects.add(o);
-                //we also try to add it to the current room
-                worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().addGameObject(o);
             }
         }
         scheduledToAdd.clear();
@@ -56,8 +54,6 @@ public class ObjectManager {
                     //we check whether this object exists in the gameObject list
                     worldUpdater.getWorld().destroyBody(o.getBody());
                     gameObjects.removeValue(o, true);
-                    //we remove it from the current room
-                    worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().removeGameObject(o);
                 }
             }
         }
@@ -104,6 +100,7 @@ public class ObjectManager {
 
     public void addObject(GameObject o){
         scheduledToAdd.add(o);
+        worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().addGameObject(o);
     }
 
     public void addObjects(Array<GameObject> o){
@@ -112,6 +109,7 @@ public class ObjectManager {
 
     public void removeObject(GameObject o){
         scheduledToRemove.add(o);
+        worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().removeGameObject(o);
     }
 
     public void removeAllGameObjects(boolean withPlayer){

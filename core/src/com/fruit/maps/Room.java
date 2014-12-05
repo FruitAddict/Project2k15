@@ -4,12 +4,13 @@ package com.fruit.maps;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.fruit.logic.objects.*;
+import com.fruit.logic.Constants;
+import com.fruit.logic.objects.abstracted.GameObject;
 
 /**
  * Room class. Contains all the spawn& exit points and tiled map representation and items&entities stored.
  */
-public class Room {
+public class Room implements Constants{
     //Tiled map representation of this room
     private TiledMap tiledMap;
     //Game objects this room contains (eg. clutter like rocks, mobs and items).
@@ -55,7 +56,8 @@ public class Room {
     public void addGameObject(GameObject o){
         //we only store characters right now (e.g. mobs)
         //todo items
-        if(o instanceof com.fruit.logic.objects.Character){
+        System.out.println(o.getGroupID());
+        if(o.getGroupID()==ENEMIES_GROUP || o.getGroupID()==CLUTTER_GROUP){
             gameObjectsStored.add(o);
         }
     }

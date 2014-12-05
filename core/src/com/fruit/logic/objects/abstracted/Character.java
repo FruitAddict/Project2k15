@@ -1,4 +1,4 @@
-package com.fruit.logic.objects;
+package com.fruit.logic.objects.abstracted;
 
 /**
  * Abstract character class. Contains method to determine object's facing based on the velocity
@@ -6,6 +6,9 @@ package com.fruit.logic.objects;
  * that it's facing the north direction);
  */
 public abstract class Character extends MovableGameObject {
+
+    protected float healthPoints;
+
     public boolean facingW, facingE, facingN, facingS,
                    facingNE, facingNW, facingSE, facingSW, idle;
 
@@ -61,5 +64,19 @@ public abstract class Character extends MovableGameObject {
             setFacings(false);
             facingSE=true;
         }
+    }
+
+    public void changeHealthPoints(int amount){
+        //every character must be damagable or healable.
+        healthPoints += amount;
+    }
+
+    public void setHealthPoints(float value){
+        //set health points
+        healthPoints = value;
+    }
+
+    public float getHealthPoints(){
+        return healthPoints;
     }
 }

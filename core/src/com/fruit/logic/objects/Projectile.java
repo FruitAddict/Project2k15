@@ -6,6 +6,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.logic.ObjectManager;
+import com.fruit.logic.objects.abstracted.MovableGameObject;
+
 //Basic projectile class.
 public class Projectile extends MovableGameObject {
     private ObjectManager objectManager;
@@ -18,6 +20,10 @@ public class Projectile extends MovableGameObject {
         this.spawnY = spawnY;
         this.objectManager = objectManager;
         this.direction = dir;
+        setTypeID(PROJECTILE_TYPE);
+        setMaxVelocity(6);
+        setSpeed(0.30f);
+        setGroupID(NO_GROUP);
     }
     @Override
     public void update(float delta) {
@@ -25,7 +31,6 @@ public class Projectile extends MovableGameObject {
                 (body.getLinearVelocity().y <0.5f && body.getLinearVelocity().y > -0.5f)){
             killYourself();
         }
-        System.out.println(body.getLinearVelocity().x + " " + body.getLinearVelocity().y);
     }
 
     @Override
@@ -33,11 +38,6 @@ public class Projectile extends MovableGameObject {
         //setting width and height
         width = 24;
         height = 24;
-
-        //other stuff
-        setTypeID(PROJECTILE_TYPE);
-        setMaxVelocity(6);
-        setSpeed(0.30f);
 
         //Player body definition
         BodyDef bodyDef = new BodyDef();

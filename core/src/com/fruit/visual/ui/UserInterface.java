@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.tests.Box;
+import com.fruit.tests.Dummy;
 import com.fruit.tests.MindlessWalker;
 import com.fruit.visual.Assets;
 
@@ -148,7 +149,7 @@ public class UserInterface extends Stage {
         final ScrollPane scrollPane = new ScrollPane(table,skin);
         final Label infoAttack = new Label("Attack speed",skin);
         final Label infoZoom = new Label("Zoom",skin);
-        final Slider sliderAttack = new Slider(0.01f,2.0f,0.05f,false,skin);
+        final Slider sliderAttack = new Slider(0.15f,2.0f,0.05f,false,skin);
         sliderAttack.setValue(updater.getObjectManager().getPlayer().getTimeBetweenAttacks());
         sliderAttack.setValue(updater.getObjectManager().getPlayer().getTimeBetweenAttacks());
         final TextButton addMob = new TextButton("Add mobs ",skin);
@@ -216,7 +217,7 @@ public class UserInterface extends Stage {
         addBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                updater.getObjectManager().addObject(new Box(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x,
+                updater.getObjectManager().addObject(new Dummy(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x,
                         updater.getObjectManager().getPlayer().getBody().getPosition().y));
             }
         });

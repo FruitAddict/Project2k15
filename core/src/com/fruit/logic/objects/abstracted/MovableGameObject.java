@@ -1,4 +1,6 @@
-package com.fruit.logic.objects;
+package com.fruit.logic.objects.abstracted;
+
+import com.fruit.logic.objects.abstracted.GameObject;
 
 /**
  * Movable game object abstract class. All moving objects will inherit from this.
@@ -13,7 +15,6 @@ public abstract class MovableGameObject extends GameObject {
     protected float width, height;
     //Maximum allowed velocity for this object.
     protected float maxVelocity;
-
     //Speed of this object. This value is added to the velocity of this object on worldstep updates.
     protected float speed;
 

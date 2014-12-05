@@ -1,13 +1,15 @@
 package com.fruit.visual;
 
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.logic.Constants;
 import com.fruit.logic.objects.*;
-import com.fruit.logic.objects.Character;
+import com.fruit.logic.objects.abstracted.GameObject;
+import com.fruit.logic.objects.abstracted.MovableGameObject;
+import com.fruit.tests.Dummy;
 import com.fruit.tests.MindlessWalker;
+import com.fruit.visual.animationpacks.*;
 
 import java.util.Comparator;
 
@@ -21,12 +23,14 @@ public class ObjectRenderer implements Constants {
     MindlessWalkerAnimationPack mindlessWalkerAnimationPack;
     UtilityAnimationPack utilityAnimationPack;
     ProjectileAnimationPack projectileAnimationPack;
+    DummyAnimationPack dummyAnimationPack;
 
     public ObjectRenderer(){
         playerAnimationPack = new PlayerAnimationPack();
         mindlessWalkerAnimationPack = new MindlessWalkerAnimationPack();
         utilityAnimationPack = new UtilityAnimationPack();
         projectileAnimationPack = new ProjectileAnimationPack();
+        dummyAnimationPack = new DummyAnimationPack();
     }
 
     public void render(float delta, Array<GameObject> objects, SpriteBatch batch){
@@ -65,6 +69,11 @@ public class ObjectRenderer implements Constants {
                 case PROJECTILE_TYPE:{
                     projectileAnimationPack.load();
                     projectileAnimationPack.render(stateTime,(Projectile)e,batch);
+                    break;
+                }
+                case DUMMY_TYPE:{
+                    dummyAnimationPack.load();
+                    dummyAnimationPack.render(stateTime,(Dummy)e,batch);
                     break;
                 }
             }

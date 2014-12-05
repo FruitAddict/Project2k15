@@ -1,4 +1,4 @@
-package com.fruit.logic.objects;
+package com.fruit.logic.objects.abstracted;
 
 
 import com.badlogic.gdx.physics.box2d.World;

@@ -3,7 +3,7 @@ package com.fruit.logic;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
-import com.fruit.logic.objects.GameObject;
+import com.fruit.logic.objects.abstracted.GameObject;
 import com.fruit.logic.objects.Player;
 import com.fruit.utilities.MapObjectParser;
 
@@ -78,28 +78,39 @@ public class ObjectManager {
         }
         //if the world was flagged to be cleared(between room/map changes)
         if(removeFlag){
-            Array<Body> bodies = new Array<>();
-            worldUpdater.getWorld().getBodies(bodies);
-            //we get all the bodies from the world
-            for(Body body : bodies){
-                if(!(body.getUserData() instanceof  Player)) {
-                    //and destroy them
-                    worldUpdater.getWorld().destroyBody(body);
-                }
-            }
-            //we clear the gameobject array (other lists are already clear
-            //as this is the last step of this loop)
-            gameObjects.clear();
-            //we readd the player into it
-            gameObjects.add(player);
-            removeFlag=false;
-            //we add all the objects from the new room/map
-            MapObjectParser.addMapObjectsToWorld(worldUpdater, worldUpdater.getMapManager().getCurrentMap().getCurrentRoom());
+           onRoomChangeRequest();
         }
+    }
+
+    public void onRoomChangeRequest(){
+        //update all the last know positions just in case
+        for(GameObject o: gameObjects){
+            o.setLastKnownX(o.getBody().getPosition().x);
+            o.setLastKnownY(o.getBody().getPosition().y);
+        }
+        Array<Body> bodies = new Array<>();
+        worldUpdater.getWorld().getBodies(bodies);
+        //we update all the objects lastKnownPositions to their current position if they are to be readded later
+        //we get all the bodies from the world
+        for(Body body : bodies){
+            if(!(body.getUserData() instanceof  Player)) {
+                //and destroy them
+                worldUpdater.getWorld().destroyBody(body);
+            }
+        }
+        //we clear the gameobject array (other lists are already clear
+        //as this is the last step of this loop)
+        gameObjects.clear();
+        //we readd the player into it
+        gameObjects.add(player);
+        removeFlag=false;
+        //we add all the objects from the new room/map
+        MapObjectParser.addMapObjectsToWorld(worldUpdater, worldUpdater.getMapManager().getCurrentMap().getCurrentRoom());
     }
 
     public void addObject(GameObject o){
         scheduledToAdd.add(o);
+        //try to add it to the room too
         worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().addGameObject(o);
     }
 
@@ -109,6 +120,7 @@ public class ObjectManager {
 
     public void removeObject(GameObject o){
         scheduledToRemove.add(o);
+        //remove it from the room if it exists in this list
         worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().removeGameObject(o);
     }
 

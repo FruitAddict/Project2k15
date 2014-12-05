@@ -16,9 +16,15 @@ public interface Constants {
     public final int WALKER_TYPE = 102;
     public final int PROJECTILE_TYPE = 103;
     public final int CLUTTER_TYPE = 104;
+    public final int DUMMY_TYPE = 105;
     //directions
     public final int NORTH_DIR = 1001;
     public final int EAST_DIR = 1002;
     public final int SOUTH_DIR = 1003;
     public final int WEST_DIR = 1004;
+    //GroupID's for fixture-independent object filtering in room storage
+    public final int NO_GROUP = 10000;
+    public final int ENEMIES_GROUP = 10001;
+    public final int CLUTTER_GROUP = 10002;
+    public final int ITEM_GROUP = 10003;
 }

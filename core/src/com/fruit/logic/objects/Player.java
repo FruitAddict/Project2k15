@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.fruit.logic.Constants;
 import com.fruit.logic.ObjectManager;
-import com.fruit.logic.WorldUpdater;
+import com.fruit.logic.objects.abstracted.Character;
 
 public class Player extends Character implements Constants {
     //coordinates at which the player is first spawned.
@@ -24,6 +24,10 @@ public class Player extends Character implements Constants {
         this.spawnCoordY = spawnCoordY;
         this.spawnCoordX = spawnCoordX;
         this.objectManager = objectManager;
+        setTypeID(PLAYER_TYPE);
+        setMaxVelocity(3);
+        setSpeed(0.25f);
+        setGroupID(NO_GROUP);
     }
 
     @Override
@@ -52,11 +56,6 @@ public class Player extends Character implements Constants {
         fixtureDef.filter.categoryBits = PLAYER_BIT;
         fixtureDef.filter.maskBits= PROJECTILE_BIT |CLUTTER_BIT | TERRAIN_BIT |ENEMY_BIT | PORTAL_BIT;
         body.createFixture(fixtureDef);
-
-        //set other stuff
-        setTypeID(PLAYER_TYPE);
-        setMaxVelocity(3);
-        setSpeed(0.25f);
 
         //dispose shape
         shape.dispose();

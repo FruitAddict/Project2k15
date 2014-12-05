@@ -1,4 +1,4 @@
-package com.fruit.visual;
+package com.fruit.visual.animationpacks;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.fruit.logic.Constants;
 import com.fruit.logic.objects.Projectile;
+import com.fruit.visual.Assets;
 
 public class ProjectileAnimationPack implements Constants{
     private boolean loaded;
@@ -30,6 +31,7 @@ public class ProjectileAnimationPack implements Constants{
                 animRegion2[i] = tmpM2[0][i];
             }
             animationDead = new Animation(0.1f, animRegion2);
+            loaded = true;
         }
     }
 

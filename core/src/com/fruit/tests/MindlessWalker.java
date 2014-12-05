@@ -4,9 +4,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.fruit.Controller;
 import com.fruit.logic.Constants;
 import com.fruit.logic.ObjectManager;
-import com.fruit.logic.objects.Character;
+import com.fruit.logic.objects.abstracted.Character;
 
 import java.util.Random;
 
@@ -17,14 +18,16 @@ public class MindlessWalker extends Character implements Constants{
     private Random rng = new Random();
     private float stateTime;
     private int random;
-    private float spawnX;
-    private float spawnY;
-    private float healthPoints=5;
 
     public MindlessWalker(ObjectManager objectManager, float spawnX, float spawnY){
         this.objectManager = objectManager;
-        this.spawnX = spawnX;
-        this.spawnY = spawnY;
+        lastKnownX = spawnX;
+        lastKnownY = spawnY;
+        setTypeID(WALKER_TYPE);
+        setMaxVelocity(3);
+        setSpeed(0.25f);
+        setGroupID(ENEMIES_GROUP);
+        healthPoints = 5;
     }
 
     @Override
@@ -95,7 +98,7 @@ public class MindlessWalker extends Character implements Constants{
 
         //Player body definition
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(spawnX,spawnY);
+        bodyDef.position.set(lastKnownX,lastKnownY);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 2.0f;
@@ -107,7 +110,7 @@ public class MindlessWalker extends Character implements Constants{
 
         //Shape definiton
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/PIXELS_TO_METERS/2,height/PIXELS_TO_METERS/2);
+        shape.setAsBox(width/PIXELS_TO_METERS/2,height/PIXELS_TO_METERS/4);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();
@@ -115,11 +118,6 @@ public class MindlessWalker extends Character implements Constants{
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = ENEMY_BIT;
         body.createFixture(fixtureDef);
-
-        //set other stuff
-        setTypeID(WALKER_TYPE);
-        setMaxVelocity(3);
-        setSpeed(0.25f);
 
         //dispose shape
         shape.dispose();
@@ -129,7 +127,10 @@ public class MindlessWalker extends Character implements Constants{
         objectManager.removeObject(this);
     }
 
-    public void damage(float damage){
-        healthPoints+=damage;
+    @Override
+    public void changeHealthPoints(int amount){
+        super.changeHealthPoints(amount);
+        Controller.addOnScreenMessage(Integer.toString(amount), getBody().getPosition().x * PIXELS_TO_METERS,
+                getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
     }
 }

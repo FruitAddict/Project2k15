@@ -11,6 +11,7 @@ import com.fruit.logic.input.CustomInputMultiplexer;
 import com.fruit.logic.input.WorldInputProcessor;
 import com.fruit.logic.input.WorldInputProcessorTest;
 import com.fruit.maps.MapManager;
+import com.fruit.visual.GameCamera;
 import com.fruit.visual.WorldRenderer;
 import com.fruit.visual.ui.UserInterface;
 
@@ -22,7 +23,7 @@ public class GameScreen implements Screen {
 
     private MainGame game;
     //camera with fixed virtual viewport
-    private OrthographicCamera camera;
+    private GameCamera camera;
     //map manager that holds abstracted map objects (they know what .tmx file represents each room. ,
     //what mobs to spawn in a room, what items are currently in rooms etc. WorldUpdater takes care
     //of actually placing stuff. This object is created as the first one
@@ -43,12 +44,12 @@ public class GameScreen implements Screen {
     public GameScreen(MainGame game){
         this.game = game;
         worldUpdater = new WorldUpdater();
-        camera = new OrthographicCamera();
+        camera = new GameCamera();
         spriteBatch = new SpriteBatch();
         worldRenderer = new WorldRenderer(spriteBatch,camera, worldUpdater);
         userInterface = new UserInterface(camera,worldUpdater);
 
-        //registering rnderer and updater to controller utility class for communication between logic
+        //registering renderer and updater to controller utility class for communication between logic
         //and rendering
         Controller.registerWorldRenderer(worldRenderer);
         Controller.registerWorldUpdater(worldUpdater);
@@ -57,6 +58,9 @@ public class GameScreen implements Screen {
         WorldInputProcessor worldInputProcessor = new WorldInputProcessor(worldUpdater.getObjectManager().getPlayer(), camera);
         customInputMultiplexer = new CustomInputMultiplexer(userInterface, worldInputProcessor);
         Gdx.input.setInputProcessor(customInputMultiplexer);
+
+        //make camera follow the player
+        camera.setObjectToFollow(worldUpdater.getObjectManager().getPlayer());
     }
     @Override
     public void render(float delta) {

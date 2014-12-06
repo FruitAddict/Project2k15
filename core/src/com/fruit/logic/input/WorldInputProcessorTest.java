@@ -96,7 +96,6 @@ public class WorldInputProcessorTest extends WorldInputProcessor {
         return false;
     }
 
-
     public void update() {
         /**
          * Camera translating algorithm. Initially moves the camera to the player position (centered), then checks whether the current camera

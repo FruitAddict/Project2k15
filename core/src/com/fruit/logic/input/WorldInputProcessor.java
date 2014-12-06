@@ -33,7 +33,6 @@ public class WorldInputProcessor implements InputProcessor, Constants {
     private Vector3 firstAttackingPosition;
     private Vector3 secondAttackingPosition;
     private Vector2 velocityNormalized;
-    protected float lerpValue;
 
 
 
@@ -44,7 +43,6 @@ public class WorldInputProcessor implements InputProcessor, Constants {
         firstAttackingPosition = new Vector3(-1, -1, 0);
         secondAttackingPosition = new Vector3();
         velocityNormalized = new Vector2();
-        lerpValue = 0.1f;
 
         this.player = player;
         this.camera = camera;
@@ -126,49 +124,12 @@ public class WorldInputProcessor implements InputProcessor, Constants {
         return false;
     }
 
-    public float getLerpValue() {
-        return lerpValue;
-    }
-
-    public void setLerpValue(float lerpValue) {
-        this.lerpValue = lerpValue;
-    }
-
-
     public void setMapSize(float width, float height){
         mapWidth=width;
         mapHeight=height;
     }
 
     public void update() {
-        /**
-         * Camera translating algorithm. Initially moves the camera to the player position (centered), then checks whether the current camera
-         * position overlaps the map boundaries. If so, sets it to the corner
-         */
-
-        Vector3 lerpVector = new Vector3((((player.getBody().getPosition().x)*PIXELS_TO_METERS)),
-                (player.getBody().getPosition().y*PIXELS_TO_METERS), 0);
-
-        camera.position.lerp(lerpVector, lerpValue);
-
-        float cameraLeft = camera.position.x - camera.viewportWidth * camera.zoom / 2;
-        float cameraRight = camera.position.x + camera.viewportWidth * camera.zoom / 2;
-        float cameraBottom = camera.position.y - camera.viewportHeight * camera.zoom / 2;
-        float cameraTop = camera.position.y + camera.viewportHeight * camera.zoom / 2;
-
-        // Horizontal axis
-        if (cameraLeft <= 0) {
-            camera.position.x = camera.viewportWidth * camera.zoom / 2;
-        } else if (cameraRight >= mapWidth) {
-            camera.position.x = mapHeight - camera.viewportWidth * camera.zoom / 2;
-        }
-
-        // Vertical axis
-        if (cameraBottom <= 0) {
-            camera.position.y = camera.viewportHeight * camera.zoom / 2;
-        } else if (cameraTop >= mapHeight) {
-            camera.position.y = mapHeight - camera.viewportHeight * camera.zoom / 2;
-        }
 
         /**
          *  Movement update algorithm. Checks for the angle between first touch position and the dragged touch position and moves the player according to that

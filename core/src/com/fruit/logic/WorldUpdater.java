@@ -2,6 +2,7 @@ package com.fruit.logic;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.fruit.logic.objects.Player;
 import com.fruit.maps.MapManager;
 import com.fruit.visual.WorldRenderer;
 
@@ -42,6 +43,14 @@ public class WorldUpdater {
 
     public MapManager getMapManager(){
         return mapManager;
+    }
+
+    public Player getPlayer(){
+        if(objectManager!=null){
+            return objectManager.getPlayer();
+        } else {
+            return null;
+        }
     }
 
 }

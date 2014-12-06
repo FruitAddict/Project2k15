@@ -29,6 +29,7 @@ public class Assets {
         //todo change
         manager.setLoader(TiledMap.class , new TmxMapLoader( new InternalFileHandleResolver()));
         manager.load("notfound.png", Texture.class);
+        manager.finishLoading();
         bitmapFont = new BitmapFont();
         bitmapFont.setScale(1.5f,1f);
         bitmapFont.setColor(1.0f,0.1f,0.1f,1f);

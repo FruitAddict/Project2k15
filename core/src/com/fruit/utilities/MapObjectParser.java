@@ -21,10 +21,6 @@ public class MapObjectParser implements Constants {
     public static void addMapObjectsToWorld(WorldUpdater worldUpdater, Room room){
 
         World world = worldUpdater.getWorld();
-
-        //get tile width and height from the map
-        int tileWidth = room.getTiledMap().getProperties().get("tilewidth", Integer.class);
-        int tileHeight = room.getTiledMap().getProperties().get("tileheight", Integer.class);
         //get collision layer and obtain the objects
         MapObjects collisionMapObjects = room.getTiledMap().getLayers().get("collisionObjects").getObjects();
         //create array of rectangles based on collision objects
@@ -149,6 +145,10 @@ public class MapObjectParser implements Constants {
     }
 
     public static void addSpawnPointsToRoom(Room room){
+        //get tile width and height from the map TODO make it go away
+        room.setTileWidth(room.getTiledMap().getProperties().get("tilewidth", Integer.class));
+        room.setTileHeight(room.getTiledMap().getProperties().get("tileheight", Integer.class));
+
         TiledMap map = room.getTiledMap();
         MapObjects spawnPoints = map.getLayers().get("spawnPoints").getObjects();
         Array<Rectangle> spawnPointRecs = new Array<>();
@@ -162,28 +162,28 @@ public class MapObjectParser implements Constants {
             if(request!=null) {
                 switch (request) {
                     case "NORTH": {
-                        room.setSpawnPointNorth(new Vector2(spawnPointRecs.get(i).getX() / PIXELS_TO_METERS,
-                                spawnPointRecs.get(i).getY() / PIXELS_TO_METERS));
+                        room.setSpawnPointNorth(new Vector2((spawnPointRecs.get(i).getX()+spawnPointRecs.get(i).getWidth()/2) / PIXELS_TO_METERS,
+                                (spawnPointRecs.get(i).getY()+spawnPointRecs.get(i).getHeight()/2)/ PIXELS_TO_METERS));
                         break;
                     }
                     case "SOUTH": {
-                        room.setSpawnPointSouth(new Vector2(spawnPointRecs.get(i).getX() / PIXELS_TO_METERS,
-                                spawnPointRecs.get(i).getY() / PIXELS_TO_METERS));
+                        room.setSpawnPointSouth(new Vector2((spawnPointRecs.get(i).getX()+spawnPointRecs.get(i).getWidth()/2) / PIXELS_TO_METERS,
+                                (spawnPointRecs.get(i).getY()+spawnPointRecs.get(i).getHeight()/2)/ PIXELS_TO_METERS));
                         break;
                     }
                     case "EAST": {
-                        room.setSpawnPointEast(new Vector2(spawnPointRecs.get(i).getX() / PIXELS_TO_METERS,
-                                spawnPointRecs.get(i).getY() / PIXELS_TO_METERS));
+                        room.setSpawnPointEast(new Vector2((spawnPointRecs.get(i).getX()+spawnPointRecs.get(i).getWidth()/2) / PIXELS_TO_METERS,
+                                (spawnPointRecs.get(i).getY()+spawnPointRecs.get(i).getHeight()/2)/ PIXELS_TO_METERS));
                         break;
                     }
                     case "WEST": {
-                        room.setSpawnPointWest(new Vector2(spawnPointRecs.get(i).getX() / PIXELS_TO_METERS,
-                                spawnPointRecs.get(i).getY() / PIXELS_TO_METERS));
+                        room.setSpawnPointWest(new Vector2((spawnPointRecs.get(i).getX()+spawnPointRecs.get(i).getWidth()/2) / PIXELS_TO_METERS,
+                                (spawnPointRecs.get(i).getY()+spawnPointRecs.get(i).getHeight()/2)/ PIXELS_TO_METERS));
                         break;
                     }
                     case "CENTER": {
-                        room.setSpawnPointCenter(new Vector2(spawnPointRecs.get(i).getX() / PIXELS_TO_METERS,
-                                spawnPointRecs.get(i).getY() / PIXELS_TO_METERS));
+                        room.setSpawnPointCenter(new Vector2((spawnPointRecs.get(i).getX()+spawnPointRecs.get(i).getWidth()/2) / PIXELS_TO_METERS,
+                                (spawnPointRecs.get(i).getY()+spawnPointRecs.get(i).getHeight()/2)/ PIXELS_TO_METERS));
                         break;
                     }
                     default: {

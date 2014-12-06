@@ -1,5 +1,6 @@
 package com.fruit.maps;
 
+import com.badlogic.gdx.math.Vector2;
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
 import com.fruit.logic.WorldUpdater;
@@ -36,7 +37,7 @@ public class MapManager implements Constants {
     }
 
     public void requestChange(int fromDirection) {
-        //generall method to change maps/rooms. Will handle anything
+        //general method to change maps/rooms. Will handle anything
         switch(fromDirection){
             case NORTH_DIR:{
                 //first we check if the linked room at the specified direction is not null
@@ -44,10 +45,12 @@ public class MapManager implements Constants {
                     //then we change the room to the requested room using the room object itself
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomNorth());
                     //finally we schedule a change in player's position after this world step using opposite spawn points
-                    //from the linekd room
+                    //from the linked room
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
                     ,currentMap.getCurrentRoom().getLinkedRoomNorth().getSpawnPointSouth());
-                    onMapChange();
+                    //invoke onMapChange method (see below), pass it the new spawn point, direction the player will
+                    // come out from and boolean indicating that the renderer should do a smooth transition between maps
+                    onMapChange(currentMap.getCurrentRoom().getLinkedRoomNorth().getSpawnPointSouth(), SOUTH_DIR,true);
                 }
                 break;
             }
@@ -56,7 +59,7 @@ public class MapManager implements Constants {
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomSouth());
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
                             ,currentMap.getCurrentRoom().getLinkedRoomSouth().getSpawnPointNorth());
-                    onMapChange();
+                    onMapChange(currentMap.getCurrentRoom().getLinkedRoomSouth().getSpawnPointNorth(), NORTH_DIR,true);
                 }
                 break;
             }
@@ -65,7 +68,7 @@ public class MapManager implements Constants {
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomEast());
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
                             ,currentMap.getCurrentRoom().getLinkedRoomEast().getSpawnPointWest());
-                    onMapChange();
+                    onMapChange(currentMap.getCurrentRoom().getLinkedRoomEast().getSpawnPointWest(), WEST_DIR,true);
                 }
                 break;
             }
@@ -74,17 +77,35 @@ public class MapManager implements Constants {
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomWest());
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
                             ,currentMap.getCurrentRoom().getLinkedRoomWest().getSpawnPointEast());
-                    onMapChange();
+                    onMapChange(currentMap.getCurrentRoom().getLinkedRoomWest().getSpawnPointEast(),EAST_DIR,true);
                 }
                 break;
             }
         }
     }
 
-    public void onMapChange(){
+    public void onMapChange(Vector2 spawnPos,int direction, boolean transition){
         //on map change, tell the object manager to remove everything and re-add it based on the new map
         worldUpdater.getObjectManager().onMapChange();
-        //tell the world renderer to change map that is rendered to the new one
-        Controller.getWorldRenderer().changeRenderedMap();
+        //tell the world renderer to change map that is rendered to the new one and pass it the new spawn position
+        //and transition boolean (see changeRenderedMap method)
+        Controller.getWorldRenderer().changeRenderedMap(new Vector2(spawnPos.x*PIXELS_TO_METERS, spawnPos.y*PIXELS_TO_METERS),
+                direction, transition);
+    }
+
+    public float getCurrentMapWidth(){
+        if(currentMap.getCurrentRoom()!=null){
+            return currentMap.getCurrentRoom().getTiledMapWidth();
+        } else {
+            return 0;
+        }
+    }
+
+    public float getCurrentMapHeight(){
+        if(currentMap.getCurrentRoom()!=null){
+            return currentMap.getCurrentRoom().getTiledMapHeight();
+        }else {
+            return 0;
+        }
     }
 }

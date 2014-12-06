@@ -132,6 +132,9 @@ public class ObjectManager {
     }
 
     public void onMapChange(){
+        //when mapmanager calls this function, the flag to remove everything
+        //is true and on the next object update everything will be removed
+        //(except for player)
         removeFlag = true;
     }
 

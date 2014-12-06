@@ -153,7 +153,7 @@ public class UserInterface extends Stage {
         sliderAttack.setValue(updater.getObjectManager().getPlayer().getTimeBetweenAttacks());
         sliderAttack.setValue(updater.getObjectManager().getPlayer().getTimeBetweenAttacks());
         final TextButton addMob = new TextButton("Add mobs ",skin);
-        final TextButton addBox = new TextButton("Add box ",skin);
+        final TextButton addBox = new TextButton("Add dummy ",skin);
         final TextButton clearObjects = new TextButton("Remove all objects",skin);
         addMob.setColor(addMob.getColor().r,addMob.getColor().g,addMob.getColor().b,0.5f);
         addBox.setColor(addBox.getColor().r, addBox.getColor().g, addBox.getColor().b, 0.5f);

@@ -46,7 +46,6 @@ public class Projectile extends MovableGameObject {
         bodyDef.fixedRotation = true;
         bodyDef.allowSleep = false;
         bodyDef.linearVelocity.set(direction.scl(maxVelocity));
-        System.out.println(bodyDef.linearVelocity.x + " " + bodyDef.linearVelocity.y);
 
         //create the body
         body = world.createBody(bodyDef);

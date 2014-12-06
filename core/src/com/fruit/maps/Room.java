@@ -28,6 +28,8 @@ public class Room implements Constants{
     private Vector2 spawnPointSouth, spawnPointNorth, spawnPointEast, spawnPointWest = null;
     //mob spawn points
     private Array<Vector2> mobSpawnPoints;
+    //tile height&width
+    private float tileWidth, tileHeight;
 
     public Room(TiledMap tiledMap){
         this.tiledMap = tiledMap;
@@ -152,5 +154,29 @@ public class Room implements Constants{
 
     public void setSpawnPointWest(Vector2 spawnPointWest) {
         this.spawnPointWest = spawnPointWest;
+    }
+
+    public float getTiledMapWidth(){
+        return tiledMap.getProperties().get("width",Integer.class)*tileWidth;
+    }
+
+    public float getTiledMapHeight(){
+        return tiledMap.getProperties().get("height",Integer.class)*tileHeight;
+    }
+
+    public float getTileWidth() {
+        return tileWidth;
+    }
+
+    public void setTileWidth(float tileWidth) {
+        this.tileWidth = tileWidth;
+    }
+
+    public float getTileHeight() {
+        return tileHeight;
+    }
+
+    public void setTileHeight(float tileHeight) {
+        this.tileHeight = tileHeight;
     }
 }

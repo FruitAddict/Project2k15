@@ -110,7 +110,7 @@ public class MindlessWalker extends Character implements Constants{
 
         //Shape definiton
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/PIXELS_TO_METERS/2,height/PIXELS_TO_METERS/4);
+        shape.setAsBox(width/PIXELS_TO_METERS/2,height/PIXELS_TO_METERS/2);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();

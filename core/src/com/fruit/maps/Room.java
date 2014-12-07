@@ -23,9 +23,10 @@ public class Room implements Constants{
     private boolean exitPointN, exitPointE, exitPointW, exitPointS = false;
 
     //spawn positions (center must always be present). Auto generated based on the .tmx map
-    //properties
+    //properties and portal positions
     private Vector2 spawnPointCenter;
     private Vector2 spawnPointSouth, spawnPointNorth, spawnPointEast, spawnPointWest = null;
+    private Vector2 portalPointSouth, portalPointNorth, portalPointEast, portalPointWest;
     //mob spawn points
     private Array<Vector2> mobSpawnPoints;
     //tile height&width
@@ -178,5 +179,41 @@ public class Room implements Constants{
 
     public void setTileHeight(float tileHeight) {
         this.tileHeight = tileHeight;
+    }
+
+    public Vector2 getPortalPointSouth() {
+        return portalPointSouth;
+    }
+
+    public void setPortalPointSouth(Vector2 portalPointSouth) {
+        this.portalPointSouth = portalPointSouth;
+    }
+
+    public Vector2 getPortalPointNorth() {
+        return portalPointNorth;
+    }
+
+    public void setPortalPointNorth(Vector2 portalPointNorth) {
+        this.portalPointNorth = portalPointNorth;
+    }
+
+    public Vector2 getPortalPointEast() {
+        return portalPointEast;
+    }
+
+    public void setPortalPointEast(Vector2 portalPointEast) {
+        this.portalPointEast = portalPointEast;
+    }
+
+    public Vector2 getPortalPointWest() {
+        return portalPointWest;
+    }
+
+    public void setPortalPointWest(Vector2 portalPointWest) {
+        this.portalPointWest = portalPointWest;
+    }
+
+    public void addMobSpawnPoint(Vector2 vector2){
+        mobSpawnPoints.add(vector2);
     }
 }

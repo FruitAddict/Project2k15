@@ -76,6 +76,6 @@ public class PlayerAnimationPack implements Constants {
         } else {
             batch.draw(playerSouthRegion[0],pos.x,pos.y,character.getWidth(),character.getHeight());
         }
-        //batch.draw(playerHead,pos.x-16,pos.y+42,64,64);
+        batch.draw(playerHead,pos.x-16,pos.y+42,64,64);
     }
 }

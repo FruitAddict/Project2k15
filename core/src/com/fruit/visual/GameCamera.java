@@ -34,13 +34,8 @@ public class GameCamera extends OrthographicCamera implements Constants {
             }
         };
     }
-    @Override
-    public void update(){
-        super.update();
-        updateCameraMovement();
-    }
 
-    private void updateCameraMovement(){
+    public void updateCameraMovement(){
         if(!freeCamera && followedObject!= null){
             followedObject = Controller.worldUpdater.getPlayer();
             mapWidth = Controller.getWorldUpdater().getMapManager().getCurrentMapWidth();

@@ -55,8 +55,8 @@ public class Map implements Constants {
         Room secondRoom = new Room((TiledMap)Assets.getAsset("64map2.tmx",TiledMap.class));
         addRoom(firstRoom);
         addRoom(secondRoom);
-        MapObjectParser.addSpawnPointsToRoom(firstRoom);
-        MapObjectParser.addSpawnPointsToRoom(secondRoom);
+        MapObjectParser.addSpawnAndPortalPointsToRoom(firstRoom);
+        MapObjectParser.addSpawnAndPortalPointsToRoom(secondRoom);
 
         firstRoom.setLinkedRoomSouth(secondRoom);
         firstRoom.setLinkedRoomEast(secondRoom);

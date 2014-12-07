@@ -3,10 +3,8 @@ package com.fruit.visual;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -14,15 +12,14 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.Array;
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
 import com.fruit.logic.WorldUpdater;
+import com.fruit.logic.objects.abstracted.GameObject;
 import com.fruit.visual.messagess.TextRenderer;
 import com.fruit.visual.tween.GameCameraAccessor;
 import com.fruit.visual.tween.TweenUtils;
-
-import java.nio.ByteBuffer;
 
 public class WorldRenderer implements Constants {
     //TiledMap renderer.
@@ -35,42 +32,86 @@ public class WorldRenderer implements Constants {
     private ObjectRenderer objectRenderer;
     //text renderer to display on-screen messages like damage done to monsters
     private TextRenderer textRenderer;
-    //texture region for map transition effects and its position
+    //texture region for map transition effects and its position, frame buffer for screen capturing and
+    //additional game object array to filter out player during transition rendering phase
     private TextureRegion lastMapTexture;
     private float lastMapTextureX, lastMaptextureY;
     private FrameBuffer frameBuffer;
+    private Array<GameObject> temporaryObjectArray;
 
 
     public WorldRenderer(SpriteBatch batch, GameCamera camera, WorldUpdater worldUpdater){
         tiledMapRenderer = new OrthogonalTiledMapRenderer(worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getTiledMap(), batch);
         objectRenderer = new ObjectRenderer();
         textRenderer = new TextRenderer();
+        temporaryObjectArray = new Array<GameObject>();
         this.batch = batch;
         this.camera = camera;
         this.worldUpdater = worldUpdater;
     }
 
-    public void changeRenderedMap(Vector2 spawnPoint, int direction, boolean doTransition){
-        System.out.println("map renderer change map function called");
+    public void changeRenderedMap(Vector2 prevPortalPos, Vector2 nextPortalPos, int direction, boolean doTransition){
+        //Method called when map/room change is requested. On room change, it performs a neat room camera transition
+        //centered on the doors.
         if(doTransition) {
-            camera.setFreeCamera(true);
-            frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int)(camera.viewportWidth*camera.zoom),(int)(camera.viewportHeight*camera.zoom),false);
-            frameBuffer.begin();
-            render(0);
-            frameBuffer.end();
-            Texture temporary = frameBuffer.getColorBufferTexture();
-            lastMapTexture = new TextureRegion(temporary);
-            lastMapTexture.flip(false, true);
-            float spawnX = spawnPoint.x;
-            float spawnY = spawnPoint.y;
+            //Portal Position vector - holds the center of the portal collision rectangle in the previous map
+            //Spawn point vector - holds the center of the spawn point from the new map
+            //int direction - indicates where the player will appear ( TODO make it less confusing)
+            //do transition - boolean that tells the map whether it should even perform the camera transition with fbo
+            //drawing
+            //helper variables
+            float spawnX = nextPortalPos.x;
+            float spawnY = nextPortalPos.y;
             float mapWidth = Controller.getWorldUpdater().getMapManager().getCurrentMapWidth();
             float mapHeight = Controller.getWorldUpdater().getMapManager().getCurrentMapHeight();
             float viewPortWidth = camera.viewportWidth;
             float viewPortHeight = camera.viewportHeight;
-            float playerWidth = worldUpdater.getPlayer().getWidth();
-            float playerHeight = worldUpdater.getPlayer().getHeight();
+            //set the camera free, so it doesn't follow the player ( or other objects ).
+            camera.setFreeCamera(true);
+            //Renders the map into the frame buffer, centered on the doors in the previous map
+            frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int)(camera.viewportWidth*camera.zoom),(int)(camera.viewportHeight*camera.zoom),false);
+            frameBuffer.begin();
+            switch(direction) {
+                case NORTH_DIR: {
+                    //if player is spawning on the north side of the map, it means that he came from the south
+                    //therefore we set the camera position to the south on the portal position on x axis
+                    //and half the viewport length on the y axis.
+                    camera.position.set(prevPortalPos.x, viewPortHeight/2*camera.zoom,0);
+                    break;
+                }
+                case SOUTH_DIR:{
+                    camera.position.set(prevPortalPos.x,mapHeight - viewPortHeight/2*camera.zoom,0);
+                    break;
+                }
+                case WEST_DIR:{
+                    camera.position.set(mapWidth-viewPortWidth/2*camera.zoom,prevPortalPos.y,0);
+                    break;
+                }
+                case EAST_DIR:{
+                    camera.position.set(viewPortWidth/2*camera.zoom,prevPortalPos.y,0);
+                    break;
+                }
+            }
+            //render method is called, this one is designed specifically for map transition as it renders only terrain
+            //and nothing else
+            transitionRender();
+            frameBuffer.end();
+
+            //create a texture from this frame buffer
+            Texture temporary = frameBuffer.getColorBufferTexture();
+
+            //set the lastMapTexture Region to this new texture, so the game can render it
+            lastMapTexture = new TextureRegion(temporary);
+            //flip it on the y axis as it comes out inverted from the frame buffer.
+            lastMapTexture.flip(false, true);
+
+            //perform the tween camera transition based on the direction the player will spawn in
             switch(direction){
                 case NORTH_DIR: {
+                    //for example, if player will spawn in the north of the new map,
+                    //we set the position at which the texture from the frame buffer will be rendered
+                    //to spawn point's position  - half of the viewport on the x axis(so it will cover the whole viewport)
+                    //and map height on the y axis.
                     lastMapTextureX = spawnX - viewPortWidth/2*camera.zoom;
                     lastMaptextureY = mapHeight;
                     camera.position.set(spawnX,mapHeight+viewPortHeight/2*camera.zoom,0);
@@ -108,12 +149,14 @@ public class WorldRenderer implements Constants {
                 }
             }
         }
+        //no matter if transition is requested or not, create a new tiled map renderer based on the new map
         tiledMapRenderer= null;
         tiledMapRenderer = new OrthogonalTiledMapRenderer(worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getTiledMap(),batch);
     }
     public void render(float delta){
         //update camera
         camera.update();
+        camera.updateCameraMovement();
         //update tween manager
         TweenUtils.tweenManager.update(delta);
         //set projection matrix of map renderer to camera
@@ -121,7 +164,7 @@ public class WorldRenderer implements Constants {
         //set batch projection matrix to camera
         batch.setProjectionMatrix(camera.combined);
         //clear screen
-        Gdx.gl.glClearColor(0, 1, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //render map
         tiledMapRenderer.render();
@@ -132,6 +175,28 @@ public class WorldRenderer implements Constants {
         }
         objectRenderer.render(delta, worldUpdater.getObjectManager().getGameObjects(), batch);
         textRenderer.render(batch,delta);
+        batch.end();
+    }
+
+    public void transitionRender(){
+        camera.update();
+        tiledMapRenderer.setView(camera);
+        batch.setProjectionMatrix(camera.combined);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //render map
+        tiledMapRenderer.render();
+        //render objects except for player using temporary object array
+        batch.begin();
+        temporaryObjectArray.clear();
+        for(GameObject o : worldUpdater.getObjectManager().getGameObjects()){
+            if(o.getTypeID()!= PLAYER_TYPE){
+                temporaryObjectArray.add(o);
+            }
+        }
+        temporaryObjectArray.removeValue(worldUpdater.getPlayer(),true);
+        objectRenderer.render(0, temporaryObjectArray, batch);
+        temporaryObjectArray.clear();
         batch.end();
     }
 

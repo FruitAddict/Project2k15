@@ -1,6 +1,5 @@
 package com.fruit.utilities;
 
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -144,7 +143,7 @@ public class MapObjectParser implements Constants {
         worldUpdater.getObjectManager().addObjects(room.getGameObjectsStored());
     }
 
-    public static void addSpawnPointsToRoom(Room room){
+    public static void addSpawnAndPortalPointsToRoom(Room room){
         //get tile width and height from the map TODO make it go away
         room.setTileWidth(room.getTiledMap().getProperties().get("tilewidth", Integer.class));
         room.setTileHeight(room.getTiledMap().getProperties().get("tileheight", Integer.class));
@@ -187,8 +186,47 @@ public class MapObjectParser implements Constants {
                         break;
                     }
                     default: {
-                        System.out.println("I have no idea what am i doing.");
+                        room.addMobSpawnPoint(new Vector2((spawnPointRecs.get(i).getX()+spawnPointRecs.get(i).getWidth()/2) / PIXELS_TO_METERS,
+                                (spawnPointRecs.get(i).getY()+spawnPointRecs.get(i).getHeight()/2)/ PIXELS_TO_METERS));
+                        break;
                     }
+                }
+            }
+        }
+
+        //parse portal objects
+        MapObjects portalMapObjects = room.getTiledMap().getLayers().get("portalObjects").getObjects();
+        //create array of rectangles based on portal objects
+        Array<Rectangle> portalRectangles = new Array<>();
+
+        for(int i=0;i<portalMapObjects.getCount();i++) {
+            //cast mapobjects into rectangle map object and add their rectangle to the list.
+            RectangleMapObject object = (RectangleMapObject) portalMapObjects.get(i);
+            String direction = object.getProperties().get("type", String.class);
+            portalRectangles.add(object.getRectangle());
+            switch (direction) {
+                case "NORTH": {
+                    //portalMapObjects and portalRectangles are the same size ( second is created on the base of first), so we know
+                    //this object was created and we can use it to set the portal center position(for use with map transition animation
+                    //alignment)
+                    room.setPortalPointNorth(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
+                            (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                    break;
+                }
+                case "SOUTH": {
+                    room.setPortalPointSouth(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
+                            (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                    break;
+                }
+                case "WEST": {
+                    room.setPortalPointWest(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
+                            (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                    break;
+                }
+                case "EAST": {
+                    room.setPortalPointEast(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
+                            (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                    break;
                 }
             }
         }

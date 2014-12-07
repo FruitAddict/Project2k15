@@ -38,10 +38,13 @@ public class MapManager implements Constants {
 
     public void requestChange(int fromDirection) {
         //general method to change maps/rooms. Will handle anything
+        //called from world contact listener
         switch(fromDirection){
             case NORTH_DIR:{
                 //first we check if the linked room at the specified direction is not null
                 if(currentMap.getCurrentRoom().getLinkedRoomNorth()!=null) {
+                    //temporairly store the reference to the north portal center vector
+                    Vector2 tempPortalVector = currentMap.getCurrentRoom().getPortalPointNorth();
                     //then we change the room to the requested room using the room object itself
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomNorth());
                     //finally we schedule a change in player's position after this world step using opposite spawn points
@@ -50,47 +53,50 @@ public class MapManager implements Constants {
                     ,currentMap.getCurrentRoom().getLinkedRoomNorth().getSpawnPointSouth());
                     //invoke onMapChange method (see below), pass it the new spawn point, direction the player will
                     // come out from and boolean indicating that the renderer should do a smooth transition between maps
-                    onMapChange(currentMap.getCurrentRoom().getLinkedRoomNorth().getSpawnPointSouth(), SOUTH_DIR,true);
+                    onMapChange(tempPortalVector,currentMap.getCurrentRoom().getPortalPointSouth(), SOUTH_DIR,true);
                 }
                 break;
             }
             case SOUTH_DIR:{
                 if(currentMap.getCurrentRoom().getLinkedRoomSouth()!=null) {
+                    Vector2 tempPortalVector = currentMap.getCurrentRoom().getPortalPointSouth();
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomSouth());
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
                             ,currentMap.getCurrentRoom().getLinkedRoomSouth().getSpawnPointNorth());
-                    onMapChange(currentMap.getCurrentRoom().getLinkedRoomSouth().getSpawnPointNorth(), NORTH_DIR,true);
+                    onMapChange(tempPortalVector,currentMap.getCurrentRoom().getPortalPointNorth(), NORTH_DIR,true);
                 }
                 break;
             }
             case EAST_DIR:{
                 if(currentMap.getCurrentRoom().getLinkedRoomEast()!=null) {
+                    Vector2 tempPortalVector = currentMap.getCurrentRoom().getPortalPointEast();
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomEast());
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
                             ,currentMap.getCurrentRoom().getLinkedRoomEast().getSpawnPointWest());
-                    onMapChange(currentMap.getCurrentRoom().getLinkedRoomEast().getSpawnPointWest(), WEST_DIR,true);
+                    onMapChange(tempPortalVector,currentMap.getCurrentRoom().getPortalPointWest(), WEST_DIR,true);
                 }
                 break;
             }
             case WEST_DIR:{
                 if(currentMap.getCurrentRoom().getLinkedRoomWest()!=null) {
+                    Vector2 tempPortalVector = currentMap.getCurrentRoom().getPortalPointWest();
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomWest());
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
                             ,currentMap.getCurrentRoom().getLinkedRoomWest().getSpawnPointEast());
-                    onMapChange(currentMap.getCurrentRoom().getLinkedRoomWest().getSpawnPointEast(),EAST_DIR,true);
+                    onMapChange(tempPortalVector,currentMap.getCurrentRoom().getPortalPointEast(),EAST_DIR,true);
                 }
                 break;
             }
         }
     }
 
-    public void onMapChange(Vector2 spawnPos,int direction, boolean transition){
+    public void onMapChange(Vector2 portalPosition, Vector2 spawnPos,int direction, boolean transition){
         //on map change, tell the object manager to remove everything and re-add it based on the new map
         worldUpdater.getObjectManager().onMapChange();
         //tell the world renderer to change map that is rendered to the new one and pass it the new spawn position
         //and transition boolean (see changeRenderedMap method)
-        Controller.getWorldRenderer().changeRenderedMap(new Vector2(spawnPos.x*PIXELS_TO_METERS, spawnPos.y*PIXELS_TO_METERS),
-                direction, transition);
+        Controller.getWorldRenderer().changeRenderedMap(new Vector2(portalPosition.x*PIXELS_TO_METERS,portalPosition.y*PIXELS_TO_METERS),
+                new Vector2(spawnPos.x*PIXELS_TO_METERS, spawnPos.y*PIXELS_TO_METERS), direction, transition);
     }
 
     public float getCurrentMapWidth(){

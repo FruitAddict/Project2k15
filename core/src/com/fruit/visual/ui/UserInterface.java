@@ -154,6 +154,7 @@ public class UserInterface extends Stage {
         sliderAttack.setValue(updater.getObjectManager().getPlayer().getTimeBetweenAttacks());
         final TextButton addMob = new TextButton("Add mobs ",skin);
         final TextButton addBox = new TextButton("Add dummy ",skin);
+        final TextButton addDummy = new TextButton("Add box",skin);
         final TextButton clearObjects = new TextButton("Remove all objects",skin);
         addMob.setColor(addMob.getColor().r,addMob.getColor().g,addMob.getColor().b,0.5f);
         addBox.setColor(addBox.getColor().r, addBox.getColor().g, addBox.getColor().b, 0.5f);
@@ -163,6 +164,7 @@ public class UserInterface extends Stage {
         scrollPane.setSize(200, 300);
         buttonTable.addActor(addMob);
         buttonTable.addActor(addBox);
+        buttonTable.addActor(addDummy);
         buttonTable.addActor(clearObjects);
         addActor(table);
         addActor(buttonTable);
@@ -218,6 +220,13 @@ public class UserInterface extends Stage {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 updater.getObjectManager().addObject(new Dummy(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x,
+                        updater.getObjectManager().getPlayer().getBody().getPosition().y));
+            }
+        });
+        addDummy.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                updater.getObjectManager().addObject(new Box(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x,
                         updater.getObjectManager().getPlayer().getBody().getPosition().y));
             }
         });

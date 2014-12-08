@@ -156,7 +156,6 @@ public class WorldRenderer implements Constants {
     public void render(float delta){
         //update camera
         camera.update();
-        camera.updateCameraMovement();
         //update tween manager
         TweenUtils.tweenManager.update(delta);
         //set projection matrix of map renderer to camera
@@ -176,6 +175,7 @@ public class WorldRenderer implements Constants {
         objectRenderer.render(delta, worldUpdater.getObjectManager().getGameObjects(), batch);
         textRenderer.render(batch,delta);
         batch.end();
+        camera.updateCameraMovement();
     }
 
     public void transitionRender(){

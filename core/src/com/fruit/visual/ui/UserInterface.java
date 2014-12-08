@@ -28,6 +28,7 @@ public class UserInterface extends Stage {
     Label firstLabel;
     Label secondLabel;
     Label posLabel;
+    Label hpLabel;
     //transparent colors
     private Color transRed;
     private Color transWhite;
@@ -47,6 +48,7 @@ public class UserInterface extends Stage {
         secondLabel.setText("Objects: " + updater.getObjectManager().getNumberOfObjects());
         posLabel.setText(String.format("X: %.2f Y: %.2f", updater.getObjectManager().getPlayer().getBody().getPosition().x,
                 updater.getObjectManager().getPlayer().getBody().getPosition().y));
+        hpLabel.setText(String.format("Player hp: %.2f", updater.getObjectManager().getPlayer().getHealthPoints()));
 
         //update movement
         updater.getObjectManager().getPlayer().addLinearVelocity(touchpadMove.getKnobPercentX() * updater
@@ -145,7 +147,7 @@ public class UserInterface extends Stage {
 
 
         // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
-        final Slider sliderZoom = new Slider(0.05f,1.5f,0.05f,false,skin);
+        final Slider sliderZoom = new Slider(0.05f,0.9f,0.05f,false,skin);
         final ScrollPane scrollPane = new ScrollPane(table,skin);
         final Label infoAttack = new Label("Attack speed",skin);
         final Label infoZoom = new Label("Zoom",skin);
@@ -190,9 +192,11 @@ public class UserInterface extends Stage {
         firstLabel = new Label("", skin);
         secondLabel = new Label("", skin);
         posLabel = new Label("",skin);
+        hpLabel = new Label("",skin);
         table.addActor(firstLabel);
         table.addActor(secondLabel);
         table.addActor(posLabel);
+        table.addActor(hpLabel);
         table.addActor(infoZoom);
         table.addActor(sliderZoom);
         table.addActor(infoAttack);
@@ -211,7 +215,7 @@ public class UserInterface extends Stage {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 for(int i =0 ;i<5;i++) {
-                    updater.getObjectManager().addObject(new MindlessWalker(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x,
+                    updater.getObjectManager().addObject(new MindlessWalker(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x+1,
                             updater.getObjectManager().getPlayer().getBody().getPosition().y));
                 }
             }

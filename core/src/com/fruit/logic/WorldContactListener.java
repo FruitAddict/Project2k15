@@ -1,8 +1,8 @@
 package com.fruit.logic;
 
 import com.badlogic.gdx.physics.box2d.*;
-import com.fruit.Controller;
-import com.fruit.logic.objects.Projectile;
+import com.fruit.logic.objects.entities.Player;
+import com.fruit.logic.objects.entities.Projectile;
 import com.fruit.logic.objects.abstracted.Character;
 
 import java.util.Random;
@@ -32,6 +32,14 @@ public class WorldContactListener implements ContactListener,Constants {
         }
 
         if(f1.getFilterData().categoryBits == ENEMY_BIT || f2.getFilterData().categoryBits == ENEMY_BIT){
+            if(f1.getFilterData().categoryBits == PLAYER_BIT || f2.getFilterData().categoryBits == PLAYER_BIT){
+                if(f1.getFilterData().categoryBits == PLAYER_BIT){
+                    Player p = (Player) f1.getBody().getUserData();
+                    p.changeHealthPoints(-0.5f);
+                }else {
+
+                }
+            }
 
         }
         if(f1.getFilterData().categoryBits == PROJECTILE_BIT || f2.getFilterData().categoryBits == PROJECTILE_BIT){

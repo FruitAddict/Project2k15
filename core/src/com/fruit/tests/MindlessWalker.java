@@ -128,9 +128,9 @@ public class MindlessWalker extends Character implements Constants{
     }
 
     @Override
-    public void changeHealthPoints(int amount){
+    public void changeHealthPoints(float amount){
         super.changeHealthPoints(amount);
-        Controller.addOnScreenMessage(Integer.toString(amount), getBody().getPosition().x * PIXELS_TO_METERS,
+        Controller.addOnScreenMessage(Float.toString(amount), getBody().getPosition().x * PIXELS_TO_METERS,
                 getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
     }
 }

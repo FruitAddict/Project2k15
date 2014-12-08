@@ -66,7 +66,7 @@ public abstract class Character extends MovableGameObject {
         }
     }
 
-    public void changeHealthPoints(int amount){
+    public void changeHealthPoints(float amount){
         //every character must be damagable or healable.
         healthPoints += amount;
     }

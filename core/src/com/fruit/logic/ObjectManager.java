@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.logic.objects.abstracted.GameObject;
-import com.fruit.logic.objects.Player;
+import com.fruit.logic.objects.entities.Player;
 import com.fruit.utilities.MapObjectParser;
 
 public class ObjectManager {
@@ -33,7 +33,7 @@ public class ObjectManager {
         scheduledToRemove = new Array<>();
         scheduledToUpdatePos = new Array<>();
         this.worldUpdater = updater;
-        player = new Player(this,3,3,32,48);
+        player = new Player(this,3,3,57.6f,40);
         gameObjects.add(player);
         player.addToWorld(worldUpdater.getWorld());
     }

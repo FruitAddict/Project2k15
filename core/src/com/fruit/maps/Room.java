@@ -60,7 +60,7 @@ public class Room implements Constants{
         //we only store characters right now (e.g. mobs)
         //todo items
         System.out.println(o.getGroupID());
-        if(o.getGroupID()==ENEMIES_GROUP || o.getGroupID()==CLUTTER_GROUP){
+        if(o.getGroupID()==ENEMIES_GROUP || o.getGroupID()==CLUTTER_GROUP || o.getGroupID() == ITEM_GROUP){
             gameObjectsStored.add(o);
         }
     }

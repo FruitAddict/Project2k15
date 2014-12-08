@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Scaling;
 import com.fruit.Controller;
 import com.fruit.MainGame;
 import com.fruit.logic.WorldUpdater;
@@ -74,14 +76,17 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         //Resize camera viewport
-        camera.setToOrtho(false, 840, 480 * (Gdx.graphics.getWidth()/Gdx.graphics.getHeight()));
+        Vector2 cameraPosition = Scaling.fit.apply(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),840,480);
+        camera.setToOrtho(false, cameraPosition.x,cameraPosition.y);
         userInterface.getViewport().update(width, height, true);
     }
 
     @Override
     public void show() {
         //setting up the camera after show is called (e.g. switching from app to app)
-        camera.setToOrtho(false, 840, 480 * (Gdx.graphics.getWidth()/Gdx.graphics.getHeight()));
+        Vector2 cameraPosition = Scaling.fit.apply(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),840,480);
+        camera.setToOrtho(false, cameraPosition.x,cameraPosition.y);
+        userInterface.getViewport().update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),true);
     }
 
     @Override

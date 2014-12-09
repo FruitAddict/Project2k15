@@ -15,8 +15,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
+import com.fruit.logic.EntityID;
 import com.fruit.logic.WorldUpdater;
-import com.fruit.logic.objects.abstracted.GameObject;
+import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.visual.messagess.TextRenderer;
 import com.fruit.visual.tween.GameCameraAccessor;
 import com.fruit.visual.tween.TweenUtils;
@@ -190,7 +191,7 @@ public class WorldRenderer implements Constants {
         batch.begin();
         temporaryObjectArray.clear();
         for(GameObject o : worldUpdater.getObjectManager().getGameObjects()){
-            if(o.getTypeID()!= PLAYER_TYPE){
+            if(o.getEntityID()!= EntityID.PLAYER){
                 temporaryObjectArray.add(o);
             }
         }

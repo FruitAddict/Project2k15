@@ -51,21 +51,25 @@ public class Map implements Constants {
     }
 
     public void createFirstCircleLevel(){
-        Room firstRoom = new Room((TiledMap)Assets.getAsset("64map.tmx",TiledMap.class));
-        Room secondRoom = new Room((TiledMap)Assets.getAsset("64map2.tmx",TiledMap.class));
+        Room firstRoom = new Room((TiledMap)Assets.getAsset("Room1.tmx",TiledMap.class));
+        Room secondRoom = new Room((TiledMap)Assets.getAsset("Room2.tmx",TiledMap.class));
+        Room thirdRoom = new Room((TiledMap)Assets.getAsset("Room3.tmx",TiledMap.class));
+        Room fourthRoom = new Room((TiledMap)Assets.getAsset("Room4.tmx",TiledMap.class));
         addRoom(firstRoom);
         addRoom(secondRoom);
+        addRoom(thirdRoom);
+        addRoom(fourthRoom);
         MapObjectParser.addSpawnAndPortalPointsToRoom(firstRoom);
         MapObjectParser.addSpawnAndPortalPointsToRoom(secondRoom);
+        MapObjectParser.addSpawnAndPortalPointsToRoom(thirdRoom);
+        MapObjectParser.addSpawnAndPortalPointsToRoom(fourthRoom);
 
-        firstRoom.setLinkedRoomSouth(secondRoom);
         firstRoom.setLinkedRoomEast(secondRoom);
-        firstRoom.setLinkedRoomNorth(secondRoom);
-        firstRoom.setLinkedRoomWest(secondRoom);
         secondRoom.setLinkedRoomWest(firstRoom);
-        secondRoom.setLinkedRoomEast(firstRoom);
-        secondRoom.setLinkedRoomNorth(firstRoom);
-        secondRoom.setLinkedRoomSouth(firstRoom);
+        secondRoom.setLinkedRoomEast(thirdRoom);
+        thirdRoom.setLinkedRoomWest(secondRoom);
+        firstRoom.setLinkedRoomNorth(fourthRoom);
+        fourthRoom.setLinkedRoomSouth(firstRoom);
 
         currentRoom = firstRoom;
         //initially add all the game objects manually as no references to managers exist yet.

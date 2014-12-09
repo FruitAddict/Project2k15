@@ -5,8 +5,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.fruit.logic.EntityID;
 import com.fruit.logic.ObjectManager;
-import com.fruit.logic.objects.abstracted.MovableGameObject;
 
 //Basic projectile class.
 public class Projectile extends MovableGameObject {
@@ -20,10 +20,10 @@ public class Projectile extends MovableGameObject {
         this.spawnY = spawnY;
         this.objectManager = objectManager;
         this.direction = dir;
-        setTypeID(PROJECTILE_TYPE);
+        setEntityID(EntityID.PROJECTILE);
         setMaxVelocity(6);
         setSpeed(0.30f);
-        setGroupID(NO_GROUP);
+        setSaveInRooms(DONT_SAVE);
     }
     @Override
     public void update(float delta) {
@@ -60,7 +60,7 @@ public class Projectile extends MovableGameObject {
         fixtureDef.density = 1000f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = PROJECTILE_BIT;
-        fixtureDef.filter.maskBits = (ENEMY_BIT | TERRAIN_BIT | CLUTTER_BIT);
+        fixtureDef.filter.maskBits = (ENEMY_BIT | TERRAIN_BIT | CLUTTER_BIT | ITEM_BIT | PORTAL_BIT);
 
         body.createFixture(fixtureDef);
 

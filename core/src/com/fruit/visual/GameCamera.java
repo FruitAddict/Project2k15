@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
-import com.fruit.logic.objects.abstracted.GameObject;
+import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.visual.tween.GameCameraAccessor;
 
 public class GameCamera extends OrthographicCamera implements Constants {

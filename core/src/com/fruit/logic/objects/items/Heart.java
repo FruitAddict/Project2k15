@@ -1,39 +1,43 @@
-package com.fruit.tests;
+package com.fruit.logic.objects.items;
 
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.fruit.logic.Constants;
 import com.fruit.logic.EntityID;
 import com.fruit.logic.ObjectManager;
-import com.fruit.logic.objects.effects.HealOverTime;
-import com.fruit.logic.objects.entities.MovableGameObject;
+import com.fruit.logic.objects.entities.Player;
 
+/**
+ * Heart. Renews hp based on its load. If player's hp is full, it acts as a physics object.
+ */
+public class Heart extends Item implements Constants {
 
-public class Box extends MovableGameObject {
-    private World world;
     private ObjectManager objectManager;
+    private float renewValue = 1;
 
-    public Box(ObjectManager objectManager,float spawnX, float spawnY) {
-        lastKnownX = spawnX;
-        lastKnownY= spawnY;
+    public Heart(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height){
         this.objectManager = objectManager;
-        setEntityID(EntityID.BOX);
-        setMaxVelocity(2);
+        lastKnownX = spawnCoordX;
+        lastKnownY = spawnCoordY;
+        this.width = width;
+        this.height = height;
         setSaveInRooms(DO_SAVE);
+        setEntityID(EntityID.HEART);
+        setMaxVelocity(0.5f);
+        setSpeed(0.1f);
     }
-
     @Override
     public void update(float delta) {
-        //nothing
+
     }
 
     @Override
     public void addToWorld(World world) {
-        this.world = world;
         //setting width and height
-        width = 64;
-        height = 64;
+        width = 32;
+        height = 32;
 
         //Player body definition
         BodyDef bodyDef = new BodyDef();
@@ -54,7 +58,7 @@ public class Box extends MovableGameObject {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 50f;
         fixtureDef.shape = shape;
-        fixtureDef.filter.categoryBits = CLUTTER_BIT;
+        fixtureDef.filter.categoryBits = ITEM_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape
@@ -62,7 +66,28 @@ public class Box extends MovableGameObject {
     }
 
     @Override
+    public void onPickUp(Player player){
+        if(player.getHealthPoints() < player.getMaximumHealthPoints()){
+            if(player.getHealthPoints()+renewValue > player.getMaximumHealthPoints()){
+                player.changeHealthPoints(player.getMaximumHealthPoints() - player.getHealthPoints());
+                killYourself();
+            } else {
+                player.changeHealthPoints(renewValue);
+                killYourself();
+            }
+        }
+    }
+
+    @Override
     public void killYourself() {
         objectManager.removeObject(this);
+    }
+
+    public float getRenewValue() {
+        return renewValue;
+    }
+
+    public void setRenewValue(float renewValue) {
+        this.renewValue = renewValue;
     }
 }

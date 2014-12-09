@@ -1,6 +1,6 @@
-package com.fruit.logic.objects.abstracted;
+package com.fruit.logic.objects.entities;
 
-import com.fruit.logic.objects.abstracted.GameObject;
+import com.fruit.logic.objects.entities.GameObject;
 
 /**
  * Movable game object abstract class. All moving objects will inherit from this.

@@ -4,8 +4,9 @@ package com.fruit.visual;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.logic.Constants;
-import com.fruit.logic.objects.abstracted.GameObject;
-import com.fruit.logic.objects.abstracted.MovableGameObject;
+import com.fruit.logic.EntityID;
+import com.fruit.logic.objects.entities.GameObject;
+import com.fruit.logic.objects.entities.MovableGameObject;
 import com.fruit.logic.objects.entities.Player;
 import com.fruit.logic.objects.entities.Projectile;
 import com.fruit.tests.Dummy;
@@ -51,28 +52,33 @@ public class ObjectRenderer implements Constants {
         });
 
         for(GameObject e : objects){
-            switch(e.getTypeID()){
-                case PLAYER_TYPE:{
+            switch(e.getEntityID()){
+                case EntityID.PLAYER:{
                     playerAnimationPack.load();
                     playerAnimationPack.render(stateTime,(Player)e,batch);
                     break;
                 }
-                case WALKER_TYPE:{
+                case EntityID.MINDLESS_WALKER:{
                     mindlessWalkerAnimationPack.load();
                     mindlessWalkerAnimationPack.render(stateTime,(MindlessWalker)e,batch);
                     break;
                 }
-                case CLUTTER_TYPE:{
+                case EntityID.BOX:{
                     utilityAnimationPack.load();
                     utilityAnimationPack.render(stateTime,(MovableGameObject)e,batch);
                     break;
                 }
-                case PROJECTILE_TYPE:{
+                case EntityID.HEART:{
+                    utilityAnimationPack.load();
+                    utilityAnimationPack.render(stateTime,(MovableGameObject)e,batch);
+                    break;
+                }
+                case EntityID.PROJECTILE:{
                     projectileAnimationPack.load();
                     projectileAnimationPack.render(stateTime,(Projectile)e,batch);
                     break;
                 }
-                case DUMMY_TYPE:{
+                case EntityID.DUMMY:{
                     dummyAnimationPack.load();
                     dummyAnimationPack.render(stateTime,(Dummy)e,batch);
                     break;

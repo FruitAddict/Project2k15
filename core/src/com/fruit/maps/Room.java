@@ -5,7 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.logic.Constants;
-import com.fruit.logic.objects.abstracted.GameObject;
+import com.fruit.logic.objects.entities.GameObject;
 
 /**
  * Room class. Contains all the spawn& exit points and tiled map representation and items&entities stored.
@@ -59,8 +59,8 @@ public class Room implements Constants{
     public void addGameObject(GameObject o){
         //we only store characters right now (e.g. mobs)
         //todo items
-        System.out.println(o.getGroupID());
-        if(o.getGroupID()==ENEMIES_GROUP || o.getGroupID()==CLUTTER_GROUP || o.getGroupID() == ITEM_GROUP){
+        System.out.println(o.getSaveInRooms());
+        if(o.getSaveInRooms()== DO_SAVE){
             gameObjectsStored.add(o);
         }
     }
@@ -121,20 +121,24 @@ public class Room implements Constants{
         return spawnPointCenter;
     }
 
-    public Vector2 getSpawnPointSouth() {
-        return spawnPointSouth;
-    }
-
-    public Vector2 getSpawnPointNorth() {
-        return spawnPointNorth;
-    }
-
-    public Vector2 getSpawnPointEast() {
-        return spawnPointEast;
-    }
-
-    public Vector2 getSpawnPointWest() {
-        return spawnPointWest;
+    public Vector2 getSpawnPoint(int direction){
+        switch(direction){
+            case NORTH_DIR:{
+                return spawnPointNorth!=null?spawnPointNorth:spawnPointCenter;
+            }
+            case SOUTH_DIR:{
+                return spawnPointSouth!=null?spawnPointSouth:spawnPointCenter;
+            }
+            case EAST_DIR:{
+                return spawnPointEast!=null?spawnPointEast:spawnPointCenter;
+            }
+            case WEST_DIR:{
+                return spawnPointWest!=null?spawnPointWest:spawnPointCenter;
+            }
+            default: {
+                return spawnPointCenter;
+            }
+        }
     }
 
     public void setSpawnPointCenter(Vector2 spawnPointCenter) {

@@ -6,8 +6,12 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
+import com.fruit.logic.EntityID;
 import com.fruit.logic.ObjectManager;
-import com.fruit.logic.objects.abstracted.Character;
+import com.fruit.logic.objects.effects.HealOverTime;
+import com.fruit.logic.objects.entities.Character;
+import com.fruit.logic.objects.items.Heart;
+import com.fruit.utilities.Utils;
 
 import java.util.Random;
 
@@ -23,10 +27,10 @@ public class MindlessWalker extends Character implements Constants{
         this.objectManager = objectManager;
         lastKnownX = spawnX;
         lastKnownY = spawnY;
-        setTypeID(WALKER_TYPE);
+        setEntityID(EntityID.MINDLESS_WALKER);
         setMaxVelocity(3);
         setSpeed(0.25f);
-        setGroupID(ENEMIES_GROUP);
+        setSaveInRooms(DO_SAVE);
         healthPoints = 5;
     }
 
@@ -62,22 +66,18 @@ public class MindlessWalker extends Character implements Constants{
             stateTime += delta;
             switch (random) {
                 case 0: {
-                    if(body.getPosition().y >0)
                     moveSouth();
                     break;
                 }
                 case 1: {
-                    if(body.getPosition().x < 2048/PIXELS_TO_METERS)
                     moveEast();
                     break;
                 }
                 case 2: {
-                    if(body.getPosition().y <2048/PIXELS_TO_METERS)
                     moveNorth();
                     break;
                 }
                 case 3: {
-                    if(body.getPosition().x > 0)
                     moveWest();
                     break;
                 }
@@ -125,6 +125,12 @@ public class MindlessWalker extends Character implements Constants{
     @Override
     public void killYourself(){
         objectManager.removeObject(this);
+        if(Utils.randomGenerator.nextInt(100) <15){
+            objectManager.addObject(new Heart(objectManager,getBody().getPosition().x,getBody().getPosition().y,24,24));
+        }
+        if(Utils.randomGenerator.nextInt(100) < 40){
+            objectManager.getPlayer().addEffect(new HealOverTime(5f,1f,0.1f));
+        }
     }
 
     @Override

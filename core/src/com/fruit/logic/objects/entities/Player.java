@@ -4,8 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
+import com.fruit.logic.EntityID;
 import com.fruit.logic.ObjectManager;
-import com.fruit.logic.objects.abstracted.Character;
 
 public class Player extends Character implements Constants {
     //coordinates at which the player is first spawned.
@@ -27,11 +27,12 @@ public class Player extends Character implements Constants {
         this.spawnCoordY = spawnCoordY;
         this.spawnCoordX = spawnCoordX;
         this.objectManager = objectManager;
-        setTypeID(PLAYER_TYPE);
+        setEntityID(EntityID.PLAYER);
         setMaxVelocity(3);
         setSpeed(0.25f);
-        setGroupID(NO_GROUP);
-        healthPoints = 5;
+        setSaveInRooms(DONT_SAVE);
+        setHealthPoints(5);
+        setMaximumHealthPoints(8);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class Player extends Character implements Constants {
         fixtureDef.density = 100f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = PLAYER_BIT;
-        fixtureDef.filter.maskBits= PROJECTILE_BIT |CLUTTER_BIT | TERRAIN_BIT |ENEMY_BIT | PORTAL_BIT;
+        fixtureDef.filter.maskBits= PROJECTILE_BIT |CLUTTER_BIT | TERRAIN_BIT |ENEMY_BIT | PORTAL_BIT | ITEM_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape
@@ -72,15 +73,10 @@ public class Player extends Character implements Constants {
 
     @Override
     public void update(float delta) {
+        updateEffects(delta);
         updateFacing();
         stateTime+=delta;
-        if(healthPoints<=0){
-            Controller.addOnScreenMessage("You dead son.", getBody().getPosition().x * PIXELS_TO_METERS,
-                    getBody().getPosition().y * PIXELS_TO_METERS, 3f);
-            healthPoints = 5;
-            Controller.addOnScreenMessage("Second wind....", getBody().getPosition().x * PIXELS_TO_METERS,
-                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
-        }
+
     }
 
     public void attack(Vector2 direction){
@@ -110,8 +106,13 @@ public class Player extends Character implements Constants {
     @Override
     public void changeHealthPoints(float amount){
         super.changeHealthPoints(amount);
-        Controller.addOnScreenMessage(Float.toString(amount)+" ow!", getBody().getPosition().x * PIXELS_TO_METERS,
-                getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
+        if(amount<0) {
+            Controller.addOnScreenMessage(Float.toString(amount) + " ow!", getBody().getPosition().x * PIXELS_TO_METERS,
+                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
+        }else {
+            Controller.addOnScreenMessage(Float.toString(amount) + " aww yis!", getBody().getPosition().x * PIXELS_TO_METERS,
+                    getBody().getPosition().y * PIXELS_TO_METERS, 3f);
+        }
     }
 
 

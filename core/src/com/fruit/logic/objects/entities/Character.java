@@ -1,16 +1,24 @@
-package com.fruit.logic.objects.abstracted;
+package com.fruit.logic.objects.entities;
+
+import com.badlogic.gdx.utils.Array;
+import com.fruit.logic.objects.effects.Effect;
 
 /**
  * Abstract character class. Contains method to determine object's facing based on the velocity
  * (For example, if the object's velocity on y axis is + and higher than on x axis, we can determine
- * that it's facing the north direction);
+ * that it's facing the north direction).
+ * Every character should also contain array of effects (DoTs, HoTs, boosts, slows etc) and a method
+ * to iterate through those effects and update them.
  */
 public abstract class Character extends MovableGameObject {
 
     protected float healthPoints;
+    protected float maximumHealthPoints;
 
     public boolean facingW, facingE, facingN, facingS,
                    facingNE, facingNW, facingSE, facingSW, idle;
+
+    private Array<Effect> effectArray = new Array<>();
 
     public void setFacings(boolean bool){
         //sets all the facing booleans to @bool.
@@ -66,9 +74,45 @@ public abstract class Character extends MovableGameObject {
         }
     }
 
+    public void updateEffects(float delta){
+        for(Effect e :effectArray){
+            e.update(this,delta);
+        }
+    }
+
+    public void addEffect(Effect effect){
+        for(Effect e: effectArray){
+            if(e.getEffectType() == effect.getEffectType()){
+                e.join(effect);
+                return;
+            }
+        }
+        effectArray.add(effect);
+    }
+
+    public int getEffectIDS(){
+        //returns effect ids currently on the character
+        for(Effect e :effectArray){
+            if(e.getEffectType()==Effect.HEAL_OVER_TIME){
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    public void removeEffect(Effect effect){
+        if(effectArray.contains(effect,true)){
+            effectArray.removeValue(effect,true);
+        }
+    }
+
     public void changeHealthPoints(float amount){
         //every character must be damagable or healable.
-        healthPoints += amount;
+        if(healthPoints+amount < maximumHealthPoints) {
+            healthPoints += amount;
+        }else {
+            healthPoints = maximumHealthPoints;
+        }
     }
 
     public void setHealthPoints(float value){
@@ -78,5 +122,13 @@ public abstract class Character extends MovableGameObject {
 
     public float getHealthPoints(){
         return healthPoints;
+    }
+
+    public void setMaximumHealthPoints(float value){
+        maximumHealthPoints = value;
+    }
+
+    public float getMaximumHealthPoints(){
+        return maximumHealthPoints;
     }
 }

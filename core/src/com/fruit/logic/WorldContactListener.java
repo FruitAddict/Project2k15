@@ -1,19 +1,16 @@
 package com.fruit.logic;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.fruit.logic.objects.items.Item;
 import com.fruit.logic.objects.entities.Player;
 import com.fruit.logic.objects.entities.Projectile;
-import com.fruit.logic.objects.abstracted.Character;
-
-import java.util.Random;
+import com.fruit.logic.objects.entities.Character;
+import com.fruit.utilities.Utils;
 
 @SuppressWarnings("all")
 public class WorldContactListener implements ContactListener,Constants {
 
     private final WorldUpdater worldUpdater;
-
-    //this is only for testing purposes
-    Random random = new Random();
 
     public WorldContactListener(WorldUpdater worldUpdater){
         this.worldUpdater = worldUpdater;
@@ -24,6 +21,18 @@ public class WorldContactListener implements ContactListener,Constants {
         Fixture f2 = contact.getFixtureB();
 
         if(f1.getFilterData().categoryBits == PLAYER_BIT || f2.getFilterData().categoryBits == PLAYER_BIT){
+
+            if(f1.getFilterData().categoryBits == ITEM_BIT || f2.getFilterData().categoryBits == ITEM_BIT){
+                if(f1.getFilterData().categoryBits == ITEM_BIT){
+                    Player player = (Player)f2.getBody().getUserData();
+                    Item item = (Item)f1.getBody().getUserData();
+                    item.onPickUp(player);
+                } else {
+                    Player player = (Player)f1.getBody().getUserData();
+                    Item item = (Item)f2.getBody().getUserData();
+                    item.onPickUp(player);
+                }
+            }
 
         }
 
@@ -50,13 +59,13 @@ public class WorldContactListener implements ContactListener,Constants {
                     Character character = (Character)f1.getBody().getUserData();
                     Projectile projectile = (Projectile)f2.getBody().getUserData();
                     projectile.killYourself();
-                    int damage = 1+random.nextInt(5);
+                    int damage = 1+Utils.randomGenerator.nextInt(4);
                     character.changeHealthPoints(-damage);
                 }else {
                     Character character = (Character)f2.getBody().getUserData();
                     Projectile projectile = (Projectile)f1.getBody().getUserData();
                     projectile.killYourself();
-                    int damage = 1+random.nextInt(5);
+                    int damage = 1+Utils.randomGenerator.nextInt(4);
                     character.changeHealthPoints(-damage);
                 }
             }
@@ -71,6 +80,14 @@ public class WorldContactListener implements ContactListener,Constants {
             }
             else if(f1.getFilterData().categoryBits == CLUTTER_BIT || f2.getFilterData().categoryBits == CLUTTER_BIT){
                 if(f1.getFilterData().categoryBits== PROJECTILE_BIT){
+                    Projectile projectile = (Projectile)f1.getBody().getUserData();
+                    projectile.killYourself();
+                }else {
+                    Projectile projectile = (Projectile)f2.getBody().getUserData();
+                    projectile.killYourself();
+                }
+            } else {
+                if(f1.getFilterData().categoryBits == PROJECTILE_BIT){
                     Projectile projectile = (Projectile)f1.getBody().getUserData();
                     projectile.killYourself();
                 }else {

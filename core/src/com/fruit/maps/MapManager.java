@@ -50,10 +50,10 @@ public class MapManager implements Constants {
                     //finally we schedule a change in player's position after this world step using opposite spawn points
                     //from the linked room
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
-                    ,currentMap.getCurrentRoom().getLinkedRoomNorth().getSpawnPointSouth());
+                    ,currentMap.getCurrentRoom().getSpawnPoint(SOUTH_DIR));
                     //invoke onMapChange method (see below), pass it the new spawn point, direction the player will
                     // come out from and boolean indicating that the renderer should do a smooth transition between maps
-                    onMapChange(tempPortalVector,currentMap.getCurrentRoom().getPortalPointSouth(), SOUTH_DIR,true);
+                    onMapChange(tempPortalVector, currentMap.getCurrentRoom().getPortalPointSouth(), SOUTH_DIR, true);
                 }
                 break;
             }
@@ -62,8 +62,8 @@ public class MapManager implements Constants {
                     Vector2 tempPortalVector = currentMap.getCurrentRoom().getPortalPointSouth();
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomSouth());
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
-                            ,currentMap.getCurrentRoom().getLinkedRoomSouth().getSpawnPointNorth());
-                    onMapChange(tempPortalVector,currentMap.getCurrentRoom().getPortalPointNorth(), NORTH_DIR,true);
+                            , currentMap.getCurrentRoom().getSpawnPoint(NORTH_DIR));
+                    onMapChange(tempPortalVector, currentMap.getCurrentRoom().getPortalPointNorth(), NORTH_DIR, true);
                 }
                 break;
             }
@@ -72,8 +72,8 @@ public class MapManager implements Constants {
                     Vector2 tempPortalVector = currentMap.getCurrentRoom().getPortalPointEast();
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomEast());
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
-                            ,currentMap.getCurrentRoom().getLinkedRoomEast().getSpawnPointWest());
-                    onMapChange(tempPortalVector,currentMap.getCurrentRoom().getPortalPointWest(), WEST_DIR,true);
+                            , currentMap.getCurrentRoom().getSpawnPoint(WEST_DIR));
+                    onMapChange(tempPortalVector, currentMap.getCurrentRoom().getPortalPointWest(), WEST_DIR, true);
                 }
                 break;
             }
@@ -82,8 +82,8 @@ public class MapManager implements Constants {
                     Vector2 tempPortalVector = currentMap.getCurrentRoom().getPortalPointWest();
                     currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomWest());
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
-                            ,currentMap.getCurrentRoom().getLinkedRoomWest().getSpawnPointEast());
-                    onMapChange(tempPortalVector,currentMap.getCurrentRoom().getPortalPointEast(),EAST_DIR,true);
+                            , currentMap.getCurrentRoom().getSpawnPoint(EAST_DIR));
+                    onMapChange(tempPortalVector, currentMap.getCurrentRoom().getPortalPointEast(), EAST_DIR, true);
                 }
                 break;
             }

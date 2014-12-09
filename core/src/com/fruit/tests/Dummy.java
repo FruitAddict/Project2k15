@@ -5,9 +5,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.Controller;
+import com.fruit.logic.EntityID;
 import com.fruit.logic.ObjectManager;
 
-public class Dummy extends com.fruit.logic.objects.abstracted.Character {
+public class Dummy extends com.fruit.logic.objects.entities.Character {
 
     private ObjectManager objectManager;
 
@@ -15,9 +16,9 @@ public class Dummy extends com.fruit.logic.objects.abstracted.Character {
         lastKnownX = spawnX;
         lastKnownY= spawnY;
         this.objectManager = objectManager;
-        setTypeID(DUMMY_TYPE);
+        setEntityID(EntityID.DUMMY);
         setMaxVelocity(0);
-        setGroupID(ENEMIES_GROUP);
+        setSaveInRooms(DO_SAVE);
         healthPoints = 99999;
     }
 

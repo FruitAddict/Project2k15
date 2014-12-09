@@ -1,4 +1,4 @@
-package com.fruit.logic.objects.abstracted;
+package com.fruit.logic.objects.entities;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -19,12 +19,12 @@ public abstract class GameObject implements Constants {
     //body category bit, for use with collsiion filtering
     protected int categoryBit;
 
-    //typeID for this object to be used with rendering ( each object will have its own animation/resource pack that will
+    //entityID for this object to be used with rendering ( each object will have its own animation/resource pack that will
     //know how to draw this specific object).
-    protected int typeID;
+    protected int entityID;
 
     //group ID, very simmiliar to categoryID of the body, but is not bound to any fixture and is more easily obtained
-    protected int groupID;
+    protected int saveInRooms;
 
     //last known x position of this object, useful when loading it to the world after it has been
     //temporally removed, for example when changing maps back and forth.
@@ -54,21 +54,21 @@ public abstract class GameObject implements Constants {
         return categoryBit;
     }
 
-    public int getTypeID() {
-        return typeID;
+    public int getEntityID() {
+        return entityID;
     }
 
-    public void setTypeID(int typeID) {
-        this.typeID = typeID;
+    public void setEntityID(int entityID) {
+        this.entityID = entityID;
     }
 
 
-    public int getGroupID() {
-        return groupID;
+    public int getSaveInRooms() {
+        return saveInRooms;
     }
 
-    public void setGroupID(int groupID) {
-        this.groupID = groupID;
+    public void setSaveInRooms(int saveInRooms) {
+        this.saveInRooms = saveInRooms;
     }
 
 

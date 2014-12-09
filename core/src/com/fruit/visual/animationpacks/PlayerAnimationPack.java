@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.fruit.logic.Constants;
+import com.fruit.logic.objects.effects.Effect;
 import com.fruit.logic.objects.entities.Player;
 import com.fruit.visual.Assets;
 
@@ -20,6 +21,8 @@ public class PlayerAnimationPack implements Constants {
     private Animation playerAnimationEast;
     //debug font
     private BitmapFont font = new BitmapFont();
+    //debug test
+    private Animation healingAnimation;
 
     private TextureRegion[] playerSouthRegion;
     private TextureRegion[] playerNorthRegion;
@@ -59,6 +62,15 @@ public class PlayerAnimationPack implements Constants {
             playerAnimationWest = new Animation(0.1f, playerWestRegion);
             playerAnimationEast = new Animation(0.1f, playerEastRegion);
             loaded = true;
+
+            //test
+            Texture testHealTexture = (Texture) Assets.getAsset("healeffect.png", Texture.class);
+            TextureRegion[][] tmp2 = TextureRegion.split(testHealTexture, testHealTexture.getWidth() / 3, testHealTexture.getHeight());
+            TextureRegion[] animFrames = new TextureRegion[3];
+            animFrames[0] = tmp2[0][0];
+            animFrames[1] = tmp2[0][1];
+            animFrames[2] = tmp2[0][2];
+            healingAnimation = new Animation(0.1f, animFrames);
         }
     }
 
@@ -77,5 +89,9 @@ public class PlayerAnimationPack implements Constants {
             batch.draw(playerSouthRegion[0],pos.x,pos.y,character.getWidth(),character.getHeight());
         }
         //batch.draw(playerHead,pos.x  ,pos.y+character.getHeight()-5,64,64);
+        //TODO CHANGE IT
+        if(character.getEffectIDS() == Effect.HEAL_OVER_TIME){
+            batch.draw(healingAnimation.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
+        }
     }
 }

@@ -8,6 +8,7 @@ import com.fruit.logic.objects.entities.Character;
  */
 public abstract class Effect {
     public static final float INFINITY = -1;
+    //Effect ID's
     public static final int HEAL_OVER_TIME = 1;
     public static final int DAMAGE_OVER_TIME = 2;
 
@@ -27,6 +28,10 @@ public abstract class Effect {
 
     //join method, specifies what happen if another effect of the same type gets applied to the player
     public abstract void join(Effect effect);
+
+    //apply method, on temporary buffs it should do nothing, on permanent buffs it applies the changes
+    //to the target character
+    public abstract void apply();
 
     public float getDuration() {
         return duration;

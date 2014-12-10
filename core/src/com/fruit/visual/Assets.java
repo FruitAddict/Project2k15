@@ -1,13 +1,9 @@
 package com.fruit.visual;
 
-import android.graphics.Color;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.BitmapFontLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Array;
@@ -21,7 +17,8 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 public class Assets {
 
     public static AssetManager manager = new AssetManager();
-    public static BitmapFont bitmapFont;
+    public static BitmapFont redFont;
+    public static BitmapFont greenFont;
     private static Array<String> requests = new Array<String>();
 
     static {
@@ -30,10 +27,14 @@ public class Assets {
         manager.setLoader(TiledMap.class , new TmxMapLoader( new InternalFileHandleResolver()));
         manager.load("notfound.png", Texture.class);
         manager.finishLoading();
-        bitmapFont = new BitmapFont();
-        bitmapFont.setScale(1.5f,1f);
-        bitmapFont.setColor(1.0f,0.1f,0.1f,1f);
-        bitmapFont.setScale(1.5f);
+        redFont = new BitmapFont();
+        redFont.setScale(1.5f, 1f);
+        redFont.setColor(1.0f, 0.1f, 0.1f, 0.9f);
+        redFont.setScale(1.5f);
+
+        greenFont = new BitmapFont();
+        greenFont.setScale(1.5f,1f);
+        greenFont.setColor(0.1f,1f,0.1f,0.9f);
     }
 
     public static void loadSplashScreen(){

@@ -1,7 +1,7 @@
 package com.fruit.logic.objects.items;
 
 import com.fruit.logic.objects.entities.MovableGameObject;
-import com.fruit.logic.objects.entities.Player;
+import com.fruit.logic.objects.player.Player;
 
 public abstract class Item extends MovableGameObject {
     //item types

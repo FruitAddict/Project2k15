@@ -4,9 +4,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.fruit.logic.EntityID;
 import com.fruit.logic.ObjectManager;
-import com.fruit.logic.objects.effects.HealOverTime;
+import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.MovableGameObject;
 
 
@@ -18,7 +17,7 @@ public class Box extends MovableGameObject {
         lastKnownX = spawnX;
         lastKnownY= spawnY;
         this.objectManager = objectManager;
-        setEntityID(EntityID.BOX);
+        setEntityID(GameObject.BOX);
         setMaxVelocity(2);
         setSaveInRooms(DO_SAVE);
     }

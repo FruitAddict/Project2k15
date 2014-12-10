@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.fruit.logic.Constants;
 import com.fruit.logic.objects.effects.Effect;
-import com.fruit.logic.objects.entities.Player;
+import com.fruit.logic.objects.player.Player;
 import com.fruit.visual.Assets;
 
 
@@ -90,8 +90,9 @@ public class PlayerAnimationPack implements Constants {
         }
         //batch.draw(playerHead,pos.x  ,pos.y+character.getHeight()-5,64,64);
         //TODO CHANGE IT
-        if(character.getEffectIDS() == Effect.HEAL_OVER_TIME){
+        /**if(character.getEffectIDS() == Effect.HEAL_OVER_TIME){
             batch.draw(healingAnimation.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
         }
+         */
     }
 }

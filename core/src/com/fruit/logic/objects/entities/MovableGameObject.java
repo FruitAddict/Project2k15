@@ -1,7 +1,5 @@
 package com.fruit.logic.objects.entities;
 
-import com.fruit.logic.objects.entities.GameObject;
-
 /**
  * Movable game object abstract class. All moving objects will inherit from this.
  * Contains easy methods to move the object around in the game world(logic)

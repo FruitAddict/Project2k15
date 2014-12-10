@@ -1,4 +1,4 @@
-package com.fruit.visual.messagess;
+package com.fruit.visual.messages;
 
 import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -28,5 +28,13 @@ public class TextRenderer {
 
     public void addMessage(String msg,float positionX, float positionY, float lifeSpan){
         messageList.add(new TextMessage(msg,positionX,positionY,lifeSpan));
+    }
+
+    public void addMessage(TextMessage message){
+        messageList.add(message);
+    }
+
+    public void removeAll(){
+        messageList.clear();
     }
 }

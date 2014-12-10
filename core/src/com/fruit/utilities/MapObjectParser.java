@@ -144,7 +144,6 @@ public class MapObjectParser implements Constants {
     }
 
     public static void addSpawnAndPortalPointsToRoom(Room room){
-        //get tile width and height from the map TODO make it go away
         room.setTileWidth(room.getTiledMap().getProperties().get("tilewidth", Integer.class));
         room.setTileHeight(room.getTiledMap().getProperties().get("tileheight", Integer.class));
 

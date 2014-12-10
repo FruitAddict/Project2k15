@@ -2,7 +2,6 @@ package com.fruit.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Scaling;
@@ -11,10 +10,9 @@ import com.fruit.MainGame;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.logic.input.CustomInputMultiplexer;
 import com.fruit.logic.input.WorldInputProcessor;
-import com.fruit.logic.input.WorldInputProcessorTest;
 import com.fruit.maps.MapManager;
 import com.fruit.visual.GameCamera;
-import com.fruit.visual.WorldRenderer;
+import com.fruit.visual.renderer.WorldRenderer;
 import com.fruit.visual.ui.UserInterface;
 
 /**

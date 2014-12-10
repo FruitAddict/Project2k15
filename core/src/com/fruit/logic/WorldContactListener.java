@@ -2,7 +2,7 @@ package com.fruit.logic;
 
 import com.badlogic.gdx.physics.box2d.*;
 import com.fruit.logic.objects.items.Item;
-import com.fruit.logic.objects.entities.Player;
+import com.fruit.logic.objects.player.Player;
 import com.fruit.logic.objects.entities.Projectile;
 import com.fruit.logic.objects.entities.Character;
 import com.fruit.utilities.Utils;

@@ -6,10 +6,11 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
-import com.fruit.logic.EntityID;
 import com.fruit.logic.ObjectManager;
+import com.fruit.logic.objects.effects.Effect;
 import com.fruit.logic.objects.effects.HealOverTime;
 import com.fruit.logic.objects.entities.Character;
+import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.items.Heart;
 import com.fruit.utilities.Utils;
 
@@ -27,7 +28,7 @@ public class MindlessWalker extends Character implements Constants{
         this.objectManager = objectManager;
         lastKnownX = spawnX;
         lastKnownY = spawnY;
-        setEntityID(EntityID.MINDLESS_WALKER);
+        setEntityID(GameObject.MINDLESS_WALKER);
         setMaxVelocity(3);
         setSpeed(0.25f);
         setSaveInRooms(DO_SAVE);
@@ -114,7 +115,7 @@ public class MindlessWalker extends Character implements Constants{
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.density = 100f;
+        fixtureDef.density = 10f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = ENEMY_BIT;
         body.createFixture(fixtureDef);
@@ -129,7 +130,7 @@ public class MindlessWalker extends Character implements Constants{
             objectManager.addObject(new Heart(objectManager,getBody().getPosition().x,getBody().getPosition().y,24,24));
         }
         if(Utils.randomGenerator.nextInt(100) < 40){
-            objectManager.getPlayer().addEffect(new HealOverTime(5f,1f,0.1f));
+            objectManager.getPlayer().addEffect(new HealOverTime(Effect.INFINITY,1f,0.5f));
         }
     }
 

@@ -1,4 +1,4 @@
-package com.fruit.visual;
+package com.fruit.visual.renderer;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
@@ -15,13 +15,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
-import com.fruit.logic.EntityID;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.logic.objects.entities.GameObject;
-import com.fruit.visual.messagess.TextRenderer;
+import com.fruit.visual.GameCamera;
+import com.fruit.visual.messages.TextRenderer;
 import com.fruit.visual.tween.GameCameraAccessor;
 import com.fruit.visual.tween.TweenUtils;
 
+/**TODO Lighting
+ * World Renderer class. Works together with world updater. While world updater takes care of updating
+ * the logic of the game, this class takes the data from the updater and draws the game based on it.
+ * Contains a longass method to translate the camera smoothly when rooms are changed (changeRenderedMap),
+ * and two render method. First one (render) renders the game normally, using object renderer class to render all
+ * the game objects. Second one (transitionRender) renders the map and all the objects except for player (used
+ * with changeRenderedMap method)
+ */
 public class WorldRenderer implements Constants {
     //TiledMap renderer.
     private TiledMapRenderer tiledMapRenderer;
@@ -54,6 +62,10 @@ public class WorldRenderer implements Constants {
     public void changeRenderedMap(Vector2 prevPortalPos, Vector2 nextPortalPos, int direction, boolean doTransition){
         //Method called when map/room change is requested. On room change, it performs a neat room camera transition
         //centered on the doors.
+        //First, kill all tweening (dmg scrolling text etc)
+        TweenUtils.tweenManager.killAll();
+        //remove all the text from text renderer
+        textRenderer.removeAll();
         if(doTransition) {
             //Portal Position vector - holds the center of the portal collision rectangle in the previous map
             //Spawn point vector - holds the center of the spawn point from the new map
@@ -154,6 +166,7 @@ public class WorldRenderer implements Constants {
         tiledMapRenderer= null;
         tiledMapRenderer = new OrthogonalTiledMapRenderer(worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getTiledMap(),batch);
     }
+
     public void render(float delta){
         //update camera
         camera.update();
@@ -191,7 +204,8 @@ public class WorldRenderer implements Constants {
         batch.begin();
         temporaryObjectArray.clear();
         for(GameObject o : worldUpdater.getObjectManager().getGameObjects()){
-            if(o.getEntityID()!= EntityID.PLAYER){
+            if(o.getEntityID()!= GameObject
+                    .PLAYER){
                 temporaryObjectArray.add(o);
             }
         }

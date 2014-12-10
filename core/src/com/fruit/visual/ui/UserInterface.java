@@ -84,7 +84,33 @@ public class UserInterface extends Stage {
         /**
          * Debuggin&GUI tests
          */
+        createControlTouchPads();
         test();
+    }
+
+    public void createControlTouchPads(){
+        /**
+         * touchpad style
+         */
+        Touchpad.TouchpadStyle touchpadStyle = new Touchpad.TouchpadStyle();
+        touchpadStyle.background = skin.newDrawable("touchBackground",transRed);
+        touchpadStyle.knob = skin.newDrawable("touchKnob", transWhite);
+        skin.add("default",touchpadStyle);
+
+        Container<Touchpad> containerMove = new Container<>();
+        touchpadMove = new Touchpad(20,skin);
+        containerMove.setActor(touchpadMove);
+        containerMove.align(Align.bottomLeft);
+        containerMove.setFillParent(true);
+
+        Container<Touchpad> containerAttack = new Container<>();
+        touchpadAttack = new Touchpad(20,skin);
+        containerAttack.setActor(touchpadAttack);
+        containerAttack.align(Align.bottomRight);
+        containerAttack.setFillParent(true);
+
+        addActor(containerMove);
+        addActor(containerAttack);
     }
 
     private void test(){
@@ -116,13 +142,7 @@ public class UserInterface extends Stage {
         skin.add("default", labelStyle);
         skin.add("default",textButtonStyle);
 
-        /**
-         * touchpad style
-         */
-        Touchpad.TouchpadStyle touchpadStyle = new Touchpad.TouchpadStyle();
-        touchpadStyle.background = skin.newDrawable("touchBackground",transRed);
-        touchpadStyle.knob = skin.newDrawable("touchKnob", transWhite);
-        skin.add("default",touchpadStyle);
+
 
         /**
          * slider style
@@ -138,8 +158,8 @@ public class UserInterface extends Stage {
         skin.add("default",scrollPaneStyle);
 
         // Create a table that fills the screen. Everything else will go inside this table.
-        VerticalGroup table = new VerticalGroup();
-        HorizontalGroup buttonTable = new HorizontalGroup();
+        final VerticalGroup table = new VerticalGroup();
+        final HorizontalGroup buttonTable = new HorizontalGroup();
         buttonTable.setFillParent(true);
         buttonTable.align(Align.topLeft);
         table.setFillParent(true);
@@ -155,36 +175,29 @@ public class UserInterface extends Stage {
         sliderAttack.setValue(updater.getObjectManager().getPlayer().getTimeBetweenAttacks());
         sliderAttack.setValue(updater.getObjectManager().getPlayer().getTimeBetweenAttacks());
         final TextButton addMob = new TextButton("Add mobs ",skin);
-        final TextButton addBox = new TextButton("Add dummy ",skin);
-        final TextButton addDummy = new TextButton("Add box",skin);
+        final TextButton addDummy = new TextButton("Add dummy ",skin);
+        final TextButton addBox = new TextButton("Add box",skin);
         final TextButton clearObjects = new TextButton("Remove all objects",skin);
+        final TextButton showDebugOptions = new TextButton("Show Debug Options",skin);
         addMob.setColor(addMob.getColor().r,addMob.getColor().g,addMob.getColor().b,0.5f);
         addBox.setColor(addBox.getColor().r, addBox.getColor().g, addBox.getColor().b, 0.5f);
+        addDummy.setColor(addBox.getColor().r, addBox.getColor().g, addBox.getColor().b, 0.5f);
         clearObjects.setColor(clearObjects.getColor().r, clearObjects.getColor().g, clearObjects.getColor().b, 0.5f);
         scrollPane.getStyle().hScrollKnob.setMinHeight(10);
         scrollPane.getStyle().vScrollKnob.setMinWidth(10);
         scrollPane.setSize(200, 300);
+        buttonTable.addActor(showDebugOptions);
         buttonTable.addActor(addMob);
         buttonTable.addActor(addBox);
         buttonTable.addActor(addDummy);
         buttonTable.addActor(clearObjects);
+        addMob.setVisible(false);
+        addBox.setVisible(false);
+        addDummy.setVisible(false);
+        clearObjects.setVisible(false);
         addActor(table);
         addActor(buttonTable);
-
-        Container<Touchpad> containerMove = new Container<>();
-        touchpadMove = new Touchpad(20,skin);
-        containerMove.setActor(touchpadMove);
-        containerMove.align(Align.bottomLeft);
-        containerMove.setFillParent(true);
-
-        Container<Touchpad> containerAttack = new Container<>();
-        touchpadAttack = new Touchpad(20,skin);
-        containerAttack.setActor(touchpadAttack);
-        containerAttack.align(Align.bottomRight);
-        containerAttack.setFillParent(true);
-
-        addActor(containerMove);
-        addActor(containerAttack);
+        table.setVisible(false);
 
         sliderZoom.getStyle().knob.setMinWidth(10);
         sliderZoom.getStyle().knob.setMinHeight(50);
@@ -201,6 +214,7 @@ public class UserInterface extends Stage {
         table.addActor(sliderZoom);
         table.addActor(infoAttack);
         table.addActor(sliderAttack);
+
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
         // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
         // ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
@@ -211,26 +225,18 @@ public class UserInterface extends Stage {
                 camera.zoom = sliderZoom.getValue();
             }
         });
-        addMob.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                for(int i =0 ;i<5;i++) {
-                    updater.getObjectManager().addObject(new MindlessWalker(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x+1,
-                            updater.getObjectManager().getPlayer().getBody().getPosition().y));
-                }
-            }
-        });
+
         addBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                updater.getObjectManager().addObject(new Dummy(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x,
+                updater.getObjectManager().addObject(new Box(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x,
                         updater.getObjectManager().getPlayer().getBody().getPosition().y));
             }
         });
         addDummy.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                updater.getObjectManager().addObject(new Box(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x,
+                updater.getObjectManager().addObject(new Dummy(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x,
                         updater.getObjectManager().getPlayer().getBody().getPosition().y));
             }
         });
@@ -246,6 +252,34 @@ public class UserInterface extends Stage {
                 updater.getObjectManager().getPlayer().setTimeBetweenAttacks(sliderAttack.getValue());
             }
         });
+        addMob.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                for(int i =0 ;i<5;i++) {
+                    updater.getObjectManager().addObject(new MindlessWalker(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x+1,
+                            updater.getObjectManager().getPlayer().getBody().getPosition().y));
+                }
+            }
+        });
+        showDebugOptions.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if(!table.isVisible()){
+                    addMob.setVisible(true);
+                    addBox.setVisible(true);
+                    addDummy.setVisible(true);
+                    clearObjects.setVisible(true);
+                    table.setVisible(true);
+                } else {
+                    addMob.setVisible(false);
+                    addBox.setVisible(false);
+                    addDummy.setVisible(false);
+                    clearObjects.setVisible(false);
+                    table.setVisible(false);
+                }
+            }
+        });
+
 
     }
 }

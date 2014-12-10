@@ -1,7 +1,9 @@
 package com.fruit;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.fruit.logic.WorldUpdater;
-import com.fruit.visual.WorldRenderer;
+import com.fruit.visual.messages.TextMessage;
+import com.fruit.visual.renderer.WorldRenderer;
 
 /**
  * Utility class contains static getter methods for all the main components of the game.
@@ -31,6 +33,12 @@ public class Controller {
     public static void addOnScreenMessage(String msg, float positionX, float positionY, float lifeSpan){
         if(Controller.worldRenderer!=null){
             worldRenderer.getTextRenderer().addMessage(msg,positionX,positionY,lifeSpan);
+        }
+    }
+
+    public static void addOnScreenMessage(TextMessage message){
+        if(Controller.worldRenderer!=null){
+            worldRenderer.getTextRenderer().addMessage(message);
         }
     }
 

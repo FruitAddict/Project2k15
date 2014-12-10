@@ -5,7 +5,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.fruit.logic.EntityID;
 import com.fruit.logic.ObjectManager;
 
 //Basic projectile class.
@@ -20,7 +19,7 @@ public class Projectile extends MovableGameObject {
         this.spawnY = spawnY;
         this.objectManager = objectManager;
         this.direction = dir;
-        setEntityID(EntityID.PROJECTILE);
+        setEntityID(GameObject.PROJECTILE);
         setMaxVelocity(6);
         setSpeed(0.30f);
         setSaveInRooms(DONT_SAVE);

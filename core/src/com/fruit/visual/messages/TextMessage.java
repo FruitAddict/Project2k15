@@ -1,7 +1,8 @@
-package com.fruit.visual.messagess;
+package com.fruit.visual.messages;
 
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.equations.Quad;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,6 +24,8 @@ public class TextMessage {
     private String message;
     //color of this message;
     private Color color;
+    //alpha of this message
+    private float alpha = 1;
 
     //position of this message;
     private float positionX;
@@ -34,6 +37,7 @@ public class TextMessage {
         this.positionY = positionY;
         this.lifeSpan = lifeSpan;
         this.bitmapFont = bitmapFont;
+        alpha = bitmapFont.getColor().a;
         startTween();
     }
 
@@ -44,11 +48,11 @@ public class TextMessage {
         this.lifeSpan = lifeSpan;
         switch(bitmapFontType){
             case TextMessage.BITMAPFONT_HELVETICA:{
-                bitmapFont = Assets.bitmapFont;
+                bitmapFont = Assets.redFont;
                 break;
             }
             default:{
-                bitmapFont = Assets.bitmapFont;
+                bitmapFont = Assets.redFont;
                 break;
             }
         }
@@ -60,18 +64,23 @@ public class TextMessage {
         this.positionX = positionX;
         this.positionY = positionY;
         this.lifeSpan = lifeSpan;
-        bitmapFont = Assets.bitmapFont;
+        bitmapFont = Assets.redFont;
         startTween();
     }
 
     public void startTween(){
-        Timeline.createSequence().push(
-                Tween.to(this, TextMessageAccessor.POSITION_Y,lifeSpan*2/3).target(positionY+75)).push(
-                Tween.to(this, TextMessageAccessor.POSITION_Y,lifeSpan*1/3).target(positionY)
-        ).start(TweenUtils.tweenManager);
+        Timeline.createSequence()
+                .push(Tween.to(this, TextMessageAccessor.POSITION_Y,lifeSpan*2/3).target(positionY+75).ease(Quad.INOUT))
+                .beginParallel()
+                .push(Tween.to(this, TextMessageAccessor.POSITION_Y,lifeSpan*1/3).target(positionY))
+                .push(Tween.to(this,TextMessageAccessor.ALPHA,lifeSpan*1/3).target(0f))
+                .end()
+                .start(TweenUtils.tweenManager);
+
     }
 
     public void render(SpriteBatch batch, float delta){
+        bitmapFont.setColor(bitmapFont.getColor().r,bitmapFont.getColor().g,bitmapFont.getColor().b,alpha);
         bitmapFont.draw(batch,message,positionX,positionY);
         stateTime+=delta;
     }
@@ -102,5 +111,13 @@ public class TextMessage {
 
     public float getStateTime() {
         return stateTime;
+    }
+
+    public float getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
     }
 }

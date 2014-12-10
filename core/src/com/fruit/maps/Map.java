@@ -10,7 +10,7 @@ public class Map implements Constants {
     //map must contain reference to the map manager
     private MapManager mapManager;
     //list of all rooms in this map
-    private Array<Room> roomArray; //not using it yet TODO
+    private Array<Room> roomArray;
     //current room (the one player is in)
     private Room currentRoom;
 

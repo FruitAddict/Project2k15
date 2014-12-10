@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.fruit.logic.Constants;
-import com.fruit.logic.objects.entities.Player;
+import com.fruit.logic.objects.player.Player;
 
 /**
  * Game world input processor. Takes care of steering, attacking and other things not releated to GUI
@@ -20,7 +20,6 @@ public class WorldInputProcessor implements InputProcessor, Constants {
      * Vector to store normalized velocity derived in the attacking alghorithm in the update() method
      * MapManager to obtain current map width/height
      * Controller containing references to everything else in this program
-     * TODO Isaac-esque room changing effect (slides)
      */
 
     protected OrthographicCamera camera;

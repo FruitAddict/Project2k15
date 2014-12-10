@@ -13,7 +13,11 @@ import com.fruit.logic.objects.effects.Effect;
 public abstract class Character extends MovableGameObject {
 
     protected float healthPoints;
-    protected float maximumHealthPoints;
+    //every stat must have its base version and multiplier with starting value of 1.
+    protected float baseMaximumHealthPoints;
+    protected float maximumHealthPointsMultiplier = 1;
+    protected float baseDamage;
+    protected float damageMultiplier;
 
     public boolean facingW, facingE, facingN, facingS,
                    facingNE, facingNW, facingSE, facingSW, idle;
@@ -90,16 +94,6 @@ public abstract class Character extends MovableGameObject {
         effectArray.add(effect);
     }
 
-    public int getEffectIDS(){
-        //returns effect ids currently on the character
-        for(Effect e :effectArray){
-            if(e.getEffectType()==Effect.HEAL_OVER_TIME){
-                return 1;
-            }
-        }
-        return 0;
-    }
-
     public void removeEffect(Effect effect){
         if(effectArray.contains(effect,true)){
             effectArray.removeValue(effect,true);
@@ -108,10 +102,10 @@ public abstract class Character extends MovableGameObject {
 
     public void changeHealthPoints(float amount){
         //every character must be damagable or healable.
-        if(healthPoints+amount < maximumHealthPoints) {
+        if(healthPoints+amount < baseMaximumHealthPoints) {
             healthPoints += amount;
         }else {
-            healthPoints = maximumHealthPoints;
+            healthPoints = baseMaximumHealthPoints;
         }
     }
 
@@ -124,11 +118,11 @@ public abstract class Character extends MovableGameObject {
         return healthPoints;
     }
 
-    public void setMaximumHealthPoints(float value){
-        maximumHealthPoints = value;
+    public void setBaseMaximumHealthPoints(float value){
+        baseMaximumHealthPoints = value;
     }
 
-    public float getMaximumHealthPoints(){
-        return maximumHealthPoints;
+    public float getBaseMaximumHealthPoints(){
+        return baseMaximumHealthPoints;
     }
 }

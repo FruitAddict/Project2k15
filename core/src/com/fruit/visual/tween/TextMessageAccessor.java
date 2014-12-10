@@ -1,7 +1,7 @@
 package com.fruit.visual.tween;
 
 import aurelienribon.tweenengine.TweenAccessor;
-import com.fruit.visual.messagess.TextMessage;
+import com.fruit.visual.messages.TextMessage;
 
 public class TextMessageAccessor implements TweenAccessor<TextMessage> {
 
@@ -21,7 +21,7 @@ public class TextMessageAccessor implements TweenAccessor<TextMessage> {
                 return 2;
             }
             case ALPHA: {
-                floats[0] = textMessage.getBitmapFont().getColor().a;
+                floats[0] = textMessage.getAlpha();
                 return 3;
             }
             default: {
@@ -43,8 +43,7 @@ public class TextMessageAccessor implements TweenAccessor<TextMessage> {
                 break;
             }
             case ALPHA:{
-                textMessage.getBitmapFont().setColor(textMessage.getBitmapFont().getColor().r,
-                        textMessage.getBitmapFont().getColor().g,textMessage.getBitmapFont().getColor().b,floats[0]);
+                textMessage.setAlpha(floats[0]);
                 break;
             }
             default:

@@ -1,13 +1,12 @@
-package com.fruit.visual;
+package com.fruit.visual.renderer;
 
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.logic.Constants;
-import com.fruit.logic.EntityID;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.MovableGameObject;
-import com.fruit.logic.objects.entities.Player;
+import com.fruit.logic.objects.player.Player;
 import com.fruit.logic.objects.entities.Projectile;
 import com.fruit.tests.Dummy;
 import com.fruit.tests.MindlessWalker;
@@ -16,16 +15,22 @@ import com.fruit.visual.animationpacks.*;
 import java.util.Comparator;
 
 /**
- * Class stub. Should take care of all the rendering of objects and entities.
- *
+ * Object Renderer works with world renderer. While world renderer takes care of
+ * drawing the map and lighting, this class renders the player, projectiles and everything
+ * related.
  */
 public class ObjectRenderer implements Constants {
     float stateTime = 0;
+
+    //animation packs that will handle drawing specific entities
     PlayerAnimationPack playerAnimationPack;
     MindlessWalkerAnimationPack mindlessWalkerAnimationPack;
     UtilityAnimationPack utilityAnimationPack;
     ProjectileAnimationPack projectileAnimationPack;
     DummyAnimationPack dummyAnimationPack;
+
+    //Effect Renderer that will take care of rendering effects for each entitiy based on their state
+    EffectRenderer effectRenderer;
 
     public ObjectRenderer(){
         playerAnimationPack = new PlayerAnimationPack();
@@ -33,6 +38,7 @@ public class ObjectRenderer implements Constants {
         utilityAnimationPack = new UtilityAnimationPack();
         projectileAnimationPack = new ProjectileAnimationPack();
         dummyAnimationPack = new DummyAnimationPack();
+        effectRenderer = new EffectRenderer();
     }
 
     public void render(float delta, Array<GameObject> objects, SpriteBatch batch){
@@ -53,32 +59,32 @@ public class ObjectRenderer implements Constants {
 
         for(GameObject e : objects){
             switch(e.getEntityID()){
-                case EntityID.PLAYER:{
+                case GameObject.PLAYER:{
                     playerAnimationPack.load();
                     playerAnimationPack.render(stateTime,(Player)e,batch);
                     break;
                 }
-                case EntityID.MINDLESS_WALKER:{
+                case GameObject.MINDLESS_WALKER:{
                     mindlessWalkerAnimationPack.load();
                     mindlessWalkerAnimationPack.render(stateTime,(MindlessWalker)e,batch);
                     break;
                 }
-                case EntityID.BOX:{
+                case GameObject.BOX:{
                     utilityAnimationPack.load();
                     utilityAnimationPack.render(stateTime,(MovableGameObject)e,batch);
                     break;
                 }
-                case EntityID.HEART:{
+                case GameObject.HEART:{
                     utilityAnimationPack.load();
                     utilityAnimationPack.render(stateTime,(MovableGameObject)e,batch);
                     break;
                 }
-                case EntityID.PROJECTILE:{
+                case GameObject.PROJECTILE:{
                     projectileAnimationPack.load();
                     projectileAnimationPack.render(stateTime,(Projectile)e,batch);
                     break;
                 }
-                case EntityID.DUMMY:{
+                case GameObject.DUMMY:{
                     dummyAnimationPack.load();
                     dummyAnimationPack.render(stateTime,(Dummy)e,batch);
                     break;

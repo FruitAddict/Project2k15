@@ -16,7 +16,7 @@ public class HealOverTime extends Effect {
     @Override
     public void update(Character character, float delta) {
         stateTime+=delta;
-        if(stateTime>=duration){
+        if(stateTime>=duration && duration != Effect.INFINITY){
             character.removeEffect(this);
         }else{
             if(lastUpdateTime>=delay){
@@ -26,6 +26,11 @@ public class HealOverTime extends Effect {
                 lastUpdateTime+=delta;
             }
         }
+    }
+
+    @Override
+    public void apply(){
+    //does nothing
     }
 
     @Override

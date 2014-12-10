@@ -30,7 +30,6 @@ public class SplashScreen implements Screen,TweenAccessor<SplashScreen> {
     public SplashScreen(MainGame game){
         //loads splash screen texture
         Assets.loadSplashScreen();
-        //loads test map TODO change it to load only gui-releated stuff
         this.game = game;
         //register the tween accessor for sprites
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());

@@ -5,9 +5,9 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.logic.Constants;
-import com.fruit.logic.EntityID;
 import com.fruit.logic.ObjectManager;
-import com.fruit.logic.objects.entities.Player;
+import com.fruit.logic.objects.entities.GameObject;
+import com.fruit.logic.objects.player.Player;
 
 /**
  * Heart. Renews hp based on its load. If player's hp is full, it acts as a physics object.
@@ -24,7 +24,7 @@ public class Heart extends Item implements Constants {
         this.width = width;
         this.height = height;
         setSaveInRooms(DO_SAVE);
-        setEntityID(EntityID.HEART);
+        setEntityID(GameObject.HEART);
         setMaxVelocity(0.5f);
         setSpeed(0.1f);
     }
@@ -67,9 +67,9 @@ public class Heart extends Item implements Constants {
 
     @Override
     public void onPickUp(Player player){
-        if(player.getHealthPoints() < player.getMaximumHealthPoints()){
-            if(player.getHealthPoints()+renewValue > player.getMaximumHealthPoints()){
-                player.changeHealthPoints(player.getMaximumHealthPoints() - player.getHealthPoints());
+        if(player.getHealthPoints() < player.getBaseMaximumHealthPoints()){
+            if(player.getHealthPoints()+renewValue > player.getBaseMaximumHealthPoints()){
+                player.changeHealthPoints(player.getBaseMaximumHealthPoints() - player.getHealthPoints());
                 killYourself();
             } else {
                 player.changeHealthPoints(renewValue);

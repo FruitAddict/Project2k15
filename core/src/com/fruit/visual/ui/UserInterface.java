@@ -167,7 +167,7 @@ public class UserInterface extends Stage {
 
 
         // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
-        final Slider sliderZoom = new Slider(0.05f,0.9f,0.05f,false,skin);
+        final Slider sliderZoom = new Slider(0.05f,2f,0.05f,false,skin);
         final ScrollPane scrollPane = new ScrollPane(table,skin);
         final Label infoAttack = new Label("Attack speed",skin);
         final Label infoZoom = new Label("Zoom",skin);

@@ -21,9 +21,11 @@ public class TextRenderer {
                 messageList.removeIndex(i);
             }
         }
+        batch.begin();
         for(TextMessage tm : messageList){
             tm.render(batch,delta);
         }
+        batch.end();
     }
 
     public void addMessage(String msg,float positionX, float positionY, float lifeSpan){

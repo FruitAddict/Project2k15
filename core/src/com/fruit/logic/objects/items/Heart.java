@@ -59,6 +59,7 @@ public class Heart extends Item implements Constants {
         fixtureDef.density = 50f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = ITEM_BIT;
+        fixtureDef.filter.maskBits = PLAYER_BIT | TERRAIN_BIT | PORTAL_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape

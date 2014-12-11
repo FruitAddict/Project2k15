@@ -37,7 +37,6 @@ public class GameCamera extends OrthographicCamera implements Constants {
 
     public void updateCameraMovement(){
         if(!freeCamera && followedObject!= null){
-            followedObject = Controller.worldUpdater.getPlayer();
             mapWidth = Controller.getWorldUpdater().getMapManager().getCurrentMapWidth();
             mapHeight = Controller.getWorldUpdater().getMapManager().getCurrentMapHeight();
             /**

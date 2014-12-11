@@ -41,6 +41,8 @@ public class WorldRenderer implements Constants {
     private ObjectRenderer objectRenderer;
     //text renderer to display on-screen messages like damage done to monsters
     private TextRenderer textRenderer;
+    //Light renderer to handle all the lighting effects. Can be easily disabled for performance
+    private LightRenderer lightRenderer;
     //texture region for map transition effects and its position, frame buffer for screen capturing and
     //additional game object array to filter out player during transition rendering phase
     private TextureRegion lastMapTexture;
@@ -50,13 +52,64 @@ public class WorldRenderer implements Constants {
 
 
     public WorldRenderer(SpriteBatch batch, GameCamera camera, WorldUpdater worldUpdater){
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getTiledMap(), batch);
-        objectRenderer = new ObjectRenderer();
-        textRenderer = new TextRenderer();
-        temporaryObjectArray = new Array<GameObject>();
         this.batch = batch;
         this.camera = camera;
         this.worldUpdater = worldUpdater;
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getTiledMap(), batch);
+        objectRenderer = new ObjectRenderer();
+        textRenderer = new TextRenderer();
+        lightRenderer = new LightRenderer(this, worldUpdater.getWorld());
+        temporaryObjectArray = new Array<GameObject>();
+    }
+
+    public void render(float delta){
+        //update camera
+        camera.update();
+        //update tween manager
+        TweenUtils.tweenManager.update(delta);
+        //set projection matrix of map renderer to camera
+        tiledMapRenderer.setView(camera);
+        //set batch projection matrix to camera
+        batch.setProjectionMatrix(camera.combined);
+        //clear screen
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //render map
+        tiledMapRenderer.render();
+        batch.begin();
+        //render all objects
+        if(lastMapTexture!=null){
+            batch.draw(lastMapTexture,lastMapTextureX,lastMaptextureY);
+        }
+        objectRenderer.render(delta, worldUpdater.getObjectManager().getGameObjects(), batch);
+        batch.end();
+        lightRenderer.render();
+        textRenderer.render(batch, delta);
+        camera.updateCameraMovement();
+    }
+
+    public void transitionRender(){
+        //transition render method used when map is changed, see below.
+        camera.update();
+        tiledMapRenderer.setView(camera);
+        batch.setProjectionMatrix(camera.combined);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //render map
+        tiledMapRenderer.render();
+        //render objects except for player using temporary object array
+        batch.begin();
+        temporaryObjectArray.clear();
+        for(GameObject o : worldUpdater.getObjectManager().getGameObjects()){
+            if(o.getEntityID()!= GameObject
+                    .PLAYER){
+                temporaryObjectArray.add(o);
+            }
+        }
+        temporaryObjectArray.removeValue(worldUpdater.getPlayer(),true);
+        objectRenderer.render(0, temporaryObjectArray, batch);
+        temporaryObjectArray.clear();
+        batch.end();
     }
 
     public void changeRenderedMap(Vector2 prevPortalPos, Vector2 nextPortalPos, int direction, boolean doTransition){
@@ -167,55 +220,19 @@ public class WorldRenderer implements Constants {
         tiledMapRenderer = new OrthogonalTiledMapRenderer(worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getTiledMap(),batch);
     }
 
-    public void render(float delta){
-        //update camera
-        camera.update();
-        //update tween manager
-        TweenUtils.tweenManager.update(delta);
-        //set projection matrix of map renderer to camera
-        tiledMapRenderer.setView(camera);
-        //set batch projection matrix to camera
-        batch.setProjectionMatrix(camera.combined);
-        //clear screen
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //render map
-        tiledMapRenderer.render();
-        batch.begin();
-        //render all objects
-        if(lastMapTexture!=null){
-            batch.draw(lastMapTexture,lastMapTextureX,lastMaptextureY);
-        }
-        objectRenderer.render(delta, worldUpdater.getObjectManager().getGameObjects(), batch);
-        textRenderer.render(batch,delta);
-        batch.end();
-        camera.updateCameraMovement();
-    }
-
-    public void transitionRender(){
-        camera.update();
-        tiledMapRenderer.setView(camera);
-        batch.setProjectionMatrix(camera.combined);
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //render map
-        tiledMapRenderer.render();
-        //render objects except for player using temporary object array
-        batch.begin();
-        temporaryObjectArray.clear();
-        for(GameObject o : worldUpdater.getObjectManager().getGameObjects()){
-            if(o.getEntityID()!= GameObject
-                    .PLAYER){
-                temporaryObjectArray.add(o);
-            }
-        }
-        temporaryObjectArray.removeValue(worldUpdater.getPlayer(),true);
-        objectRenderer.render(0, temporaryObjectArray, batch);
-        temporaryObjectArray.clear();
-        batch.end();
-    }
-
     public TextRenderer getTextRenderer() {
         return textRenderer;
+    }
+
+    public WorldUpdater getWorldUpdater(){
+        return worldUpdater;
+    }
+
+    public LightRenderer getLightRenderer(){
+        return lightRenderer;
+    }
+
+    public GameCamera getCamera(){
+        return camera;
     }
 }

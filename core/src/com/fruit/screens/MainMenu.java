@@ -2,9 +2,6 @@ package com.fruit.screens;
 
 import com.badlogic.gdx.Screen;
 
-/**
- * @author FruitAddict
- */
 public class MainMenu implements Screen {
     @Override
     public void render(float delta) {

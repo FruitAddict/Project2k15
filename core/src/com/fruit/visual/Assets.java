@@ -30,6 +30,7 @@ public class Assets {
         redFont = new BitmapFont();
         redFont.setScale(1.5f, 1f);
         redFont.setColor(1.0f, 0.1f, 0.1f, 0.9f);
+        redFont.setScale(1.5f);
 
         greenFont = new BitmapFont();
         greenFont.setScale(1.5f,1f);

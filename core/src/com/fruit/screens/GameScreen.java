@@ -2,13 +2,11 @@ package com.fruit.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Scaling;
 import com.fruit.Controller;
 import com.fruit.MainGame;
-import com.fruit.SoundManager;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.logic.input.CustomInputMultiplexer;
 import com.fruit.logic.input.WorldInputProcessor;

@@ -1,7 +1,6 @@
 package com.fruit.visual.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -13,8 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.fruit.Controller;
-import com.fruit.SoundManager;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.tests.Box;
 import com.fruit.tests.Dummy;
@@ -37,9 +34,6 @@ public class UserInterface extends Stage {
     private Color transWhite;
     private Touchpad touchpadMove;
     private Touchpad touchpadAttack;
-    Slider sliderRed;
-    Slider sliderGreen;
-    Slider sliderBlue;
 
     private Vector2 attackDirectionNormalized;
     public UserInterface(OrthographicCamera camera, WorldUpdater worldUpdater){
@@ -157,7 +151,6 @@ public class UserInterface extends Stage {
         sliderStyle.background = skin.newDrawable("white",Color.WHITE);
         sliderStyle.knob = skin.newDrawable("white",Color.RED);
         skin.add("default-horizontal",sliderStyle);
-        skin.add("default-vertical",sliderStyle);
 
         ScrollPane.ScrollPaneStyle scrollPaneStyle = new ScrollPane.ScrollPaneStyle();
         scrollPaneStyle.hScrollKnob = skin.newDrawable("white",Color.RED);
@@ -167,24 +160,14 @@ public class UserInterface extends Stage {
         // Create a table that fills the screen. Everything else will go inside this table.
         final VerticalGroup table = new VerticalGroup();
         final HorizontalGroup buttonTable = new HorizontalGroup();
-        final HorizontalGroup colorSliders = new HorizontalGroup();
         buttonTable.setFillParent(true);
         buttonTable.align(Align.topLeft);
-        colorSliders.setFillParent(true);
-        colorSliders.align(Align.center);
         table.setFillParent(true);
         table.align(Align.topRight);
 
 
         // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
         final Slider sliderZoom = new Slider(0.05f,2f,0.05f,false,skin);
-        sliderRed = new Slider(0f,255f,1f,true,skin);
-        sliderGreen = new Slider(0f,255f,1f,true,skin);
-        sliderBlue = new Slider(0f,255f,1f,true,skin);
-        colorSliders.addActor(sliderRed);
-        colorSliders.addActor(sliderGreen);
-        colorSliders.addActor(sliderBlue);
-        colorSliders.space(25);
         final ScrollPane scrollPane = new ScrollPane(table,skin);
         final Label infoAttack = new Label("Attack speed",skin);
         final Label infoZoom = new Label("Zoom",skin);
@@ -214,9 +197,7 @@ public class UserInterface extends Stage {
         clearObjects.setVisible(false);
         addActor(table);
         addActor(buttonTable);
-        addActor(colorSliders);
         table.setVisible(false);
-        colorSliders.setVisible(false);
 
         sliderZoom.getStyle().knob.setMinWidth(10);
         sliderZoom.getStyle().knob.setMinHeight(50);
@@ -280,11 +261,6 @@ public class UserInterface extends Stage {
                 }
             }
         });
-
-        Listener listener = new Listener();
-        sliderBlue.addListener(listener);
-        sliderRed.addListener(listener);
-        sliderGreen.addListener(listener);
         showDebugOptions.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -294,26 +270,16 @@ public class UserInterface extends Stage {
                     addDummy.setVisible(true);
                     clearObjects.setVisible(true);
                     table.setVisible(true);
-                    colorSliders.setVisible(true);
                 } else {
                     addMob.setVisible(false);
                     addBox.setVisible(false);
                     addDummy.setVisible(false);
                     clearObjects.setVisible(false);
                     table.setVisible(false);
-                    colorSliders.setVisible(false);
                 }
             }
         });
 
 
-    }
-
-    private class Listener extends ChangeListener{
-
-        @Override
-        public void changed(ChangeEvent event, Actor actor) {
-            Controller.getWorldRenderer().getLightRenderer().changePlayerLightColor(new Color(sliderRed.getValue()/255,sliderGreen.getValue()/255,sliderBlue.getValue()/255,1f));
-        }
     }
 }

@@ -6,11 +6,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.Controller;
 import com.fruit.logic.ObjectManager;
-import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.GameObject;
-import com.fruit.logic.objects.player.Player;
 
-public class Dummy extends Enemy{
+public class Dummy extends com.fruit.logic.objects.entities.Character {
 
     private ObjectManager objectManager;
 
@@ -72,10 +70,5 @@ public class Dummy extends Enemy{
         super.changeHealthPoints(amount);
         Controller.addOnScreenMessage(Float.toString(amount), getBody().getPosition().x * PIXELS_TO_METERS,
                 getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
-    }
-
-    @Override
-    public void onDirectContact(Player player) {
-
     }
 }

@@ -29,11 +29,9 @@ public abstract class Effect {
     //join method, specifies what happen if another effect of the same type gets applied to the player
     public abstract void join(Effect effect);
 
-    //apply method, on buffs that modify character stats
+    //apply method, on temporary buffs it should do nothing, on permanent buffs it applies the changes
+    //to the target character
     public abstract void apply();
-
-    //remove method, should do n
-    public abstract void onRemove();
 
     public float getDuration() {
         return duration;

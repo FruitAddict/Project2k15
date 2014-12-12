@@ -15,8 +15,8 @@ import com.fruit.visual.animationpacks.*;
 import java.util.Comparator;
 
 /**
- * Object renderer that works with world renderer. While world renderer takes care of
- * drawing the map, this class renders the player, projectiles and everything
+ * Object Renderer works with world renderer. While world renderer takes care of
+ * drawing the map and lighting, this class renders the player, projectiles and everything
  * related.
  */
 public class ObjectRenderer implements Constants {
@@ -29,7 +29,7 @@ public class ObjectRenderer implements Constants {
     ProjectileAnimationPack projectileAnimationPack;
     DummyAnimationPack dummyAnimationPack;
 
-    //Effect Renderer that will take care of rendering effects for each entity based on their status.
+    //Effect Renderer that will take care of rendering effects for each entitiy based on their state
     EffectRenderer effectRenderer;
 
     public ObjectRenderer(){
@@ -42,8 +42,6 @@ public class ObjectRenderer implements Constants {
     }
 
     public void render(float delta, Array<GameObject> objects, SpriteBatch batch){
-        //Sort the objects based on their vertical position in the world
-        //to achieve correct rendering order
         objects.sort(new Comparator<GameObject>() {
             @Override
             public int compare(GameObject o1, GameObject o2) {
@@ -59,7 +57,6 @@ public class ObjectRenderer implements Constants {
             }
         });
 
-        //render the objects based on their entity ID
         for(GameObject e : objects){
             switch(e.getEntityID()){
                 case GameObject.PLAYER:{
@@ -94,7 +91,6 @@ public class ObjectRenderer implements Constants {
                 }
             }
         }
-        //increase state time by delta.
         stateTime+=delta;
     }
 }

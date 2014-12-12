@@ -16,6 +16,8 @@ public abstract class Character extends MovableGameObject {
     //every stat must have its base version and multiplier with starting value of 1.
     protected float baseMaximumHealthPoints;
     protected float maximumHealthPointsMultiplier = 1;
+    protected float baseDamage;
+    protected float damageMultiplier;
 
     public boolean facingW, facingE, facingN, facingS,
                    facingNE, facingNW, facingSE, facingSW, idle;
@@ -24,15 +26,15 @@ public abstract class Character extends MovableGameObject {
 
     public void setFacings(boolean bool){
         //sets all the facing booleans to @bool.
-        facingW = bool;
-        facingN = bool;
-        facingE = bool;
-        facingS = bool;
-        facingNE = bool;
-        facingNW = bool;
-        facingSE = bool;
-        facingSW = bool;
-        idle = bool;
+        facingW     =  bool;
+        facingN     =  bool;
+        facingE     =  bool;
+        facingS     =  bool;
+        facingNE    =  bool;
+        facingNW    =  bool;
+        facingSE    =  bool;
+        facingSW    =  bool;
+        idle        =  bool;
     }
 
     public void updateFacing(){
@@ -76,12 +78,6 @@ public abstract class Character extends MovableGameObject {
         }
     }
 
-    /**
-     *
-     * @param delta
-     * Time between frames
-     * @see com.fruit.logic.ObjectManager
-     */
     public void updateEffects(float delta){
         for(Effect e :effectArray){
             e.update(this,delta);
@@ -128,9 +124,5 @@ public abstract class Character extends MovableGameObject {
 
     public float getBaseMaximumHealthPoints(){
         return baseMaximumHealthPoints;
-    }
-
-    public void resetMaxHealthPointsMultiplier(){
-        maximumHealthPointsMultiplier = 1;
     }
 }

@@ -44,7 +44,7 @@ public class WorldContactListener implements ContactListener,Constants {
             if(f1.getFilterData().categoryBits == PLAYER_BIT || f2.getFilterData().categoryBits == PLAYER_BIT){
                 if(f1.getFilterData().categoryBits == PLAYER_BIT){
                     Player p = (Player) f1.getBody().getUserData();
-
+                    p.changeHealthPoints(-0.5f);
                 }else {
 
                 }

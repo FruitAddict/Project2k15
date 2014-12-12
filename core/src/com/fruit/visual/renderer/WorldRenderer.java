@@ -22,12 +22,13 @@ import com.fruit.visual.messages.TextRenderer;
 import com.fruit.visual.tween.GameCameraAccessor;
 import com.fruit.visual.tween.TweenUtils;
 
-/**TODO Lighting
+/**
  * World Renderer class. Works together with world updater. While world updater takes care of updating
  * the logic of the game, this class takes the data from the updater and draws the game based on it.
  * Contains a longass method to translate the camera smoothly when rooms are changed (changeRenderedMap),
  * and two render method. First one (render) renders the game normally, using object renderer class to render all
- * the game objects. Second one (transitionRender) renders the map and all the objects except for player (used
+ * the game objects, tiled map renderer to render maps and light renderer to render lights.
+ * Second one (transitionRender) renders the map and all the objects except for player (used
  * with changeRenderedMap method)
  */
 public class WorldRenderer implements Constants {
@@ -89,7 +90,11 @@ public class WorldRenderer implements Constants {
     }
 
     public void transitionRender(){
-        //transition render method used when map is changed, see below.
+        //transition render method used when map is changed.
+        //There is no need to render lights or text here compared to the render method.
+        //All battle text is removed anyway and the main render method will take care of
+        //setting up correct ambient light as soon as this method is over. (if lightmap was rendered here,
+        //the created texture would be darkened by the normal renderer)
         camera.update();
         tiledMapRenderer.setView(camera);
         batch.setProjectionMatrix(camera.combined);

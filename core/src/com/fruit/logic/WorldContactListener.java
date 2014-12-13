@@ -1,11 +1,12 @@
 package com.fruit.logic;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.fruit.logic.objects.entities.Enemy;
+import com.fruit.logic.objects.entities.misc.Box;
+import com.fruit.logic.objects.entities.misc.PlayerProjectile;
 import com.fruit.logic.objects.items.Item;
-import com.fruit.logic.objects.player.Player;
-import com.fruit.logic.objects.entities.Projectile;
-import com.fruit.logic.objects.entities.Character;
-import com.fruit.utilities.Utils;
+import com.fruit.logic.objects.entities.player.Player;
+import com.fruit.logic.objects.entities.misc.Projectile;
 
 @SuppressWarnings("all")
 public class WorldContactListener implements ContactListener,Constants {
@@ -33,6 +34,17 @@ public class WorldContactListener implements ContactListener,Constants {
                     item.onPickUp(player);
                 }
             }
+            if(f1.getFilterData().categoryBits == TREASURE_BIT || f2.getFilterData().categoryBits == TREASURE_BIT){
+                if(f1.getFilterData().categoryBits == TREASURE_BIT){
+                    //TODO CHANGE IT
+                    Box box = (Box)f1.getBody().getUserData();
+                    box.killYourself();
+                }else {
+                    //TODO CHANGE IT
+                    Box box = (Box)f2.getBody().getUserData();
+                    box.killYourself();
+                }
+            }
 
         }
 
@@ -44,9 +56,12 @@ public class WorldContactListener implements ContactListener,Constants {
             if(f1.getFilterData().categoryBits == PLAYER_BIT || f2.getFilterData().categoryBits == PLAYER_BIT){
                 if(f1.getFilterData().categoryBits == PLAYER_BIT){
                     Player p = (Player) f1.getBody().getUserData();
-
+                    Enemy e = (Enemy) f2.getBody().getUserData();
+                    e.onDirectContact(p);
                 }else {
-
+                    Player p = (Player) f2.getBody().getUserData();
+                    Enemy e = (Enemy) f1.getBody().getUserData();
+                    e.onDirectContact(p);
                 }
             }
 
@@ -54,19 +69,13 @@ public class WorldContactListener implements ContactListener,Constants {
         if(f1.getFilterData().categoryBits == PROJECTILE_BIT || f2.getFilterData().categoryBits == PROJECTILE_BIT){
             if(f1.getFilterData().categoryBits == ENEMY_BIT || f2.getFilterData().categoryBits == ENEMY_BIT){
                 if(f1.getFilterData().categoryBits== ENEMY_BIT){
-
-                    //todo actual attacking alghorithm
-                    Character character = (Character)f1.getBody().getUserData();
-                    Projectile projectile = (Projectile)f2.getBody().getUserData();
-                    projectile.killYourself();
-                    int damage = 1+Utils.randomGenerator.nextInt(4);
-                    character.changeHealthPoints(-damage);
+                    Enemy enemy = (Enemy)f1.getBody().getUserData();
+                    PlayerProjectile projectile = (PlayerProjectile)f2.getBody().getUserData();
+                    projectile.onHit(enemy);
                 }else {
-                    Character character = (Character)f2.getBody().getUserData();
-                    Projectile projectile = (Projectile)f1.getBody().getUserData();
-                    projectile.killYourself();
-                    int damage = 1+Utils.randomGenerator.nextInt(4);
-                    character.changeHealthPoints(-damage);
+                    Enemy enemy = (Enemy)f2.getBody().getUserData();
+                    PlayerProjectile projectile = (PlayerProjectile)f1.getBody().getUserData();
+                    projectile.onHit(enemy);
                 }
             }
             else if(f1.getFilterData().categoryBits == TERRAIN_BIT || f2.getFilterData().categoryBits == TERRAIN_BIT){

@@ -3,13 +3,12 @@ package com.fruit.logic.input;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.fruit.logic.objects.player.Player;
+import com.fruit.logic.objects.entities.player.Player;
 
 /**
  * Game world input processor. Takes care of steering, attacking and other things not releated to GUI
  */
+@Deprecated
 public class WorldInputProcessorTest extends WorldInputProcessor {
     private boolean leftMove,rightMove,upMove,downMove,rightAttack,leftAttack,upAttack,downAttack = false;
     private float lerpValue = 0.05f;
@@ -100,7 +99,7 @@ public class WorldInputProcessorTest extends WorldInputProcessor {
         /**
          * Camera translating algorithm. Initially moves the camera to the player position (centered), then checks whether the current camera
          * position overlaps the map boundaries. If so, sets it to the corner
-         */
+
 
         Vector3 lerpVector = new Vector3((player.getBody().getPosition().x*PIXELS_TO_METERS),
                 (player.getBody().getPosition().y*PIXELS_TO_METERS), 0);
@@ -133,7 +132,7 @@ public class WorldInputProcessorTest extends WorldInputProcessor {
 
         /**
          * TEST
-         */
+
         if(upMove){
             player.moveNorth();
         }

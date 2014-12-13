@@ -2,7 +2,7 @@ package com.fruit.logic;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.fruit.logic.objects.player.Player;
+import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.maps.MapManager;
 
 public class WorldUpdater {

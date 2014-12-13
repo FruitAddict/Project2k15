@@ -13,6 +13,7 @@ public class UtilityAnimationPack implements Constants {
     private boolean loaded;
     private Sprite boxSprite;
     private Sprite heartSprite;
+    private Sprite dmgUpSprite;
 
     public void load(){
         if(!loaded) {
@@ -20,6 +21,8 @@ public class UtilityAnimationPack implements Constants {
             boxSprite = new Sprite(boxTexture);
             Texture heartTexture = (Texture) Assets.getAsset("heart.png", Texture.class);
             heartSprite = new Sprite(heartTexture);
+            Texture dmgUpTexture = (Texture) Assets.getAsset("dmgup.png",Texture.class);
+            dmgUpSprite = new Sprite(dmgUpTexture);
             loaded = true;
         }
     }
@@ -32,6 +35,9 @@ public class UtilityAnimationPack implements Constants {
         }
         else if (object.getEntityID() == GameObject.HEART){
             batch.draw(heartSprite,pos.x,pos.y,object.getWidth(),object.getHeight());
+        }
+        else if (object.getEntityID() == GameObject.DMGUP){
+            batch.draw(dmgUpSprite,pos.x,pos.y,object.getWidth(),object.getHeight());
         }
     }
 }

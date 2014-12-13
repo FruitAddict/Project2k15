@@ -12,6 +12,7 @@ public interface Constants {
     public final int PROJECTILE_BIT = 0b100000;
     public final int PORTAL_BIT = 0b1000000;
     public final int ITEM_BIT = 0b10000000;
+    public final int TREASURE_BIT = 0b100000000;
     //directions
     public final int NORTH_DIR = 1001;
     public final int EAST_DIR = 1002;

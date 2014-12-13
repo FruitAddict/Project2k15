@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.fruit.logic.Constants;
-import com.fruit.tests.Dummy;
+import com.fruit.logic.objects.entities.enemies.Dummy;
 import com.fruit.visual.Assets;
 
 public class DummyAnimationPack implements Constants {

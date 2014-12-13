@@ -21,7 +21,7 @@ public class LightRenderer implements Constants {
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.30f);
         pointLights = new Array<PointLight>();
-        addPointLight(32, new Color(0.1f,0.9f,0.4f,0.7f), 4, worldRenderer.getWorldUpdater().getPlayer().getBody());
+        addPointLight(32, new Color(0f,0f,0.3f,0.7f), 4, worldRenderer.getWorldUpdater().getPlayer().getBody());
     }
 
     public void render(){
@@ -42,12 +42,16 @@ public class LightRenderer implements Constants {
         Filter filter = new Filter();
         filter.maskBits = ENEMY_BIT | CLUTTER_BIT |ITEM_BIT | TERRAIN_BIT;
         pointLight.setContactFilter(filter);
-        pointLight.setSoft(true);
+        pointLight.setSoft(false);
         pointLight.attachToBody(body);
     }
 
     //TODO REMOVE
     public void changePlayerLightColor(Color c){
         pointLight.setColor(c);
+    }
+
+    public RayHandler getRayHandler(){
+        return rayHandler;
     }
 }

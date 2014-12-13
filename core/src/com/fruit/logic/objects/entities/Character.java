@@ -1,7 +1,7 @@
 package com.fruit.logic.objects.entities;
 
 import com.badlogic.gdx.utils.Array;
-import com.fruit.logic.objects.effects.Effect;
+import com.fruit.logic.objects.effects.PassiveEffect;
 
 /**
  * Abstract character class. Contains method to determine object's facing based on the velocity
@@ -20,7 +20,11 @@ public abstract class Character extends MovableGameObject {
     public boolean facingW, facingE, facingN, facingS,
                    facingNE, facingNW, facingSE, facingSW, idle;
 
-    private Array<Effect> effectArray = new Array<>();
+    //array of passive effects, as both player and enemies can have those.
+    private Array<PassiveEffect> effectArray = new Array<>();
+
+    //every character must have its own stats class to contain possible statuses (makes it easier to render effects)
+    public CharacterStatus status = new CharacterStatus();
 
     public void setFacings(boolean bool){
         //sets all the facing booleans to @bool.
@@ -76,36 +80,43 @@ public abstract class Character extends MovableGameObject {
         }
     }
 
+    //what happens when character is damaged
+    public abstract void onDamageTaken(float damage);
+
+    //what happens when character is healed
+    public abstract void onHealingTaken(float amount);
+
     /**
      *
      * @param delta
      * Time between frames
      * @see com.fruit.logic.ObjectManager
      */
-    public void updateEffects(float delta){
-        for(Effect e :effectArray){
-            e.update(this,delta);
+    public void updatePassiveEffects(float delta){
+        for(PassiveEffect e :effectArray){
+            e.update(delta);
         }
     }
 
-    public void addEffect(Effect effect){
-        for(Effect e: effectArray){
-            if(e.getEffectType() == effect.getEffectType()){
-                e.join(effect);
+    public void addPassiveEffect(PassiveEffect passiveEffect){
+        for(PassiveEffect e: effectArray){
+            if(e.getEffectType() == passiveEffect.getEffectType()){
+                e.join(passiveEffect);
                 return;
             }
         }
-        effectArray.add(effect);
+        effectArray.add(passiveEffect);
+        passiveEffect.apply();
     }
 
-    public void removeEffect(Effect effect){
-        if(effectArray.contains(effect,true)){
-            effectArray.removeValue(effect,true);
+    public void removePassiveEffect(PassiveEffect passiveEffect){
+        if(effectArray.contains(passiveEffect,true)){
+            effectArray.removeValue(passiveEffect,true);
         }
     }
 
     public void changeHealthPoints(float amount){
-        //every character must be damagable or healable.
+        //every character must be damageable or healable.
         if(healthPoints+amount < baseMaximumHealthPoints) {
             healthPoints += amount;
         }else {

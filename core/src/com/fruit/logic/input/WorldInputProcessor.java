@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.fruit.logic.Constants;
-import com.fruit.logic.objects.player.Player;
+import com.fruit.logic.objects.entities.player.Player;
 
 /**
  * Game world input processor. Takes care of steering, attacking and other things not releated to GUI
@@ -22,7 +22,6 @@ public class WorldInputProcessor implements InputProcessor, Constants {
      * Controller containing references to everything else in this program
      */
 
-    protected OrthographicCamera camera;
     protected Player player;
     protected float mapWidth;
     protected float mapHeight;
@@ -43,7 +42,6 @@ public class WorldInputProcessor implements InputProcessor, Constants {
         velocityNormalized = new Vector2();
 
         this.player = player;
-        this.camera = camera;
 
         camera.zoom = 0.8f;
 
@@ -128,48 +126,6 @@ public class WorldInputProcessor implements InputProcessor, Constants {
     }
 
     public void update() {
-
-        /**
-         *  Movement update algorithm. Checks for the angle between first touch position and the dragged touch position and moves the player according to that
-         *  angle.
-         *
-        if (firstMovementPosition.x != -1 && firstMovementPosition.y != -1) {
-            float angle = (float) (MathUtils.atan2(secondMovementPosition.y - firstMovementPosition.y, secondMovementPosition.x - firstMovementPosition.x) * 180 / Math.PI);
-            float length = (float) Math.sqrt(Math.pow(secondMovementPosition.x - firstMovementPosition.x, 2) + Math.pow(secondMovementPosition.y - firstMovementPosition.y, 2));
-            if (length > 25) {
-
-                if (angle < 22.5 && angle >= -22.5) {
-                    player.moveEast();
-                } else if (angle < -22.5 && angle >= -67.5) {
-                    player.moveNorthEast();
-                } else if (angle < -67.5 && angle >= -112.5) {
-                    player.moveNorth();
-                } else if (angle < -112.5 && angle >= -157.5) {
-                    player.moveNorthWest();
-                } else if (angle < -157.5 || angle >= 157.5) {
-                    player.moveWest();
-                } else if (angle < 157.5 && angle >= 112.5) {
-                    player.moveSouthWest();
-                } else if (angle < 112.5 && angle >= 67.5) {
-                    player.moveSouth();
-                } else if (angle < 67.5 && angle >= 22.5) {
-                    player.moveSouthEast();
-                }
-             }
-        }
-
-
-
-        /**
-         * Attacking alghorithm. Works like the movement, but instead of checking angles it normalizes the vectors and calls
-         * the attack() method of player class.
-        if (firstAttackingPosition.x != -1 && firstAttackingPosition.y != -1) {
-            velocityNormalized.set(secondAttackingPosition.x - firstAttackingPosition.x, secondAttackingPosition.y - firstAttackingPosition.y);
-            velocityNormalized.nor();
-            velocityNormalized.y*=-1;
-            player.attack(velocityNormalized);
-        }
-        */
 
     }
 }

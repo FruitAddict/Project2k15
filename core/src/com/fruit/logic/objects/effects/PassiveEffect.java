@@ -3,14 +3,16 @@ package com.fruit.logic.objects.effects;
 import com.fruit.logic.objects.entities.Character;
 
 /**
- * Abstract effect class. Must contain info for how long the effect should last (-1 is forever)
- * and what should happen to the entity that. Contains ID's of effects
+ * Abstract passive effect class. Must contain info for how long the effect should last (-1 is forever)
+ * and what should happen to the entity that. Contains ID's of effects. Can be temporary or permanent
+ * (from items etc)
  */
-public abstract class Effect {
+public abstract class PassiveEffect {
     public static final float INFINITY = -1;
     //Effect ID's
     public static final int HEAL_OVER_TIME = 1;
     public static final int DAMAGE_OVER_TIME = 2;
+    public static final int DAMAGE_UP = 3;
 
     //duration of this effect, e.g. maximum time this effect should be on.
     protected float duration;
@@ -24,10 +26,10 @@ public abstract class Effect {
     protected float lastUpdateTime;
 
     //update method, must be implemented by concrete effects
-    public abstract void update(Character character, float delta);
+    public abstract void update(float delta);
 
     //join method, specifies what happen if another effect of the same type gets applied to the player
-    public abstract void join(Effect effect);
+    public abstract void join(PassiveEffect passiveEffect);
 
     //apply method, on buffs that modify character stats
     public abstract void apply();

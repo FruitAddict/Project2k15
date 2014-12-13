@@ -2,7 +2,7 @@ package com.fruit.visual.renderer;
 
 /**
  * Class dedicated to rendering effects on stuff. Like, a bleeding particle effect around a mob
- * If it has a poison status etc.
+ * If it has a poison stats etc.
  */
 public class EffectRenderer {
 

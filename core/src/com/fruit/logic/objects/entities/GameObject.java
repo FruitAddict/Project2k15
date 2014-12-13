@@ -16,6 +16,7 @@ public abstract class GameObject implements Constants{
     public static final int MINDLESS_WALKER =2;
     public static final int BOX = 3;
     public static final int HEART = 4;
+    public static final int DMGUP = 7; //TODO CREATE ITEM ID SHIT
     public static final int DUMMY = 5;
     public static final int PROJECTILE = 6;
 
@@ -39,9 +40,9 @@ public abstract class GameObject implements Constants{
 
     //Update method, can contain AI code etc.
     public abstract void update(float delta);
-    //Mandatory addToWorld method, so constructors of game objects doesnt have to bind to the box2d
+    //Mandatory addToBox2dWorld method, so constructors of game objects doesnt have to bind to the box2d
     //world on creation
-    public abstract void addToWorld(World world);
+    public abstract void addToBox2dWorld(World world);
     //every gameobject needs to know how to kill itself
     public abstract void killYourself();
 

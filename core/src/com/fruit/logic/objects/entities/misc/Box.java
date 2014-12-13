@@ -1,4 +1,4 @@
-package com.fruit.tests;
+package com.fruit.logic.objects.entities.misc;
 
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.MovableGameObject;
+import com.fruit.logic.objects.items.DamageUp;
 
 
 public class Box extends MovableGameObject {
@@ -28,7 +29,7 @@ public class Box extends MovableGameObject {
     }
 
     @Override
-    public void addToWorld(World world) {
+    public void addToBox2dWorld(World world) {
         this.world = world;
         //setting width and height
         width = 64;
@@ -53,7 +54,7 @@ public class Box extends MovableGameObject {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 50f;
         fixtureDef.shape = shape;
-        fixtureDef.filter.categoryBits = CLUTTER_BIT;
+        fixtureDef.filter.categoryBits = TREASURE_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape
@@ -63,5 +64,6 @@ public class Box extends MovableGameObject {
     @Override
     public void killYourself() {
         objectManager.removeObject(this);
+        objectManager.addObject(new DamageUp(objectManager,body.getPosition().x,body.getPosition().y,32,32));
     }
 }

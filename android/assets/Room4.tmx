@@ -6,14 +6,17 @@
  <tileset firstgid="1" name="simpletiles" tilewidth="64" tileheight="64" spacing="1">
   <image source="simpletiles.png" width="130" height="130"/>
  </tileset>
+ <tileset firstgid="5" name="cavefloor" tilewidth="64" tileheight="64">
+  <image source="cavefloor.png" width="196" height="196"/>
+ </tileset>
  <layer name="Ground" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjZGBgYMSBmaAYl/xgxsxo9EDoR8aU+mOo6h/FA4eJyb8ASBYBGw==
+   eJxjYKAccFKAR/UPbf2jeGAxPsAExfgAAAYpB50=
   </data>
  </layer>
  <layer name="Walls" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYWBgYKEQkwtG9Y/qH9VPuX5cmAmK8akBAOVnAO0=
+   eJxjZWBgYCMTswMxBwP5gGtU/6j+Uf0U6ecGYh4yMS8QAwCIpQId
   </data>
  </layer>
  <objectgroup name="collisionObjects">

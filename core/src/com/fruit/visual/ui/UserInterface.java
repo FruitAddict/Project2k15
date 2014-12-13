@@ -1,7 +1,6 @@
 package com.fruit.visual.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -14,11 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.fruit.Controller;
-import com.fruit.SoundManager;
 import com.fruit.logic.WorldUpdater;
-import com.fruit.tests.Box;
-import com.fruit.tests.Dummy;
-import com.fruit.tests.MindlessWalker;
+import com.fruit.logic.objects.entities.misc.Box;
+import com.fruit.logic.objects.entities.enemies.Dummy;
+import com.fruit.logic.objects.entities.enemies.MindlessWalker;
 import com.fruit.visual.Assets;
 
 public class UserInterface extends Stage {
@@ -41,6 +39,8 @@ public class UserInterface extends Stage {
     Slider sliderGreen;
     Slider sliderBlue;
 
+    private boolean shadowsEnabled = true;
+
     private Vector2 attackDirectionNormalized;
     public UserInterface(OrthographicCamera camera, WorldUpdater worldUpdater){
         this.camera = camera;
@@ -61,11 +61,7 @@ public class UserInterface extends Stage {
                 .getObjectManager().getPlayer().getSpeed(), touchpadMove.getKnobPercentY() * updater.getObjectManager().getPlayer().getSpeed());
         //update attacking
         if(touchpadAttack.getKnobPercentY()!=0 && touchpadAttack.getKnobPercentX()!=0) {
-            attackDirectionNormalized.set(0 - touchpadAttack.getKnobPercentX(), 0 - touchpadAttack.getKnobPercentY());
-            attackDirectionNormalized.nor();
-            attackDirectionNormalized.x*=-1;
-            attackDirectionNormalized.y*=-1;
-            updater.getObjectManager().getPlayer().attack(attackDirectionNormalized);
+            updater.getObjectManager().getPlayer().attack(touchpadAttack.getKnobPercentX(),touchpadAttack.getKnobPercentY());
         }
     }
 
@@ -189,13 +185,14 @@ public class UserInterface extends Stage {
         final Label infoAttack = new Label("Attack speed",skin);
         final Label infoZoom = new Label("Zoom",skin);
         final Slider sliderAttack = new Slider(0.15f,2.0f,0.05f,false,skin);
-        sliderAttack.setValue(updater.getObjectManager().getPlayer().getTimeBetweenAttacks());
-        sliderAttack.setValue(updater.getObjectManager().getPlayer().getTimeBetweenAttacks());
+        sliderAttack.setValue(updater.getObjectManager().getPlayer().stats.getAttackSpeed());
+        sliderAttack.setValue(updater.getObjectManager().getPlayer().stats.getAttackSpeed());
         final TextButton addMob = new TextButton("Add mobs ",skin);
         final TextButton addDummy = new TextButton("Add dummy ",skin);
         final TextButton addBox = new TextButton("Add box",skin);
         final TextButton clearObjects = new TextButton("Remove all objects",skin);
         final TextButton showDebugOptions = new TextButton("Show Debug Options",skin);
+        final TextButton shadows = new TextButton("Shadows on/off",skin);
         addMob.setColor(addMob.getColor().r,addMob.getColor().g,addMob.getColor().b,0.5f);
         addBox.setColor(addBox.getColor().r, addBox.getColor().g, addBox.getColor().b, 0.5f);
         addDummy.setColor(addBox.getColor().r, addBox.getColor().g, addBox.getColor().b, 0.5f);
@@ -233,6 +230,7 @@ public class UserInterface extends Stage {
         table.addActor(sliderZoom);
         table.addActor(infoAttack);
         table.addActor(sliderAttack);
+        table.addActor(shadows);
 
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
         // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
@@ -249,7 +247,7 @@ public class UserInterface extends Stage {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 updater.getObjectManager().addObject(new Box(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x,
-                        updater.getObjectManager().getPlayer().getBody().getPosition().y));
+                        updater.getObjectManager().getPlayer().getBody().getPosition().y-1));
             }
         });
         addDummy.addListener(new ChangeListener() {
@@ -268,7 +266,7 @@ public class UserInterface extends Stage {
         sliderAttack.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                updater.getObjectManager().getPlayer().setTimeBetweenAttacks(sliderAttack.getValue());
+                updater.getObjectManager().getPlayer().stats.setTimeBetweenAttacks(sliderAttack.getValue());
             }
         });
         addMob.addListener(new ChangeListener() {
@@ -277,6 +275,18 @@ public class UserInterface extends Stage {
                 for(int i =0 ;i<5;i++) {
                     updater.getObjectManager().addObject(new MindlessWalker(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x+1,
                             updater.getObjectManager().getPlayer().getBody().getPosition().y));
+                }
+            }
+        });
+        shadows.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if(!shadowsEnabled) {
+                    Controller.getWorldRenderer().getLightRenderer().getRayHandler().setShadows(true);
+                    shadowsEnabled = true;
+                }else {
+                    Controller.getWorldRenderer().getLightRenderer().getRayHandler().setShadows(false);
+                    shadowsEnabled = false;
                 }
             }
         });

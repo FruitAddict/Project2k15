@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.logic.Constants;
 import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.entities.GameObject;
-import com.fruit.logic.objects.player.Player;
+import com.fruit.logic.objects.entities.player.Player;
 
 /**
  * Heart. Renews hp based on its load. If player's hp is full, it acts as a physics object.
@@ -34,7 +34,7 @@ public class Heart extends Item implements Constants {
     }
 
     @Override
-    public void addToWorld(World world) {
+    public void addToBox2dWorld(World world) {
         //setting width and height
         width = 32;
         height = 32;

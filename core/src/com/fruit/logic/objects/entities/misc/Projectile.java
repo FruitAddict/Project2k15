@@ -1,19 +1,28 @@
-package com.fruit.logic.objects.entities;
+package com.fruit.logic.objects.entities.misc;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.fruit.SoundManager;
 import com.fruit.logic.ObjectManager;
+import com.fruit.logic.objects.effects.OnHitEffect;
+import com.fruit.logic.objects.entities.GameObject;
+import com.fruit.logic.objects.entities.MovableGameObject;
 
-//Basic projectile class.
+/**
+ * Projectile class created by player.
+ */
 public class Projectile extends MovableGameObject {
     private ObjectManager objectManager;
     private Vector2 direction;
     private float spawnX;
     private float spawnY;
+
+    //damage carried by this projectile. Defaulted to 0 unless set.
+    protected float damage;
 
     public Projectile(ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir){
         this.spawnX = spawnX;
@@ -34,7 +43,7 @@ public class Projectile extends MovableGameObject {
     }
 
     @Override
-    public void addToWorld(World world) {
+    public void addToBox2dWorld(World world) {
         //setting width and height
         width = 24;
         height = 24;

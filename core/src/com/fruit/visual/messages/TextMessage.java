@@ -70,7 +70,8 @@ public class TextMessage {
 
     public void startTween(){
         Timeline.createSequence()
-                .push(Tween.to(this, TextMessageAccessor.POSITION_Y,lifeSpan*2/3).target(positionY+75).ease(Quad.INOUT))
+                .push(Tween.set(this,TextMessageAccessor.ALPHA).target(1f))
+                .push(Tween.to(this, TextMessageAccessor.POSITION_Y, lifeSpan * 2 / 3).target(positionY + 75).ease(Quad.INOUT))
                 .beginParallel()
                 .push(Tween.to(this, TextMessageAccessor.POSITION_Y,lifeSpan*1/3).target(positionY))
                 .push(Tween.to(this,TextMessageAccessor.ALPHA,lifeSpan*1/3).target(0f))

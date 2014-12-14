@@ -10,12 +10,14 @@ import com.fruit.logic.objects.entities.misc.Projectile;
 import com.fruit.visual.Assets;
 
 public class ProjectileAnimationPack implements Constants{
+    private Vector2 pos;
     private boolean loaded;
     private Animation animation;
     private Animation animationDead;
 
     public void load(){
         if(!loaded) {
+            pos = new Vector2();
             Texture testM = (Texture) Assets.getAsset("projectileball.png", Texture.class);
             TextureRegion[][] tmpM = TextureRegion.split(testM, testM.getWidth() / 4, testM.getHeight());
             TextureRegion[] animRegion = new TextureRegion[4];
@@ -36,7 +38,7 @@ public class ProjectileAnimationPack implements Constants{
     }
 
     public void render(float stateTime, Projectile projectile, SpriteBatch batch){
-        Vector2 pos = new Vector2((projectile.getBody().getPosition().x*PIXELS_TO_METERS)-projectile.getWidth()/2,
+        pos.set((projectile.getBody().getPosition().x*PIXELS_TO_METERS)-projectile.getWidth()/2,
                 (projectile.getBody().getPosition().y*PIXELS_TO_METERS)-projectile.getHeight()/2);
         batch.draw(animationDead.getKeyFrame(stateTime,true),pos.x,pos.y,projectile.getWidth(),projectile.getHeight());
     }

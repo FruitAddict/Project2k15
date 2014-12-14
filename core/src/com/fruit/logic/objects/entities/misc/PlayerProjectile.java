@@ -3,6 +3,7 @@ package com.fruit.logic.objects.entities.misc;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.logic.ObjectManager;
+import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.effects.OnHitEffect;
 import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.player.Player;
@@ -18,12 +19,12 @@ public class PlayerProjectile extends Projectile {
     public PlayerProjectile(Player player, ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir) {
         super(objectManager, spawnX, spawnY, dir);
         onHitEffects = player.getOnHitEffects();
-        damage = player.stats.getPlayerDamage();
+        damage = player.stats.getCombinedDamage();
     }
 
     public void onHit(Enemy enemy){
         killYourself();
-        enemy.onDamageTaken(damage);
+        enemy.onDamageTaken(new Value(damage));
     }
 
 }

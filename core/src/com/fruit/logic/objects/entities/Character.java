@@ -1,6 +1,7 @@
 package com.fruit.logic.objects.entities;
 
 import com.badlogic.gdx.utils.Array;
+import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.effects.PassiveEffect;
 
 /**
@@ -23,8 +24,13 @@ public abstract class Character extends MovableGameObject {
     //array of passive effects, as both player and enemies can have those.
     private Array<PassiveEffect> effectArray = new Array<>();
 
-    //every character must have its own stats class to contain possible statuses (makes it easier to render effects)
+    //every character must have its own status class to contain possible statuses (makes it easier to render effects)
     public CharacterStatus status = new CharacterStatus();
+
+    //every character must also have stats class for the effects to work with.
+    // a container for everything stats related. Provides easy getters for
+    //calculated stats and de-clutters everything.
+    public CharacterStats stats = new CharacterStats();
 
     public void setFacings(boolean bool){
         //sets all the facing booleans to @bool.
@@ -81,10 +87,10 @@ public abstract class Character extends MovableGameObject {
     }
 
     //what happens when character is damaged
-    public abstract void onDamageTaken(float damage);
+    public abstract void onDamageTaken(Value value);
 
     //what happens when character is healed
-    public abstract void onHealingTaken(float amount);
+    public abstract void onHealingTaken(Value amount);
 
     /**
      *

@@ -1,14 +1,15 @@
 package com.fruit.logic.objects.effects;
 
+import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.entities.Character;
 
 
 public class HealOverTime extends PassiveEffect {
     //amount of healing every tick.
-    private float amount;
+    private Value amount;
     private Character character;
 
-    public HealOverTime(Character character, float duration, float delay, float amount){
+    public HealOverTime(Character character, float duration, float delay, Value amount){
         this.duration = duration;
         this.delay = delay;
         this.amount = amount;
@@ -19,7 +20,6 @@ public class HealOverTime extends PassiveEffect {
     public void update(float delta) {
         stateTime+=delta;
         if(stateTime>=duration && duration != PassiveEffect.INFINITY){
-            character.removePassiveEffect(this);
             onRemove();
         }else{
             if(lastUpdateTime>=delay){
@@ -39,6 +39,7 @@ public class HealOverTime extends PassiveEffect {
     @Override
     public void onRemove() {
         character.status.setHealing(false);
+        character.removePassiveEffect(this);
     }
 
     @Override

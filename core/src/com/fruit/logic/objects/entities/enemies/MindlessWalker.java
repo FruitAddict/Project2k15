@@ -7,12 +7,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
 import com.fruit.logic.ObjectManager;
-import com.fruit.logic.objects.effects.PassiveEffect;
-import com.fruit.logic.objects.effects.HealOverTime;
+import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.GameObject;
-import com.fruit.logic.objects.items.Heart;
+import com.fruit.logic.objects.items.HealthPotion;
 import com.fruit.logic.objects.entities.player.Player;
+import com.fruit.logic.objects.items.SphereOfProtection;
 import com.fruit.utilities.Utils;
 import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
@@ -37,6 +37,9 @@ public class MindlessWalker extends Enemy implements Constants{
         setSaveInRooms(DO_SAVE);
         setHealthPoints(5);
         setBaseMaximumHealthPoints(10);
+
+        stats.setBaseDamage(1.5f);
+        stats.setBaseDamageModifier(1f);
     }
 
     @Override
@@ -130,31 +133,30 @@ public class MindlessWalker extends Enemy implements Constants{
     @Override
     public void killYourself(){
         objectManager.removeObject(this);
-        if(Utils.randomGenerator.nextInt(100) <5){
-            objectManager.addObject(new Heart(objectManager,getBody().getPosition().x,getBody().getPosition().y,24,24));
+        if(Utils.randomGenerator.nextInt(100) <25){
+            objectManager.addObject(new HealthPotion(objectManager,getBody().getPosition().x,getBody().getPosition().y,24,24,5f,0.5f,0.5f));
         }
-        if(Utils.randomGenerator.nextInt(100) < 25){
-            objectManager.getPlayer().addPassiveEffect(new HealOverTime(objectManager.getPlayer(),10f, 1f, 0.1f));
+        if(Utils.randomGenerator.nextInt(100) <20){
+            objectManager.addObject(new SphereOfProtection(objectManager,getBody().getPosition().x,getBody().getPosition().y,24,24,5));
         }
     }
 
     @Override
     public void onDirectContact(Player player) {
-        player.onDamageTaken(0.5f);
+        player.onDamageTaken(new Value(stats.getCombinedDamage()));
     }
 
     @Override
-    public void onDamageTaken(float damage) {
-        System.out.println(-damage*damageResistanceModifier);
-        changeHealthPoints(-damage * damageResistanceModifier);
-        Controller.addOnScreenMessage(Float.toString(damage), getBody().getPosition().x * PIXELS_TO_METERS,
+    public void onDamageTaken(Value value) {
+        changeHealthPoints(-value.getValue() * damageResistanceModifier);
+        Controller.addOnScreenMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                 getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
     }
 
     @Override
-    public void onHealingTaken(float amount) {
-        changeHealthPoints(amount);
-        Controller.addOnScreenMessage(new TextMessage(Float.toString(amount), getBody().getPosition().x * PIXELS_TO_METERS,
+    public void onHealingTaken(Value amount) {
+        changeHealthPoints(amount.getValue());
+        Controller.addOnScreenMessage(new TextMessage(Float.toString(amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                 getBody().getPosition().y * PIXELS_TO_METERS, 3f, Assets.greenFont));
     }
 }

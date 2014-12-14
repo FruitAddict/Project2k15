@@ -24,7 +24,8 @@ public class Heart extends Item implements Constants {
         this.width = width;
         this.height = height;
         setSaveInRooms(DO_SAVE);
-        setEntityID(GameObject.HEART);
+        setItemType(Item.HEART);
+        setEntityID(GameObject.ITEM);
         setMaxVelocity(0.5f);
         setSpeed(0.1f);
     }
@@ -35,9 +36,6 @@ public class Heart extends Item implements Constants {
 
     @Override
     public void addToBox2dWorld(World world) {
-        //setting width and height
-        width = 32;
-        height = 32;
 
         //Player body definition
         BodyDef bodyDef = new BodyDef();

@@ -11,6 +11,8 @@ import com.fruit.visual.Assets;
 
 
 public class MindlessWalkerAnimationPack implements Constants {
+    private Vector2 pos;
+
     private Animation playerAnimationNorth;
     private Animation playerAnimationNorthEast;
     private Animation playerAnimationNorthWest;
@@ -33,6 +35,7 @@ public class MindlessWalkerAnimationPack implements Constants {
     public void load(){
         //nullify the old references
         if(!loaded) {
+            pos = new Vector2();
             Texture testPlayerTexture = (Texture) Assets.getAsset("redheady.png", Texture.class);
             TextureRegion[][] tmp = TextureRegion.split(testPlayerTexture, testPlayerTexture.getWidth() / 3, testPlayerTexture.getHeight() / 4);
             playerSouthRegion = new TextureRegion[3];
@@ -58,7 +61,7 @@ public class MindlessWalkerAnimationPack implements Constants {
     }
 
     public void render(float stateTime, Character character, SpriteBatch batch){
-        Vector2 pos = new Vector2((character.getBody().getPosition().x*PIXELS_TO_METERS)-character.getWidth()/2,
+        pos.set((character.getBody().getPosition().x*PIXELS_TO_METERS)-character.getWidth()/2,
                 (character.getBody().getPosition().y*PIXELS_TO_METERS)-character.getHeight()/2);
         if(character.facingN){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());

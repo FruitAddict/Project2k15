@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 /**
  * Class for managing assets in the game. Currently naively loads
  * all resources and maps
- * TODO rewrite of this class.
  */
 public class Assets {
 

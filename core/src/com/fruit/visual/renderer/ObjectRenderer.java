@@ -10,6 +10,7 @@ import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.logic.objects.entities.misc.Projectile;
 import com.fruit.logic.objects.entities.enemies.Dummy;
 import com.fruit.logic.objects.entities.enemies.MindlessWalker;
+import com.fruit.logic.objects.items.Item;
 import com.fruit.visual.animationpacks.*;
 
 import java.util.Comparator;
@@ -28,7 +29,7 @@ public class ObjectRenderer implements Constants {
     UtilityAnimationPack utilityAnimationPack;
     ProjectileAnimationPack projectileAnimationPack;
     DummyAnimationPack dummyAnimationPack;
-
+    ItemAnimationPack itemAnimationPack;
     //Effect Renderer that will take care of rendering effects for each entity based on their stats.
     EffectRenderer effectRenderer;
 
@@ -38,6 +39,7 @@ public class ObjectRenderer implements Constants {
         utilityAnimationPack = new UtilityAnimationPack();
         projectileAnimationPack = new ProjectileAnimationPack();
         dummyAnimationPack = new DummyAnimationPack();
+        itemAnimationPack = new ItemAnimationPack();
         effectRenderer = new EffectRenderer();
     }
 
@@ -77,14 +79,9 @@ public class ObjectRenderer implements Constants {
                     utilityAnimationPack.render(stateTime,(MovableGameObject)e,batch);
                     break;
                 }
-                case GameObject.HEART:{
-                    utilityAnimationPack.load();
-                    utilityAnimationPack.render(stateTime,(MovableGameObject)e,batch);
-                    break;
-                }
-                case GameObject.DMGUP:{
-                    utilityAnimationPack.load();
-                    utilityAnimationPack.render(stateTime,(MovableGameObject)e,batch);
+                case GameObject.ITEM: {
+                    itemAnimationPack.load();
+                    itemAnimationPack.render(stateTime, (Item)e, batch);
                     break;
                 }
                 case GameObject.PROJECTILE:{

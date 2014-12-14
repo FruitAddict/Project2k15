@@ -1,6 +1,5 @@
 package com.fruit.visual.animationpacks;
 
-import android.media.effect.Effect;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
@@ -10,6 +9,8 @@ import com.fruit.visual.Assets;
 
 
 public class PlayerAnimationPack implements Constants {
+
+    private Vector2 pos;
 
     private Animation playerAnimationNorth;
     private Animation playerAnimationNorthEast;
@@ -39,6 +40,7 @@ public class PlayerAnimationPack implements Constants {
     public void load(){
         //nullify the old references
         if(!loaded) {
+            pos = new Vector2();
             Texture testPlayerTexture = (Texture) Assets.getAsset("spritesheet.png", Texture.class);
             Texture testPlayerHead = (Texture)Assets.getAsset("playerhead.png",Texture.class);
             playerHead = new Sprite(testPlayerHead);
@@ -75,7 +77,7 @@ public class PlayerAnimationPack implements Constants {
     }
 
     public void render(float stateTime, Player character, SpriteBatch batch){
-        Vector2 pos = new Vector2((character.getBody().getPosition().x*PIXELS_TO_METERS)-character.getWidth()/2,
+        pos.set((character.getBody().getPosition().x*PIXELS_TO_METERS)-character.getWidth()/2,
                 (character.getBody().getPosition().y*PIXELS_TO_METERS)-character.getHeight()/2);
         if(character.facingN || character.facingNE || character.facingNW){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());

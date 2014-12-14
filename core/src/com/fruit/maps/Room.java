@@ -57,8 +57,7 @@ public class Room implements Constants{
     }
 
     public void addGameObject(GameObject o){
-        //we only store characters right now (e.g. mobs)
-        //todo items
+
         System.out.println(o.getSaveInRooms());
         if(o.getSaveInRooms()== DO_SAVE){
             gameObjectsStored.add(o);

@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.Controller;
 import com.fruit.logic.ObjectManager;
+import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.player.Player;
@@ -71,20 +72,19 @@ public class Dummy extends Enemy{
 
     @Override
     public void onDirectContact(Player player) {
-        player.onDamageTaken(0);
     }
 
     @Override
-    public void onDamageTaken(float damage) {
-        changeHealthPoints(-damage*damageResistanceModifier);
-        Controller.addOnScreenMessage(Float.toString(damage), getBody().getPosition().x * PIXELS_TO_METERS,
+    public void onDamageTaken(Value value) {
+        changeHealthPoints(-value.getValue()*damageResistanceModifier);
+        Controller.addOnScreenMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                 getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
     }
 
     @Override
-    public void onHealingTaken(float amount) {
-        changeHealthPoints(amount);
-        Controller.addOnScreenMessage(new TextMessage(Float.toString(amount), getBody().getPosition().x * PIXELS_TO_METERS,
+    public void onHealingTaken(Value amount) {
+        changeHealthPoints(amount.getValue());
+        Controller.addOnScreenMessage(new TextMessage(Float.toString(amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                 getBody().getPosition().y * PIXELS_TO_METERS, 3f, Assets.greenFont));
     }
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
 import com.fruit.logic.ObjectManager;
+import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.effects.OnDamageTakenEffect;
 import com.fruit.logic.objects.effects.OnHitEffect;
 import com.fruit.logic.objects.entities.*;
@@ -33,10 +34,6 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     //spawning around the player on-hit
     private Array<OnDamageTakenEffect> onDamageTakenEffects;
 
-    //Player stats class, a container for everything stats related. Provides easy getters for
-    //calculated stats and de-clutters this class.
-    public PlayerStats stats;
-
     public Player(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height){
         //constructor of every entity should take object manager, initial spawn coords and width and height of this entity
         this.width = width;
@@ -58,13 +55,11 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         //initialize onHit and onDamageTaken arrays
         onHitEffects = new Array<OnHitEffect>();
         onDamageTakenEffects = new Array<OnDamageTakenEffect>();
-        //initialize player stats class
-        stats = new PlayerStats();
     }
 
     public void attack(float directionPercentX, float directionPercentY){
         //if player can attack again, set the vector to the values passed by ui controller
-        if(stateTime - lastAttack > stats.getAttackSpeed()) {
+        if(stateTime - lastAttack > stats.getCombinedAttackSpeed()) {
             //normalize the attack direction vector using new values
             attackDirectionNormalized.set(0 - directionPercentX, 0 - directionPercentY);
             attackDirectionNormalized.nor();
@@ -75,18 +70,36 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         }
     }
 
-    @Override
-    public void onDamageTaken(float damage){
-        changeHealthPoints(-damage * stats.getResistance());
-        Controller.addOnScreenMessage(Float.toString(damage), getBody().getPosition().x * PIXELS_TO_METERS,
-                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
+    public void addOnDamageTakenEffect(OnDamageTakenEffect onDamageTakenEffect){
+        //TODO LOGIC CHECKING FOR TYPES
+        onDamageTakenEffects.add(onDamageTakenEffect);
+    }
+
+    public void removeOnDamageTakenEffect(OnDamageTakenEffect onDamageTakenEffect){
+        if(onDamageTakenEffects.contains(onDamageTakenEffect,true)){
+            onDamageTakenEffects.removeValue(onDamageTakenEffect,true);
+        }
     }
 
     @Override
-    public void onHealingTaken(float amount) {
-        changeHealthPoints(amount * stats.getHealingModifier());
-        Controller.addOnScreenMessage(new TextMessage(Float.toString(amount), getBody().getPosition().x * PIXELS_TO_METERS,
-                getBody().getPosition().y * PIXELS_TO_METERS, 3f, Assets.greenFont));
+    public void onDamageTaken(Value value){
+        for(OnDamageTakenEffect onDamageTakenEffect : onDamageTakenEffects){
+            onDamageTakenEffect.onDamageTaken(value);
+        }
+        if(value.getValue()!=0) {
+            changeHealthPoints(-value.getValue() * stats.getCombinedResistance());
+            Controller.addOnScreenMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
+        }
+    }
+
+    @Override
+    public void onHealingTaken(Value amount) {
+        if(amount.getValue()!=0) {
+            changeHealthPoints(amount.getValue() * stats.getHealingModifier());
+            Controller.addOnScreenMessage(new TextMessage(Float.toString(amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, Assets.greenFont));
+        }
     }
 
     @Override

@@ -1,11 +1,11 @@
-package com.fruit.logic.objects.entities.player;
+package com.fruit.logic.objects.entities;
 
 
 /**
  * @Author FruitAddict
  * Container for statuses, stats and everything related. Made to keep the player class relatively clean.
  */
-public class PlayerStats {
+public class CharacterStats {
 
     //Player stats - must contain base value and modifier
     private float timeBetweenAttacks=1f;
@@ -18,15 +18,15 @@ public class PlayerStats {
 
     private float healingModifier = 1f;
 
-    public float getPlayerDamage(){
+    public float getCombinedDamage(){
         return baseDamage * baseDamageModifier;
     }
 
-    public float getAttackSpeed(){
+    public float getCombinedAttackSpeed(){
         return timeBetweenAttacks*timeBetweenAttacksModifier;
     }
 
-    public float getResistance(){
+    public float getCombinedResistance(){
         return damageResistanceModifier;
     }
 

@@ -12,9 +12,12 @@ import com.fruit.visual.Assets;
 public class DummyAnimationPack implements Constants {
     private boolean loaded;
     private Animation animation;
+    private Vector2 pos;
 
     public void load(){
         if(!loaded) {
+            pos = new Vector2();
+
             Texture testM = (Texture) Assets.getAsset("dummysheet.png", Texture.class);
             TextureRegion[][] tmpM = TextureRegion.split(testM, testM.getWidth() / 6, testM.getHeight()/2);
             TextureRegion[] animRegion = new TextureRegion[12];
@@ -33,7 +36,7 @@ public class DummyAnimationPack implements Constants {
     }
 
     public void render(float stateTime, Dummy dummy, SpriteBatch batch){
-        Vector2 pos = new Vector2((dummy.getBody().getPosition().x*PIXELS_TO_METERS)-dummy.getWidth()/2,
+        pos.set((dummy.getBody().getPosition().x*PIXELS_TO_METERS)-dummy.getWidth()/2,
                 (dummy.getBody().getPosition().y*PIXELS_TO_METERS)-dummy.getHeight()/2);
         batch.draw(animation.getKeyFrame(stateTime,true),pos.x,pos.y,dummy.getWidth(),dummy.getHeight());
     }

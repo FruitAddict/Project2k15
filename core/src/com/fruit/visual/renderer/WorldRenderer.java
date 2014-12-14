@@ -127,7 +127,7 @@ public class WorldRenderer implements Constants {
         if(doTransition) {
             //Portal Position vector - holds the center of the portal collision rectangle in the previous map
             //Spawn point vector - holds the center of the spawn point from the new map
-            //int direction - indicates where the player will appear ( TODO make it less confusing)
+            //int direction - indicates where the player will appear
             //do transition - boolean that tells the map whether it should even perform the camera transition with fbo
             //drawing
             //helper variables

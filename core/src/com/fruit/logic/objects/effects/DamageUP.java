@@ -1,15 +1,14 @@
 package com.fruit.logic.objects.effects;
 
-import com.fruit.logic.objects.entities.player.Player;
+import com.fruit.logic.objects.entities.Character;
 
 /**
  * @Author FruitAddict
- * TODO CHANGE PLAYER STATS TO GENERAL STATS
  */
-public class DamageUP extends PassiveEffect{
-    private Player character;
+public class DamageUp extends PassiveEffect{
+    private Character character;
 
-    public DamageUP(Player character){
+    public DamageUp(Character character){
         this.character = character;
         setEffectType(PassiveEffect.DAMAGE_UP);
     }

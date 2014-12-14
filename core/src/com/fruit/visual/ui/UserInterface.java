@@ -185,8 +185,8 @@ public class UserInterface extends Stage {
         final Label infoAttack = new Label("Attack speed",skin);
         final Label infoZoom = new Label("Zoom",skin);
         final Slider sliderAttack = new Slider(0.15f,2.0f,0.05f,false,skin);
-        sliderAttack.setValue(updater.getObjectManager().getPlayer().stats.getAttackSpeed());
-        sliderAttack.setValue(updater.getObjectManager().getPlayer().stats.getAttackSpeed());
+        sliderAttack.setValue(updater.getObjectManager().getPlayer().stats.getCombinedAttackSpeed());
+        sliderAttack.setValue(updater.getObjectManager().getPlayer().stats.getCombinedAttackSpeed());
         final TextButton addMob = new TextButton("Add mobs ",skin);
         final TextButton addDummy = new TextButton("Add dummy ",skin);
         final TextButton addBox = new TextButton("Add box",skin);

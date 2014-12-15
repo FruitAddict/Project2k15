@@ -10,6 +10,11 @@ import com.fruit.visual.Assets;
 import com.fruit.visual.tween.TextMessageAccessor;
 import com.fruit.visual.tween.TweenUtils;
 
+/**
+ * Text message. TODO refractoring
+ * On creation it starts the basic tween (go up 2/3 of the lifespan, then go down and set the alpha to 0)
+ * Contains many overloaded constructors for different situations.
+ */
 public class TextMessage {
     //font types
     public static final int BITMAPFONT_HELVETICA = 1;
@@ -69,11 +74,12 @@ public class TextMessage {
     }
 
     public void startTween(){
+        //starts the tweening sequence
         Timeline.createSequence()
                 .push(Tween.set(this,TextMessageAccessor.ALPHA).target(1f))
                 .push(Tween.to(this, TextMessageAccessor.POSITION_Y, lifeSpan * 2 / 3).target(positionY + 75).ease(Quad.INOUT))
                 .beginParallel()
-                .push(Tween.to(this, TextMessageAccessor.POSITION_Y,lifeSpan*1/3).target(positionY))
+                .push(Tween.to(this, TextMessageAccessor.POSITION_Y,lifeSpan*1/3).target(positionY).ease(Quad.INOUT))
                 .push(Tween.to(this,TextMessageAccessor.ALPHA,lifeSpan*1/3).target(0f))
                 .end()
                 .start(TweenUtils.tweenManager);
@@ -81,6 +87,7 @@ public class TextMessage {
     }
 
     public void render(SpriteBatch batch, float delta){
+        //renders this message with respect to this messages own alpha value.
         bitmapFont.setColor(bitmapFont.getColor().r,bitmapFont.getColor().g,bitmapFont.getColor().b,alpha);
         bitmapFont.draw(batch,message,positionX,positionY);
         stateTime+=delta;

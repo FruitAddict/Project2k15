@@ -1,13 +1,12 @@
 package com.fruit;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.visual.messages.TextMessage;
 import com.fruit.visual.renderer.WorldRenderer;
 
 /**
  * Utility class contains static getter methods for all the main components of the game.
- * constains static methods to register the components. Used for communication
+ * contains static methods to register the components. Used for communication
  * between logic and rendering.
  */
 public class Controller {

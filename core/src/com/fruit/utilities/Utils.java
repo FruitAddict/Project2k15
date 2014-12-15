@@ -2,6 +2,9 @@ package com.fruit.utilities;
 
 import java.util.Random;
 
+/**
+ * @author FruitAddict
+ */
 public class Utils {
     public static final Random randomGenerator = new Random();
 

@@ -4,11 +4,17 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.misc.Box;
 import com.fruit.logic.objects.entities.misc.PlayerProjectile;
-import com.fruit.logic.objects.items.Item;
-import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.logic.objects.entities.misc.Projectile;
+import com.fruit.logic.objects.entities.player.Player;
+import com.fruit.logic.objects.items.Item;
 
 @SuppressWarnings("all")
+/**
+ * Contact listener for the world. Handles what happens when 2 bodies collide.
+ * Must check for both bodies (e.g. we dont know if the player will be
+ * body 1 or body 2 when the collision happens), so checks for all possible
+ * cases are needed. Grouped to make it as readable as possible.
+ */
 public class WorldContactListener implements ContactListener,Constants {
 
     private final WorldUpdater worldUpdater;

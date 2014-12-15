@@ -24,7 +24,6 @@ public class ObjectManager {
     //box2d worldupdater reference
     private WorldUpdater worldUpdater;
 
-    //flag TODO make it neater
     private boolean removeFlag = false;
 
     public ObjectManager(WorldUpdater updater){

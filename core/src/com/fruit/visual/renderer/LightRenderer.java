@@ -9,7 +9,11 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.logic.Constants;
 
-
+/**
+ * @author FruitAddict
+ * Light renderer class, works together with world renderer. Can be used to add lights to the world.
+ * TODO make it better-commented and refractoring
+ */
 public class LightRenderer implements Constants {
     private WorldRenderer worldRenderer;
     private RayHandler rayHandler;

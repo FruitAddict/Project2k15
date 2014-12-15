@@ -14,9 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.fruit.Controller;
 import com.fruit.logic.WorldUpdater;
-import com.fruit.logic.objects.entities.misc.Box;
 import com.fruit.logic.objects.entities.enemies.Dummy;
 import com.fruit.logic.objects.entities.enemies.MindlessWalker;
+import com.fruit.logic.objects.entities.misc.Box;
 import com.fruit.visual.Assets;
 
 public class UserInterface extends Stage {

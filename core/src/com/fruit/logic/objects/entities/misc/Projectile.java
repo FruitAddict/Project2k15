@@ -5,10 +5,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.fruit.SoundManager;
 import com.fruit.logic.ObjectManager;
-import com.fruit.logic.objects.effects.OnHitEffect;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.MovableGameObject;
 

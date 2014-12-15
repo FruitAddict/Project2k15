@@ -1,7 +1,10 @@
 package com.fruit.logic.objects.entities.player;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
@@ -9,7 +12,7 @@ import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.effects.OnDamageTakenEffect;
 import com.fruit.logic.objects.effects.OnHitEffect;
-import com.fruit.logic.objects.entities.*;
+import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.misc.PlayerProjectile;
 import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;

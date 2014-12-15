@@ -1,7 +1,5 @@
 package com.fruit.logic.objects.effects;
 
-import com.fruit.logic.objects.entities.Character;
-
 /**
  * Abstract passive effect class. Must contain info for how long the effect should last (-1 is forever)
  * and what should happen to the entity that. Contains ID's of effects. Can be temporary or permanent

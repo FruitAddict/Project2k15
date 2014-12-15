@@ -10,6 +10,13 @@ import com.fruit.logic.Constants;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.visual.tween.GameCameraAccessor;
 
+/**
+ * @author FruitAddict
+ * Custom camer class. Includes updateCameraMovement() method and supports 2 modes:
+ * -follow a game object using lerp alghorithm for smooth movements
+ * -free camera (so it can be manipulated by some pre-programmed methods like map changing stuff
+ * @see com.fruit.visual.renderer.WorldRenderer
+ */
 public class GameCamera extends OrthographicCamera implements Constants {
 
     private boolean freeCamera = false;
@@ -21,11 +28,12 @@ public class GameCamera extends OrthographicCamera implements Constants {
     public TweenCallback followObjectCallback;
 
     public GameCamera(){
-        //call super default constructor
+        //call super default constructor of the orthographic camera class
         super();
         //register gamecamera accessor
         Tween.registerAccessor(GameCamera.class, new GameCameraAccessor());
         //tween callback to reset the camera ( following the object) used with map transition tweens.
+        //see WorldRenderer
         followObjectCallback = new TweenCallback() {
             @Override
             public void onEvent(int i, BaseTween<?> baseTween) {
@@ -39,10 +47,10 @@ public class GameCamera extends OrthographicCamera implements Constants {
         if(!freeCamera && followedObject!= null){
             mapWidth = Controller.getWorldUpdater().getMapManager().getCurrentMapWidth();
             mapHeight = Controller.getWorldUpdater().getMapManager().getCurrentMapHeight();
-            /**
-             * Camera translating algorithm. Initially moves the camera to the player position (centered), then checks whether the current camera
-             * position overlaps the map boundaries. If so, sets it to the corner
-             */
+
+             //Camera translating algorithm. Initially moves the camera to the player position (centered), then checks whether the current camera
+             //position overlaps the map boundaries. If so, sets it to the corner
+
             Vector3 lerpVector = new Vector3((((followedObject.getBody().getPosition().x)*PIXELS_TO_METERS)),
                     (followedObject.getBody().getPosition().y*PIXELS_TO_METERS), 0);
 
@@ -70,6 +78,7 @@ public class GameCamera extends OrthographicCamera implements Constants {
     }
 
     public void setObjectToFollow(GameObject o){
+        //if object specified exists in the game world, camera will follow it.
         if(Controller.worldUpdater.getObjectManager().getGameObjects().contains(o,true)){
             followedObject = o;
         } else {

@@ -13,6 +13,11 @@ public class DummyAnimationPack implements Constants {
     private boolean loaded;
     private Animation animation;
     private Vector2 pos;
+    private EffectRenderer effectRenderer;
+
+    public DummyAnimationPack(EffectRenderer effectRenderer){
+        this.effectRenderer = effectRenderer;
+    }
 
     public void load(){
         if(!loaded) {
@@ -39,5 +44,14 @@ public class DummyAnimationPack implements Constants {
         pos.set((dummy.getBody().getPosition().x*PIXELS_TO_METERS)-dummy.getWidth()/2,
                 (dummy.getBody().getPosition().y*PIXELS_TO_METERS)-dummy.getHeight()/2);
         batch.draw(animation.getKeyFrame(stateTime,true),pos.x,pos.y,dummy.getWidth(),dummy.getHeight());
+        if(dummy.status.isHealing()){
+            effectRenderer.render(batch, stateTime, EffectRenderer.HEALED, pos.x, pos.y, dummy.getWidth(), dummy.getHeight());
+        }
+        if(dummy.status.isShielded()){
+            effectRenderer.render(batch,stateTime,EffectRenderer.SHIELDED,pos.x,pos.y,dummy.getWidth(),dummy.getHeight());
+        }
+        if(dummy.status.isPoisoned()){
+            effectRenderer.render(batch,stateTime,EffectRenderer.POISONED,pos.x,pos.y,dummy.getWidth(),dummy.getHeight());
+        }
     }
 }

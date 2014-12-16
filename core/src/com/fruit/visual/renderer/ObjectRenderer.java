@@ -23,6 +23,8 @@ import java.util.Comparator;
 public class ObjectRenderer implements Constants {
     float stateTime = 0;
 
+    //Effect Renderer that will take care of rendering effects for each entity based on their stats.
+    EffectRenderer effectRenderer;
     //animation packs that will handle drawing specific entities
     PlayerAnimationPack playerAnimationPack;
     MindlessWalkerAnimationPack mindlessWalkerAnimationPack;
@@ -30,17 +32,16 @@ public class ObjectRenderer implements Constants {
     ProjectileAnimationPack projectileAnimationPack;
     DummyAnimationPack dummyAnimationPack;
     ItemAnimationPack itemAnimationPack;
-    //Effect Renderer that will take care of rendering effects for each entity based on their stats.
-    EffectRenderer effectRenderer;
 
     public ObjectRenderer(){
-        playerAnimationPack = new PlayerAnimationPack();
-        mindlessWalkerAnimationPack = new MindlessWalkerAnimationPack();
+        //some animation packs (for rendering characters) will need instance of effect renderer.
+        effectRenderer = new EffectRenderer();
+        playerAnimationPack = new PlayerAnimationPack(effectRenderer);
+        mindlessWalkerAnimationPack = new MindlessWalkerAnimationPack(effectRenderer);
         utilityAnimationPack = new UtilityAnimationPack();
         projectileAnimationPack = new ProjectileAnimationPack();
-        dummyAnimationPack = new DummyAnimationPack();
+        dummyAnimationPack = new DummyAnimationPack(effectRenderer);
         itemAnimationPack = new ItemAnimationPack();
-        effectRenderer = new EffectRenderer();
     }
 
     public void render(float delta, Array<GameObject> objects, SpriteBatch batch){

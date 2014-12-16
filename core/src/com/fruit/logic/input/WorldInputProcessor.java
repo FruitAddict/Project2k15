@@ -120,6 +120,7 @@ public class WorldInputProcessor implements InputProcessor, Constants {
         return false;
     }
 
+
     public void setMapSize(float width, float height){
         mapWidth=width;
         mapHeight=height;

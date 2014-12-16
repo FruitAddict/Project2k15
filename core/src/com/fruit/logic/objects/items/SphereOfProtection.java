@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.Controller;
 import com.fruit.logic.ObjectManager;
-import com.fruit.logic.objects.effects.BlockDamage;
+import com.fruit.logic.objects.effects.ondamaged.BlockDamage;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.visual.Assets;
@@ -30,8 +30,6 @@ public class SphereOfProtection extends Item {
         setSaveInRooms(DO_SAVE);
         setItemType(Item.SPHERE_OF_PROTECTION);
         setEntityID(GameObject.ITEM);
-        setMaxVelocity(0.5f);
-        setSpeed(0.1f);
     }
     @Override
     public void onPickUp(Player player) {

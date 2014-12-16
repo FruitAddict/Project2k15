@@ -20,10 +20,9 @@ public class PlayerAnimationPack implements Constants {
     private Animation playerAnimationSouth;
     private Animation playerAnimationWest;
     private Animation playerAnimationEast;
-    //debug font
-    private BitmapFont font = new BitmapFont();
+
     //debug test
-    private Animation healingAnimation;
+
 
     private TextureRegion[] playerSouthRegion;
     private TextureRegion[] playerNorthRegion;
@@ -36,6 +35,11 @@ public class PlayerAnimationPack implements Constants {
 
     private Sprite playerHead;
     private boolean loaded = false;
+    private EffectRenderer effectRenderer;
+
+    public PlayerAnimationPack(EffectRenderer effectRenderer){
+        this.effectRenderer = effectRenderer;
+    }
 
     public void load(){
         //nullify the old references
@@ -65,14 +69,6 @@ public class PlayerAnimationPack implements Constants {
             playerAnimationEast = new Animation(0.1f, playerEastRegion);
             loaded = true;
 
-            //test
-            Texture testHealTexture = (Texture) Assets.getAsset("healeffect.png", Texture.class);
-            TextureRegion[][] tmp2 = TextureRegion.split(testHealTexture, testHealTexture.getWidth() / 3, testHealTexture.getHeight());
-            TextureRegion[] animFrames = new TextureRegion[3];
-            animFrames[0] = tmp2[0][0];
-            animFrames[1] = tmp2[0][1];
-            animFrames[2] = tmp2[0][2];
-            healingAnimation = new Animation(0.1f, animFrames);
         }
     }
 
@@ -91,9 +87,14 @@ public class PlayerAnimationPack implements Constants {
             batch.draw(playerSouthRegion[0],pos.x,pos.y,character.getWidth(),character.getHeight());
         }
         //batch.draw(playerHead,pos.x  ,pos.y+character.getHeight()-5,64,64);
-
-        if(character.status.isHealing()) {
-            batch.draw(healingAnimation.getKeyFrame(stateTime, true), pos.x, pos.y, character.getWidth(), character.getHeight());
+        if(character.status.isHealing()){
+            effectRenderer.render(batch,stateTime,EffectRenderer.HEALED,pos.x,pos.y,character.getWidth(),character.getHeight());
+        }
+        if(character.status.isShielded()){
+            effectRenderer.render(batch,stateTime,EffectRenderer.SHIELDED,pos.x,pos.y,character.getWidth(),character.getHeight());
+        }
+        if(character.status.isPoisoned()){
+            effectRenderer.render(batch,stateTime,EffectRenderer.POISONED,pos.x,pos.y,character.getWidth(),character.getHeight());
         }
     }
 }

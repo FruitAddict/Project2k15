@@ -22,14 +22,14 @@ public class Dummy extends Enemy{
         lastKnownY= spawnY;
         this.objectManager = objectManager;
         setEntityID(GameObject.DUMMY);
-        setMaxVelocity(0);
+        stats.setMaxVelocity(0);
         setSaveInRooms(DO_SAVE);
-        healthPoints = 99999;
+        stats.setHealthPoints(99999);
     }
 
     @Override
     public void update(float delta) {
-
+        updatePassiveEffects(delta);
     }
 
     @Override
@@ -76,14 +76,14 @@ public class Dummy extends Enemy{
 
     @Override
     public void onDamageTaken(Value value) {
-        changeHealthPoints(-value.getValue()*damageResistanceModifier);
+        stats.changeHealthPoints(-value.getValue()*stats.getDamageResistanceModifier());
         Controller.addOnScreenMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                 getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
     }
 
     @Override
     public void onHealingTaken(Value amount) {
-        changeHealthPoints(amount.getValue());
+        stats.changeHealthPoints(amount.getValue());
         Controller.addOnScreenMessage(new TextMessage(Float.toString(amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                 getBody().getPosition().y * PIXELS_TO_METERS, 3f, Assets.greenFont));
     }

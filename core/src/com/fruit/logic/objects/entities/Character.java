@@ -10,13 +10,11 @@ import com.fruit.logic.objects.effects.PassiveEffect;
  * that it's facing the north direction).
  * Every character should also contain array of effects (DoTs, HoTs, boosts, slows etc) and a method
  * to iterate through those effects and update them.
+ * Contains easy methods to move the object around in the game world(logic)
+ * e.g. moveEast(), moveWest(). etc. Those methods will move the object automatically
+ * according to their speed and maxVelocity (the entity can still be pushed over its limit)
  */
 public abstract class Character extends MovableGameObject {
-
-    protected float healthPoints;
-    //every stat must have its base version and multiplier with starting value of 1.
-    protected float baseMaximumHealthPoints;
-    protected float maximumHealthPointsMultiplier = 1;
 
     public boolean facingW, facingE, facingN, facingS,
                    facingNE, facingNW, facingSE, facingSW, idle;
@@ -51,35 +49,35 @@ public abstract class Character extends MovableGameObject {
             //body is idle
             setFacings(false);
             idle = true;
-        }else if(body.getLinearVelocity().y > maxVelocity/2 && body.getLinearVelocity().x < maxVelocity/2 && body.getLinearVelocity().x > -maxVelocity/2){
+        }else if(body.getLinearVelocity().y > stats.getMaxVelocity()/2 && body.getLinearVelocity().x < stats.getMaxVelocity()/2 && body.getLinearVelocity().x > -stats.getMaxVelocity()/2){
             //body is facing NORTH
             setFacings(false);
             facingN = true;
-        }else if(body.getLinearVelocity().y>maxVelocity/2 && body.getLinearVelocity().x > maxVelocity/2){
+        }else if(body.getLinearVelocity().y>stats.getMaxVelocity()/2 && body.getLinearVelocity().x > stats.getMaxVelocity()/2){
             //body is facing NORTH-EAST
             setFacings(false);
             facingNE = true;
-        }else if(body.getLinearVelocity().y>maxVelocity/2 && body.getLinearVelocity().x < -maxVelocity/2){
+        }else if(body.getLinearVelocity().y>stats.getMaxVelocity()/2 && body.getLinearVelocity().x < -stats.getMaxVelocity()/2){
             //body is facing NORTH-WEST
             setFacings(false);
             facingNW = true;
-        }else if(body.getLinearVelocity().x>maxVelocity/2 && body.getLinearVelocity().y <maxVelocity/2 && body.getLinearVelocity().y>-maxVelocity/2){
+        }else if(body.getLinearVelocity().x>stats.getMaxVelocity()/2 && body.getLinearVelocity().y <stats.getMaxVelocity()/2 && body.getLinearVelocity().y>-stats.getMaxVelocity()/2){
             //body is facing EAST
             setFacings(false);
             facingE=true;
-        }else if(body.getLinearVelocity().x <= -maxVelocity/2 && body.getLinearVelocity().y < maxVelocity/2 && body.getLinearVelocity().y >-maxVelocity/2){
+        }else if(body.getLinearVelocity().x <= -stats.getMaxVelocity()/2 && body.getLinearVelocity().y < stats.getMaxVelocity()/2 && body.getLinearVelocity().y >-stats.getMaxVelocity()/2){
             //body is facing WEST
             setFacings(false);
             facingW = true;
-        }else if(body.getLinearVelocity().x <= -maxVelocity/2 && body.getLinearVelocity().y <=-maxVelocity/2){
+        }else if(body.getLinearVelocity().x <= -stats.getMaxVelocity()/2 && body.getLinearVelocity().y <=-stats.getMaxVelocity()/2){
             //body is facing SOUTH-WEST
             setFacings(false);
             facingSW = true;
-        }else if(body.getLinearVelocity().y < -maxVelocity/2 && body.getLinearVelocity().x < maxVelocity/2 && body.getLinearVelocity().x > -maxVelocity/2){
+        }else if(body.getLinearVelocity().y < -stats.getMaxVelocity()/2 && body.getLinearVelocity().x < stats.getMaxVelocity()/2 && body.getLinearVelocity().x > -stats.getMaxVelocity()/2){
             //body is facing SOUTH
             setFacings(false);
             facingS = true;
-        }else if(body.getLinearVelocity().x > maxVelocity/2 && body.getLinearVelocity().y < -maxVelocity/2){
+        }else if(body.getLinearVelocity().x > stats.getMaxVelocity()/2 && body.getLinearVelocity().y < -stats.getMaxVelocity()/2){
             //body is facing SOUTH-EAST
             setFacings(false);
             facingSE=true;
@@ -121,33 +119,55 @@ public abstract class Character extends MovableGameObject {
         }
     }
 
-    public void changeHealthPoints(float amount){
-        //every character must be damageable or healable.
-        if(healthPoints+amount < baseMaximumHealthPoints) {
-            healthPoints += amount;
-        }else {
-            healthPoints = baseMaximumHealthPoints;
+    public void moveEast() {
+        if (body.getLinearVelocity().x < stats.getMaxVelocity()) {
+            body.setLinearVelocity(body.getLinearVelocity().x + stats.getSpeed(), body.getLinearVelocity().y);
+        } else {
+            body.setLinearVelocity(stats.getMaxVelocity(),body.getLinearVelocity().y);
         }
     }
 
-    public void setHealthPoints(float value){
-        //set health points
-        healthPoints = value;
+    public void moveWest() {
+        if (body.getLinearVelocity().x > -stats.getMaxVelocity()) {
+            body.setLinearVelocity(body.getLinearVelocity().x - stats.getSpeed(), body.getLinearVelocity().y);
+        } else {
+            body.setLinearVelocity(-stats.getMaxVelocity(),body.getLinearVelocity().y);
+        }
     }
 
-    public float getHealthPoints(){
-        return healthPoints;
+    public void moveNorth() {
+        if (body.getLinearVelocity().y < stats.getMaxVelocity()) {
+            body.setLinearVelocity(body.getLinearVelocity().x, body.getLinearVelocity().y + stats.getSpeed());
+        } else {
+            body.setLinearVelocity(body.getLinearVelocity().x, stats.getMaxVelocity());
+        }
     }
 
-    public void setBaseMaximumHealthPoints(float value){
-        baseMaximumHealthPoints = value;
+    public void moveSouth() {
+        if (body.getLinearVelocity().y > -stats.getMaxVelocity()) {
+            body.setLinearVelocity(body.getLinearVelocity().x, body.getLinearVelocity().y - stats.getSpeed());
+        } else {
+            body.setLinearVelocity(body.getLinearVelocity().x, -stats.getMaxVelocity());
+        }
     }
 
-    public float getBaseMaximumHealthPoints(){
-        return baseMaximumHealthPoints;
+    public void moveNorthEast() {
+        moveNorth();
+        moveEast();
     }
 
-    public void resetMaxHealthPointsMultiplier(){
-        maximumHealthPointsMultiplier = 1;
+    public void moveNorthWest(){
+        moveNorth();
+        moveWest();
+    }
+
+    public void moveSouthEast(){
+        moveSouth();
+        moveEast();
+    }
+
+    public void moveSouthWest(){
+        moveSouth();
+        moveWest();
     }
 }

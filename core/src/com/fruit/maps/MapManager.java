@@ -21,8 +21,6 @@ public class MapManager implements Constants {
         this.worldUpdater = updater;
         if(newGame){
             Assets.disposeAll();
-            //load intro .tmx files
-            Assets.loadIntroLevel();
             //create the first circle map.
             currentMap = new Map(this, 1);
         }

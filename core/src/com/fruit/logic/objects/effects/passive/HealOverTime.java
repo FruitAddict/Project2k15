@@ -1,6 +1,7 @@
-package com.fruit.logic.objects.effects;
+package com.fruit.logic.objects.effects.passive;
 
 import com.fruit.logic.objects.Value;
+import com.fruit.logic.objects.effects.PassiveEffect;
 import com.fruit.logic.objects.entities.Character;
 
 
@@ -44,6 +45,8 @@ public class HealOverTime extends PassiveEffect {
 
     @Override
     public void join(PassiveEffect passiveEffect){
-        duration = (duration+ passiveEffect.getDuration())/2;
+        HealOverTime temp = (HealOverTime)passiveEffect;
+        duration = (duration+ temp.getDuration())/2;
+        amount.setValue(amount.getValue()+temp.amount.getValue()/2*1.2f);
     }
 }

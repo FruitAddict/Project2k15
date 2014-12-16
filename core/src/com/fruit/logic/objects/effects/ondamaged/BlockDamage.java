@@ -1,8 +1,9 @@
-package com.fruit.logic.objects.effects;
+package com.fruit.logic.objects.effects.ondamaged;
 
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
 import com.fruit.logic.objects.Value;
+import com.fruit.logic.objects.effects.OnDamageTakenEffect;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
@@ -13,9 +14,11 @@ import com.fruit.visual.messages.TextMessage;
 public class BlockDamage extends OnDamageTakenEffect implements Constants {
     private float blockCount;
     private Player player;
+
     public BlockDamage(Player player, float blockCount){
         this.blockCount = blockCount;
         this.player = player;
+        player.status.setShielded(true);
     }
     @Override
     public void onDamageTaken(Value value) {
@@ -26,6 +29,7 @@ public class BlockDamage extends OnDamageTakenEffect implements Constants {
             blockCount--;
         }else {
             player.removeOnDamageTakenEffect(this);
+            player.status.setShielded(false);
         }
     }
 }

@@ -31,6 +31,11 @@ public class MindlessWalkerAnimationPack implements Constants {
     private TextureRegion[] playerSouthEastRegion;
     private TextureRegion[] playerSouthWestRegion;
     private boolean loaded = false;
+    private EffectRenderer effectRenderer;
+
+    public MindlessWalkerAnimationPack(EffectRenderer effectRenderer){
+        this.effectRenderer = effectRenderer;
+    }
 
     public void load(){
         //nullify the old references
@@ -63,9 +68,9 @@ public class MindlessWalkerAnimationPack implements Constants {
     public void render(float stateTime, Character character, SpriteBatch batch){
         pos.set((character.getBody().getPosition().x*PIXELS_TO_METERS)-character.getWidth()/2,
                 (character.getBody().getPosition().y*PIXELS_TO_METERS)-character.getHeight()/2);
-        if(character.facingN){
+        if(character.facingN || character.facingNE || character.facingNW){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
-        }else if(character.facingS){
+        }else if(character.facingS || character.facingSE || character.facingSW){
             batch.draw(playerAnimationSouth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
         }else if(character.facingE){
             batch.draw(playerAnimationEast.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
@@ -73,6 +78,15 @@ public class MindlessWalkerAnimationPack implements Constants {
             batch.draw(playerAnimationWest.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
         } else {
             batch.draw(playerSouthRegion[1],pos.x,pos.y,character.getWidth(),character.getHeight());
+        }
+        if(character.status.isHealing()){
+            effectRenderer.render(batch,stateTime,EffectRenderer.HEALED,pos.x,pos.y,character.getWidth(),character.getHeight());
+        }
+        if(character.status.isShielded()){
+            effectRenderer.render(batch,stateTime,EffectRenderer.SHIELDED,pos.x,pos.y,character.getWidth(),character.getHeight());
+        }
+        if(character.status.isPoisoned()){
+            effectRenderer.render(batch,stateTime,EffectRenderer.POISONED,pos.x,pos.y,character.getWidth(),character.getHeight());
         }
     }
 

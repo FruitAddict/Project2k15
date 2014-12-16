@@ -19,16 +19,16 @@ public class GameCameraAccessor implements TweenAccessor<GameCamera> {
             }
             case positionY:{
                 floats[0] = gameCamera.position.y;
-                return 2;
+                return 1;
             }
             case positionXY:{
                 floats[0] = gameCamera.position.x;
                 floats[1] = gameCamera.position.y;
-                return 3;
+                return 2;
             }
             case zoom:{
                 floats[0] = gameCamera.zoom;
-                return 4;
+                return 1;
             }
             default: {
                 assert false : "Wrong value returned at "+getClass().getName();

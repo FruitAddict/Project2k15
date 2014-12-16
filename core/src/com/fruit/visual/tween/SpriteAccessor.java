@@ -18,11 +18,11 @@ public class SpriteAccessor implements TweenAccessor<Sprite> {
             }
             case POSITION_X:{
                 floats[0] = sprite.getX();
-                return 2;
+                return 1;
             }
             case POSITION_Y:{
                 floats[0] = sprite.getY();
-                return 3;
+                return 1;
             }
             default: {
                 assert false : "Wrong value returned at "+getClass().getName();

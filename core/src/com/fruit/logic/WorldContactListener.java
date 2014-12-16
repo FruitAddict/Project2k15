@@ -14,6 +14,7 @@ import com.fruit.logic.objects.items.Item;
  * Must check for both bodies (e.g. we dont know if the player will be
  * body 1 or body 2 when the collision happens), so checks for all possible
  * cases are needed. Grouped to make it as readable as possible.
+ * TODO distinguish between mob projectiles and player projeciles
  */
 public class WorldContactListener implements ContactListener,Constants {
 
@@ -40,18 +41,6 @@ public class WorldContactListener implements ContactListener,Constants {
                     item.onPickUp(player);
                 }
             }
-            if(f1.getFilterData().categoryBits == TREASURE_BIT || f2.getFilterData().categoryBits == TREASURE_BIT){
-                if(f1.getFilterData().categoryBits == TREASURE_BIT){
-                    //TODO CHANGE IT
-                    Box box = (Box)f1.getBody().getUserData();
-                    box.killYourself();
-                }else {
-                    //TODO CHANGE IT
-                    Box box = (Box)f2.getBody().getUserData();
-                    box.killYourself();
-                }
-            }
-
         }
 
         if(f1.getFilterData().categoryBits == CLUTTER_BIT || f2.getFilterData().categoryBits == CLUTTER_BIT){
@@ -100,6 +89,14 @@ public class WorldContactListener implements ContactListener,Constants {
                 }else {
                     Projectile projectile = (Projectile)f2.getBody().getUserData();
                     projectile.killYourself();
+                }
+            }else if(f1.getFilterData().categoryBits == TREASURE_BIT || f2.getFilterData().categoryBits == TREASURE_BIT){
+                if(f1.getFilterData().categoryBits == TREASURE_BIT){
+                    PlayerProjectile projectile = (PlayerProjectile)f2.getBody().getUserData();
+                    projectile.onHit((Enemy)f1.getBody().getUserData());
+                }else {
+                    PlayerProjectile projectile = (PlayerProjectile)f1.getBody().getUserData();
+                    projectile.onHit((Enemy) f2.getBody().getUserData());
                 }
             } else {
                 if(f1.getFilterData().categoryBits == PROJECTILE_BIT){

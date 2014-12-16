@@ -26,8 +26,6 @@ public class Heart extends Item implements Constants {
         setSaveInRooms(DO_SAVE);
         setItemType(Item.HEART);
         setEntityID(GameObject.ITEM);
-        setMaxVelocity(0.5f);
-        setSpeed(0.1f);
     }
     @Override
     public void update(float delta) {
@@ -66,12 +64,12 @@ public class Heart extends Item implements Constants {
 
     @Override
     public void onPickUp(Player player){
-        if(player.getHealthPoints() < player.getBaseMaximumHealthPoints()){
-            if(player.getHealthPoints()+renewValue > player.getBaseMaximumHealthPoints()){
-                player.changeHealthPoints(player.getBaseMaximumHealthPoints() - player.getHealthPoints());
+        if(player.stats.getHealthPoints() < player.stats.getBaseMaximumHealthPoints()){
+            if(player.stats.getHealthPoints()+renewValue > player.stats.getBaseMaximumHealthPoints()){
+                player.stats.changeHealthPoints(player.stats.getBaseMaximumHealthPoints() - player.stats.getHealthPoints());
                 killYourself();
             } else {
-                player.changeHealthPoints(renewValue);
+                player.stats.changeHealthPoints(renewValue);
                 killYourself();
             }
         }

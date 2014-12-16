@@ -26,6 +26,7 @@ public class Assets {
         manager.setLoader(TiledMap.class , new TmxMapLoader( new InternalFileHandleResolver()));
         manager.load("notfound.png", Texture.class);
         manager.finishLoading();
+
         redFont = new BitmapFont();
         redFont.setScale(1.5f, 1f);
         redFont.setColor(1.0f, 0.1f, 0.1f, 0.9f);
@@ -70,8 +71,8 @@ public class Assets {
     }
 
     public static void loadIntroLevel() {
-        manager.load("64map.tmx", TiledMap.class);
-        manager.load("64map2.tmx",TiledMap.class);
+        manager.load("maps//64map.tmx", TiledMap.class);
+        manager.load("maps//64map2.tmx",TiledMap.class);
         manager.finishLoading();
     }
 }

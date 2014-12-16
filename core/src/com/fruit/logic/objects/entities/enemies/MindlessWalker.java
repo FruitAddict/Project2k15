@@ -32,11 +32,11 @@ public class MindlessWalker extends Enemy implements Constants{
         lastKnownX = spawnX;
         lastKnownY = spawnY;
         setEntityID(GameObject.MINDLESS_WALKER);
-        setMaxVelocity(3);
-        setSpeed(0.25f);
+        stats.setMaxVelocity(1.5f);
+        stats.setSpeed(0.2f);
         setSaveInRooms(DO_SAVE);
-        setHealthPoints(5);
-        setBaseMaximumHealthPoints(10);
+        stats.setHealthPoints(5);
+        stats.setBaseMaximumHealthPoints(10);
 
         stats.setBaseDamage(1.5f);
         stats.setBaseDamageModifier(1f);
@@ -44,56 +44,58 @@ public class MindlessWalker extends Enemy implements Constants{
 
     @Override
     public void update(float delta) {
-        if(healthPoints <= 0){
+        if(stats.getHealthPoints() <= 0){
             killYourself();
-        }
-        updateFacing();
-        if (timeSpentDoingShit == 0) {
-            random = rng.nextInt(4);
-            stateTime += delta;
-            switch (random) {
-                case 0: {
-                    moveSouth();
-                    break;
+        }else {
+            updateFacing();
+            updatePassiveEffects(delta);
+            if (timeSpentDoingShit == 0) {
+                random = rng.nextInt(4);
+                stateTime += delta;
+                switch (random) {
+                    case 0: {
+                        moveSouth();
+                        break;
+                    }
+                    case 1: {
+                        moveEast();
+                        break;
+                    }
+                    case 2: {
+                        moveNorth();
+                        break;
+                    }
+                    case 3: {
+                        moveWest();
+                        break;
+                    }
                 }
-                case 1: {
-                    moveEast();
-                    break;
-                }
-                case 2: {
-                    moveNorth();
-                    break;
-                }
-                case 3: {
-                    moveWest();
-                    break;
-                }
-            }
-            timeSpentDoingShit += delta;
-        } else if (timeSpentDoingShit > 0 && timeSpentDoingShit < 1) {
-            stateTime += delta;
-            switch (random) {
-                case 0: {
-                    moveSouth();
-                    break;
-                }
-                case 1: {
-                    moveEast();
-                    break;
-                }
-                case 2: {
-                    moveNorth();
-                    break;
-                }
-                case 3: {
-                    moveWest();
-                    break;
-                }
+                timeSpentDoingShit += delta;
+            } else if (timeSpentDoingShit > 0 && timeSpentDoingShit < 1) {
+                stateTime += delta;
+                switch (random) {
+                    case 0: {
+                        moveSouth();
+                        break;
+                    }
+                    case 1: {
+                        moveEast();
+                        break;
+                    }
+                    case 2: {
+                        moveNorth();
+                        break;
+                    }
+                    case 3: {
+                        moveWest();
+                        break;
+                    }
 
+                }
+                timeSpentDoingShit += delta;
+            } else {
+                timeSpentDoingShit = 0;
             }
-            timeSpentDoingShit += delta;
-        } else {
-            timeSpentDoingShit = 0;
         }
     }
 
@@ -133,12 +135,6 @@ public class MindlessWalker extends Enemy implements Constants{
     @Override
     public void killYourself(){
         objectManager.removeObject(this);
-        if(Utils.randomGenerator.nextInt(100) <25){
-            objectManager.addObject(new HealthPotion(objectManager,getBody().getPosition().x,getBody().getPosition().y,24,24,5f,0.5f,0.5f));
-        }
-        if(Utils.randomGenerator.nextInt(100) <20){
-            objectManager.addObject(new SphereOfProtection(objectManager,getBody().getPosition().x,getBody().getPosition().y,24,24,5));
-        }
     }
 
     @Override
@@ -148,15 +144,19 @@ public class MindlessWalker extends Enemy implements Constants{
 
     @Override
     public void onDamageTaken(Value value) {
-        changeHealthPoints(-value.getValue() * damageResistanceModifier);
-        Controller.addOnScreenMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
-                getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
+        stats.changeHealthPoints(-value.getValue() * stats.getDamageResistanceModifier());
+        if(value.getValue()!=0) {
+            Controller.addOnScreenMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
+        }
     }
 
     @Override
     public void onHealingTaken(Value amount) {
-        changeHealthPoints(amount.getValue());
-        Controller.addOnScreenMessage(new TextMessage(Float.toString(amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
-                getBody().getPosition().y * PIXELS_TO_METERS, 3f, Assets.greenFont));
+        stats.changeHealthPoints(amount.getValue());
+        if(amount.getValue()!=0) {
+            Controller.addOnScreenMessage(new TextMessage(Float.toString(amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                    getBody().getPosition().y * PIXELS_TO_METERS, 3f, Assets.greenFont));
+        }
     }
 }

@@ -4,6 +4,7 @@ import com.fruit.logic.objects.Value;
 
 /**
  * @Author FruitAddict
+ * Those effects can generally trigger everything they want, including adding other effects to the character.
  */
 public abstract class OnDamageTakenEffect {
     public final static int BLOCK_ATTACKS = 1;

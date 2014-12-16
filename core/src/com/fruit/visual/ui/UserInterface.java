@@ -54,11 +54,11 @@ public class UserInterface extends Stage {
         secondLabel.setText("Objects: " + updater.getObjectManager().getNumberOfObjects());
         posLabel.setText(String.format("X: %.2f Y: %.2f", updater.getObjectManager().getPlayer().getBody().getPosition().x,
                 updater.getObjectManager().getPlayer().getBody().getPosition().y));
-        hpLabel.setText(String.format("Player hp: %.2f", updater.getObjectManager().getPlayer().getHealthPoints()));
+        hpLabel.setText(String.format("Player hp: %.2f", updater.getObjectManager().getPlayer().stats.getHealthPoints()));
 
         //update movement
         updater.getObjectManager().getPlayer().addLinearVelocity(touchpadMove.getKnobPercentX() * updater
-                .getObjectManager().getPlayer().getSpeed(), touchpadMove.getKnobPercentY() * updater.getObjectManager().getPlayer().getSpeed());
+                .getObjectManager().getPlayer().stats.getSpeed(), touchpadMove.getKnobPercentY() * updater.getObjectManager().getPlayer().stats.getSpeed());
         //update attacking
         if(touchpadAttack.getKnobPercentY()!=0 && touchpadAttack.getKnobPercentX()!=0) {
             updater.getObjectManager().getPlayer().attack(touchpadAttack.getKnobPercentX(),touchpadAttack.getKnobPercentY());

@@ -17,6 +17,7 @@ public class ItemAnimationPack implements Constants {
     private Sprite dmgUpSprite;
     private Sprite healthPotionSprite;
     private Sprite sphereOfProtectionSprite;
+    private Sprite poisonTouchSprite;
     private boolean loaded = false;
 
     public void load(){
@@ -30,6 +31,8 @@ public class ItemAnimationPack implements Constants {
             healthPotionSprite = new Sprite(healthPotiontexture);
             Texture sphereOfProtectionTexture = (Texture)Assets.getAsset("items//sphere.png", Texture.class);
             sphereOfProtectionSprite = new Sprite(sphereOfProtectionTexture);
+            Texture poisonTouchTexture = (Texture)Assets.getAsset("items//poisontouch.png", Texture.class);
+            poisonTouchSprite = new Sprite(poisonTouchTexture);
             loaded = true;
         }
     }
@@ -49,6 +52,9 @@ public class ItemAnimationPack implements Constants {
         }
         else if(item.getItemType() == Item.SPHERE_OF_PROTECTION){
             batch.draw(sphereOfProtectionSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
+        }
+        else if(item.getItemType() == Item.POISON_TOUCH){
+            batch.draw(poisonTouchSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
         }
     }
 }

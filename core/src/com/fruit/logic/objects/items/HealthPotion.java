@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.Controller;
 import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.Value;
-import com.fruit.logic.objects.effects.HealOverTime;
+import com.fruit.logic.objects.effects.passive.HealOverTime;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.visual.Assets;
@@ -35,13 +35,12 @@ public class HealthPotion extends Item {
         setSaveInRooms(DO_SAVE);
         setItemType(Item.HEALTH_POTION);
         setEntityID(GameObject.ITEM);
-        setMaxVelocity(0.5f);
-        setSpeed(0.1f);
     }
     @Override
     public void onPickUp(Player player) {
         killYourself();
         player.addPassiveEffect(new HealOverTime(player,healDuration,healDelay,new Value(healAmount)));
+        Controller.addOnScreenMessage(new TextMessage("A health potion!",getBody().getPosition().x*PIXELS_TO_METERS,getBody().getPosition().y*PIXELS_TO_METERS,3, Assets.greenFont));
     }
 
     @Override
@@ -82,6 +81,5 @@ public class HealthPotion extends Item {
     public void killYourself() {
         System.out.println("hp potion picked");
         objectManager.removeObject(this);
-        Controller.addOnScreenMessage(new TextMessage("A health potion!",getBody().getPosition().x*PIXELS_TO_METERS,getBody().getPosition().y*PIXELS_TO_METERS,3, Assets.greenFont));
     }
 }

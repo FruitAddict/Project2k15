@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.SoundManager;
 import com.fruit.logic.ObjectManager;
+import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.MovableGameObject;
 
@@ -20,17 +21,19 @@ public class Projectile extends MovableGameObject {
     private float spawnY;
 
     //damage carried by this projectile. Defaulted to 0 unless set.
-    protected float damage;
+    protected Value damage;
+    //speed of this velocity in logic units/s
+    protected Value velocity;
 
-    public Projectile(ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir){
+    public Projectile(ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity){
         this.spawnX = spawnX;
         this.spawnY = spawnY;
         this.objectManager = objectManager;
         this.direction = dir;
         setEntityID(GameObject.PROJECTILE);
-        setMaxVelocity(6);
-        setSpeed(0.30f);
         setSaveInRooms(DONT_SAVE);
+        damage = new Value(0);
+        this.velocity = new Value(velocity);
     }
     @Override
     public void update(float delta) {
@@ -52,7 +55,7 @@ public class Projectile extends MovableGameObject {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         bodyDef.allowSleep = false;
-        bodyDef.linearVelocity.set(direction.scl(maxVelocity));
+        bodyDef.linearVelocity.set(direction.scl(velocity.getValue()));
 
         //create the body
         body = world.createBody(bodyDef);
@@ -67,7 +70,7 @@ public class Projectile extends MovableGameObject {
         fixtureDef.density = 1000f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = PROJECTILE_BIT;
-        fixtureDef.filter.maskBits = (ENEMY_BIT | TERRAIN_BIT | CLUTTER_BIT | ITEM_BIT | PORTAL_BIT);
+        fixtureDef.filter.maskBits = (ENEMY_BIT | TERRAIN_BIT | CLUTTER_BIT | ITEM_BIT | PORTAL_BIT | TREASURE_BIT);
 
         body.createFixture(fixtureDef);
 

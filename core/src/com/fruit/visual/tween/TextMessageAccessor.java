@@ -18,11 +18,11 @@ public class TextMessageAccessor implements TweenAccessor<TextMessage> {
             }
             case POSITION_Y:{
                 floats[0] = textMessage.getPositionY();
-                return 2;
+                return 1;
             }
             case ALPHA: {
                 floats[0] = textMessage.getAlpha();
-                return 3;
+                return 1;
             }
             default: {
                 assert false : "Wrong value returned at "+getClass().getName();

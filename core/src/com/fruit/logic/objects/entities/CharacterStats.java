@@ -8,6 +8,11 @@ package com.fruit.logic.objects.entities;
 public class CharacterStats {
 
     //Player stats - must contain base value and modifier
+
+    protected float healthPoints;
+    protected float baseMaximumHealthPoints;
+    protected float maximumHealthPointsMultiplier = 1;
+
     private float timeBetweenAttacks=1f;
     private float timeBetweenAttacksModifier = 1f;
 
@@ -17,6 +22,8 @@ public class CharacterStats {
     private float damageResistanceModifier = 1f;
 
     private float healingModifier = 1f;
+
+    private float speed, maxVelocity;
 
     public float getCombinedDamage(){
         return baseDamage * baseDamageModifier;
@@ -30,10 +37,24 @@ public class CharacterStats {
         return damageResistanceModifier;
     }
 
+    public void changeHealthPoints(float amount){
+        //every character must be damageable or healable.
+        if(healthPoints+amount < baseMaximumHealthPoints) {
+            healthPoints += amount;
+        }else {
+            healthPoints = baseMaximumHealthPoints;
+        }
+    }
+
     /*
      * GETTERS AND SETTERS
      *      SECTION
      */
+    public void setHealthPoints(float value){
+        //set health points
+        healthPoints = value;
+    }
+
     public float getTimeBetweenAttacks() {
         return timeBetweenAttacks;
     }
@@ -80,5 +101,37 @@ public class CharacterStats {
 
     public void setHealingModifier(float healingModifier) {
         this.healingModifier = healingModifier;
+    }
+
+    public float getMaxVelocity() {
+        return maxVelocity;
+    }
+
+    public void setMaxVelocity(float maxVelocity) {
+        this.maxVelocity = maxVelocity;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public float getHealthPoints(){
+        return healthPoints;
+    }
+
+    public void setBaseMaximumHealthPoints(float value){
+        baseMaximumHealthPoints = value;
+    }
+
+    public float getBaseMaximumHealthPoints(){
+        return baseMaximumHealthPoints;
+    }
+
+    public void resetMaxHealthPointsMultiplier(){
+        maximumHealthPointsMultiplier = 1;
     }
 }

@@ -47,11 +47,11 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
 
         //setting important stuff
         setEntityID(GameObject.PLAYER);
-        setMaxVelocity(3);
-        setSpeed(0.25f);
+        stats.setMaxVelocity(3);
+        stats.setSpeed(0.25f);
         setSaveInRooms(DONT_SAVE);
-        setHealthPoints(3);
-        setBaseMaximumHealthPoints(3);
+        stats.setHealthPoints(3);
+        stats.setBaseMaximumHealthPoints(3);
 
         //initialize attack direction vector
         attackDirectionNormalized = new Vector2();
@@ -68,7 +68,7 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
             attackDirectionNormalized.nor();
             attackDirectionNormalized.x*=-1;
             attackDirectionNormalized.y*=-1;
-            objectManager.addObject(new PlayerProjectile(this,objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized));
+            objectManager.addObject(new PlayerProjectile(this,objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized,6f));
             lastAttack = stateTime;
         }
     }
@@ -84,13 +84,23 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         }
     }
 
+    public void addOnHitEffect(OnHitEffect onHitEffect){
+        onHitEffects.add(onHitEffect);
+    }
+
+    public void removeOnHitEffect(OnHitEffect onHitEffect){
+        if(onHitEffects.contains(onHitEffect,true)){
+            onHitEffects.removeValue(onHitEffect,true);
+        }
+    }
+
     @Override
     public void onDamageTaken(Value value){
         for(OnDamageTakenEffect onDamageTakenEffect : onDamageTakenEffects){
             onDamageTakenEffect.onDamageTaken(value);
         }
         if(value.getValue()!=0) {
-            changeHealthPoints(-value.getValue() * stats.getCombinedResistance());
+            stats.changeHealthPoints(-value.getValue() * stats.getCombinedResistance());
             Controller.addOnScreenMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                     getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
         }
@@ -99,7 +109,7 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     @Override
     public void onHealingTaken(Value amount) {
         if(amount.getValue()!=0) {
-            changeHealthPoints(amount.getValue() * stats.getHealingModifier());
+            stats.changeHealthPoints(amount.getValue() * stats.getHealingModifier());
             Controller.addOnScreenMessage(new TextMessage(Float.toString(amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                     getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, Assets.greenFont));
         }

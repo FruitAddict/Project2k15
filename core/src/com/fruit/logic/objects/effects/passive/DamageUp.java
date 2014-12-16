@@ -1,11 +1,12 @@
-package com.fruit.logic.objects.effects;
+package com.fruit.logic.objects.effects.passive;
 
+import com.fruit.logic.objects.effects.PassiveEffect;
 import com.fruit.logic.objects.entities.Character;
 
 /**
  * @Author FruitAddict
  */
-public class DamageUp extends PassiveEffect{
+public class DamageUp extends PassiveEffect {
     private Character character;
 
     public DamageUp(Character character){

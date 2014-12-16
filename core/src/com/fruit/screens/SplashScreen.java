@@ -18,18 +18,15 @@ import com.fruit.visual.tween.TweenUtils;
 /**
  * Splash screen, appears for 5 seconds when the program is started.
  */
-public class SplashScreen implements Screen,TweenAccessor<SplashScreen> {
+public class SplashScreen implements Screen {
 
     private MainGame game;
     private Sprite sprite;
     private SpriteBatch batch;
     private float timePassed;
-    private float disappearThreshold;
     private BitmapFont font;
 
     public SplashScreen(MainGame game){
-        //loads splash screen texture
-        Assets.loadSplashScreen();
         this.game = game;
         //register the tween accessor for sprites
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
@@ -37,9 +34,7 @@ public class SplashScreen implements Screen,TweenAccessor<SplashScreen> {
         sprite = new Sprite(splashImage);
         sprite.setPosition(0,Gdx.graphics.getHeight()/2-sprite.getHeight()/2);
         batch = new SpriteBatch();
-        //setting up tweens
         timePassed = 0f;
-        disappearThreshold = 0.5f;
         font = new BitmapFont();
         font.scale(2);
         font.setColor(Color.RED);
@@ -96,13 +91,4 @@ public class SplashScreen implements Screen,TweenAccessor<SplashScreen> {
         batch.dispose();
     }
 
-    @Override
-    public int getValues(SplashScreen splashScreen, int i, float[] floats) {
-        return 0;
-    }
-
-    @Override
-    public void setValues(SplashScreen splashScreen, int i, float[] floats) {
-
-    }
 }

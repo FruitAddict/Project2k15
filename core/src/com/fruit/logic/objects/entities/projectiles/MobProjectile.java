@@ -1,4 +1,4 @@
-package com.fruit.logic.objects.entities.misc;
+package com.fruit.logic.objects.entities.projectiles;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -8,32 +8,39 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.SoundManager;
 import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.Value;
+import com.fruit.logic.objects.entities.Character;
 import com.fruit.logic.objects.entities.GameObject;
-import com.fruit.logic.objects.entities.MovableGameObject;
+import com.fruit.logic.objects.entities.Projectile;
 
 /**
  * Projectile class created by player.
  */
-public class Projectile extends MovableGameObject {
-    private ObjectManager objectManager;
-    private Vector2 direction;
-    private float spawnX;
-    private float spawnY;
+public class MobProjectile extends Projectile {
+    protected ObjectManager objectManager;
+    protected Vector2 direction;
+    protected float spawnX;
+    protected float spawnY;
 
     //damage carried by this projectile. Defaulted to 0 unless set.
     protected Value damage;
     //speed of this velocity in logic units/s
     protected Value velocity;
 
-    public Projectile(ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity){
+    public MobProjectile(ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity){
         this.spawnX = spawnX;
         this.spawnY = spawnY;
         this.objectManager = objectManager;
         this.direction = dir;
         setEntityID(GameObject.PROJECTILE);
         setSaveInRooms(DONT_SAVE);
-        damage = new Value(0);
+        setTypeID(Projectile.MOB_PROJECTILE);
+        damage = new Value(0.5f);
         this.velocity = new Value(velocity);
+    }
+    @Override
+    public void onHit(Character character){
+        character.onDamageTaken(damage);
+        killYourself();
     }
     @Override
     public void update(float delta) {
@@ -70,7 +77,7 @@ public class Projectile extends MovableGameObject {
         fixtureDef.density = 1000f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = PROJECTILE_BIT;
-        fixtureDef.filter.maskBits = (ENEMY_BIT | TERRAIN_BIT | CLUTTER_BIT | ITEM_BIT | PORTAL_BIT | TREASURE_BIT);
+        fixtureDef.filter.maskBits = (PLAYER_BIT| TERRAIN_BIT | CLUTTER_BIT | PORTAL_BIT | TREASURE_BIT);
 
         body.createFixture(fixtureDef);
 

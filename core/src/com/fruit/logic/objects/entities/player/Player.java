@@ -13,7 +13,7 @@ import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.effects.OnDamageTakenEffect;
 import com.fruit.logic.objects.effects.OnHitEffect;
 import com.fruit.logic.objects.entities.GameObject;
-import com.fruit.logic.objects.entities.misc.PlayerProjectile;
+import com.fruit.logic.objects.entities.projectiles.PlayerProjectile;
 import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
 
@@ -52,6 +52,7 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         setSaveInRooms(DONT_SAVE);
         stats.setHealthPoints(3);
         stats.setBaseMaximumHealthPoints(3);
+        stats.setTimeBetweenAttacks(0.25f);
 
         //initialize attack direction vector
         attackDirectionNormalized = new Vector2();

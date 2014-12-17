@@ -2,9 +2,9 @@ package com.fruit.logic;
 
 import com.badlogic.gdx.physics.box2d.*;
 import com.fruit.logic.objects.entities.Enemy;
-import com.fruit.logic.objects.entities.misc.Box;
-import com.fruit.logic.objects.entities.misc.PlayerProjectile;
-import com.fruit.logic.objects.entities.misc.Projectile;
+import com.fruit.logic.objects.entities.Projectile;
+import com.fruit.logic.objects.entities.projectiles.PlayerProjectile;
+import com.fruit.logic.objects.entities.projectiles.MobProjectile;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.logic.objects.items.Item;
 
@@ -61,7 +61,7 @@ public class WorldContactListener implements ContactListener,Constants {
             }
 
         }
-        if(f1.getFilterData().categoryBits == PROJECTILE_BIT || f2.getFilterData().categoryBits == PROJECTILE_BIT){
+        if(f1.getFilterData().categoryBits == PLAYER_PROJECTILE_BIT || f2.getFilterData().categoryBits == PLAYER_PROJECTILE_BIT){
             if(f1.getFilterData().categoryBits == ENEMY_BIT || f2.getFilterData().categoryBits == ENEMY_BIT){
                 if(f1.getFilterData().categoryBits== ENEMY_BIT){
                     Enemy enemy = (Enemy)f1.getBody().getUserData();
@@ -74,20 +74,20 @@ public class WorldContactListener implements ContactListener,Constants {
                 }
             }
             else if(f1.getFilterData().categoryBits == TERRAIN_BIT || f2.getFilterData().categoryBits == TERRAIN_BIT){
-                if(f1.getFilterData().categoryBits == PROJECTILE_BIT) {
-                    Projectile projectile = (Projectile)f1.getBody().getUserData();
+                if(f1.getFilterData().categoryBits == PLAYER_PROJECTILE_BIT) {
+                    PlayerProjectile projectile = (PlayerProjectile)f1.getBody().getUserData();
                     projectile.killYourself();
                 } else{
-                    Projectile projectile = (Projectile)f2.getBody().getUserData();
+                    PlayerProjectile projectile = (PlayerProjectile)f2.getBody().getUserData();
                     projectile.killYourself();
                 }
             }
             else if(f1.getFilterData().categoryBits == CLUTTER_BIT || f2.getFilterData().categoryBits == CLUTTER_BIT){
-                if(f1.getFilterData().categoryBits== PROJECTILE_BIT){
-                    Projectile projectile = (Projectile)f1.getBody().getUserData();
+                if(f1.getFilterData().categoryBits== PLAYER_PROJECTILE_BIT){
+                    PlayerProjectile projectile = (PlayerProjectile)f1.getBody().getUserData();
                     projectile.killYourself();
                 }else {
-                    Projectile projectile = (Projectile)f2.getBody().getUserData();
+                    PlayerProjectile projectile = (PlayerProjectile)f2.getBody().getUserData();
                     projectile.killYourself();
                 }
             }else if(f1.getFilterData().categoryBits == TREASURE_BIT || f2.getFilterData().categoryBits == TREASURE_BIT){
@@ -99,15 +99,34 @@ public class WorldContactListener implements ContactListener,Constants {
                     projectile.onHit((Enemy) f2.getBody().getUserData());
                 }
             } else {
-                if(f1.getFilterData().categoryBits == PROJECTILE_BIT){
-                    Projectile projectile = (Projectile)f1.getBody().getUserData();
+                if(f1.getFilterData().categoryBits == PLAYER_PROJECTILE_BIT){
+                    PlayerProjectile projectile = (PlayerProjectile)f1.getBody().getUserData();
                     projectile.killYourself();
                 }else {
-                    Projectile projectile = (Projectile)f2.getBody().getUserData();
+                    PlayerProjectile projectile = (PlayerProjectile)f2.getBody().getUserData();
                     projectile.killYourself();
                 }
             }
 
+        }
+        if(f1.getFilterData().categoryBits == PROJECTILE_BIT || f2.getFilterData().categoryBits == PROJECTILE_BIT) {
+            if (f1.getFilterData().categoryBits == PLAYER_BIT || f2.getFilterData().categoryBits == PLAYER_BIT) {
+                if (f1.getFilterData().categoryBits == PLAYER_BIT) {
+                    MobProjectile projectile = (MobProjectile) f2.getBody().getUserData();
+                    projectile.onHit((Player) f1.getBody().getUserData());
+                } else {
+                    MobProjectile projectile = (MobProjectile) f1.getBody().getUserData();
+                    projectile.onHit((Player) f2.getBody().getUserData());
+                }
+            }else {
+                if(f1.getFilterData().categoryBits == PROJECTILE_BIT){
+                    MobProjectile projectile = (MobProjectile)f1.getBody().getUserData();
+                    projectile.killYourself();
+                }else {
+                    MobProjectile projectile = (MobProjectile)f2.getBody().getUserData();
+                    projectile.killYourself();
+                }
+            }
         }
         if(f1.getFilterData().categoryBits == PORTAL_BIT || f2.getFilterData().categoryBits == PORTAL_BIT){
             if(f1.getFilterData().categoryBits == PLAYER_BIT || f2.getFilterData().categoryBits == PLAYER_BIT){

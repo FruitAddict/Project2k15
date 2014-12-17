@@ -1,5 +1,6 @@
 package com.fruit.logic.objects.entities.enemies;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -10,10 +11,8 @@ import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.GameObject;
+import com.fruit.logic.objects.entities.projectiles.MobProjectile;
 import com.fruit.logic.objects.entities.player.Player;
-import com.fruit.logic.objects.items.HealthPotion;
-import com.fruit.logic.objects.items.SphereOfProtection;
-import com.fruit.utilities.Utils;
 import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
 
@@ -22,10 +21,11 @@ import java.util.Random;
 public class MindlessWalker extends Enemy implements Constants{
     private World world;
     private ObjectManager objectManager;
-    private float timeSpentDoingShit = 0;
+    private float timeSpentDoingShit, stateTime, lastAttack = 0;
     private Random rng = new Random();
-    private float stateTime;
     private int random;
+    private boolean angered=false;
+    private Vector2 attackDirectionNormalized;
 
     public MindlessWalker(ObjectManager objectManager, float spawnX, float spawnY){
         this.objectManager = objectManager;
@@ -37,21 +37,22 @@ public class MindlessWalker extends Enemy implements Constants{
         setSaveInRooms(DO_SAVE);
         stats.setHealthPoints(5);
         stats.setBaseMaximumHealthPoints(10);
-
+        stats.setTimeBetweenAttacks(0.75f);
+        stats.setTimeBetweenAttacksModifier(1f);
         stats.setBaseDamage(1.5f);
         stats.setBaseDamageModifier(1f);
+
+        attackDirectionNormalized = new Vector2();
     }
 
     @Override
     public void update(float delta) {
+        stateTime += delta;
         if(stats.getHealthPoints() <= 0){
             killYourself();
-        }else {
-            updateFacing();
-            updatePassiveEffects(delta);
+        }else if(!angered) {
             if (timeSpentDoingShit == 0) {
                 random = rng.nextInt(4);
-                stateTime += delta;
                 switch (random) {
                     case 0: {
                         moveSouth();
@@ -72,7 +73,6 @@ public class MindlessWalker extends Enemy implements Constants{
                 }
                 timeSpentDoingShit += delta;
             } else if (timeSpentDoingShit > 0 && timeSpentDoingShit < 1) {
-                stateTime += delta;
                 switch (random) {
                     case 0: {
                         moveSouth();
@@ -96,7 +96,40 @@ public class MindlessWalker extends Enemy implements Constants{
             } else {
                 timeSpentDoingShit = 0;
             }
+        }else {
+            //TODO abstract out the AI and make it better but get done with the map generator first .
+            float distance = (float) (Math.sqrt(Math.pow(getBody().getPosition().x - objectManager.getPlayer().getBody().getPosition().x, 2) + Math.pow(getBody().getPosition().y - objectManager.getPlayer().getBody().getPosition().y, 2)));
+            if (distance > 2.5) {
+                if (objectManager.getPlayer().getBody().getPosition().x > getBody().getPosition().x) {
+                    moveEast();
+                } else if (objectManager.getPlayer().getBody().getPosition().x < getBody().getPosition().x) {
+                    moveWest();
+                }
+                if (objectManager.getPlayer().getBody().getPosition().y > getBody().getPosition().y) {
+                    moveNorth();
+                } else if (objectManager.getPlayer().getBody().getPosition().y < getBody().getPosition().y) {
+                    moveSouth();
+                }
+            }
+            if(distance < 4.5){
+                attack();
+            }
         }
+        updateFacing();
+        updatePassiveEffects(delta);
+    }
+
+    public void attack(){
+        if(stateTime - lastAttack > stats.getCombinedAttackSpeed()) {
+            //normalize the attack direction vector using new values
+            attackDirectionNormalized.set(getBody().getPosition().x - objectManager.getPlayer().getBody().getPosition().x,
+                    getBody().getPosition().y - objectManager.getPlayer().getBody().getPosition().y);
+            attackDirectionNormalized.nor();
+            attackDirectionNormalized.x*=-1;
+            attackDirectionNormalized.y*=-1;
+            objectManager.addObject(new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized,5f));
+            lastAttack = stateTime;
+            }
     }
 
     @Override
@@ -146,6 +179,7 @@ public class MindlessWalker extends Enemy implements Constants{
     public void onDamageTaken(Value value) {
         stats.changeHealthPoints(-value.getValue() * stats.getDamageResistanceModifier());
         if(value.getValue()!=0) {
+            angered = true;
             Controller.addOnScreenMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                     getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
         }

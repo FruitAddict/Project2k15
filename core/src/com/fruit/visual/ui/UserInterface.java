@@ -272,7 +272,7 @@ public class UserInterface extends Stage {
         addMob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                for(int i =0 ;i<5;i++) {
+                for(int i =0 ;i<3;i++) {
                     updater.getObjectManager().addObject(new MindlessWalker(updater.getObjectManager(), updater.getObjectManager().getPlayer().getBody().getPosition().x+1,
                             updater.getObjectManager().getPlayer().getBody().getPosition().y));
                 }

@@ -12,6 +12,7 @@ import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
+import com.fruit.visual.messages.TextRenderer;
 
 public class Dummy extends Enemy{
 
@@ -77,14 +78,14 @@ public class Dummy extends Enemy{
     @Override
     public void onDamageTaken(Value value) {
         stats.changeHealthPoints(-value.getValue()*stats.getDamageResistanceModifier());
-        Controller.addOnScreenMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
-                getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
+        Controller.addOnScreenMessage(new TextMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont,TextMessage.UP));
     }
 
     @Override
     public void onHealingTaken(Value amount) {
         stats.changeHealthPoints(amount.getValue());
         Controller.addOnScreenMessage(new TextMessage(Float.toString(amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
-                getBody().getPosition().y * PIXELS_TO_METERS, 3f, Assets.greenFont));
+                getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.greenFont,TextMessage.UP));
     }
 }

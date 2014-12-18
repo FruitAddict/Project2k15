@@ -1,10 +1,7 @@
 package com.fruit.logic.objects.entities.projectiles;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.SoundManager;
 import com.fruit.logic.ObjectManager;
@@ -33,9 +30,10 @@ public class PlayerProjectile extends Projectile{
         setTypeID(Projectile.PLAYER_PROJECTILE);
         setEntityID(GameObject.PROJECTILE);
         setSaveInRooms(DONT_SAVE);
-        //setting width and height
-        width = 24;
-        height = 24;
+        //setting width, height and radius of the box2d body
+        width =24;
+        height=24;
+        radius = 12;
         if(damage.getValue()>2){
             width*=1.5f;
             height*=1.5f;
@@ -69,8 +67,8 @@ public class PlayerProjectile extends Projectile{
         body.setUserData(this);
 
         //Shape definiton
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/PIXELS_TO_METERS/2,height/PIXELS_TO_METERS/2);
+        CircleShape shape = new CircleShape();
+        shape.setRadius(radius/PIXELS_TO_METERS);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();

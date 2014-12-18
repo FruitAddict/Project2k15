@@ -2,7 +2,6 @@ package com.fruit.screens;
 
 import android.graphics.Color;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenAccessor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -50,7 +49,7 @@ public class SplashScreen implements Screen {
         TweenUtils.tweenManager.update(delta);
         if (Assets.manager.update() && timePassed > 3) {
             this.dispose();
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new MainMenuScreen(game));
         } else {
             batch.begin();
             sprite.draw(batch);

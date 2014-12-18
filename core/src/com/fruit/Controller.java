@@ -37,7 +37,6 @@ public class Controller {
 
     public static void addOnScreenMessage(TextMessage message){
         if(Controller.worldRenderer!=null){
-            System.out.println("adding new message");
             worldRenderer.getTextRenderer().addMessage(message);
         }
     }

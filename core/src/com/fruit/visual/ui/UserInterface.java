@@ -197,6 +197,7 @@ public class UserInterface extends Stage {
         addBox.setColor(addBox.getColor().r, addBox.getColor().g, addBox.getColor().b, 0.5f);
         addDummy.setColor(addBox.getColor().r, addBox.getColor().g, addBox.getColor().b, 0.5f);
         clearObjects.setColor(clearObjects.getColor().r, clearObjects.getColor().g, clearObjects.getColor().b, 0.5f);
+        showDebugOptions.setColor(showDebugOptions.getColor().r,showDebugOptions.getColor().g,showDebugOptions.getColor().b,0.5f);
         scrollPane.getStyle().hScrollKnob.setMinHeight(10);
         scrollPane.getStyle().vScrollKnob.setMinWidth(10);
         scrollPane.setSize(200, 300);

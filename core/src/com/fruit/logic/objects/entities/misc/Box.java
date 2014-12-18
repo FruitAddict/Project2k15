@@ -11,6 +11,8 @@ import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.logic.objects.items.ItemManager;
+import com.fruit.visual.messages.TextMessage;
+import com.fruit.visual.messages.TextRenderer;
 
 public class Box extends Enemy{
     private World world;
@@ -77,8 +79,8 @@ public class Box extends Enemy{
     @Override
     public void onDamageTaken(Value value) {
         stats.changeHealthPoints(-1);
-        Controller.addOnScreenMessage("-9999!", getBody().getPosition().x * PIXELS_TO_METERS,
-                getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
+        Controller.addOnScreenMessage(new TextMessage("Booo!", getBody().getPosition().x * PIXELS_TO_METERS,
+                getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont,TextMessage.UP));
         System.out.println(stats.getHealthPoints());
     }
 

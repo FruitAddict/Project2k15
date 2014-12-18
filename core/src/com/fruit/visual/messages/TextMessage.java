@@ -6,18 +6,18 @@ import aurelienribon.tweenengine.equations.Quad;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.fruit.visual.Assets;
 import com.fruit.visual.tween.TextMessageAccessor;
 import com.fruit.visual.tween.TweenUtils;
 
 /**
- * Text message. TODO refractoring
+ * Text message.
  * On creation it starts the basic tween (go up 2/3 of the lifespan, then go down and set the alpha to 0)
  * Contains many overloaded constructors for different situations.
  */
 public class TextMessage {
-    //font types
-    public static final int BITMAPFONT_HELVETICA = 1;
+    //tween types
+    public static final int UP_AND_FALL = 1;
+    public static final int UP = 2;
 
     //font of this message
     private BitmapFont bitmapFont;
@@ -36,53 +36,50 @@ public class TextMessage {
     private float positionX;
     private float positionY;
 
-    public TextMessage(String msg,float positionX, float positionY, float lifeSpan, BitmapFont bitmapFont) {
+    public TextMessage(String msg,float positionX, float positionY, float lifeSpan, BitmapFont bitmapFont,int tweenType) {
         this.message = msg;
         this.positionX = positionX;
         this.positionY = positionY;
         this.lifeSpan = lifeSpan;
         this.bitmapFont = bitmapFont;
         alpha = bitmapFont.getColor().a;
-        startTween();
+        startTween(tweenType);
     }
 
-    public TextMessage(String msg,float positionX, float positionY, float lifeSpan, int bitmapFontType){
+    public TextMessage(String msg,float positionX, float positionY, float lifeSpan,int tweenType){
         this.message = msg;
         this.positionX = positionX;
         this.positionY = positionY;
         this.lifeSpan = lifeSpan;
-        switch(bitmapFontType){
-            case TextMessage.BITMAPFONT_HELVETICA:{
-                bitmapFont = Assets.redFont;
+        bitmapFont = TextRenderer.redFont;
+        startTween(tweenType);
+    }
+
+    public void startTween(int type){
+        switch(type) {
+            //starts the tweening sequence
+            case UP_AND_FALL: {
+                Timeline.createSequence()
+                        .push(Tween.set(this, TextMessageAccessor.ALPHA).target(0.7f))
+                        .push(Tween.to(this, TextMessageAccessor.POSITION_Y, lifeSpan * 2 / 3).target(positionY + 75).ease(Quad.INOUT))
+                        .beginParallel()
+                        .push(Tween.to(this, TextMessageAccessor.POSITION_Y, lifeSpan * 1 / 3).target(positionY).ease(Quad.INOUT))
+                        .push(Tween.to(this, TextMessageAccessor.ALPHA, lifeSpan * 1 / 3).target(0f))
+                        .end()
+                        .start(TweenUtils.tweenManager);
                 break;
             }
-            default:{
-                bitmapFont = Assets.redFont;
+            case UP: {
+                Timeline.createSequence()
+                        .push(Tween.set(this, TextMessageAccessor.ALPHA).target(0.7f))
+                        .beginParallel()
+                        .push(Tween.to(this, TextMessageAccessor.POSITION_Y, lifeSpan).target(positionY + 75).ease(Quad.INOUT))
+                        .push(Tween.to(this, TextMessageAccessor.ALPHA, lifeSpan).target(0f))
+                        .end()
+                        .start(TweenUtils.tweenManager);
                 break;
             }
         }
-        startTween();
-    }
-
-    public TextMessage(String msg,float positionX, float positionY, float lifeSpan){
-        this.message = msg;
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.lifeSpan = lifeSpan;
-        bitmapFont = Assets.redFont;
-        startTween();
-    }
-
-    public void startTween(){
-        //starts the tweening sequence
-        Timeline.createSequence()
-                .push(Tween.set(this,TextMessageAccessor.ALPHA).target(1f))
-                .push(Tween.to(this, TextMessageAccessor.POSITION_Y, lifeSpan * 2 / 3).target(positionY + 75).ease(Quad.INOUT))
-                .beginParallel()
-                .push(Tween.to(this, TextMessageAccessor.POSITION_Y,lifeSpan*1/3).target(positionY).ease(Quad.INOUT))
-                .push(Tween.to(this,TextMessageAccessor.ALPHA,lifeSpan*1/3).target(0f))
-                .end()
-                .start(TweenUtils.tweenManager);
 
     }
 

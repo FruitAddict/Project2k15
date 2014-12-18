@@ -11,6 +11,7 @@ import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
+import com.fruit.visual.messages.TextRenderer;
 
 /**
  * @Author FruitAddict
@@ -34,7 +35,8 @@ public class PoisonProjectiles extends Item {
     @Override
     public void onPickUp(Player player) {
         player.addOnHitEffect(new PoisonOnHit(player));
-        Controller.addOnScreenMessage(new TextMessage("You poison on hit...", getBody().getPosition().x * PIXELS_TO_METERS, getBody().getPosition().y * PIXELS_TO_METERS, 3, Assets.greenFont));
+        Controller.addOnScreenMessage(new TextMessage("You poison on hit...",
+                getBody().getPosition().x * PIXELS_TO_METERS, getBody().getPosition().y * PIXELS_TO_METERS, 3, TextRenderer.greenFont,TextMessage.UP_AND_FALL));
         killYourself();
     }
 

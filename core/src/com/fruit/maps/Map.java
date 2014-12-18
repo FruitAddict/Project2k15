@@ -59,10 +59,6 @@ public class Map implements Constants {
         addRoom(secondRoom);
         addRoom(thirdRoom);
         addRoom(fourthRoom);
-        MapObjectParser.addSpawnAndPortalPointsToRoom(firstRoom);
-        MapObjectParser.addSpawnAndPortalPointsToRoom(secondRoom);
-        MapObjectParser.addSpawnAndPortalPointsToRoom(thirdRoom);
-        MapObjectParser.addSpawnAndPortalPointsToRoom(fourthRoom);
 
         firstRoom.setLinkedRoomEast(secondRoom);
         secondRoom.setLinkedRoomWest(firstRoom);

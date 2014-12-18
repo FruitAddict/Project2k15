@@ -86,7 +86,7 @@ public class PlayerAnimationPack implements Constants {
         } else {
             batch.draw(playerSouthRegion[0],pos.x,pos.y,character.getWidth(),character.getHeight());
         }
-        //batch.draw(playerHead,pos.x  ,pos.y+character.getHeight()-5,64,64);
+        //batch.draw(playerHead,pos.x-3.2f  ,pos.y+character.getHeight()-6,64,64);
         if(character.status.isHealing()){
             effectRenderer.render(batch,stateTime,EffectRenderer.HEALED,pos.x,pos.y,character.getWidth(),character.getHeight());
         }

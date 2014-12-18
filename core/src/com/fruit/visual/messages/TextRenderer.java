@@ -1,6 +1,7 @@
 package com.fruit.visual.messages;
 
 import aurelienribon.tweenengine.Tween;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.visual.tween.TextMessageAccessor;
@@ -12,6 +13,20 @@ import com.fruit.visual.tween.TextMessageAccessor;
 public class TextRenderer {
     //list of text messages that are currently processed
     private Array<TextMessage> messageList;
+    //available fonts
+    public static BitmapFont redFont;
+    public static BitmapFont greenFont;
+
+    static{
+        //fonts
+        redFont = new BitmapFont();
+        redFont.setScale(1.5f, 1f);
+        redFont.setColor(1.0f, 0.1f, 0.1f, 0.9f);
+
+        greenFont = new BitmapFont();
+        greenFont.setScale(1.5f,1f);
+        greenFont.setColor(0.1f,1f,0.1f,0.9f);
+    }
 
     public TextRenderer(){
         messageList = new Array<>();
@@ -38,7 +53,7 @@ public class TextRenderer {
     }
 
     public void addMessage(String msg,float positionX, float positionY, float lifeSpan){
-        messageList.add(new TextMessage(msg,positionX,positionY,lifeSpan));
+        messageList.add(new TextMessage(msg,positionX,positionY,lifeSpan,1));
     }
 
     public void addMessage(TextMessage message){

@@ -16,8 +16,6 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 public class Assets {
 
     public static AssetManager manager = new AssetManager();
-    public static BitmapFont redFont;
-    public static BitmapFont greenFont;
     private static Array<String> requests = new Array<String>();
 
     static {
@@ -26,14 +24,6 @@ public class Assets {
         manager.setLoader(TiledMap.class , new TmxMapLoader( new InternalFileHandleResolver()));
         manager.load("notfound.png", Texture.class);
         manager.finishLoading();
-
-        redFont = new BitmapFont();
-        redFont.setScale(1.5f, 1f);
-        redFont.setColor(1.0f, 0.1f, 0.1f, 0.9f);
-
-        greenFont = new BitmapFont();
-        greenFont.setScale(1.5f,1f);
-        greenFont.setColor(0.1f,1f,0.1f,0.9f);
     }
 
     public static void loadSplashScreen(){
@@ -68,11 +58,5 @@ public class Assets {
     public static void disposeAll(){
         System.out.println("Disposing all assets");
         manager.clear();
-    }
-
-    public static void loadIntroLevel() {
-        manager.load("maps//64map.tmx", TiledMap.class);
-        manager.load("maps//64map2.tmx",TiledMap.class);
-        manager.finishLoading();
     }
 }

@@ -15,6 +15,7 @@ import com.fruit.logic.objects.entities.projectiles.MobProjectile;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
+import com.fruit.visual.messages.TextRenderer;
 
 import java.util.Random;
 
@@ -180,8 +181,8 @@ public class MindlessWalker extends Enemy implements Constants{
         stats.changeHealthPoints(-value.getValue() * stats.getDamageResistanceModifier());
         if(value.getValue()!=0) {
             angered = true;
-            Controller.addOnScreenMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
-                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
+            Controller.addOnScreenMessage(new TextMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont,TextMessage.UP));
         }
     }
 
@@ -190,7 +191,7 @@ public class MindlessWalker extends Enemy implements Constants{
         stats.changeHealthPoints(amount.getValue());
         if(amount.getValue()!=0) {
             Controller.addOnScreenMessage(new TextMessage(Float.toString(amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
-                    getBody().getPosition().y * PIXELS_TO_METERS, 3f, Assets.greenFont));
+                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.greenFont,TextMessage.UP));
         }
     }
 }

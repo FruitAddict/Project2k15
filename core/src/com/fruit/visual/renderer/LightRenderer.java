@@ -44,7 +44,7 @@ public class LightRenderer implements Constants {
     public void addPointLight(int rays, Color color, float distance, Body body){
         pointLight = new PointLight(rayHandler,rays,color,distance,0,0);
         Filter filter = new Filter();
-        filter.maskBits = ENEMY_BIT | CLUTTER_BIT |ITEM_BIT | TERRAIN_BIT;
+        filter.maskBits = ENEMY_BIT | CLUTTER_BIT |ITEM_BIT | TERRAIN_BIT | TREASURE_BIT | PORTAL_BIT;
         pointLight.setContactFilter(filter);
         pointLight.setSoft(true);
         pointLight.attachToBody(body);

@@ -11,6 +11,7 @@ import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
+import com.fruit.visual.messages.TextRenderer;
 
 /**
  * @Author FruitAddict
@@ -74,6 +75,7 @@ public class SphereOfProtection extends Item {
     @Override
     public void killYourself() {
         objectManager.removeObject(this);
-        Controller.addOnScreenMessage(new TextMessage("You feel protected...", getBody().getPosition().x * PIXELS_TO_METERS, getBody().getPosition().y * PIXELS_TO_METERS, 3, Assets.greenFont));
+        Controller.addOnScreenMessage(new TextMessage("You feel protected...", getBody().getPosition().x * PIXELS_TO_METERS,
+                getBody().getPosition().y * PIXELS_TO_METERS, 3, TextRenderer.greenFont,TextMessage.UP_AND_FALL));
     }
 }

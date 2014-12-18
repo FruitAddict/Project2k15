@@ -26,6 +26,8 @@ public abstract class Projectile extends MovableGameObject {
     protected Value damage;
     //speed of this velocity in logic units/s
     protected Value velocity;
+    //radius of the projectile
+    protected float radius;
 
     public abstract void onHit(Character character);
 

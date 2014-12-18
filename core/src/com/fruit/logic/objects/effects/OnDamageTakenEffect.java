@@ -20,4 +20,6 @@ public abstract class OnDamageTakenEffect {
     public void setEffectID(int effectID) {
         this.effectID = effectID;
     }
+
+    public abstract void join(OnDamageTakenEffect onDamageTakenEffect);
 }

@@ -1,10 +1,7 @@
 package com.fruit.logic.objects.entities.projectiles;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.fruit.SoundManager;
 import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.Value;
@@ -13,7 +10,7 @@ import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.Projectile;
 
 /**
- * Projectile class created by player.
+ * Projectile that will be shot by mobs.
  */
 public class MobProjectile extends Projectile {
     protected ObjectManager objectManager;
@@ -36,6 +33,10 @@ public class MobProjectile extends Projectile {
         setTypeID(Projectile.MOB_PROJECTILE);
         damage = new Value(0.5f);
         this.velocity = new Value(velocity);
+        //setting width, height and radius of the box2d body
+        width =24;
+        height=24;
+        radius = 12;
     }
     @Override
     public void onHit(Character character){
@@ -52,9 +53,6 @@ public class MobProjectile extends Projectile {
 
     @Override
     public void addToBox2dWorld(World world) {
-        //setting width and height
-        width = 24;
-        height = 24;
 
         //Player body definition
         BodyDef bodyDef = new BodyDef();
@@ -69,8 +67,8 @@ public class MobProjectile extends Projectile {
         body.setUserData(this);
 
         //Shape definiton
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/PIXELS_TO_METERS/2,height/PIXELS_TO_METERS/2);
+        CircleShape shape = new CircleShape();
+        shape.setRadius(radius / PIXELS_TO_METERS);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();

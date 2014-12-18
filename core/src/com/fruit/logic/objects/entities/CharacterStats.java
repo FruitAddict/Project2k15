@@ -17,13 +17,15 @@ public class CharacterStats {
     private float timeBetweenAttacksModifier = 1f;
 
     private float baseDamage = 1f;
-    private float baseDamageModifier =2f;
+    private float baseDamageModifier =1f;
 
     private float damageResistanceModifier = 1f;
 
     private float healingModifier = 1f;
 
     private float speed, maxVelocity;
+
+    private float criticalHitBase, criticalHitModifier = 1;
 
     public float getCombinedDamage(){
         return baseDamage * baseDamageModifier;
@@ -35,6 +37,10 @@ public class CharacterStats {
 
     public float getCombinedResistance(){
         return damageResistanceModifier;
+    }
+
+    public float getCombinedCriticalHitChance(){
+        return criticalHitBase*criticalHitModifier;
     }
 
     public void changeHealthPoints(float amount){
@@ -133,5 +139,21 @@ public class CharacterStats {
 
     public void resetMaxHealthPointsMultiplier(){
         maximumHealthPointsMultiplier = 1;
+    }
+
+    public float getCriticalHitBase() {
+        return criticalHitBase;
+    }
+
+    public void setCriticalHitBase(float criticalHitBase) {
+        this.criticalHitBase = criticalHitBase;
+    }
+
+    public float getCriticalHitModifier() {
+        return criticalHitModifier;
+    }
+
+    public void setCriticalHitModifier(float criticalHitModifier) {
+        this.criticalHitModifier = criticalHitModifier;
     }
 }

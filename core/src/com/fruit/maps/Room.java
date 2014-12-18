@@ -6,11 +6,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.logic.Constants;
 import com.fruit.logic.objects.entities.GameObject;
+import com.fruit.utilities.MapObjectParser;
 
 /**
  * Room class. Contains all the spawn& exit points and tiled map representation and items&entities stored.
  */
 public class Room implements Constants{
+
     //Tiled map representation of this room
     private TiledMap tiledMap;
     //Game objects this room contains (eg. clutter like rocks, mobs and items).
@@ -37,6 +39,7 @@ public class Room implements Constants{
         gameObjectsStored = new Array<GameObject>();
         mobSpawnPoints = new Array<Vector2>();
 
+        //get possible exit points in this room (so room transition can be blocked for the player easily)
         String exitPoints = tiledMap.getProperties().get("ExitPoints", String.class);
         if(exitPoints.contains("N")){
             exitPointN= true;
@@ -50,6 +53,8 @@ public class Room implements Constants{
         if(exitPoints.contains("E")){
             exitPointE = true;
         }
+        //parse and set spawn points and portals
+        MapObjectParser.addSpawnAndPortalPointsToRoom(this);
     }
 
     public Array<GameObject> getGameObjectsStored(){

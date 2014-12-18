@@ -12,6 +12,7 @@ import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
+import com.fruit.visual.messages.TextRenderer;
 
 /**
  * @Author FruitAddict
@@ -40,7 +41,8 @@ public class HealthPotion extends Item {
     public void onPickUp(Player player) {
         killYourself();
         player.addPassiveEffect(new HealOverTime(player,healDuration,healDelay,new Value(healAmount)));
-        Controller.addOnScreenMessage(new TextMessage("A health potion!",getBody().getPosition().x*PIXELS_TO_METERS,getBody().getPosition().y*PIXELS_TO_METERS,3, Assets.greenFont));
+        Controller.addOnScreenMessage(new TextMessage("A health potion!",getBody().getPosition().x*PIXELS_TO_METERS,
+                getBody().getPosition().y*PIXELS_TO_METERS,3, TextRenderer.greenFont,TextMessage.UP_AND_FALL));
     }
 
     @Override

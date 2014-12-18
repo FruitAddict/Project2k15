@@ -16,6 +16,7 @@ import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.projectiles.PlayerProjectile;
 import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
+import com.fruit.visual.messages.TextRenderer;
 
 public class Player extends com.fruit.logic.objects.entities.Character implements Constants {
     //coordinates at which the player is first spawned.
@@ -75,7 +76,12 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     }
 
     public void addOnDamageTakenEffect(OnDamageTakenEffect onDamageTakenEffect){
-        //TODO LOGIC CHECKING FOR TYPES
+        for(OnDamageTakenEffect effect : onDamageTakenEffects){
+            if(onDamageTakenEffect.getEffectID() == onDamageTakenEffect.getEffectID()){
+                effect.join(onDamageTakenEffect);
+                return;
+            }
+        }
         onDamageTakenEffects.add(onDamageTakenEffect);
     }
 
@@ -86,6 +92,12 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     }
 
     public void addOnHitEffect(OnHitEffect onHitEffect){
+        for(OnHitEffect effect : onHitEffects){
+            if(onHitEffect.getEffectID() == effect.getEffectID()){
+                effect.join(onHitEffect);
+                return;
+            }
+        }
         onHitEffects.add(onHitEffect);
     }
 
@@ -102,8 +114,8 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         }
         if(value.getValue()!=0) {
             stats.changeHealthPoints(-value.getValue() * stats.getCombinedResistance());
-            Controller.addOnScreenMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
-                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f);
+            Controller.addOnScreenMessage(new TextMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont,TextMessage.UP));
         }
     }
 
@@ -112,7 +124,7 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         if(amount.getValue()!=0) {
             stats.changeHealthPoints(amount.getValue() * stats.getHealingModifier());
             Controller.addOnScreenMessage(new TextMessage(Float.toString(amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
-                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, Assets.greenFont));
+                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.greenFont,TextMessage.UP));
         }
     }
 

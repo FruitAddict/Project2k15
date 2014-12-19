@@ -61,7 +61,6 @@ public class ObjectManager {
             //same thing for updating position rapidly
             for(UpdateRequest ur : scheduledToUpdatePos){
                 if(gameObjects.contains(ur.requestedObject,true)){
-                    System.out.println(ur.requestedPosition);
                     ur.requestedObject.getBody().setTransform(ur.requestedPosition,ur.requestedObject.getBody().getAngle());
                 }
             }

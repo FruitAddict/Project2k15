@@ -2,10 +2,9 @@ package com.fruit.logic;
 
 import com.badlogic.gdx.physics.box2d.*;
 import com.fruit.logic.objects.entities.Enemy;
-import com.fruit.logic.objects.entities.Projectile;
-import com.fruit.logic.objects.entities.projectiles.PlayerProjectile;
-import com.fruit.logic.objects.entities.projectiles.MobProjectile;
 import com.fruit.logic.objects.entities.player.Player;
+import com.fruit.logic.objects.entities.projectiles.MobProjectile;
+import com.fruit.logic.objects.entities.projectiles.PlayerProjectile;
 import com.fruit.logic.objects.items.Item;
 
 @SuppressWarnings("all")

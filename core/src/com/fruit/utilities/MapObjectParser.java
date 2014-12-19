@@ -1,5 +1,6 @@
 package com.fruit.utilities;
 
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -143,91 +144,114 @@ public class MapObjectParser implements Constants {
         worldUpdater.getObjectManager().addObjects(room.getGameObjectsStored());
     }
 
-    public static void addSpawnAndPortalPointsToRoom(Room room){
+    public static void addInfoFromTiledMapToRoom(Room room){
         room.setTileWidth(room.getTiledMap().getProperties().get("tilewidth", Integer.class));
         room.setTileHeight(room.getTiledMap().getProperties().get("tileheight", Integer.class));
 
         TiledMap map = room.getTiledMap();
-        MapObjects spawnPoints = map.getLayers().get("spawnPoints").getObjects();
-        Array<Rectangle> spawnPointRecs = new Array<>();
-        for(int i=0;i<spawnPoints.getCount();i++){
-            //cast mapobjects into rectangle map object and add their rectangle to the list.
-            RectangleMapObject object = (RectangleMapObject)spawnPoints.get(i);
-            spawnPointRecs.add(object.getRectangle());
-        }
-        for(int i =0;i<spawnPointRecs.size;i++){
-            String request = spawnPoints.get(i).getProperties().get("type",String.class);
-            if(request!=null) {
-                switch (request) {
-                    case "NORTH": {
-                        room.setSpawnPointNorth(new Vector2((spawnPointRecs.get(i).getX()+spawnPointRecs.get(i).getWidth()/2) / PIXELS_TO_METERS,
-                                (spawnPointRecs.get(i).getY()+spawnPointRecs.get(i).getHeight()/2)/ PIXELS_TO_METERS));
-                        break;
-                    }
-                    case "SOUTH": {
-                        room.setSpawnPointSouth(new Vector2((spawnPointRecs.get(i).getX()+spawnPointRecs.get(i).getWidth()/2) / PIXELS_TO_METERS,
-                                (spawnPointRecs.get(i).getY()+spawnPointRecs.get(i).getHeight()/2)/ PIXELS_TO_METERS));
-                        break;
-                    }
-                    case "EAST": {
-                        room.setSpawnPointEast(new Vector2((spawnPointRecs.get(i).getX()+spawnPointRecs.get(i).getWidth()/2) / PIXELS_TO_METERS,
-                                (spawnPointRecs.get(i).getY()+spawnPointRecs.get(i).getHeight()/2)/ PIXELS_TO_METERS));
-                        break;
-                    }
-                    case "WEST": {
-                        room.setSpawnPointWest(new Vector2((spawnPointRecs.get(i).getX()+spawnPointRecs.get(i).getWidth()/2) / PIXELS_TO_METERS,
-                                (spawnPointRecs.get(i).getY()+spawnPointRecs.get(i).getHeight()/2)/ PIXELS_TO_METERS));
-                        break;
-                    }
-                    case "CENTER": {
-                        room.setSpawnPointCenter(new Vector2((spawnPointRecs.get(i).getX()+spawnPointRecs.get(i).getWidth()/2) / PIXELS_TO_METERS,
-                                (spawnPointRecs.get(i).getY()+spawnPointRecs.get(i).getHeight()/2)/ PIXELS_TO_METERS));
-                        break;
-                    }
-                    default: {
-                        room.addMobSpawnPoint(new Vector2((spawnPointRecs.get(i).getX()+spawnPointRecs.get(i).getWidth()/2) / PIXELS_TO_METERS,
-                                (spawnPointRecs.get(i).getY()+spawnPointRecs.get(i).getHeight()/2)/ PIXELS_TO_METERS));
-                        break;
+
+        if(map.getLayers().get("spawnPoints")!=null) {
+            MapObjects spawnPoints = map.getLayers().get("spawnPoints").getObjects();
+            Array<Rectangle> spawnPointRecs = new Array<>();
+            for (int i = 0; i < spawnPoints.getCount(); i++) {
+                //cast mapobjects into rectangle map object and add their rectangle to the list.
+                RectangleMapObject object = (RectangleMapObject) spawnPoints.get(i);
+                spawnPointRecs.add(object.getRectangle());
+            }
+            for (int i = 0; i < spawnPointRecs.size; i++) {
+                String request = spawnPoints.get(i).getProperties().get("type", String.class);
+                if (request != null) {
+                    switch (request) {
+                        case "NORTH": {
+                            room.setSpawnPointNorth(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_METERS,
+                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                            break;
+                        }
+                        case "SOUTH": {
+                            room.setSpawnPointSouth(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_METERS,
+                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                            break;
+                        }
+                        case "EAST": {
+                            room.setSpawnPointEast(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_METERS,
+                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                            break;
+                        }
+                        case "WEST": {
+                            room.setSpawnPointWest(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_METERS,
+                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                            break;
+                        }
+                        case "CENTER": {
+                            room.setSpawnPointCenter(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_METERS,
+                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                            break;
+                        }
+                        default: {
+                            room.addMobSpawnPoint(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_METERS,
+                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                            break;
+                        }
                     }
                 }
             }
+        }else {
+            System.out.println("Warning! No spawn point layer found in " + room);
         }
 
         //parse portal objects
-        MapObjects portalMapObjects = room.getTiledMap().getLayers().get("portalObjects").getObjects();
-        //create array of rectangles based on portal objects
-        Array<Rectangle> portalRectangles = new Array<>();
+        if(room.getTiledMap().getLayers().get("portalObjects") != null) {
+            MapObjects portalMapObjects = room.getTiledMap().getLayers().get("portalObjects").getObjects();
+            //create array of rectangles based on portal objects
+            Array<Rectangle> portalRectangles = new Array<>();
 
-        for(int i=0;i<portalMapObjects.getCount();i++) {
-            //cast mapobjects into rectangle map object and add their rectangle to the list.
-            RectangleMapObject object = (RectangleMapObject) portalMapObjects.get(i);
-            String direction = object.getProperties().get("type", String.class);
-            portalRectangles.add(object.getRectangle());
-            switch (direction) {
-                case "NORTH": {
-                    //portalMapObjects and portalRectangles are the same size ( second is created on the base of first), so we know
-                    //this object was created and we can use it to set the portal center position(for use with map transition animation
-                    //alignment)
-                    room.setPortalPointNorth(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
-                            (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
-                    break;
-                }
-                case "SOUTH": {
-                    room.setPortalPointSouth(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
-                            (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
-                    break;
-                }
-                case "WEST": {
-                    room.setPortalPointWest(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
-                            (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
-                    break;
-                }
-                case "EAST": {
-                    room.setPortalPointEast(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
-                            (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
-                    break;
+            for (int i = 0; i < portalMapObjects.getCount(); i++) {
+                //cast mapobjects into rectangle map object and add their rectangle to the list.
+                RectangleMapObject object = (RectangleMapObject) portalMapObjects.get(i);
+                String direction = object.getProperties().get("type", String.class);
+                portalRectangles.add(object.getRectangle());
+                switch (direction) {
+                    case "NORTH": {
+                        //portalMapObjects and portalRectangles are the same size ( second is created on the base of first), so we know
+                        //this object was created and we can use it to set the portal center position(for use with map transition animation
+                        //alignment)
+                        room.setPortalPointNorth(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
+                                (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                        break;
+                    }
+                    case "SOUTH": {
+                        room.setPortalPointSouth(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
+                                (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                        break;
+                    }
+                    case "WEST": {
+                        room.setPortalPointWest(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
+                                (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                        break;
+                    }
+                    case "EAST": {
+                        room.setPortalPointEast(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
+                                (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                        break;
+                    }
                 }
             }
+        }else {
+            System.out.println("WARNING! No portal object layer found in " + room);
+        }
+
+         // Static lights section. Obtains info about light color, positioning and length if it exists.
+        //parse portal objects
+        //TODO Make it handle more shit
+        if(room.getTiledMap().getLayers().get("staticLights") != null) {
+            MapObjects staticLightObjects = room.getTiledMap().getLayers().get("staticLights").getObjects();
+
+            for(MapObject mapObject : staticLightObjects){
+                RectangleMapObject object = (RectangleMapObject)mapObject;
+                room.addStaticLightPosition(new Vector2(object.getRectangle().getX()/PIXELS_TO_METERS,object.getRectangle().getY()/PIXELS_TO_METERS));
+            }
+        }else {
+            System.out.println("WARNING! No static light layer found in " + room);
         }
     }
 }

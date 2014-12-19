@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.fruit.logic.Constants;
 import com.fruit.logic.objects.entities.Projectile;
-import com.fruit.logic.objects.entities.projectiles.MobProjectile;
+import com.fruit.utilities.Utils;
 import com.fruit.visual.Assets;
 
 public class ProjectileAnimationPack implements Constants{
@@ -31,8 +31,7 @@ public class ProjectileAnimationPack implements Constants{
     }
 
     public void render(float stateTime, Projectile projectile, SpriteBatch batch){
-        pos.set((projectile.getBody().getPosition().x*PIXELS_TO_METERS)-projectile.getWidth()/2,
-                (projectile.getBody().getPosition().y*PIXELS_TO_METERS)-projectile.getHeight()/2);
-        batch.draw(animation.getKeyFrame(stateTime,true),pos.x,pos.y,projectile.getWidth(),projectile.getHeight());
+        pos.set(Utils.getDrawPositionBasedOnBox2d(projectile));
+        batch.draw(animation.getKeyFrame(stateTime, true), pos.x, pos.y, projectile.getWidth(), projectile.getHeight());
     }
 }

@@ -9,7 +9,6 @@ import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.effects.onhit.PoisonOnHit;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.player.Player;
-import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
 import com.fruit.visual.messages.TextRenderer;
 

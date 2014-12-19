@@ -1,7 +1,10 @@
 package com.fruit.logic.objects.entities.projectiles;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.SoundManager;
 import com.fruit.logic.ObjectManager;
@@ -72,7 +75,7 @@ public class PlayerProjectile extends Projectile{
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.density = 1000f;
+        fixtureDef.density = 50f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = PLAYER_PROJECTILE_BIT;
         fixtureDef.filter.maskBits = (ENEMY_BIT | TERRAIN_BIT | CLUTTER_BIT | ITEM_BIT | PORTAL_BIT | TREASURE_BIT);

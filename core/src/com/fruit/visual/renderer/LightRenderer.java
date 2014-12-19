@@ -7,7 +7,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 import com.fruit.logic.Constants;
+import com.fruit.visual.PoolablePointLight;
 
 /**
  * @author FruitAddict
@@ -17,15 +19,29 @@ import com.fruit.logic.Constants;
 public class LightRenderer implements Constants {
     private WorldRenderer worldRenderer;
     private RayHandler rayHandler;
-    private Array<PointLight> pointLights;
-    private PointLight pointLight;
+    private PointLight playerLight;
+    private Pool<PoolablePointLight> lightPool;
+    private Array<PoolablePointLight> activeLights;
 
     public LightRenderer(WorldRenderer worldRenderer, World world){
         this.worldRenderer = worldRenderer;
         rayHandler = new RayHandler(world);
-        rayHandler.setAmbientLight(0.0f);
-        pointLights = new Array<PointLight>();
-        addPointLight(36, new Color(0f,0f,0f,1f), 6, worldRenderer.getWorldUpdater().getPlayer().getBody());
+        rayHandler.setAmbientLight(0.05f);
+        rayHandler.setCulling(true);
+
+        //create point light pool with the max size of 10
+        lightPool = new Pool<PoolablePointLight>(1,10) {
+            @Override
+            protected PoolablePointLight newObject() {
+                return new PoolablePointLight(rayHandler,12);
+            }
+        };
+
+        //create array of active lights.
+        activeLights = new Array<PoolablePointLight>();
+
+        //point light reserved for player.
+        playerLight = new PointLight(rayHandler,12);
     }
 
     public void render(){
@@ -33,26 +49,46 @@ public class LightRenderer implements Constants {
         rayHandler.updateAndRender();
     }
 
-    public void addPointLight(PointLight p){
-        pointLights.add(p);
+    public void freeAllLights(){
+        lightPool.freeAll(activeLights);
+        activeLights.clear();
     }
 
-    public void addPointLight(int rays, Color color,float distance, float x, float y){
-        PointLight pointLight = new PointLight(rayHandler,rays,color,distance,x,y);
-    }
-
-    public void addPointLight(int rays, Color color, float distance, Body body){
-        pointLight = new PointLight(rayHandler,rays,color,distance,0,0);
+    public void addPointLight(Color color, float length, float posX, float posY, boolean isStatic){
+        PoolablePointLight p = lightPool.obtain();
+        p.setActive(true);
+        p.setColor(color);
+        p.setDistance(length);
+        p.setPosition(posX, posY);
+        p.setStaticLight(isStatic);
         Filter filter = new Filter();
         filter.maskBits = ENEMY_BIT | CLUTTER_BIT |ITEM_BIT | TERRAIN_BIT | TREASURE_BIT | PORTAL_BIT;
-        pointLight.setContactFilter(filter);
-        pointLight.setSoft(true);
-        pointLight.attachToBody(body);
+        p.setContactFilter(filter);
+        p.setXray(true);
+        activeLights.add(p);
     }
 
-    //TODO REMOVE
-    public void changePlayerLightColor(Color c){
-        pointLight.setColor(c);
+    public void attachPointLightToBody(Body body,Color color, float length){
+        PoolablePointLight p = lightPool.obtain();
+        p.setColor(color);
+        p.setActive(true);
+        p.setDistance(length);
+        p.attachToBody(body);
+        Filter filter = new Filter();
+        filter.maskBits = ENEMY_BIT | CLUTTER_BIT |ITEM_BIT | TERRAIN_BIT | TREASURE_BIT | PORTAL_BIT;
+        p.setContactFilter(filter);
+        p.setXray(true);
+        activeLights.add(p);
+    }
+
+    public void setPlayerLight(Body body){
+        playerLight.attachToBody(body);
+        playerLight.setDistance(4.5f);
+        playerLight.setColor(new Color(0f,0f,0f,1f));
+        playerLight.setXray(true);
+        Filter filter = new Filter();
+        filter.maskBits = ENEMY_BIT | CLUTTER_BIT |ITEM_BIT | TERRAIN_BIT | TREASURE_BIT | PORTAL_BIT;
+        playerLight.setContactFilter(filter);
     }
 
     public RayHandler getRayHandler(){

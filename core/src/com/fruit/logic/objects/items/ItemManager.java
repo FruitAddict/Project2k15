@@ -11,10 +11,9 @@ import com.fruit.utilities.Utils;
 public class ItemManager {
 
     public static void addRandomItem(ObjectManager objectManager,float posX, float posY, int circleNumber){
-        System.out.println(Utils.randomGenerator.nextInt(4));
         switch(circleNumber){
             default:{
-                switch(Utils.randomGenerator.nextInt(5)){
+                switch(Utils.randomGenerator.nextInt(4)){
                     case 0:{
                         objectManager.addObject(new HealthPotion(objectManager,posX,posY,32,32,5f,0.5f,0.5f));
                         break;

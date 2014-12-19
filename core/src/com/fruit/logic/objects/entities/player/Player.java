@@ -2,8 +2,8 @@ package com.fruit.logic.objects.entities.player;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.Controller;
@@ -14,7 +14,6 @@ import com.fruit.logic.objects.effects.OnDamageTakenEffect;
 import com.fruit.logic.objects.effects.OnHitEffect;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.projectiles.PlayerProjectile;
-import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
 import com.fruit.visual.messages.TextRenderer;
 
@@ -143,9 +142,8 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         body.setUserData(this);
 
         //Shape definiton
-        PolygonShape shape = new PolygonShape();
-        //setAsBox take's half of width and height
-        shape.setAsBox(width/PIXELS_TO_METERS/2,height/PIXELS_TO_METERS/2);
+        CircleShape shape = new CircleShape();
+        shape.setRadius(Math.min(width, height) / 2 / PIXELS_TO_METERS);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();

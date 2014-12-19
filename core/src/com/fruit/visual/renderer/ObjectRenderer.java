@@ -1,15 +1,14 @@
 package com.fruit.visual.renderer;
 
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.logic.Constants;
 import com.fruit.logic.objects.entities.GameObject;
-import com.fruit.logic.objects.entities.MovableGameObject;
 import com.fruit.logic.objects.entities.Projectile;
 import com.fruit.logic.objects.entities.enemies.Dummy;
 import com.fruit.logic.objects.entities.enemies.MindlessWalker;
-import com.fruit.logic.objects.entities.projectiles.MobProjectile;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.logic.objects.items.Item;
 import com.fruit.visual.animationpacks.*;
@@ -78,7 +77,7 @@ public class ObjectRenderer implements Constants {
                 }
                 case GameObject.BOX:{
                     utilityAnimationPack.load();
-                    utilityAnimationPack.render(stateTime,(MovableGameObject)e,batch);
+                    utilityAnimationPack.render(stateTime,e,batch);
                     break;
                 }
                 case GameObject.ITEM: {

@@ -1,19 +1,15 @@
 package com.fruit.logic.objects.entities.enemies;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
 import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.GameObject;
-import com.fruit.logic.objects.entities.projectiles.MobProjectile;
 import com.fruit.logic.objects.entities.player.Player;
-import com.fruit.visual.Assets;
+import com.fruit.logic.objects.entities.projectiles.MobProjectile;
 import com.fruit.visual.messages.TextMessage;
 import com.fruit.visual.messages.TextRenderer;
 
@@ -27,6 +23,9 @@ public class MindlessWalker extends Enemy implements Constants{
     private int random;
     private boolean angered=false;
     private Vector2 attackDirectionNormalized;
+    private Vector2 lastKnownPlayerPosition;
+    boolean playerInSight=false;
+    private float lastRayCastCheck = 0;
 
     public MindlessWalker(ObjectManager objectManager, float spawnX, float spawnY){
         this.objectManager = objectManager;
@@ -44,6 +43,7 @@ public class MindlessWalker extends Enemy implements Constants{
         stats.setBaseDamageModifier(1f);
 
         attackDirectionNormalized = new Vector2();
+        lastKnownPlayerPosition = new Vector2();
     }
 
     @Override
@@ -97,22 +97,41 @@ public class MindlessWalker extends Enemy implements Constants{
             } else {
                 timeSpentDoingShit = 0;
             }
-        }else {
-            //TODO abstract out the AI and make it better but get done with the map generator first .
-            float distance = (float) (Math.sqrt(Math.pow(getBody().getPosition().x - objectManager.getPlayer().getBody().getPosition().x, 2) + Math.pow(getBody().getPosition().y - objectManager.getPlayer().getBody().getPosition().y, 2)));
-            if (distance > 2.5) {
-                if (objectManager.getPlayer().getBody().getPosition().x > getBody().getPosition().x) {
+        }else if(stateTime - lastRayCastCheck >1) {
+            lastRayCastCheck = stateTime;
+            playerInSight = false;
+            RayCastCallback rayCastCallback = new RayCastCallback() {
+
+                @Override
+                public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
+                    if(fixture.getFilterData().categoryBits==PLAYER_BIT) {
+                        playerInSight = true;
+                        return 0;
+                    }else {
+                        return 0;
+                    }
+                }
+            };
+            world.rayCast(rayCastCallback, body.getPosition(), objectManager.getPlayer().getBody().getPosition());
+            if(playerInSight){
+                lastKnownPlayerPosition.set(objectManager.getPlayer().getBody().getPosition());
+            }
+        }
+        if(playerInSight){
+            float distance = (float) (Math.sqrt(Math.pow(getBody().getPosition().x - lastKnownPlayerPosition.x, 2) + Math.pow(getBody().getPosition().y - lastKnownPlayerPosition.y, 2)));
+            if (distance > 2f) {
+                if (lastKnownPlayerPosition.x > getBody().getPosition().x) {
                     moveEast();
-                } else if (objectManager.getPlayer().getBody().getPosition().x < getBody().getPosition().x) {
+                } else if (lastKnownPlayerPosition.x < getBody().getPosition().x) {
                     moveWest();
                 }
-                if (objectManager.getPlayer().getBody().getPosition().y > getBody().getPosition().y) {
+                if (lastKnownPlayerPosition.y > getBody().getPosition().y) {
                     moveNorth();
-                } else if (objectManager.getPlayer().getBody().getPosition().y < getBody().getPosition().y) {
+                } else if (lastKnownPlayerPosition.y < getBody().getPosition().y) {
                     moveSouth();
                 }
             }
-            if(distance < 4.5){
+            if(distance < 3f){
                 attack();
             }
         }
@@ -123,8 +142,8 @@ public class MindlessWalker extends Enemy implements Constants{
     public void attack(){
         if(stateTime - lastAttack > stats.getCombinedAttackSpeed()) {
             //normalize the attack direction vector using new values
-            attackDirectionNormalized.set(getBody().getPosition().x - objectManager.getPlayer().getBody().getPosition().x,
-                    getBody().getPosition().y - objectManager.getPlayer().getBody().getPosition().y);
+            attackDirectionNormalized.set(getBody().getPosition().x - lastKnownPlayerPosition.x,
+                    getBody().getPosition().y - lastKnownPlayerPosition.y);
             attackDirectionNormalized.nor();
             attackDirectionNormalized.x*=-1;
             attackDirectionNormalized.y*=-1;
@@ -153,12 +172,12 @@ public class MindlessWalker extends Enemy implements Constants{
         body.setUserData(this);
 
         //Shape definiton
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/PIXELS_TO_METERS/2,height/PIXELS_TO_METERS/2);
+        CircleShape shape = new CircleShape();
+        shape.setRadius(Math.min(width, height)/2 / PIXELS_TO_METERS);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.density = 10f;
+        fixtureDef.density = 100f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = ENEMY_BIT;
         body.createFixture(fixtureDef);
@@ -194,4 +213,5 @@ public class MindlessWalker extends Enemy implements Constants{
                     getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.greenFont,TextMessage.UP));
         }
     }
+
 }

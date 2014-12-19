@@ -292,10 +292,7 @@ public class UserInterface extends Stage {
             }
         });
 
-        Listener listener = new Listener();
-        sliderBlue.addListener(listener);
-        sliderRed.addListener(listener);
-        sliderGreen.addListener(listener);
+
         showDebugOptions.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -320,11 +317,4 @@ public class UserInterface extends Stage {
 
     }
 
-    private class Listener extends ChangeListener{
-
-        @Override
-        public void changed(ChangeEvent event, Actor actor) {
-            Controller.getWorldRenderer().getLightRenderer().changePlayerLightColor(new Color(sliderRed.getValue()/255,sliderGreen.getValue()/255,sliderBlue.getValue()/255,1f));
-        }
-    }
 }

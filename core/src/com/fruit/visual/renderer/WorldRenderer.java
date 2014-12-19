@@ -3,6 +3,7 @@
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,6 +18,7 @@ import com.fruit.Controller;
 import com.fruit.logic.Constants;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.logic.objects.entities.GameObject;
+import com.fruit.utilities.Utils;
 import com.fruit.visual.GameCamera;
 import com.fruit.visual.messages.TextRenderer;
 import com.fruit.visual.tween.GameCameraAccessor;
@@ -60,6 +62,11 @@ public class WorldRenderer implements Constants {
         objectRenderer = new ObjectRenderer();
         textRenderer = new TextRenderer();
         lightRenderer = new LightRenderer(this, worldUpdater.getWorld());
+        lightRenderer.setPlayerLight(getWorldUpdater().getPlayer().getBody());
+        //initially add all the lights from the room if those exist
+        for(Vector2 vector2 : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()){
+            lightRenderer.addPointLight(new Color((float)Math.random(),(float)Math.random(),(float)Math.random(),1f),3,vector2.x,vector2.y,true);
+        }
         temporaryObjectArray = new Array<GameObject>();
     }
 
@@ -223,6 +230,11 @@ public class WorldRenderer implements Constants {
         //no matter if transition is requested or not, create a new tiled map renderer based on the new map
         tiledMapRenderer= null;
         tiledMapRenderer = new OrthogonalTiledMapRenderer(worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getTiledMap(),batch);
+        //free all the lights
+        lightRenderer.freeAllLights();
+        for(Vector2 vector2 : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()){
+            lightRenderer.addPointLight(new Color((float)Math.random(),(float)Math.random(),(float)Math.random(),1f),3,vector2.x,vector2.y,true);
+        }
     }
 
     public TextRenderer getTextRenderer() {

@@ -1,10 +1,14 @@
 package com.fruit.visual.animationpacks;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.fruit.logic.Constants;
 import com.fruit.logic.objects.entities.player.Player;
+import com.fruit.utilities.Utils;
 import com.fruit.visual.Assets;
 
 
@@ -73,8 +77,8 @@ public class PlayerAnimationPack implements Constants {
     }
 
     public void render(float stateTime, Player character, SpriteBatch batch){
-        pos.set((character.getBody().getPosition().x*PIXELS_TO_METERS)-character.getWidth()/2,
-                (character.getBody().getPosition().y*PIXELS_TO_METERS)-character.getHeight()/2);
+        //position for rendering, this alghorithm is the same for every renderable object
+        pos.set(Utils.getDrawPositionBasedOnBox2d(character));
         if(character.facingN || character.facingNE || character.facingNW){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
         }else if(character.facingS ||character.facingSE || character.facingSW){

@@ -35,7 +35,10 @@ public abstract class GameObject implements Constants{
     //temporally removed, for example when changing maps back and forth.
     protected float lastKnownX;
     protected float lastKnownY;
-
+    //Width and height of this game object. Only exists to be used with translating from
+    //logic coordinates to screen coordinates (Bodies origin point is at their center, textures origin
+    //points are at their bottom left corner.
+    protected float width, height;
 
     //Update method, can contain AI code etc.
     public abstract void update(float delta);
@@ -73,5 +76,12 @@ public abstract class GameObject implements Constants{
         this.lastKnownX = lastKnownX;
     }
 
+    public float getWidth(){
+        return width;
+    }
+
+    public float getHeight(){
+        return height;
+    }
 
 }

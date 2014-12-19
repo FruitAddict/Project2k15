@@ -1,8 +1,8 @@
 package com.fruit.logic.objects.entities.enemies;
 
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.Controller;
 import com.fruit.logic.ObjectManager;
@@ -10,7 +10,6 @@ import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.player.Player;
-import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
 import com.fruit.visual.messages.TextRenderer;
 
@@ -52,8 +51,8 @@ public class Dummy extends Enemy{
         body.setUserData(this);
 
         //Shape definiton
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/PIXELS_TO_METERS/2,height/PIXELS_TO_METERS/2);
+        CircleShape shape = new CircleShape();
+        shape.setRadius(Math.min(width, height) / 2 / PIXELS_TO_METERS);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();

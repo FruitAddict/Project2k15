@@ -26,7 +26,6 @@ public class Box extends Enemy{
         setSaveInRooms(DO_SAVE);
         stats.setHealthPoints(5);
         stats.setBaseMaximumHealthPoints(5);
-        System.out.println(stats.getHealthPoints());
     }
 
     @Override
@@ -81,7 +80,6 @@ public class Box extends Enemy{
         stats.changeHealthPoints(-1);
         Controller.addOnScreenMessage(new TextMessage("Booo!", getBody().getPosition().x * PIXELS_TO_METERS,
                 getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont,TextMessage.UP));
-        System.out.println(stats.getHealthPoints());
     }
 
     @Override

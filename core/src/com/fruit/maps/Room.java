@@ -33,11 +33,14 @@ public class Room implements Constants{
     private Array<Vector2> mobSpawnPoints;
     //tile height&width
     private float tileWidth, tileHeight;
+    //array to hold info about lights
+    private Array<Vector2> staticLightPositions;
 
     public Room(TiledMap tiledMap){
         this.tiledMap = tiledMap;
         gameObjectsStored = new Array<GameObject>();
         mobSpawnPoints = new Array<Vector2>();
+        staticLightPositions = new Array<Vector2>();
 
         //get possible exit points in this room (so room transition can be blocked for the player easily)
         String exitPoints = tiledMap.getProperties().get("ExitPoints", String.class);
@@ -54,7 +57,7 @@ public class Room implements Constants{
             exitPointE = true;
         }
         //parse and set spawn points and portals
-        MapObjectParser.addSpawnAndPortalPointsToRoom(this);
+        MapObjectParser.addInfoFromTiledMapToRoom(this);
     }
 
     public Array<GameObject> getGameObjectsStored(){
@@ -62,8 +65,6 @@ public class Room implements Constants{
     }
 
     public void addGameObject(GameObject o){
-
-        System.out.println(o.getSaveInRooms());
         if(o.getSaveInRooms()== DO_SAVE){
             gameObjectsStored.add(o);
         }
@@ -223,5 +224,13 @@ public class Room implements Constants{
 
     public void addMobSpawnPoint(Vector2 vector2){
         mobSpawnPoints.add(vector2);
+    }
+
+    public Array<Vector2> getStaticLightPositions(){
+        return staticLightPositions;
+    }
+
+    public void addStaticLightPosition(Vector2 pos){
+        staticLightPositions.add(pos);
     }
 }

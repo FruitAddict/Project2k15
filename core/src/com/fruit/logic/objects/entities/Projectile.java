@@ -7,7 +7,7 @@ import com.fruit.logic.objects.Value;
 /**
  * Abstract projectile class.
  */
-public abstract class Projectile extends MovableGameObject {
+public abstract class Projectile extends GameObject {
     //projectile types
     public static final int PLAYER_PROJECTILE = 1;
     public static final int MOB_PROJECTILE = 2;

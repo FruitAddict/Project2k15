@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.fruit.logic.Constants;
 import com.fruit.logic.objects.entities.enemies.Dummy;
+import com.fruit.utilities.Utils;
 import com.fruit.visual.Assets;
 
 public class DummyAnimationPack implements Constants {
@@ -41,9 +42,8 @@ public class DummyAnimationPack implements Constants {
     }
 
     public void render(float stateTime, Dummy dummy, SpriteBatch batch){
-        pos.set((dummy.getBody().getPosition().x*PIXELS_TO_METERS)-dummy.getWidth()/2,
-                (dummy.getBody().getPosition().y*PIXELS_TO_METERS)-dummy.getHeight()/2);
-        batch.draw(animation.getKeyFrame(stateTime,true),pos.x,pos.y,dummy.getWidth(),dummy.getHeight());
+        pos.set(Utils.getDrawPositionBasedOnBox2d(dummy));
+                batch.draw(animation.getKeyFrame(stateTime, true), pos.x, pos.y, dummy.getWidth(), dummy.getHeight());
         if(dummy.status.isHealing()){
             effectRenderer.render(batch, stateTime, EffectRenderer.HEALED, pos.x, pos.y, dummy.getWidth(), dummy.getHeight());
         }

@@ -5,7 +5,6 @@ import com.fruit.logic.Constants;
 import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.effects.OnDamageTakenEffect;
 import com.fruit.logic.objects.entities.player.Player;
-import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
 import com.fruit.visual.messages.TextRenderer;
 

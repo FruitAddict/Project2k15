@@ -14,7 +14,7 @@ import com.fruit.logic.objects.effects.PassiveEffect;
  * e.g. moveEast(), moveWest(). etc. Those methods will move the object automatically
  * according to their speed and maxVelocity (the entity can still be pushed over its limit)
  */
-public abstract class Character extends MovableGameObject {
+public abstract class Character extends GameObject {
 
     public boolean facingW, facingE, facingN, facingS,
                    facingNE, facingNW, facingSE, facingSW, idle;

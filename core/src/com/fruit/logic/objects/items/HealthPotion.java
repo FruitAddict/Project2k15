@@ -10,7 +10,6 @@ import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.effects.passive.HealOverTime;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.player.Player;
-import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextMessage;
 import com.fruit.visual.messages.TextRenderer;
 
@@ -81,7 +80,6 @@ public class HealthPotion extends Item {
 
     @Override
     public void killYourself() {
-        System.out.println("hp potion picked");
         objectManager.removeObject(this);
     }
 }

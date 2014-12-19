@@ -1,9 +1,9 @@
 package com.fruit.logic.objects.items;
 
-import com.fruit.logic.objects.entities.MovableGameObject;
+import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.player.Player;
 
-public abstract class Item extends MovableGameObject {
+public abstract class Item extends GameObject {
     //item types
     public static final int HEART = 1;
     public static final int DAMAGE_UP_1 =2;

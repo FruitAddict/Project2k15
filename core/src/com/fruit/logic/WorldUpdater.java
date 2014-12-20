@@ -20,7 +20,7 @@ public class WorldUpdater {
         world = new World(new Vector2(0,0), true);
         world.setContactListener(new WorldContactListener(this));
         objectManager = new ObjectManager(this);
-        mapManager = new MapManager(this, true);
+        mapManager = new MapManager(this, true, 1337); //seeds TODO seeds should be added in menu
     }
 
     public void update(float delta){

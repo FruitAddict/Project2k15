@@ -1,6 +1,7 @@
 package com.fruit.maps;
 
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -34,13 +35,13 @@ public class Room implements Constants{
     //tile height&width
     private float tileWidth, tileHeight;
     //array to hold info about lights
-    private Array<Vector2> staticLightPositions;
+    private Array<StaticLightContainer> staticLightPositions;
 
     public Room(TiledMap tiledMap){
         this.tiledMap = tiledMap;
         gameObjectsStored = new Array<GameObject>();
         mobSpawnPoints = new Array<Vector2>();
-        staticLightPositions = new Array<Vector2>();
+        staticLightPositions = new Array<StaticLightContainer>();
 
         //get possible exit points in this room (so room transition can be blocked for the player easily)
         String exitPoints = tiledMap.getProperties().get("ExitPoints", String.class);
@@ -226,11 +227,26 @@ public class Room implements Constants{
         mobSpawnPoints.add(vector2);
     }
 
-    public Array<Vector2> getStaticLightPositions(){
+    public Array<StaticLightContainer> getStaticLightPositions(){
         return staticLightPositions;
     }
 
-    public void addStaticLightPosition(Vector2 pos){
-        staticLightPositions.add(pos);
+    public void addStaticLight(Vector2 position, Color color,float length){
+        staticLightPositions.add(new StaticLightContainer(position,color,length));
+    }
+
+    public class StaticLightContainer{
+        /**
+         * This class contains x,y positions of a light and its color
+         */
+        public Vector2 position;
+        public Color color;
+        public float length;
+
+        public StaticLightContainer(Vector2 position, Color color, float length){
+            this.position = position;
+            this.color = color;
+            this.length = length;
+        }
     }
 }

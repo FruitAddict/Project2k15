@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
 import com.fruit.logic.WorldUpdater;
+import com.fruit.utilities.Utils;
 import com.fruit.visual.Assets;
 
 public class MapManager implements Constants {
@@ -17,12 +18,15 @@ public class MapManager implements Constants {
     //reference to the current map ( the one player is in)
     private Map currentMap;
 
-    public MapManager(WorldUpdater updater, boolean newGame){
+    public MapManager(WorldUpdater updater, boolean newGame, long seed){
         this.worldUpdater = updater;
+        //seed the random
+        Utils.initializeMapRandomGen(seed);
         if(newGame){
             Assets.disposeAll();
             //create the first circle map.
-            currentMap = new Map(this, 1);
+            //currentMap = MapGenerator.generateMap(1);
+            currentMap = new Map(this,1);
         }
     }
 
@@ -88,13 +92,13 @@ public class MapManager implements Constants {
         }
     }
 
-    public void onMapChange(Vector2 portalPosition, Vector2 spawnPos,int direction, boolean transition){
+    public void onMapChange(Vector2 portalPosition, Vector2 spawnPos,int direction, boolean doSmoothTransition){
         //on map change, tell the object manager to remove everything and re-add it based on the new map
         worldUpdater.getObjectManager().onMapChange();
         //tell the world renderer to change map that is rendered to the new one and pass it the new spawn position
         //and transition boolean (see changeRenderedMap method)
         Controller.getWorldRenderer().changeRenderedMap(new Vector2(portalPosition.x*PIXELS_TO_METERS,portalPosition.y*PIXELS_TO_METERS),
-                new Vector2(spawnPos.x*PIXELS_TO_METERS, spawnPos.y*PIXELS_TO_METERS), direction, transition);
+                new Vector2(spawnPos.x*PIXELS_TO_METERS, spawnPos.y*PIXELS_TO_METERS), direction, doSmoothTransition);
     }
 
     public float getCurrentMapWidth(){

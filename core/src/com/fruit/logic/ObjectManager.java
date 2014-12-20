@@ -8,6 +8,7 @@ import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.utilities.MapObjectParser;
 
 public class ObjectManager {
+
     //array to store game objects
     private Array<GameObject> gameObjects;
     //array to store objects scheduled to be added to the world
@@ -16,14 +17,13 @@ public class ObjectManager {
     private Array<GameObject> scheduledToRemove;
     //array to store objects that are scheduled to get their position changed
     //e.g. player during changing rooms.
-    private Array<UpdateRequest> scheduledToUpdatePos;
-
+    private Array<PositionUpdateRequest> scheduledToUpdatePos;
     //reference to the player
     private Player player;
-
     //box2d worldupdater reference
     private WorldUpdater worldUpdater;
-
+    //when removeFlag is true, the update method will remove everything from both the object array
+    //and the game world except for player and then turn this flag to false.
     private boolean removeFlag = false;
 
     public ObjectManager(WorldUpdater updater){
@@ -59,7 +59,7 @@ public class ObjectManager {
         scheduledToRemove.clear();
         if(scheduledToUpdatePos.size>0){
             //same thing for updating position rapidly
-            for(UpdateRequest ur : scheduledToUpdatePos){
+            for(PositionUpdateRequest ur : scheduledToUpdatePos){
                 if(gameObjects.contains(ur.requestedObject,true)){
                     ur.requestedObject.getBody().setTransform(ur.requestedPosition,ur.requestedObject.getBody().getAngle());
                 }
@@ -137,7 +137,7 @@ public class ObjectManager {
     }
 
     public void requestPositionChange(GameObject o, Vector2 position){
-        scheduledToUpdatePos.add(new UpdateRequest(o,position));
+        scheduledToUpdatePos.add(new PositionUpdateRequest(o,position));
     }
 
     public Player getPlayer(){
@@ -156,11 +156,16 @@ public class ObjectManager {
         return worldUpdater;
     }
 
-    private class UpdateRequest{
+    private class PositionUpdateRequest {
+        /**
+         * Inner class to queue position update requests up easily.
+         * Contains reference to the object (subject to pos. request) and vector2
+         * with requested position.
+         */
         private Vector2 requestedPosition;
         private GameObject requestedObject;
 
-        public UpdateRequest(GameObject requestedObject , Vector2 requestedPosition){
+        public PositionUpdateRequest(GameObject requestedObject, Vector2 requestedPosition){
             this.requestedObject = requestedObject;
             this.requestedPosition = requestedPosition;
         }

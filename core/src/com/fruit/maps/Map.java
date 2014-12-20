@@ -13,23 +13,15 @@ public class Map implements Constants {
     private Array<Room> roomArray;
     //current room (the one player is in)
     private Room currentRoom;
+    private char[][] minimapMatrix;
 
     //constructor takes MapManager reference and number of the circle to be generated. Right now there is
     //no save-game capability.
     public Map(MapManager mapManager, int circleNumber){ //circle number is level to be generated
         this.mapManager = mapManager;
         roomArray = new Array<>();
-        switch(circleNumber) {
-            case 1 : {
-                createFirstCircleLevel();
-                break;
-            }
-            default:{
-                assert false : "Error";
-                System.out.println("Couldn't generate requested map.");
-                System.exit(1);
-            }
-        }
+        minimapMatrix = new char[5][5];
+        createTestLevel();
     }
 
     public void addRoom(Room room){
@@ -50,11 +42,11 @@ public class Map implements Constants {
         }
     }
 
-    public void createFirstCircleLevel(){
-        Room firstRoom = new Room((TiledMap)Assets.getAsset("Room1.tmx",TiledMap.class));
-        Room secondRoom = new Room((TiledMap)Assets.getAsset("Room2.tmx",TiledMap.class));
-        Room thirdRoom = new Room((TiledMap)Assets.getAsset("Room3.tmx",TiledMap.class));
-        Room fourthRoom = new Room((TiledMap)Assets.getAsset("Room4.tmx",TiledMap.class));
+    public void createTestLevel(){
+        Room firstRoom = new Room((TiledMap)Assets.getAsset("maps//Room1.tmx",TiledMap.class));
+        Room secondRoom = new Room((TiledMap)Assets.getAsset("maps//Room2.tmx",TiledMap.class));
+        Room thirdRoom = new Room((TiledMap)Assets.getAsset("maps//Room3.tmx",TiledMap.class));
+        Room fourthRoom = new Room((TiledMap)Assets.getAsset("maps//Room4.tmx",TiledMap.class));
         addRoom(firstRoom);
         addRoom(secondRoom);
         addRoom(thirdRoom);

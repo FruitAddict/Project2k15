@@ -18,6 +18,7 @@ import com.fruit.Controller;
 import com.fruit.logic.Constants;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.logic.objects.entities.GameObject;
+import com.fruit.maps.Room;
 import com.fruit.utilities.Utils;
 import com.fruit.visual.GameCamera;
 import com.fruit.visual.messages.TextRenderer;
@@ -64,8 +65,8 @@ public class WorldRenderer implements Constants {
         lightRenderer = new LightRenderer(this, worldUpdater.getWorld());
         lightRenderer.setPlayerLight(getWorldUpdater().getPlayer().getBody());
         //initially add all the lights from the room if those exist
-        for(Vector2 vector2 : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()){
-            lightRenderer.addPointLight(new Color((float)Math.random(),(float)Math.random(),(float)Math.random(),1f),3,vector2.x,vector2.y,true);
+        for(Room.StaticLightContainer container : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()){
+            lightRenderer.addPointLight(container.color,container.length,container.position.x,container.position.y,true);
         }
         temporaryObjectArray = new Array<GameObject>();
     }
@@ -232,8 +233,8 @@ public class WorldRenderer implements Constants {
         tiledMapRenderer = new OrthogonalTiledMapRenderer(worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getTiledMap(),batch);
         //free all the lights
         lightRenderer.freeAllLights();
-        for(Vector2 vector2 : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()){
-            lightRenderer.addPointLight(new Color((float)Math.random(),(float)Math.random(),(float)Math.random(),1f),3,vector2.x,vector2.y,true);
+        for(Room.StaticLightContainer container : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()){
+            lightRenderer.addPointLight(container.color,container.length,container.position.x,container.position.y,true);
         }
     }
 

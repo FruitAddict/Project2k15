@@ -1,5 +1,6 @@
 package com.fruit.utilities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -248,7 +249,16 @@ public class MapObjectParser implements Constants {
 
             for(MapObject mapObject : staticLightObjects){
                 RectangleMapObject object = (RectangleMapObject)mapObject;
-                room.addStaticLightPosition(new Vector2(object.getRectangle().getX()/PIXELS_TO_METERS,object.getRectangle().getY()/PIXELS_TO_METERS));
+                String redProperty = (object.getProperties().get("RED")!=null)?object.getProperties().get("RED",String.class):"0";
+                float red = Float.parseFloat(redProperty);
+                String greenProperty = (object.getProperties().get("GREEN")!=null)?object.getProperties().get("GREEN",String.class):"0";
+                float green = Float.parseFloat(greenProperty);
+                String blueProperty = (object.getProperties().get("BLUE")!=null)?object.getProperties().get("BLUE",String.class):"0";
+                float blue= Float.parseFloat(blueProperty);
+                String lengthProperty = (object.getProperties().get("LENGTH")!=null)?object.getProperties().get("LENGTH",String.class):"2";
+                float length = Float.parseFloat(lengthProperty);
+                room.addStaticLight(new Vector2(object.getRectangle().getX()/PIXELS_TO_METERS,object.getRectangle().getY()/PIXELS_TO_METERS),
+                        new Color(red,green,blue,1f),length);
             }
         }else {
             System.out.println("WARNING! No static light layer found in " + room);

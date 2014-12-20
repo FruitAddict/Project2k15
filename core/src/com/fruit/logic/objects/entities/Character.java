@@ -49,35 +49,35 @@ public abstract class Character extends GameObject {
             //body is idle
             setFacings(false);
             idle = true;
-        }else if(body.getLinearVelocity().y > stats.getMaxVelocity()/2 && body.getLinearVelocity().x < stats.getMaxVelocity()/2 && body.getLinearVelocity().x > -stats.getMaxVelocity()/2){
+        }else if(body.getLinearVelocity().y > stats.getMaxVelocity()/3 && body.getLinearVelocity().x < stats.getMaxVelocity()/3 && body.getLinearVelocity().x > -stats.getMaxVelocity()/3){
             //body is facing NORTH
             setFacings(false);
             facingN = true;
-        }else if(body.getLinearVelocity().y>stats.getMaxVelocity()/2 && body.getLinearVelocity().x > stats.getMaxVelocity()/2){
+        }else if(body.getLinearVelocity().y>stats.getMaxVelocity()/3 && body.getLinearVelocity().x > stats.getMaxVelocity()/3){
             //body is facing NORTH-EAST
             setFacings(false);
             facingNE = true;
-        }else if(body.getLinearVelocity().y>stats.getMaxVelocity()/2 && body.getLinearVelocity().x < -stats.getMaxVelocity()/2){
+        }else if(body.getLinearVelocity().y>stats.getMaxVelocity()/3 && body.getLinearVelocity().x < -stats.getMaxVelocity()/3){
             //body is facing NORTH-WEST
             setFacings(false);
             facingNW = true;
-        }else if(body.getLinearVelocity().x>stats.getMaxVelocity()/2 && body.getLinearVelocity().y <stats.getMaxVelocity()/2 && body.getLinearVelocity().y>-stats.getMaxVelocity()/2){
+        }else if(body.getLinearVelocity().x>stats.getMaxVelocity()/3 && body.getLinearVelocity().y <stats.getMaxVelocity()/3 && body.getLinearVelocity().y>-stats.getMaxVelocity()/3){
             //body is facing EAST
             setFacings(false);
             facingE=true;
-        }else if(body.getLinearVelocity().x <= -stats.getMaxVelocity()/2 && body.getLinearVelocity().y < stats.getMaxVelocity()/2 && body.getLinearVelocity().y >-stats.getMaxVelocity()/2){
+        }else if(body.getLinearVelocity().x <= -stats.getMaxVelocity()/3 && body.getLinearVelocity().y < stats.getMaxVelocity()/3 && body.getLinearVelocity().y >-stats.getMaxVelocity()/3){
             //body is facing WEST
             setFacings(false);
             facingW = true;
-        }else if(body.getLinearVelocity().x <= -stats.getMaxVelocity()/2 && body.getLinearVelocity().y <=-stats.getMaxVelocity()/2){
+        }else if(body.getLinearVelocity().x <= -stats.getMaxVelocity()/3 && body.getLinearVelocity().y <=-stats.getMaxVelocity()/3){
             //body is facing SOUTH-WEST
             setFacings(false);
             facingSW = true;
-        }else if(body.getLinearVelocity().y < -stats.getMaxVelocity()/2 && body.getLinearVelocity().x < stats.getMaxVelocity()/2 && body.getLinearVelocity().x > -stats.getMaxVelocity()/2){
+        }else if(body.getLinearVelocity().y < -stats.getMaxVelocity()/3 && body.getLinearVelocity().x < stats.getMaxVelocity()/3 && body.getLinearVelocity().x > -stats.getMaxVelocity()/3){
             //body is facing SOUTH
             setFacings(false);
             facingS = true;
-        }else if(body.getLinearVelocity().x > stats.getMaxVelocity()/2 && body.getLinearVelocity().y < -stats.getMaxVelocity()/2){
+        }else if(body.getLinearVelocity().x > stats.getMaxVelocity()/3 && body.getLinearVelocity().y < -stats.getMaxVelocity()/3){
             //body is facing SOUTH-EAST
             setFacings(false);
             facingSE=true;

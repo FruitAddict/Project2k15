@@ -40,6 +40,8 @@ public class GameScreen implements Screen {
     private CustomInputMultiplexer customInputMultiplexer;
     //User Interface in-game. Different than the main menu
     private UserInterface userInterface;
+    //vector 2 storing current camera dimensions
+    Vector2 cameraDimensions;
 
     public GameScreen(MainGame game){
         this.game = game;
@@ -61,6 +63,8 @@ public class GameScreen implements Screen {
 
         //make camera follow the player
         camera.setObjectToFollow(worldUpdater.getObjectManager().getPlayer());
+        //create camera dimensions vector
+        cameraDimensions = new Vector2();
     }
     @Override
     public void render(float delta) {
@@ -74,16 +78,16 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         //Resize camera viewport
-        Vector2 cameraPosition = Scaling.fit.apply(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),840,480);
-        camera.setToOrtho(false, cameraPosition.x,cameraPosition.y);
+        cameraDimensions.set(Scaling.fit.apply(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),840,480));
+        camera.setToOrtho(false, cameraDimensions.x,cameraDimensions.y);
         userInterface.getViewport().update(width, height, true);
     }
 
     @Override
     public void show() {
         //setting up the camera after show is called (e.g. switching from app to app)
-        Vector2 cameraPosition = Scaling.fit.apply(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),840,480);
-        camera.setToOrtho(false, cameraPosition.x,cameraPosition.y);
+        cameraDimensions.set(Scaling.fit.apply(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),840,480));
+        camera.setToOrtho(false, cameraDimensions.x,cameraDimensions.y);
         userInterface.getViewport().update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),true);
     }
 

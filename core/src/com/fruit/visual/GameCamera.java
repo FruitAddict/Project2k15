@@ -18,14 +18,11 @@ import com.fruit.visual.tween.GameCameraAccessor;
  * @see com.fruit.visual.renderer.WorldRenderer
  */
 public class GameCamera extends OrthographicCamera implements Constants {
-
     private boolean freeCamera = false;
-
-    private float mapWidth;
-    private float mapHeight;
     private float lerpValue = 0.1f;
     private GameObject followedObject;
     public TweenCallback followObjectCallback;
+    private Vector3 lerpVector;
 
     public GameCamera(){
         //call super default constructor of the orthographic camera class
@@ -41,18 +38,20 @@ public class GameCamera extends OrthographicCamera implements Constants {
                 System.out.println("callback reached");
             }
         };
+        //init lerp vector
+        lerpVector = new Vector3();
     }
 
     public void updateCameraMovement(){
         if(!freeCamera && followedObject!= null){
-            mapWidth = Controller.getWorldUpdater().getMapManager().getCurrentMapWidth();
-            mapHeight = Controller.getWorldUpdater().getMapManager().getCurrentMapHeight();
+            float mapWidth = Controller.getWorldUpdater().getMapManager().getCurrentMapWidth();
+            float mapHeight = Controller.getWorldUpdater().getMapManager().getCurrentMapHeight();
 
-             //Camera translating algorithm. Initially moves the camera to the player position (centered), then checks whether the current camera
+             //Camera translating algorithm. Initially lerps the camera to the player position (centered), then checks whether the current camera
              //position overlaps the map boundaries. If so, sets it to the corner
 
-            Vector3 lerpVector = new Vector3((((followedObject.getBody().getPosition().x)*PIXELS_TO_METERS)),
-                    (followedObject.getBody().getPosition().y*PIXELS_TO_METERS), 0);
+            lerpVector.set((((followedObject.getBody().getPosition().x) * PIXELS_TO_METERS)),
+                    (followedObject.getBody().getPosition().y * PIXELS_TO_METERS), 0);
 
             position.lerp(lerpVector, lerpValue);
 

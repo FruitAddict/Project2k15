@@ -2,8 +2,10 @@ package com.fruit.logic;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.fruit.Controller;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.maps.MapManager;
+import com.fruit.utilities.MapObjectParser;
 
 public class WorldUpdater {
     //Box2D world
@@ -17,10 +19,13 @@ public class WorldUpdater {
 
     public WorldUpdater(){
         //world init. with no gravity (0,0) and sleeping enabled
+        Controller.registerWorldUpdater(this);
         world = new World(new Vector2(0,0), true);
         world.setContactListener(new WorldContactListener(this));
         objectManager = new ObjectManager(this);
-        mapManager = new MapManager(this, true, 1337); //seeds TODO seeds should be added in menu
+        mapManager = new MapManager(this, 1337); //seeds TODO seeds should be added in menu
+        //add any objects that are in the current room to the game world.
+        //MapObjectParser.addMapObjectsToWorld(this, mapManager.getCurrentMap().getCurrentRoom());
     }
 
     public void update(float delta){

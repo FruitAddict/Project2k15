@@ -51,11 +51,13 @@ public class UserInterface extends Stage {
     public void act(float delta){
         super.act(delta);
         firstLabel.setText(Float.toString(Gdx.graphics.getFramesPerSecond())+" FPS");
+        /**
+         *
         secondLabel.setText("Objects: " + updater.getObjectManager().getNumberOfObjects());
         posLabel.setText(String.format("X: %.2f Y: %.2f", updater.getObjectManager().getPlayer().getBody().getPosition().x,
                 updater.getObjectManager().getPlayer().getBody().getPosition().y));
         hpLabel.setText(String.format("Player hp: %.2f", updater.getObjectManager().getPlayer().stats.getHealthPoints()));
-
+         */
         //update movement
         updater.getObjectManager().getPlayer().addLinearVelocity(touchpadMove.getKnobPercentX() * updater
                 .getObjectManager().getPlayer().stats.getSpeed(), touchpadMove.getKnobPercentY() * updater.getObjectManager().getPlayer().stats.getSpeed());
@@ -211,9 +213,9 @@ public class UserInterface extends Stage {
         addDummy.setVisible(false);
         clearObjects.setVisible(false);
         addActor(table);
-        addActor(buttonTable);
-        addActor(colorSliders);
-        table.setVisible(false);
+        //addActor(buttonTable);
+        //addActor(colorSliders);
+        table.setVisible(true);
         colorSliders.setVisible(false);
 
         sliderZoom.getStyle().knob.setMinWidth(10);
@@ -224,7 +226,7 @@ public class UserInterface extends Stage {
         posLabel = new Label("",skin);
         hpLabel = new Label("",skin);
         table.addActor(firstLabel);
-        table.addActor(secondLabel);
+        /**table.addActor(secondLabel);
         table.addActor(posLabel);
         table.addActor(hpLabel);
         table.addActor(infoZoom);
@@ -232,6 +234,7 @@ public class UserInterface extends Stage {
         table.addActor(infoAttack);
         table.addActor(sliderAttack);
         table.addActor(shadows);
+         */
 
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
         // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.

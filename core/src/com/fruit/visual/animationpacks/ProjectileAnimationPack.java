@@ -31,7 +31,7 @@ public class ProjectileAnimationPack implements Constants{
     }
 
     public void render(float stateTime, Projectile projectile, SpriteBatch batch){
-        pos.set(Utils.getDrawPositionBasedOnBox2d(projectile));
+        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(projectile));
         batch.draw(animation.getKeyFrame(stateTime, true), pos.x, pos.y, projectile.getWidth(), projectile.getHeight());
     }
 }

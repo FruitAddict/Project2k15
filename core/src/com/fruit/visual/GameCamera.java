@@ -40,6 +40,8 @@ public class GameCamera extends OrthographicCamera implements Constants {
         };
         //init lerp vector
         lerpVector = new Vector3();
+        //set zoom to 0.65
+        zoom = 0.65f;
     }
 
     public void updateCameraMovement(){

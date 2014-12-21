@@ -51,11 +51,6 @@ public class GameScreen implements Screen {
         worldRenderer = new WorldRenderer(spriteBatch,camera, worldUpdater);
         userInterface = new UserInterface(camera,worldUpdater);
 
-        //registering renderer and updater to controller utility class for communication between logic
-        //and rendering
-        Controller.registerWorldRenderer(worldRenderer);
-        Controller.registerWorldUpdater(worldUpdater);
-
         //input stuff
         WorldInputProcessor worldInputProcessor = new WorldInputProcessor(worldUpdater.getObjectManager().getPlayer(), camera);
         customInputMultiplexer = new CustomInputMultiplexer(userInterface, worldInputProcessor);

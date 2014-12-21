@@ -93,7 +93,7 @@ public class PlayerProjectile extends Projectile{
     @Override
     public void killYourself() {
         objectManager.removeObject(this);
-        SoundManager.sound.play();
+        //SoundManager.sound.play();
     }
 
 }

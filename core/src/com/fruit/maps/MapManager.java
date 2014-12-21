@@ -17,17 +17,18 @@ public class MapManager implements Constants {
     private WorldUpdater worldUpdater;
     //reference to the current map ( the one player is in)
     private Map currentMap;
+    //seed for random generator
+    private long seed;
 
-    public MapManager(WorldUpdater updater, boolean newGame, long seed){
+    public MapManager(WorldUpdater updater, long seed){
         this.worldUpdater = updater;
         //seed the random
         Utils.initializeMapRandomGen(seed);
-        if(newGame){
-            Assets.disposeAll();
-            //create the first circle map.
-            //currentMap = MapGenerator.generateMap(1);
-            currentMap = new Map(this,1);
-        }
+        Assets.disposeAll();
+        //create the first circle map.
+        //currentMap = MapGenerator.generateMap(1);
+        currentMap = MapGenerator.generateMap(this,1);
+
     }
 
     public Map getCurrentMap(){

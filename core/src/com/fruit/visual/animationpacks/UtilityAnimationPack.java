@@ -25,7 +25,7 @@ public class UtilityAnimationPack implements Constants {
     }
 
     public void render(float stateTime, GameObject object, SpriteBatch batch){
-        pos.set(Utils.getDrawPositionBasedOnBox2d(object));
+        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(object));
         if(object.getEntityID() == GameObject.BOX){
             batch.draw(boxSprite,pos.x,pos.y,object.getWidth(),object.getHeight());
         }

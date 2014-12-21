@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -36,7 +37,7 @@ import com.fruit.visual.tween.TweenUtils;
  */
 public class WorldRenderer implements Constants {
     //TiledMap renderer.
-    private TiledMapRenderer tiledMapRenderer;
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
     private GameCamera camera;
     //world updater reference to fetch list of objects to pass to Object Renderer.
@@ -47,6 +48,8 @@ public class WorldRenderer implements Constants {
     private TextRenderer textRenderer;
     //Light renderer to handle all the lighting effects. Can be easily disabled for performance
     private LightRenderer lightRenderer;
+    //Splatter renderer that will render all the blood & gore & other delicious stuff on the ground
+    private SplatterRenderer splatterRenderer;
     //texture region for map transition effects and its position, frame buffer for screen capturing and
     //additional game object array to filter out player during transition rendering phase
     private TextureRegion lastMapTexture;
@@ -56,6 +59,7 @@ public class WorldRenderer implements Constants {
 
 
     public WorldRenderer(SpriteBatch batch, GameCamera camera, WorldUpdater worldUpdater){
+        Controller.registerWorldRenderer(this);
         this.batch = batch;
         this.camera = camera;
         this.worldUpdater = worldUpdater;
@@ -64,6 +68,7 @@ public class WorldRenderer implements Constants {
         textRenderer = new TextRenderer();
         lightRenderer = new LightRenderer(this, worldUpdater.getWorld());
         lightRenderer.setPlayerLight(getWorldUpdater().getPlayer().getBody());
+        splatterRenderer = new SplatterRenderer(batch);
         //initially add all the lights from the room if those exist
         for(Room.StaticLightContainer container : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()){
             lightRenderer.addPointLight(container.color,container.length,container.position.x,container.position.y,true);
@@ -81,11 +86,16 @@ public class WorldRenderer implements Constants {
         //set batch projection matrix to camera
         batch.setProjectionMatrix(camera.combined);
         //clear screen
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //render map
-        tiledMapRenderer.render();
+        //tiledMapRenderer.render();
         batch.begin();
+        tiledMapRenderer.renderTileLayer((TiledMapTileLayer)tiledMapRenderer.getMap().getLayers().get(0));
+        //render splatter effects
+        splatterRenderer.render();
+        //render walls
+        tiledMapRenderer.renderTileLayer((TiledMapTileLayer)tiledMapRenderer.getMap().getLayers().get(1));
         //render all objects
         if(lastMapTexture!=null){
             batch.draw(lastMapTexture,lastMapTextureX,lastMaptextureY);
@@ -236,6 +246,9 @@ public class WorldRenderer implements Constants {
         for(Room.StaticLightContainer container : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()){
             lightRenderer.addPointLight(container.color,container.length,container.position.x,container.position.y,true);
         }
+        //remove all splatters from the splatter renderer
+        //update splatter renderer fbo and camera.
+        splatterRenderer.updateFrameBufferAndCamera();
     }
 
     public TextRenderer getTextRenderer() {
@@ -248,6 +261,10 @@ public class WorldRenderer implements Constants {
 
     public LightRenderer getLightRenderer(){
         return lightRenderer;
+    }
+
+    public SplatterRenderer getSplatterRenderer() {
+        return  splatterRenderer;
     }
 
     public GameCamera getCamera(){

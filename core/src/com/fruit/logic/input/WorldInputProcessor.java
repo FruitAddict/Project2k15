@@ -42,9 +42,6 @@ public class WorldInputProcessor implements InputProcessor, Constants {
         velocityNormalized = new Vector2();
 
         this.player = player;
-
-        camera.zoom = 0.8f;
-
         setMapSize(2048,2048);
     }
 

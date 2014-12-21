@@ -89,6 +89,6 @@ public class MobProjectile extends Projectile {
     @Override
     public void killYourself() {
         objectManager.removeObject(this);
-        SoundManager.sound.play();
+        //SoundManager.sound.play();
     }
 }

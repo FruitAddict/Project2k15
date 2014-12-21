@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="64" tileheight="64">
  <properties>
-  <property name="ExitPoints" value="EN"/>
+  <property name="ExitPoints" value="NE"/>
  </properties>
  <tileset firstgid="1" name="simpletiles" tilewidth="64" tileheight="64" spacing="1">
-  <image source="simpletiles.png" width="130" height="130"/>
+  <image source="tilesets/simpletiles.png" width="130" height="130"/>
  </tileset>
  <tileset firstgid="5" name="cavefloor" tilewidth="64" tileheight="64">
-  <image source="cavefloor.png" width="196" height="196"/>
+  <image source="tilesets/cavefloor.png" width="196" height="196"/>
+ </tileset>
+ <tileset firstgid="14" name="tiles64" tilewidth="64" tileheight="64">
+  <image source="tilesets/tiles64.png" width="768" height="320"/>
  </tileset>
  <layer name="Ground" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYMANmKCYEOAkE1NDP7l6B7t+RiyY2vqZBlg/pWHIMKofJ+DBgdEBAGU3Bt0=
+   eJxjYKAccJKJR/VTrp9pgPVT4n7OUf1U0U8JAAATMgcf
   </data>
  </layer>
  <layer name="Walls" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJzjYGBgYCMTswMxBwP5gGtUP079rAyYYU2KfpA4JxLmorN+biDmQcK8JOonBozqxwxnUjAoTgDxNALU
+   eJyzYGBgsMCB+aEYlzwMkwtG9Q+sfljcDpT+gfb/cNFPCQYAhjwMfQ==
   </data>
  </layer>
  <objectgroup name="collisionObjects">
@@ -29,7 +32,6 @@
   <object x="576" y="0" width="448" height="64"/>
   <object x="0" y="960" width="448" height="64"/>
   <object x="576" y="960" width="448" height="64"/>
-  <object x="384" y="384" width="320" height="256"/>
  </objectgroup>
  <objectgroup name="portalObjects">
   <object type="NORTH" x="448" y="0" width="128" height="64"/>
@@ -37,40 +39,10 @@
   <object type="SOUTH" x="448" y="960" width="128" height="64"/>
   <object type="EAST" x="960" y="448" width="64" height="128"/>
  </objectgroup>
- <objectgroup name="spawnPoints">
+ <objectgroup name="spawnPoints" visible="0">
   <object type="WEST" x="130" y="514"/>
   <object type="EAST" x="880" y="502" width="12" height="17"/>
   <object type="SOUTH" x="514" y="935"/>
   <object type="NORTH" x="509" y="131"/>
- </objectgroup>
- <objectgroup name="staticLights">
-  <object x="707" y="383">
-   <properties>
-    <property name="BLUE" value="0"/>
-    <property name="GREEN" value="0"/>
-    <property name="RED" value="1"/>
-   </properties>
-  </object>
-  <object x="376" y="380">
-   <properties>
-    <property name="BLUE" value="0"/>
-    <property name="GREEN" value="0"/>
-    <property name="RED" value="1"/>
-   </properties>
-  </object>
-  <object x="375" y="640">
-   <properties>
-    <property name="BLUE" value="0"/>
-    <property name="GREEN" value="0"/>
-    <property name="RED" value="0"/>
-   </properties>
-  </object>
-  <object x="700" y="647">
-   <properties>
-    <property name="BLUE" value="0"/>
-    <property name="GREEN" value="0"/>
-    <property name="RED" value="1"/>
-   </properties>
-  </object>
  </objectgroup>
 </map>

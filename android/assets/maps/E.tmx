@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="64" tileheight="64">
  <properties>
-  <property name="ExitPoints" value="S"/>
+  <property name="ExitPoints" value="E"/>
  </properties>
  <tileset firstgid="1" name="simpletiles" tilewidth="64" tileheight="64" spacing="1">
-  <image source="simpletiles.png" width="130" height="130"/>
+  <image source="tilesets/simpletiles.png" width="130" height="130"/>
  </tileset>
  <tileset firstgid="5" name="cavefloor" tilewidth="64" tileheight="64">
-  <image source="cavefloor.png" width="196" height="196"/>
+  <image source="tilesets/cavefloor.png" width="196" height="196"/>
  </tileset>
  <tileset firstgid="14" name="tiles64" tilewidth="64" tileheight="64">
-  <image source="tiles64.png" width="768" height="320"/>
+  <image source="tilesets/tiles64.png" width="768" height="320"/>
  </tileset>
  <layer name="Ground" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYKAccFKAR/UPbf2jeGAxPsAExfgAAAYpB50=
+   eJxjYKAccJKJR/VTrp9pgPVT4n7OUf1U0U8JAAATMgcf
   </data>
  </layer>
  <layer name="Walls" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJyzYGBgsKAQkwtG9Y/qH9VPuX5cmB+K8akBAFTiDM8=
+   eJyzYGBgsKAQkwtG9Q+sfv4B1j/Q/h8u+inBAMSvDM8=
   </data>
  </layer>
  <objectgroup name="collisionObjects">
@@ -39,7 +39,7 @@
   <object type="SOUTH" x="448" y="960" width="128" height="64"/>
   <object type="EAST" x="960" y="448" width="64" height="128"/>
  </objectgroup>
- <objectgroup name="spawnPoints">
+ <objectgroup name="spawnPoints" visible="0">
   <object type="WEST" x="130" y="514"/>
   <object type="EAST" x="880" y="502" width="12" height="17"/>
   <object type="SOUTH" x="514" y="935"/>

@@ -40,7 +40,7 @@ public class ItemAnimationPack implements Constants {
 
 
     public void render(float stateTime, Item item, SpriteBatch batch){
-        pos.set(Utils.getDrawPositionBasedOnBox2d(item));
+        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(item));
         if (item.getItemType() == Item.HEART){
             batch.draw(heartSprite, pos.x, pos.y, item.getWidth(), item.getHeight());
         }

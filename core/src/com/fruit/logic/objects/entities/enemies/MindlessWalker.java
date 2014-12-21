@@ -10,8 +10,10 @@ import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.logic.objects.entities.projectiles.MobProjectile;
+import com.fruit.utilities.Utils;
 import com.fruit.visual.messages.TextMessage;
 import com.fruit.visual.messages.TextRenderer;
+import com.fruit.visual.renderer.SplatterRenderer;
 
 import java.util.Random;
 
@@ -188,6 +190,8 @@ public class MindlessWalker extends Enemy implements Constants{
     @Override
     public void killYourself(){
         objectManager.removeObject(this);
+        Controller.getWorldRenderer().getSplatterRenderer().addMultiSplatter(body.getPosition(),3,0);
+        //Controller.getWorldRenderer().getSplatterRenderer().addSplatter(body.getPosition(), SplatterRenderer.BLOOD_1, Utils.randomGenerator.nextInt(360));
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.fruit.logic.input;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.fruit.visual.ui.UserInterface;
+import com.fruit.visual.ui.UserInterfaceMess;
 
 /**
  * Customized input multiplexer to handle input updaters.

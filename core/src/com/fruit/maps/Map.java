@@ -18,8 +18,17 @@ public class Map implements Constants {
     }
 
     public void setCurrentRoom(Room room){
+        if(currentRoom!=null){
+            currentRoom.setContainsPlayer(false);
+        }
         currentRoom = room;
+        currentRoom.setContainsPlayer(true);
     }
+
+    public Room[][] getRoomMatrix(){
+        return roomMatrix;
+    }
+
     public Room getCurrentRoom(){
         return currentRoom;
     }

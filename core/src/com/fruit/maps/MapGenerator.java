@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.logic.objects.entities.enemies.MindlessWalker;
+import com.fruit.logic.objects.entities.misc.Box;
 import com.fruit.utilities.MapObjectParser;
 import com.fruit.utilities.Utils;
 import com.fruit.visual.Assets;
@@ -14,35 +15,78 @@ import com.fruit.visual.Assets;
 public class MapGenerator {
 
     public static Map generateMap(MapManager mapManager,int circleLevel){
-        Map map = new Map(mapManager);
-        Boolean[][] layout = obtainLayout(10);
+        Map map = new Map(mapManager,9);
+        Boolean[][] layout = obtainLayout(9,9);
+
+        //first run, creating rooms based on the layout.
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout.length; j++) {
                 if(layout[i][j]){
                    String roomType = "";
-                    if(j-1 > 0 && layout[i][j-1]){
+                    if(i-1 > 0 && layout[i-1][j]){
                         roomType+="N";
                     }
-                    if(i+1 < layout.length && layout[i+1][j]){
+                    if(j+1 < layout.length && layout[i][j+1]){
                         roomType+="E";
                     }
-                    if(j+1 < layout.length && layout[i][j+1]){
+                    if(i+1 < layout.length && layout[i+1][j]){
                         roomType+="S";
                     }
-                    if(i-1 > 0 && layout[i-1][j]){
+                    if(j-1 > 0 && layout[i][j-1]){
                         roomType+="W";
+                    }
+
+
+                    System.out.println(roomType);
+                    map.getRoomMatrix()[i][j] = new Room((TiledMap) Assets.getAsset("maps//"+roomType+".tmx", TiledMap.class));
+                    map.getRoomMatrix()[i][j].addGameObject(new Box(mapManager.getWorldUpdater().getObjectManager(),4,4));
+                    int numofmobs = Utils.randomGenerator.nextInt(25);
+                    for (int k = 0; k < numofmobs; k++) {
+                        map.getRoomMatrix()[i][j].addGameObject(new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(),4,4));
                     }
                 }
             }
         }
+
+        //second run, linking them together.
+        Room[][] roomMatrix = map.getRoomMatrix();
+        for (int i = 0; i < layout.length; i++) {
+            for (int j = 0; j < layout.length; j++) {
+                if(layout[i][j]){
+                    String roomType = "";
+                    if(j-1 > 0 && layout[i][j-1]){
+                        Room thisRoom = map.getRoomMatrix()[i][j];
+                        thisRoom.setLinkedRoomWest(roomMatrix[i][j-1]);
+                    }
+                    if(i+1 < layout.length && layout[i+1][j]){
+                        Room thisRoom = map.getRoomMatrix()[i][j];
+                        thisRoom.setLinkedRoomSouth(roomMatrix[i + 1][j]);
+                    }
+                    if(j+1 < layout.length && layout[i][j+1]){
+                        Room thisRoom = map.getRoomMatrix()[i][j];
+                        thisRoom.setLinkedRoomEast(roomMatrix[i][j + 1]);
+                    }
+                    if(i-1 > 0 && layout[i-1][j]){
+                        Room thisRoom = map.getRoomMatrix()[i][j];
+                        thisRoom.setLinkedRoomNorth(roomMatrix[i - 1][j]);
+                    }
+                }
+            }
+        }
+        //set current room to the one in the center
+        map.setCurrentRoom(map.getRoomMatrix()[4][4]);
+        MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater(),map.getCurrentRoom());
         return map;
     }
 
-    public static Boolean[][] obtainLayout(int maxRooms){
-        int targetNumOfRooms = 10;
+    public static Boolean[][] obtainLayout(int dimensions, int maxRooms){
+        int targetNumOfRooms = maxRooms;
         int currentNumOfRooms = 1;
-
-        Boolean[][] roomLayout = new Boolean[9][9];
+        if(dimensions*dimensions<maxRooms){
+            System.out.println("Dimensions of the room to small, setting them up to 9x9");
+            dimensions = 9;
+        }
+        Boolean[][] roomLayout = new Boolean[dimensions][dimensions];
         //fill the 2d array with falses
         Utils.fill2dArray(roomLayout,false);
         //dead center of the room should be the starting room
@@ -75,20 +119,37 @@ public class MapGenerator {
             candidates.clear();
             //fill it again with candidates for room spawning
             if(chosenRoom.y-1 > 0 && !roomLayout[(int) chosenRoom.x][(int) chosenRoom.y - 1]){
-                candidates.add(new Vector2(chosenRoom.x, chosenRoom.y-1));
+                candidates.add(new Vector2(chosenRoom.x, chosenRoom.y - 1));
+
             }
             if(chosenRoom.y+1<roomLayout.length && !roomLayout[(int) chosenRoom.x][(int) chosenRoom.y + 1]){
-                candidates.add(new Vector2(chosenRoom.x, chosenRoom.y+1));
+                candidates.add(new Vector2(chosenRoom.x, chosenRoom.y + 1));
+
             }
             if(chosenRoom.x-1 > 0 && !roomLayout[(int) chosenRoom.x - 1][(int) chosenRoom.y]){
-                candidates.add(new Vector2(chosenRoom.x-1, chosenRoom.y));
+                candidates.add(new Vector2(chosenRoom.x - 1, chosenRoom.y));
+
             }
             if(chosenRoom.x+1<roomLayout.length && !roomLayout[(int) chosenRoom.x + 1][(int) chosenRoom.y]){
-                candidates.add(new Vector2(chosenRoom.x+1, chosenRoom.y));
+                candidates.add(new Vector2(chosenRoom.x + 1, chosenRoom.y));
+
             }
             //if no candidates found, repeat the whole process
             if(candidates.size==0){
                 continue;
+            }
+            //filter the candidates and favor those with least number of neighborus (actually remove everything else )todo
+            int smallest = 10;
+            for(Vector2 vec : candidates){
+                int num = getNumberOfNeighbours(roomLayout,true,(int)vec.x,(int)vec.y);
+                if(num<smallest){
+                    smallest = num;
+                }
+            }
+            for (int i = 0; i < candidates.size; i++) {
+                if(getNumberOfNeighbours(roomLayout,true,(int)candidates.get(i).x,(int)candidates.get(i).y) > smallest){
+                    candidates.removeIndex(i);
+                }
             }
             //pick a random candidate
             int randomCand = Utils.randomGenerator.nextInt(candidates.size);
@@ -99,20 +160,26 @@ public class MapGenerator {
 
         }
 
-        Utils.print2dArray(roomLayout);
+        for (int i = 0; i < roomLayout.length; i++) {
+            for (int j = 0; j < roomLayout.length; j++) {
+                if(roomLayout[i][j]){
+                    System.out.print("R ");
+                }else {
+                    System.out.print("- ");
+                }
+            }
+            System.out.println();
+        }
         return roomLayout;
     }
 
+    @Deprecated
     public static Map generateTestLevel(MapManager mapManager){
-        Map map = new Map(mapManager);
+        Map map = new Map(mapManager,9);
         Room firstRoom = new Room((TiledMap) Assets.getAsset("maps//Room1.tmx", TiledMap.class));
         Room secondRoom = new Room((TiledMap)Assets.getAsset("maps//Room2.tmx",TiledMap.class));
         Room thirdRoom = new Room((TiledMap)Assets.getAsset("maps//Room3.tmx",TiledMap.class));
         Room fourthRoom = new Room((TiledMap)Assets.getAsset("maps//Room4.tmx",TiledMap.class));
-        map.addRoom(firstRoom);
-        map.addRoom(secondRoom);
-        map.addRoom(thirdRoom);
-        map.addRoom(fourthRoom);
 
         firstRoom.setLinkedRoomEast(secondRoom);
         secondRoom.setLinkedRoomWest(firstRoom);
@@ -154,7 +221,7 @@ public class MapGenerator {
             }
             //filter it to remove those containing more than 3 neighbours
             for(int i =0 ;i <candidates.size;i++){
-                if (getNumberOfNeighbours(roomLayout,'R',(int)candidates.get(i).x,(int)candidates.get(i).y) > 1){
+                if (getNumberOfNeighbours(roomLayout,'R',(int)candidates.get(i).x,(int)candidates.get(i).y) > 3){
                     candidates.removeIndex(i);
                 }
             }

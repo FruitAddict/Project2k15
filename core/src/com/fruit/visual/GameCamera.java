@@ -80,10 +80,10 @@ public class GameCamera extends OrthographicCamera implements Constants {
 
     public void setObjectToFollow(GameObject o){
         //if object specified exists in the game world, camera will follow it.
-        if(Controller.worldUpdater.getObjectManager().getGameObjects().contains(o,true)){
+        if(Controller.getWorldUpdater().getObjectManager().getGameObjects().contains(o,true)){
             followedObject = o;
         } else {
-            followedObject = Controller.worldUpdater.getObjectManager().getPlayer();
+            followedObject = Controller.getWorldUpdater().getObjectManager().getPlayer();
         }
     }
 

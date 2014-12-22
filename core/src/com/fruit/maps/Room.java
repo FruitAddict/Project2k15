@@ -36,6 +36,8 @@ public class Room implements Constants{
     private float tileWidth, tileHeight;
     //array to hold info about lights
     private Array<StaticLightContainer> staticLightPositions;
+    //holds boolean indicating player presence in this room
+    private boolean containsPlayer;
 
     public Room(TiledMap tiledMap){
         this.tiledMap = tiledMap;
@@ -233,6 +235,14 @@ public class Room implements Constants{
 
     public void addStaticLight(Vector2 position, Color color,float length){
         staticLightPositions.add(new StaticLightContainer(position,color,length));
+    }
+
+    public boolean isContainsPlayer() {
+        return containsPlayer;
+    }
+
+    public void setContainsPlayer(boolean containsPlayer) {
+        this.containsPlayer = containsPlayer;
     }
 
     public class StaticLightContainer{

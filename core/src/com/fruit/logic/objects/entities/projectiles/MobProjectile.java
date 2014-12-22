@@ -79,6 +79,7 @@ public class MobProjectile extends Projectile {
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = PROJECTILE_BIT;
         fixtureDef.filter.maskBits = (PLAYER_BIT| TERRAIN_BIT | CLUTTER_BIT | PORTAL_BIT | TREASURE_BIT);
+        fixtureDef.isSensor = true;
 
         body.createFixture(fixtureDef);
 

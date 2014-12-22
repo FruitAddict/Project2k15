@@ -42,10 +42,13 @@ public class Assets {
                 manager.finishLoading();
                 return manager.get(name);
             }catch(GdxRuntimeException ex2){
+                ex2.printStackTrace();
                 if(type == Texture.class) {
                     return manager.get("notfound.png");
                 }
                 else if(type == TiledMap.class) {
+                    System.out.println("couldnt load map "+name);
+                    System.exit(1);
                     return null;
                 } else {
                     return null;

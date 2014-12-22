@@ -49,7 +49,7 @@ public class MapManager implements Constants {
                     //temporairly store the reference to the north portal center vector
                     Vector2 tempPortalVector = currentMap.getCurrentRoom().getPortalPointNorth();
                     //then we change the room to the requested room using the room object itself
-                    currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomNorth());
+                    currentMap.setCurrentRoom(currentMap.getCurrentRoom().getLinkedRoomNorth());
                     //finally we schedule a change in player's position after this world step using opposite spawn points
                     //from the linked room
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
@@ -63,7 +63,7 @@ public class MapManager implements Constants {
             case SOUTH_DIR:{
                 if(currentMap.getCurrentRoom().getLinkedRoomSouth()!=null) {
                     Vector2 tempPortalVector = currentMap.getCurrentRoom().getPortalPointSouth();
-                    currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomSouth());
+                    currentMap.setCurrentRoom(currentMap.getCurrentRoom().getLinkedRoomSouth());
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
                             , currentMap.getCurrentRoom().getSpawnPoint(NORTH_DIR));
                     onMapChange(tempPortalVector, currentMap.getCurrentRoom().getPortalPointNorth(), NORTH_DIR, true);
@@ -73,7 +73,7 @@ public class MapManager implements Constants {
             case EAST_DIR:{
                 if(currentMap.getCurrentRoom().getLinkedRoomEast()!=null) {
                     Vector2 tempPortalVector = currentMap.getCurrentRoom().getPortalPointEast();
-                    currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomEast());
+                    currentMap.setCurrentRoom(currentMap.getCurrentRoom().getLinkedRoomEast());
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
                             , currentMap.getCurrentRoom().getSpawnPoint(WEST_DIR));
                     onMapChange(tempPortalVector, currentMap.getCurrentRoom().getPortalPointWest(), WEST_DIR, true);
@@ -83,7 +83,7 @@ public class MapManager implements Constants {
             case WEST_DIR:{
                 if(currentMap.getCurrentRoom().getLinkedRoomWest()!=null) {
                     Vector2 tempPortalVector = currentMap.getCurrentRoom().getPortalPointWest();
-                    currentMap.changeRoom(currentMap.getCurrentRoom().getLinkedRoomWest());
+                    currentMap.setCurrentRoom(currentMap.getCurrentRoom().getLinkedRoomWest());
                     worldUpdater.getObjectManager().requestPositionChange(worldUpdater.getObjectManager().getPlayer()
                             , currentMap.getCurrentRoom().getSpawnPoint(EAST_DIR));
                     onMapChange(tempPortalVector, currentMap.getCurrentRoom().getPortalPointEast(), EAST_DIR, true);

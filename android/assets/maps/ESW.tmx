@@ -14,12 +14,12 @@
  </tileset>
  <layer name="Ground" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYKAccJKJR/VTrp9pgPVT4n7OUf1U0U8JAAATMgcf
+   eJxjYKAccJKJR/VTpp8PiJkGUL8Uhe7nHNVPFf2UAAB9CgdV
   </data>
  </layer>
  <layer name="Walls" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJyzYGBgsKAQkwtG9VOun58C/fxU0D/Q/h/VjxvD4hefGgALiwwr
+   eJyzYGBgsKAQkwtG9VOuX5AC/XxALEuBfimGgff/qH7cWBqIZQioAQBAwwxe
   </data>
  </layer>
  <objectgroup name="collisionObjects">

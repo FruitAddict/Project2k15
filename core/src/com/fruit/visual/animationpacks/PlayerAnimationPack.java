@@ -37,7 +37,16 @@ public class PlayerAnimationPack implements Constants {
     private TextureRegion[] playerSouthEastRegion;
     private TextureRegion[] playerSouthWestRegion;
 
-    private Sprite playerHead;
+    private TextureRegion[] playerHeadNorth;
+    private TextureRegion[] playerHeadSouth;
+    private TextureRegion[] playerHeadWest;
+    private TextureRegion[] playerHeadEast;
+
+    private Animation playerHeadAnimationNorth;
+    private Animation playerHeadAnimationSouth;
+    private Animation playerHeadAnimationWest;
+    private Animation playerheadAnimationEast;
+
     private boolean loaded = false;
     private EffectRenderer effectRenderer;
 
@@ -50,8 +59,7 @@ public class PlayerAnimationPack implements Constants {
         if(!loaded) {
             pos = new Vector2();
             Texture testPlayerTexture = (Texture) Assets.getAsset("spritesheet.png", Texture.class);
-            Texture testPlayerHead = (Texture)Assets.getAsset("playerhead.png",Texture.class);
-            playerHead = new Sprite(testPlayerHead);
+            //body
             TextureRegion[][] tmp = TextureRegion.split(testPlayerTexture, testPlayerTexture.getWidth() / 8, testPlayerTexture.getHeight() / 4);
             playerSouthRegion = new TextureRegion[8];
             playerNorthRegion = new TextureRegion[8];
@@ -71,6 +79,23 @@ public class PlayerAnimationPack implements Constants {
             playerAnimationNorth = new Animation(0.1f, playerNorthRegion);
             playerAnimationWest = new Animation(0.1f, playerWestRegion);
             playerAnimationEast = new Animation(0.1f, playerEastRegion);
+            //head
+            Texture testPlayerHead = (Texture)Assets.getAsset("head.png",Texture.class);
+            TextureRegion[][] playerHeadSplit = TextureRegion.split(testPlayerHead, testPlayerHead.getWidth() / 4, testPlayerHead.getHeight());
+            playerHeadSouth = new TextureRegion[1];
+            playerHeadWest = new TextureRegion[1];
+            playerHeadNorth = new TextureRegion[1];
+            playerHeadEast = new TextureRegion[1];
+            playerHeadSouth[0] = playerHeadSplit[0][0];
+            playerHeadWest[0] = playerHeadSplit[0][1];
+            playerHeadNorth[0] = playerHeadSplit[0][2];
+            playerHeadEast[0] = playerHeadSplit[0][3];
+
+            playerHeadAnimationSouth = new Animation(0.1f,playerHeadSouth);
+            playerHeadAnimationNorth = new Animation(0.1f,playerHeadNorth);
+            playerheadAnimationEast = new Animation(0.1f,playerHeadEast);
+            playerHeadAnimationWest = new Animation(0.1f, playerHeadWest);
+
             loaded = true;
 
         }
@@ -81,14 +106,19 @@ public class PlayerAnimationPack implements Constants {
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(character));
         if(character.facingN || character.facingNE || character.facingNW){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
+            batch.draw(playerHeadAnimationNorth.getKeyFrame(stateTime,true),pos.x-4.8f  ,pos.y+character.getHeight()-12,64,64);
         }else if(character.facingS ||character.facingSE || character.facingSW){
             batch.draw(playerAnimationSouth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
+            batch.draw(playerHeadAnimationSouth.getKeyFrame(stateTime,true),pos.x-4.8f  ,pos.y+character.getHeight()-12,64,64);
         }else if(character.facingE){
             batch.draw(playerAnimationEast.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
+            batch.draw(playerheadAnimationEast.getKeyFrame(stateTime,true),pos.x-4.8f  ,pos.y+character.getHeight()-12,64,64);
         }else if(character.facingW){
             batch.draw(playerAnimationWest.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
+            batch.draw(playerHeadAnimationWest.getKeyFrame(stateTime,true),pos.x-4.8f  ,pos.y+character.getHeight()-12,64,64);
         } else {
             batch.draw(playerSouthRegion[0],pos.x,pos.y,character.getWidth(),character.getHeight());
+            batch.draw(playerHeadAnimationSouth.getKeyFrame(stateTime,true),pos.x-4.8f  ,pos.y+character.getHeight()-12,64,64);
         }
         //batch.draw(playerHead,pos.x-3.2f  ,pos.y+character.getHeight()-6,64,64);
         if(character.status.isHealing()){

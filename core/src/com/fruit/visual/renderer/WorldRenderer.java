@@ -249,6 +249,8 @@ public class WorldRenderer implements Constants {
         //remove all splatters from the splatter renderer
         //update splatter renderer fbo and camera.
         splatterRenderer.updateFrameBufferAndCamera();
+        //update minimap
+        Controller.getUserInterface().updateMinimap();
     }
 
     public TextRenderer getTextRenderer() {

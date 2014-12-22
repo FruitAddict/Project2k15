@@ -79,6 +79,7 @@ public class PlayerProjectile extends Projectile{
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = PLAYER_PROJECTILE_BIT;
         fixtureDef.filter.maskBits = (ENEMY_BIT | TERRAIN_BIT | CLUTTER_BIT | ITEM_BIT | PORTAL_BIT | TREASURE_BIT);
+        fixtureDef.isSensor = true;
 
         body.createFixture(fixtureDef);
 

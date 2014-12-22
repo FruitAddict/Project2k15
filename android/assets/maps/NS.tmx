@@ -19,7 +19,7 @@
  </layer>
  <layer name="Walls" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJyzYGBgsMCB+aEYlzwMkwtG9Y/qH9VPuX5K8i8AFm8MfQ==
+   eJyzYGBgsMCB+YFYAI88DJMLRvWP6h/VT7l+XFgaiGUIqAEAHZ8Mlw==
   </data>
  </layer>
  <objectgroup name="collisionObjects">

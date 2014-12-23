@@ -20,7 +20,7 @@ import java.util.Random;
 public class MindlessWalker extends Enemy implements Constants{
     private World world;
     private ObjectManager objectManager;
-    private float timeSpentDoingShit, stateTime, lastAttack = 0;
+    private float timeSpentDoingShit, lastAttack = 0;
     private Random rng = new Random();
     private int random;
     private boolean angered=false;
@@ -28,6 +28,8 @@ public class MindlessWalker extends Enemy implements Constants{
     private Vector2 lastKnownPlayerPosition;
     boolean playerInSight=false;
     private float lastRayCastCheck = 0;
+    public float stateTime;
+
 
     public MindlessWalker(ObjectManager objectManager, float spawnX, float spawnY){
         this.objectManager = objectManager;
@@ -182,6 +184,7 @@ public class MindlessWalker extends Enemy implements Constants{
         fixtureDef.density = 100f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = ENEMY_BIT;
+        fixtureDef.filter.maskBits = PLAYER_BIT |TERRAIN_BIT | CLUTTER_BIT | PLAYER_PROJECTILE_BIT | ITEM_BIT | TREASURE_BIT | PORTAL_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape
@@ -191,7 +194,7 @@ public class MindlessWalker extends Enemy implements Constants{
     public void killYourself(){
         objectManager.removeObject(this);
         Controller.getWorldRenderer().getSplatterRenderer().addMultiSplatter(body.getPosition(),3,0);
-        //Controller.getWorldRenderer().getSplatterRenderer().addSplatter(body.getPosition(), SplatterRenderer.BLOOD_1, Utils.randomGenerator.nextInt(360));
+        objectManager.getPlayer().addExperiencePoints(3);
     }
 
     @Override

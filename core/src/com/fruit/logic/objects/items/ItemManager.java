@@ -6,7 +6,7 @@ import com.fruit.utilities.Utils;
 /**
  * @Author FruitAddict
  * Class containing static methods to add random items to the game world.
- * TODO you know.
+ * TODO you know. add items to rooms
  */
 public class ItemManager {
 
@@ -15,7 +15,7 @@ public class ItemManager {
             default:{
                 switch(Utils.randomGenerator.nextInt(4)){
                     case 0:{
-                        objectManager.addObject(new HealthPotion(objectManager,posX,posY,32,32,5f,0.5f,0.5f));
+                        objectManager.addObject(new HealthPotion(objectManager,posX,posY,32,32,5f,0.5f,2f));
                         break;
                     }
                     case 1:{

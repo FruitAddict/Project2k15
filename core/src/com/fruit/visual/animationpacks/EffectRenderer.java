@@ -1,10 +1,22 @@
 package com.fruit.visual.animationpacks;
 
+import android.graphics.Color;
+import aurelienribon.tweenengine.BaseTween;
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
+import aurelienribon.tweenengine.equations.Quad;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.fruit.Controller;
 import com.fruit.visual.Assets;
+import com.fruit.visual.tween.SpriteAccessor;
+import com.fruit.visual.tween.TextMessageAccessor;
+import com.fruit.visual.tween.TweenUtils;
+import org.w3c.dom.Text;
 
 /**
  * Class dedicated to rendering effects on stuff. Like, a bleeding particle effect around a mob
@@ -15,10 +27,21 @@ public class EffectRenderer {
     public static final int HEALED = 1;
     public static final int POISONED = 2;
     public static final int SHIELDED = 3;
+    public static final int LEVEL_UP_TRIGGER = 4;
 
     private Animation healingAnimation;
     private Animation poisonedAnimation;
     private Animation shieldedAnimation;
+
+    //level up effect sprites
+    private Sprite levelUpText;
+    private Sprite wingLeft;
+    private Sprite wingRight;
+
+
+    //level up effect stuff
+    private boolean levelUpTweenStarted = false;
+    public TweenCallback levelUpCallBack;
 
     public EffectRenderer(){
         //Healing animation effect
@@ -51,10 +74,26 @@ public class EffectRenderer {
         animFramesShielded[3] = tmp3[0][3];
         shieldedAnimation = new Animation(0.1f, animFramesShielded);
 
+        //level up sprites
+        levelUpText = new Sprite((Texture)Assets.getAsset("effects//leveluptext.png", Texture.class));
+        wingLeft = new Sprite((Texture)Assets.getAsset("effects//wing1.png", Texture.class));
+        wingRight = new Sprite((Texture)Assets.getAsset("effects//wing2.png", Texture.class));
 
+        //level up tween callback
+        levelUpCallBack = new TweenCallback() {
+            @Override
+            public void onEvent(int i, BaseTween<?> baseTween) {
+                levelUpTweenStarted = false;
+                Controller.getWorldUpdater().getPlayer().status.setLeveledUp(false);
+                levelUpText.setAlpha(0);
+                wingLeft.setAlpha(0);
+                wingRight.setAlpha(0);
+            }
+        };
     }
 
     public void render(SpriteBatch batch,float stateTime, int effectType, float x, float y, float width, float height){
+        // renders continuous effects on mobs etc.
         switch(effectType) {
             case HEALED: {
                 batch.draw(healingAnimation.getKeyFrame(stateTime, true), x, y, width,height);
@@ -68,6 +107,43 @@ public class EffectRenderer {
                 batch.draw(shieldedAnimation.getKeyFrame(stateTime,true),x,y,width,height);
                 break;
             }
+            case LEVEL_UP_TRIGGER:{
+                if(!levelUpTweenStarted){
+                    startLevelUpTween(x,y);
+                    levelUpTweenStarted = true;
+                }
+                levelUpText.draw(batch);
+                wingLeft.draw(batch);
+                wingRight.draw(batch);
+            }
         }
+    }
+
+    public void startLevelUpTween(float posx, float posy){
+        System.out.println("Starting the tween...");
+        Timeline.createSequence()
+                .push(Tween.set(levelUpText, SpriteAccessor.ALPHA).target(0.4f))
+                .push(Tween.set(wingLeft, SpriteAccessor.ALPHA).target(0.4f))
+                .push(Tween.set(wingLeft,SpriteAccessor.ROTATION).target(-90f))
+                .push(Tween.set(wingRight,SpriteAccessor.ROTATION).target(90f))
+                .push(Tween.set(wingRight, SpriteAccessor.ALPHA).target(0.4f))
+                .push(Tween.set(levelUpText, SpriteAccessor.POSITION_X).target(posx - levelUpText.getWidth() / 2))
+                .push((Tween.set(levelUpText, SpriteAccessor.POSITION_Y).target(posy)))
+                .push(Tween.set(wingLeft, SpriteAccessor.POSITION_X).target(posx - levelUpText.getWidth() / 2 - wingLeft.getWidth()))
+                .push((Tween.set(wingLeft, SpriteAccessor.POSITION_Y).target(posy)))
+                .push(Tween.set(wingRight, SpriteAccessor.POSITION_X).target(posx + levelUpText.getWidth() / 2))
+                .push((Tween.set(wingRight, SpriteAccessor.POSITION_Y).target(posy)))
+                .beginParallel()
+                .push(Tween.to(levelUpText, SpriteAccessor.ALPHA, 3f).target(1f))
+                .push(Tween.to(wingLeft, SpriteAccessor.ALPHA, 3f).target(1f))
+                .push(Tween.to(wingRight, SpriteAccessor.ALPHA, 3f).target(1f))
+                .push(Tween.to(wingLeft, SpriteAccessor.ROTATION, 3f).target(0f))
+                .push(Tween.to(wingRight, SpriteAccessor.ROTATION, 3f).target(0f))
+                .push(Tween.to(levelUpText, SpriteAccessor.POSITION_Y, 3f).target(posy + 100))
+                .push(Tween.to(wingLeft, SpriteAccessor.POSITION_Y, 3f).target(posy + 100+levelUpText.getHeight()))
+                .push(Tween.to(wingRight, SpriteAccessor.POSITION_Y, 3f).target(posy+100+levelUpText.getHeight()))
+                        .end()
+                .setCallbackTriggers(TweenCallback.END).setCallback(levelUpCallBack)
+                        .start(TweenUtils.tweenManager);
     }
 }

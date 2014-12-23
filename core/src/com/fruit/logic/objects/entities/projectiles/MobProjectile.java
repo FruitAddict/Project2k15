@@ -48,10 +48,7 @@ public class MobProjectile extends Projectile {
     }
     @Override
     public void update(float delta) {
-        if((body.getLinearVelocity().x <0.5f && body.getLinearVelocity().x >-0.5f)&&
-                (body.getLinearVelocity().y <0.5f && body.getLinearVelocity().y > -0.5f)){
-            killYourself();
-        }
+        stateTime+=delta;
     }
 
     @Override

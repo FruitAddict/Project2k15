@@ -24,11 +24,18 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     //object manager reference.
     private ObjectManager objectManager;
     //objects life time is stored here, used with determining whether player can attack again
-    private float stateTime;
+    public float stateTime;
     //variables to help with attacking delay.
     private float lastAttack;
     //attack direction vector, so no new vectors can be created constantly every frame
     private Vector2 attackDirectionNormalized;
+
+    //player level start with 1
+    private int level = 1;
+    //player's experiance points
+    private float experiencePoints;
+    //next level exp req
+    private float nextLevelExpRequirement;
 
     //Players on hit effects, items can result in attacks slowing enemies down etc, it is passed to
     //every newly created projectile
@@ -50,8 +57,8 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         stats.setMaxVelocity(3);
         stats.setSpeed(0.25f);
         setSaveInRooms(DONT_SAVE);
-        stats.setHealthPoints(3);
-        stats.setBaseMaximumHealthPoints(3);
+        stats.setHealthPoints(100);
+        stats.setBaseMaximumHealthPoints(100);
         stats.setTimeBetweenAttacks(0.25f);
 
         //initialize attack direction vector
@@ -59,6 +66,9 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         //initialize onHit and onDamageTaken arrays
         onHitEffects = new Array<OnHitEffect>();
         onDamageTakenEffects = new Array<OnDamageTakenEffect>();
+
+        //todo more
+        nextLevelExpRequirement = 15;
     }
 
     public void attack(float directionPercentX, float directionPercentY){
@@ -116,6 +126,8 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
             Controller.addOnScreenMessage(new TextMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                     getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont,TextMessage.UP));
         }
+
+        Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement);
     }
 
     @Override
@@ -125,6 +137,8 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
             Controller.addOnScreenMessage(new TextMessage(Float.toString(amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                     getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.greenFont,TextMessage.UP));
         }
+
+        Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement);
     }
 
     @Override
@@ -183,5 +197,24 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     }
 
 
+    public float getExperiencePoints() {
+        return experiencePoints;
+    }
 
+    public void addExperiencePoints(int value){
+        experiencePoints+=value;
+        Controller.addOnScreenMessage(new TextMessage("+ "+value+" exp", getBody().getPosition().x * PIXELS_TO_METERS,
+                getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.goldenFont,TextMessage.UP_AND_FALL));
+        if(experiencePoints > nextLevelExpRequirement){
+            experiencePoints = experiencePoints-nextLevelExpRequirement;
+            onLevelUp();
+        }
+        Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement);
+    }
+
+    public void onLevelUp(){
+        objectManager.getPlayer().onHealingTaken(new Value(10));
+        nextLevelExpRequirement*=1.5f;
+        status.setLeveledUp(true);
+    }
 }

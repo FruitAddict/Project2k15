@@ -19,6 +19,9 @@ public abstract class Projectile extends GameObject {
     protected float spawnX;
     protected float spawnY;
 
+    //state time
+    public float stateTime;
+
     //projectile type
     protected int typeID;
 

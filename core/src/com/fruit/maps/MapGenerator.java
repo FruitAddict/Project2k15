@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.logic.objects.entities.enemies.MindlessWalker;
 import com.fruit.logic.objects.entities.misc.Box;
+import com.fruit.logic.objects.items.*;
 import com.fruit.utilities.MapObjectParser;
 import com.fruit.utilities.Utils;
 import com.fruit.visual.Assets;
@@ -75,6 +76,10 @@ public class MapGenerator {
         }
         //set current room to the one in the center
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
+        map.getCurrentRoom().addGameObject(new HealthPotion(mapManager.getWorldUpdater().getObjectManager(), 10, 5, 32, 32, 5f, 0.5f, 2f));
+        map.getCurrentRoom().addGameObject(new DamageUp(mapManager.getWorldUpdater().getObjectManager(),12,5,32,32));
+        map.getCurrentRoom().addGameObject(new SphereOfProtection(mapManager.getWorldUpdater().getObjectManager(),14,5,32,32,5));
+        map.getCurrentRoom().addGameObject(new PoisonProjectiles(mapManager.getWorldUpdater().getObjectManager(),8,5,32,32));
         MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater(),map.getCurrentRoom());
         return map;
     }

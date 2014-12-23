@@ -21,7 +21,7 @@ import java.util.Comparator;
  * related.
  */
 public class ObjectRenderer implements Constants {
-    float stateTime = 0;
+    private float stateTime;
 
     //Effect Renderer that will take care of rendering effects for each entity based on their stats.
     EffectRenderer effectRenderer;
@@ -67,12 +67,12 @@ public class ObjectRenderer implements Constants {
             switch(e.getEntityID()){
                 case GameObject.PLAYER:{
                     playerAnimationPack.load();
-                    playerAnimationPack.render(stateTime,(Player)e,batch);
+                    playerAnimationPack.render(((Player)e).stateTime,(Player)e,batch);
                     break;
                 }
                 case GameObject.MINDLESS_WALKER:{
                     mindlessWalkerAnimationPack.load();
-                    mindlessWalkerAnimationPack.render(stateTime,(MindlessWalker)e,batch);
+                    mindlessWalkerAnimationPack.render(((MindlessWalker)e).stateTime,(MindlessWalker)e,batch);
                     break;
                 }
                 case GameObject.BOX:{
@@ -87,7 +87,7 @@ public class ObjectRenderer implements Constants {
                 }
                 case GameObject.PROJECTILE:{
                     projectileAnimationPack.load();
-                    projectileAnimationPack.render(stateTime,(Projectile)e,batch);
+                    projectileAnimationPack.render(((Projectile)e).stateTime,(Projectile)e,batch);
                     break;
                 }
                 case GameObject.DUMMY:{

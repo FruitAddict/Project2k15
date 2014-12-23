@@ -12,7 +12,8 @@ public class CharacterStatus {
             enraged,
             dying,
             poisoned,
-            shielded= false;
+            shielded,
+            leveledUp= false;
 
     public boolean isBurning() {
         return burning;
@@ -77,5 +78,13 @@ public class CharacterStatus {
 
     public void setShielded(boolean shielded) {
         this.shielded = shielded;
+    }
+
+    public boolean isLeveledUp() {
+        return leveledUp;
+    }
+
+    public void setLeveledUp(boolean leveledUp) {
+        this.leveledUp = leveledUp;
     }
 }

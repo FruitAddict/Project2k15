@@ -1,5 +1,6 @@
 package com.fruit.logic;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.player.Player;
@@ -66,10 +67,14 @@ public class WorldContactListener implements ContactListener,Constants {
                     Enemy enemy = (Enemy)f1.getBody().getUserData();
                     PlayerProjectile projectile = (PlayerProjectile)f2.getBody().getUserData();
                     projectile.onHit(enemy);
+                    enemy.getBody().applyLinearImpulse(new Vector2(enemy.getBody().getPosition().x - projectile.getBody().getPosition().x
+                            ,enemy.getBody().getPosition().y - projectile.getBody().getPosition().y).nor().scl(15f),enemy.getBody().getPosition(),true);
                 }else {
                     Enemy enemy = (Enemy)f2.getBody().getUserData();
                     PlayerProjectile projectile = (PlayerProjectile)f1.getBody().getUserData();
                     projectile.onHit(enemy);
+                    enemy.getBody().applyLinearImpulse(new Vector2(enemy.getBody().getPosition().x - projectile.getBody().getPosition().x
+                            ,enemy.getBody().getPosition().y - projectile.getBody().getPosition().y).nor().scl(15f),enemy.getBody().getPosition(),true);
                 }
             }
             else if(f1.getFilterData().categoryBits == TERRAIN_BIT || f2.getFilterData().categoryBits == TERRAIN_BIT){

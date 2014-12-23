@@ -16,6 +16,7 @@ public class TextRenderer {
     //available fonts
     public static BitmapFont redFont;
     public static BitmapFont greenFont;
+    public static BitmapFont goldenFont;
 
     static{
         //fonts
@@ -26,6 +27,10 @@ public class TextRenderer {
         greenFont = new BitmapFont();
         greenFont.setScale(1.5f,1f);
         greenFont.setColor(0.1f,1f,0.1f,0.9f);
+
+        goldenFont = new BitmapFont();
+        goldenFont.setScale(1.5f,1f);
+        goldenFont.setColor(1,215/255f,0f,0.9f);
     }
 
     public TextRenderer(){

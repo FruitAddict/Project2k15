@@ -8,6 +8,7 @@ public class SpriteAccessor implements TweenAccessor<Sprite> {
     public static final int ALPHA = 0;
     public static final int POSITION_X = 1;
     public static final int POSITION_Y = 2;
+    public static final int ROTATION = 3;
 
     @Override
     public int getValues(Sprite sprite, int i, float[] floats) {
@@ -22,6 +23,10 @@ public class SpriteAccessor implements TweenAccessor<Sprite> {
             }
             case POSITION_Y:{
                 floats[0] = sprite.getY();
+                return 1;
+            }
+            case ROTATION:{
+                floats[0] = sprite.getRotation();
                 return 1;
             }
             default: {
@@ -44,6 +49,10 @@ public class SpriteAccessor implements TweenAccessor<Sprite> {
             }
             case POSITION_Y:{
                 sprite.setPosition(sprite.getX(),floats[0]);
+                break;
+            }
+            case ROTATION:{
+                sprite.setRotation(floats[0]);
                 break;
             }
             default:

@@ -32,7 +32,7 @@ public class ObjectManager {
         scheduledToRemove = new Array<>();
         scheduledToUpdatePos = new Array<>();
         this.worldUpdater = updater;
-        player = new Player(this,3,3,57.6f,40);
+        player = new Player(this,3,3,36,25);
         gameObjects.add(player);
         player.addToBox2dWorld(worldUpdater.getWorld());
     }

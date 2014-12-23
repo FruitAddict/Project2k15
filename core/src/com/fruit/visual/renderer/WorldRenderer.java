@@ -22,6 +22,7 @@ import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.maps.Room;
 import com.fruit.utilities.Utils;
 import com.fruit.visual.GameCamera;
+import com.fruit.visual.animationpacks.EffectRenderer;
 import com.fruit.visual.messages.TextRenderer;
 import com.fruit.visual.tween.GameCameraAccessor;
 import com.fruit.visual.tween.TweenUtils;
@@ -272,4 +273,5 @@ public class WorldRenderer implements Constants {
     public GameCamera getCamera(){
         return camera;
     }
+
 }

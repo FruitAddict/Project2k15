@@ -12,14 +12,17 @@
  <tileset firstgid="14" name="tiles64" tilewidth="64" tileheight="64">
   <image source="tilesets/tiles64.png" width="768" height="320"/>
  </tileset>
+ <tileset firstgid="74" name="tilesadds" tilewidth="64" tileheight="64">
+  <image source="tilesets/tilesadds.png" width="128" height="64"/>
+ </tileset>
  <layer name="Ground" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYKAccJKJR/VTrp+JAv0CFOqXodD9nKP6qaKfEgAAZOIHSw==
+   eJzzZmBg8KYQe5GJR/VTrp+JAv0CFOqXYYAAcvV7jeqnin5KAAB5yELJ
   </data>
  </layer>
  <layer name="Walls" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJyzYGBgsKAQkwtG9Q+sfj4K9UtRqH+g/T9c9FOCAdYXDNk=
+   eJzzZmBg8KYQkwtG9Q+sfj4K9UtRqH+g/T9c9FOCAX+uESc=
   </data>
  </layer>
  <objectgroup name="collisionObjects">

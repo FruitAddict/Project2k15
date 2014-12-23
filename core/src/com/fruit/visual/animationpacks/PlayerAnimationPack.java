@@ -101,34 +101,42 @@ public class PlayerAnimationPack implements Constants {
         }
     }
 
-    public void render(float stateTime, Player character, SpriteBatch batch){
+    public void render(float stateTime, Player player, SpriteBatch batch){
         //position for rendering, this alghorithm is the same for every renderable object
-        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(character));
-        if(character.facingN || character.facingNE || character.facingNW){
-            batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
-            batch.draw(playerHeadAnimationNorth.getKeyFrame(stateTime,true),pos.x-4.8f  ,pos.y+character.getHeight()-12,64,64);
-        }else if(character.facingS ||character.facingSE || character.facingSW){
-            batch.draw(playerAnimationSouth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
-            batch.draw(playerHeadAnimationSouth.getKeyFrame(stateTime,true),pos.x-4.8f  ,pos.y+character.getHeight()-12,64,64);
-        }else if(character.facingE){
-            batch.draw(playerAnimationEast.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
-            batch.draw(playerheadAnimationEast.getKeyFrame(stateTime,true),pos.x-4.8f  ,pos.y+character.getHeight()-12,64,64);
-        }else if(character.facingW){
-            batch.draw(playerAnimationWest.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
-            batch.draw(playerHeadAnimationWest.getKeyFrame(stateTime,true),pos.x-4.8f  ,pos.y+character.getHeight()-12,64,64);
+        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(player));
+        if(player.facingN || player.facingNW || player.facingNE){
+            batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
+            batch.draw(playerHeadAnimationNorth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-26
+                    ,64,88);
+        }else if(player.facingS || player.facingSE || player.facingSW){
+            batch.draw(playerAnimationSouth.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
+            batch.draw(playerHeadAnimationSouth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-26
+                    ,64,88);
+        }else if(player.facingE ){
+            batch.draw(playerAnimationEast.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
+            batch.draw(playerheadAnimationEast.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-26
+                    ,64,88);
+        }else if(player.facingW){
+            batch.draw(playerAnimationWest.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
+            batch.draw(playerHeadAnimationWest.getKeyFrame(stateTime,true),pos.x-15f  ,pos.y+player.getHeight()-26
+                    ,64,88);
         } else {
-            batch.draw(playerSouthRegion[0],pos.x,pos.y,character.getWidth(),character.getHeight());
-            batch.draw(playerHeadAnimationSouth.getKeyFrame(stateTime,true),pos.x-4.8f  ,pos.y+character.getHeight()-12,64,64);
+            batch.draw(playerSouthRegion[0],pos.x,pos.y,player.getWidth(),player.getHeight());
+            batch.draw(playerHeadAnimationSouth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-25
+                    ,64,88);
         }
         //batch.draw(playerHead,pos.x-3.2f  ,pos.y+character.getHeight()-6,64,64);
-        if(character.status.isHealing()){
-            effectRenderer.render(batch,stateTime,EffectRenderer.HEALED,pos.x,pos.y,character.getWidth(),character.getHeight());
+        if(player.status.isHealing()){
+            effectRenderer.render(batch,stateTime,EffectRenderer.HEALED,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
-        if(character.status.isShielded()){
-            effectRenderer.render(batch,stateTime,EffectRenderer.SHIELDED,pos.x,pos.y,character.getWidth(),character.getHeight());
+        if(player.status.isShielded()){
+            effectRenderer.render(batch,stateTime,EffectRenderer.SHIELDED,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
-        if(character.status.isPoisoned()){
-            effectRenderer.render(batch,stateTime,EffectRenderer.POISONED,pos.x,pos.y,character.getWidth(),character.getHeight());
+        if(player.status.isPoisoned()){
+            effectRenderer.render(batch,stateTime,EffectRenderer.POISONED,pos.x,pos.y,player.getWidth(),player.getHeight());
+        }
+        if(player.status.isLeveledUp()){
+            effectRenderer.render(batch,stateTime,EffectRenderer.LEVEL_UP_TRIGGER,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
     }
 }

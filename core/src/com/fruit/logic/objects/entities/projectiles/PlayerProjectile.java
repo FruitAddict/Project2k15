@@ -23,7 +23,6 @@ public class PlayerProjectile extends Projectile{
 
     //Player-created projectiles should have a reference to player's on hit effect list on their creation
     private Array<OnHitEffect> onHitEffects;
-
     public PlayerProjectile(Player player, ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity) {
         this.objectManager = objectManager;
         this.spawnX = spawnX;
@@ -88,7 +87,7 @@ public class PlayerProjectile extends Projectile{
     }
     @Override
     public void update(float delta) {
-        //
+        stateTime+=delta;
     }
 
     @Override

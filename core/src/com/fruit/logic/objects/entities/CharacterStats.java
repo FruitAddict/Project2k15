@@ -47,7 +47,9 @@ public class CharacterStats {
         //every character must be damageable or healable.
         if(healthPoints+amount < baseMaximumHealthPoints) {
             healthPoints += amount;
-        }else {
+        }else if(healthPoints + amount < 0 ){
+            healthPoints=0;
+        } else{
             healthPoints = baseMaximumHealthPoints;
         }
     }

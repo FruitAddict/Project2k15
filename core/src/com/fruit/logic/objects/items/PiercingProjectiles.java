@@ -14,20 +14,29 @@ import com.fruit.visual.messages.TextRenderer;
 /**
  * @Author FruitAddict
  */
-public class DamageUp extends Item {
+public class PiercingProjectiles extends Item {
     private ObjectManager objectManager;
-    private float renewValue = 1;
 
-    public DamageUp(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height){
+    public PiercingProjectiles(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height) {
         this.objectManager = objectManager;
         lastKnownX = spawnCoordX;
         lastKnownY = spawnCoordY;
         this.width = width;
         this.height = height;
+
         setSaveInRooms(DO_SAVE);
-        setItemType(Item.DAMAGE_UP_1);
+        setItemType(Item.PIERCING_PROJECTILE);
         setEntityID(GameObject.ITEM);
     }
+
+    @Override
+    public void onPickUp(Player player) {
+        player.addPassiveEffect(new com.fruit.logic.objects.effects.passive.PiercingProjectiles(player));
+        Controller.addOnScreenMessage(new TextMessage("Your shots now pierce!",
+                getBody().getPosition().x * PIXELS_TO_METERS, getBody().getPosition().y * PIXELS_TO_METERS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
+        killYourself();
+    }
+
     @Override
     public void update(float delta) {
 
@@ -35,10 +44,6 @@ public class DamageUp extends Item {
 
     @Override
     public void addToBox2dWorld(World world) {
-        //setting width and height
-        width = 32;
-        height = 32;
-
         //Player body definition
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(lastKnownX,lastKnownY);
@@ -59,7 +64,7 @@ public class DamageUp extends Item {
         fixtureDef.density = 50f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = ITEM_BIT;
-        fixtureDef.filter.maskBits = PLAYER_BIT | TERRAIN_BIT | PORTAL_BIT | ENEMY_BIT;
+        fixtureDef.filter.maskBits = PLAYER_BIT | TERRAIN_BIT | PORTAL_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape
@@ -67,23 +72,7 @@ public class DamageUp extends Item {
     }
 
     @Override
-    public void onPickUp(Player player){
-        player.addPassiveEffect(new com.fruit.logic.objects.effects.passive.DamageUp(player,1));
-        Controller.addOnScreenMessage(new TextMessage("You feel stronger..!", getBody().getPosition().x * PIXELS_TO_METERS,
-                getBody().getPosition().y * PIXELS_TO_METERS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
-        killYourself();
-    }
-
-    @Override
     public void killYourself() {
         objectManager.removeObject(this);
-    }
-
-    public float getRenewValue() {
-        return renewValue;
-    }
-
-    public void setRenewValue(float renewValue) {
-        this.renewValue = renewValue;
     }
 }

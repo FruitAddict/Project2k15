@@ -42,21 +42,22 @@ public class MindlessWalkerAnimationPack implements Constants {
         //nullify the old references
         if(!loaded) {
             pos = new Vector2();
-            Texture testPlayerTexture = (Texture) Assets.getAsset("redheady.png", Texture.class);
-            TextureRegion[][] tmp = TextureRegion.split(testPlayerTexture, testPlayerTexture.getWidth() / 3, testPlayerTexture.getHeight() / 4);
-            playerSouthRegion = new TextureRegion[3];
-            playerNorthRegion = new TextureRegion[3];
-            playerEastRegion = new TextureRegion[3];
-            playerWestRegion = new TextureRegion[3];
+            Texture testPlayerTexture = (Texture) Assets.getAsset("slime.png", Texture.class);
+            TextureRegion[][] tmp = TextureRegion.split(testPlayerTexture, testPlayerTexture.getWidth() / 4, testPlayerTexture.getHeight() / 4);
+            playerSouthRegion = new TextureRegion[4];
+            playerNorthRegion = new TextureRegion[4];
+            playerEastRegion = new TextureRegion[4];
+            playerWestRegion = new TextureRegion[4];
             playerNorthEastRegion = new TextureRegion[8];
             playerNorthWestRegion = new TextureRegion[8];
             playerSouthEastRegion = new TextureRegion[8];
             playerSouthWestRegion = new TextureRegion[8];
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 4; i++) {
                 playerSouthRegion[i] = tmp[0][i];
                 playerWestRegion[i] = tmp[1][i];
-                playerNorthRegion[i] = tmp[2][i];
-                playerEastRegion[i] = tmp[3][i];
+                playerEastRegion[i] = tmp[2][i];
+                playerNorthRegion[i] = tmp[3][i];
+
             }
             playerAnimationSouth = new Animation(0.1f, playerSouthRegion);
             playerAnimationNorth = new Animation(0.1f, playerNorthRegion);

@@ -17,12 +17,12 @@
  </tileset>
  <layer name="Ground" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJxTYGBgUMCB+YFYAI/8KKYdZkTDuNQJUqCfCYhlKdRPyP3IfGqH0SjGj6WBWIaAGgB76R24
+   eJzzYmBg8MKB+YFYAI/8KKYdZkTDuNQJUqCfCYhlKdRPyP3I/IEO05GGpYFYhoAaADF0Q/I=
   </data>
  </layer>
  <layer name="Walls" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJzzZmBg8MaB+YFYAI88DJMLRvXj1k9MOIPEBCnQzwfEshTol8IhTqz+wRz+Q0k/LiwNxDIE1AAAfwUVxQ==
+   eJzzZmBg8MaBvaAYlzwMkwtG9ePWT0w4w+KIXP2w+KVEP6XuH6zhP5T0U5J/AfnKF2k=
   </data>
  </layer>
  <objectgroup name="collisionObjects" visible="0">
@@ -43,11 +43,17 @@
   <object type="SOUTH" x="448" y="960" width="128" height="64"/>
   <object type="EAST" x="960" y="448" width="64" height="128"/>
  </objectgroup>
- <objectgroup name="spawnPoints" visible="0">
+ <objectgroup name="spawnPoints">
   <object type="WEST" x="130" y="514"/>
   <object type="EAST" x="880" y="502" width="12" height="17"/>
   <object type="SOUTH" x="514" y="935"/>
   <object type="NORTH" x="509" y="131"/>
+  <object type="CENTER" x="544" y="339"/>
+  <object x="781" y="240"/>
+  <object x="265" y="247"/>
+  <object x="803" y="785"/>
+  <object x="536" y="831"/>
+  <object x="237" y="781"/>
  </objectgroup>
  <objectgroup name="staticLights">
   <object x="707" y="383">

@@ -22,7 +22,7 @@
  </layer>
  <layer name="Walls" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJzzZmBg8KYQkwtG9Y/qH9VPuX5cWBqIZQioAQBElRE2
+   eJzzZmBg8KYQkwtG9Y/qH9VPuX5c2AuK8akBAFDxEZM=
   </data>
  </layer>
  <objectgroup name="collisionObjects">
@@ -42,10 +42,16 @@
   <object type="SOUTH" x="448" y="960" width="128" height="64"/>
   <object type="EAST" x="960" y="448" width="64" height="128"/>
  </objectgroup>
- <objectgroup name="spawnPoints" visible="0">
+ <objectgroup name="spawnPoints">
   <object type="WEST" x="130" y="514"/>
   <object type="EAST" x="880" y="502" width="12" height="17"/>
   <object type="SOUTH" x="514" y="935"/>
   <object type="NORTH" x="509" y="131"/>
+  <object x="266" y="286"/>
+  <object x="778" y="805"/>
+  <object x="276" y="804"/>
+  <object x="853" y="220"/>
+  <object x="438" y="528" width="24" height="32"/>
+  <object type="CENTER" x="570" y="461"/>
  </objectgroup>
 </map>

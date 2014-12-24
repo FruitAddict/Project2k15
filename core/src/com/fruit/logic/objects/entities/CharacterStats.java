@@ -27,6 +27,8 @@ public class CharacterStats {
 
     private float criticalHitBase, criticalHitModifier = 1;
 
+    private boolean piercingProjectiles = false;
+
     public float getCombinedDamage(){
         return baseDamage * baseDamageModifier;
     }
@@ -157,5 +159,13 @@ public class CharacterStats {
 
     public void setCriticalHitModifier(float criticalHitModifier) {
         this.criticalHitModifier = criticalHitModifier;
+    }
+
+    public boolean isPiercingProjectiles() {
+        return piercingProjectiles;
+    }
+
+    public void setPiercingProjectiles(boolean piercingProjectiles) {
+        this.piercingProjectiles = piercingProjectiles;
     }
 }

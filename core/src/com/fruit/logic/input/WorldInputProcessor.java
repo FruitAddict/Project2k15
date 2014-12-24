@@ -1,5 +1,6 @@
 package com.fruit.logic.input;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
@@ -31,7 +32,8 @@ public class WorldInputProcessor implements InputProcessor, Constants {
     private Vector3 secondAttackingPosition;
     private Vector2 velocityNormalized;
 
-
+    private boolean movingDown,movingUp,movingLeft,movingRight = false;
+    private boolean attackingLeft,attackingRight,attackingUp,attackingDown = false;
 
     public WorldInputProcessor(Player player, OrthographicCamera camera) {
         //initiators
@@ -47,11 +49,79 @@ public class WorldInputProcessor implements InputProcessor, Constants {
 
     @Override
     public boolean keyDown(int keycode) {
+        switch(keycode){
+            case Input.Keys.W:{
+                movingUp = true;
+                break;
+            }
+            case Input.Keys.S:{
+                movingDown = true;
+                break;
+            }
+            case Input.Keys.A:{
+                movingLeft = true;
+                break;
+            }
+            case Input.Keys.D:{
+                movingRight = true;
+                break;
+            }
+            case Input.Keys.UP:{
+                attackingUp = true;
+                break;
+            }
+            case Input.Keys.DOWN:{
+                attackingDown = true;
+                break;
+            }
+            case Input.Keys.RIGHT:{
+                attackingRight=true;
+                break;
+            }
+            case Input.Keys.LEFT:{
+                attackingLeft = true;
+                break;
+            }
+        }
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        switch(keycode){
+            case Input.Keys.W:{
+                movingUp = false;
+                break;
+            }
+            case Input.Keys.S:{
+                movingDown = false;
+                break;
+            }
+            case Input.Keys.A:{
+                movingLeft = false;
+                break;
+            }
+            case Input.Keys.D:{
+                movingRight = false;
+                break;
+            }
+            case Input.Keys.UP:{
+                attackingUp = false;
+                break;
+            }
+            case Input.Keys.DOWN:{
+                attackingDown = false;
+                break;
+            }
+            case Input.Keys.RIGHT:{
+                attackingRight=false;
+                break;
+            }
+            case Input.Keys.LEFT:{
+                attackingLeft = false;
+                break;
+            }
+        }
         return false;
     }
 
@@ -124,6 +194,29 @@ public class WorldInputProcessor implements InputProcessor, Constants {
     }
 
     public void update() {
-
+        if(movingUp){
+            player.moveNorth();
+        }
+        if(movingLeft){
+            player.moveWest();
+        }
+        if(movingRight){
+            player.moveEast();
+        }
+        if(movingDown){
+            player.moveSouth();
+        }
+        if(attackingLeft){
+            player.attack(-100,0);
+        }
+        if(attackingRight){
+            player.attack(100,0);
+        }
+        if(attackingUp){
+            player.attack(0,100);
+        }
+        if(attackingDown){
+            player.attack(0,-100);
+        }
     }
 }

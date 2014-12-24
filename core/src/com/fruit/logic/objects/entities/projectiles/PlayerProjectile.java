@@ -23,6 +23,7 @@ public class PlayerProjectile extends Projectile{
 
     //Player-created projectiles should have a reference to player's on hit effect list on their creation
     private Array<OnHitEffect> onHitEffects;
+    private boolean piercing;
     public PlayerProjectile(Player player, ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity) {
         this.objectManager = objectManager;
         this.spawnX = spawnX;
@@ -36,12 +37,14 @@ public class PlayerProjectile extends Projectile{
         width =24;
         height=24;
         radius = 12;
-        if(damage.getValue()>2){
-            width*=1.5f;
-            height*=1.5f;
+        if(damage.getValue()>=2){
+            width*=1.1f;
+            height*=1.1f;
+            radius*=1.1f;
         }
         direction = dir;
         this.velocity = new Value(velocity);
+        piercing = player.stats.isPiercingProjectiles();
     }
 
     @Override
@@ -50,7 +53,9 @@ public class PlayerProjectile extends Projectile{
             onHitEffect.onHit((Enemy)character,damage);
         }
         character.onDamageTaken(damage);
-        killYourself();
+        if(!piercing) {
+            killYourself();
+        }
     }
 
     @Override

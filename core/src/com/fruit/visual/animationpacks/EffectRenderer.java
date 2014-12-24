@@ -1,22 +1,20 @@
 package com.fruit.visual.animationpacks;
 
-import android.graphics.Color;
 import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
-import aurelienribon.tweenengine.equations.Quad;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.fruit.Controller;
+import com.fruit.utilities.Utils;
 import com.fruit.visual.Assets;
 import com.fruit.visual.tween.SpriteAccessor;
-import com.fruit.visual.tween.TextMessageAccessor;
 import com.fruit.visual.tween.TweenUtils;
-import org.w3c.dom.Text;
 
 /**
  * Class dedicated to rendering effects on stuff. Like, a bleeding particle effect around a mob
@@ -42,6 +40,7 @@ public class EffectRenderer {
     //level up effect stuff
     private boolean levelUpTweenStarted = false;
     public TweenCallback levelUpCallBack;
+    private float savedPosX, savedPosY;
 
     public EffectRenderer(){
         //Healing animation effect
@@ -88,6 +87,7 @@ public class EffectRenderer {
                 levelUpText.setAlpha(0);
                 wingLeft.setAlpha(0);
                 wingRight.setAlpha(0);
+                System.out.println("levle up callback reached");
             }
         };
     }
@@ -107,14 +107,15 @@ public class EffectRenderer {
                 batch.draw(shieldedAnimation.getKeyFrame(stateTime,true),x,y,width,height);
                 break;
             }
-            case LEVEL_UP_TRIGGER:{
-                if(!levelUpTweenStarted){
-                    startLevelUpTween(x,y);
+            case LEVEL_UP_TRIGGER: {
+                if (!levelUpTweenStarted) {
+                    startLevelUpTween(x, y);
                     levelUpTweenStarted = true;
+                } else {
+                    levelUpText.draw(batch);
+                    wingLeft.draw(batch);
+                    wingRight.draw(batch);
                 }
-                levelUpText.draw(batch);
-                wingLeft.draw(batch);
-                wingRight.draw(batch);
             }
         }
     }
@@ -127,11 +128,11 @@ public class EffectRenderer {
                 .push(Tween.set(wingLeft,SpriteAccessor.ROTATION).target(-90f))
                 .push(Tween.set(wingRight,SpriteAccessor.ROTATION).target(90f))
                 .push(Tween.set(wingRight, SpriteAccessor.ALPHA).target(0.4f))
-                .push(Tween.set(levelUpText, SpriteAccessor.POSITION_X).target(posx - levelUpText.getWidth() / 2))
+                .push(Tween.set(levelUpText, SpriteAccessor.POSITION_X).target(posx + 18 - levelUpText.getWidth() / 2))
                 .push((Tween.set(levelUpText, SpriteAccessor.POSITION_Y).target(posy)))
-                .push(Tween.set(wingLeft, SpriteAccessor.POSITION_X).target(posx - levelUpText.getWidth() / 2 - wingLeft.getWidth()))
+                .push(Tween.set(wingLeft, SpriteAccessor.POSITION_X).target(posx+ 18 - levelUpText.getWidth() / 2 - wingLeft.getWidth()))
                 .push((Tween.set(wingLeft, SpriteAccessor.POSITION_Y).target(posy)))
-                .push(Tween.set(wingRight, SpriteAccessor.POSITION_X).target(posx + levelUpText.getWidth() / 2))
+                .push(Tween.set(wingRight, SpriteAccessor.POSITION_X).target(posx+ 18 + levelUpText.getWidth() / 2))
                 .push((Tween.set(wingRight, SpriteAccessor.POSITION_Y).target(posy)))
                 .beginParallel()
                 .push(Tween.to(levelUpText, SpriteAccessor.ALPHA, 3f).target(1f))

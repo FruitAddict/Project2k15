@@ -10,6 +10,7 @@ public abstract class Item extends GameObject {
     public static final int HEALTH_POTION = 3;
     public static final int SPHERE_OF_PROTECTION = 4;
     public static final int POISON_TOUCH = 5;
+    public static final int PIERCING_PROJECTILE = 6;
     //each item should have a String containing its description
     private String description;
     //concrete type of this item (must be one of the types declared at the beginning of this class)

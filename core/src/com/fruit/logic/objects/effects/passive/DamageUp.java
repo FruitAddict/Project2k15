@@ -8,9 +8,11 @@ import com.fruit.logic.objects.entities.Character;
  */
 public class DamageUp extends PassiveEffect {
     private Character character;
+    private float amount;
 
-    public DamageUp(Character character){
+    public DamageUp(Character character, float amount){
         this.character = character;
+        this.amount = amount;
         setEffectType(PassiveEffect.DAMAGE_UP);
     }
     @Override
@@ -20,16 +22,19 @@ public class DamageUp extends PassiveEffect {
 
     @Override
     public void join(PassiveEffect passiveEffect) {
-        //do nuthin
+        onRemove();
+        amount = Math.max(((DamageUp)passiveEffect).amount, amount);
+        character.stats
+                .setBaseDamageModifier(character.stats.getBaseDamageModifier()+amount);
     }
 
     @Override
     public void apply() {
-        character.stats.setBaseDamage(character.stats.getBaseDamage()+1);
+        character.stats.setBaseDamageModifier(character.stats.getBaseDamageModifier()+amount);
     }
 
     @Override
     public void onRemove() {
-        character.stats.setBaseDamage(character.stats.getBaseDamage()-1);
+        character.stats.setBaseDamageModifier(character.stats.getBaseDamageModifier()-amount);
     }
 }

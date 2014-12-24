@@ -161,6 +161,9 @@ public class MapObjectParser implements Constants {
             }
             for (int i = 0; i < spawnPointRecs.size; i++) {
                 String request = spawnPoints.get(i).getProperties().get("type", String.class);
+                if(request == null){
+                    request = "Not specified.";
+                }
                 if (request != null) {
                     switch (request) {
                         case "NORTH": {
@@ -189,6 +192,7 @@ public class MapObjectParser implements Constants {
                             break;
                         }
                         default: {
+                            System.out.println("adding " + request);
                             room.addMobSpawnPoint(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_METERS,
                                     (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_METERS));
                             break;

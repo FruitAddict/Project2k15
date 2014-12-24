@@ -78,7 +78,7 @@ public class Box extends Enemy{
     @Override
     public void onDamageTaken(Value value) {
         stats.changeHealthPoints(-1);
-        Controller.addOnScreenMessage(new TextMessage("Booo!", getBody().getPosition().x * PIXELS_TO_METERS,
+        Controller.addOnScreenMessage(new TextMessage("!", getBody().getPosition().x * PIXELS_TO_METERS,
                 getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont,TextMessage.UP));
     }
 

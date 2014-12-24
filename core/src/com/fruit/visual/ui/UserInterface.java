@@ -3,6 +3,7 @@ package com.fruit.visual.ui;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -25,6 +26,7 @@ public class UserInterface extends Stage {
     private Container<Table> miniMapContainer;
     private ProgressBar healthBar;
     private ProgressBar experienceBar;
+    private Label healthLabelInfo, healthLabelValue, experienceLabelInfo,experienceLabelValue;
 
     public UserInterface(GameCamera camera, WorldUpdater worldUpdater){
         this.gameCamera = camera;
@@ -60,13 +62,13 @@ public class UserInterface extends Stage {
 
         //label style
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = skin.getFont("default");
+        labelStyle.font = new BitmapFont();
         skin.add("default", labelStyle);
 
         //progress bar style
         ProgressBar.ProgressBarStyle progressBarStyleHP = new ProgressBar.ProgressBarStyle();
         progressBarStyleHP.background = skin.newDrawable("white", new Color(0,0,0,0));
-        progressBarStyleHP.knob = skin.newDrawable("bigPix",new Color(0,0,0,0));
+        progressBarStyleHP.knob = skin.newDrawable("bigPix",new Color(1f,0,0,0));
         progressBarStyleHP.knobBefore = skin.newDrawable("bigPix", new Color(1f,0,0,0.9f));
         skin.add("health-bar",progressBarStyleHP);
         ProgressBar.ProgressBarStyle progressBarStyleEXP = new ProgressBar.ProgressBarStyle();
@@ -74,6 +76,7 @@ public class UserInterface extends Stage {
         progressBarStyleEXP.knob = skin.newDrawable("bigPix",new Color(0,0,0,0));
         progressBarStyleEXP.knobBefore = skin.newDrawable("bigPix", new Color(1f,255/215f,0,0.9f));
         skin.add("exp-bar",progressBarStyleEXP);
+
         //create touchpads
         createControlTouchPads();
 
@@ -87,15 +90,33 @@ public class UserInterface extends Stage {
         if(experienceBar.getValue()<1){
             experienceBar.getStyle().knobBefore = skin.newDrawable("bigPix", new Color(1f,255/215f,0,0f));
         }
+        //create labels
+        experienceLabelInfo = new Label("Exp: ",skin);
+        healthLabelInfo = new Label("HP: ",skin);
+        healthLabelValue = new Label("",skin);
+        experienceLabelValue = new Label("",skin);
+
         VerticalGroup barGroup = new VerticalGroup();
-        barGroup.addActor(healthBar);
-        barGroup.addActor(experienceBar);
+        //health stack
+        Stack stackHealth = new Stack();
+        stackHealth.addActor(healthBar);
+        stackHealth.addActor(healthLabelInfo);
+        stackHealth.addActor(healthLabelValue);
+        healthLabelValue.setAlignment(Align.right);
+        Stack stackExp = new Stack();
+        stackExp.addActor(experienceBar);
+        stackExp.addActor(experienceLabelInfo);
+        stackExp.addActor(experienceLabelValue);
+        experienceLabelValue.setAlignment(Align.right);
+        barGroup.addActor(stackHealth);
+        barGroup.addActor(stackExp);
         barGroup.align(Align.topLeft);
         barGroup.setFillParent(true);
         addActor(barGroup);
 
         updateMinimap();
-
+        updateStatusBars(Controller.getWorldUpdater().getPlayer().stats.getHealthPoints(),Controller.getWorldUpdater().getPlayer().stats.getBaseMaximumHealthPoints(),
+                Controller.getWorldUpdater().getPlayer().getExperiencePoints(),Controller.getWorldUpdater().getPlayer().getNextLevelExpRequirement());
     }
 
     public void updateMinimap(){
@@ -112,8 +133,11 @@ public class UserInterface extends Stage {
                 experienceBar.getStyle().knobBefore = skin.newDrawable("bigPix", new Color(1f,255/215f,0,9f));
             }
         }
+        //todo string formatting
         healthBar.setValue(hp/maxHP*100);
         experienceBar.setValue(exp/maxEXP*100);
+        healthLabelValue.setText((int)hp+"/"+(int)maxHP);
+        experienceLabelValue.setText((int)exp+"/"+(int)maxEXP);
         if(experienceBar.getValue()<1){
             experienceBar.getStyle().knobBefore = skin.newDrawable("bigPix", new Color(1f,255/215f,0,0f));
         }

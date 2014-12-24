@@ -40,11 +40,6 @@ public class MapGenerator {
 
                     System.out.println(roomType);
                     map.getRoomMatrix()[i][j] = new Room((TiledMap) Assets.getAsset("maps//"+roomType+".tmx", TiledMap.class));
-                    map.getRoomMatrix()[i][j].addGameObject(new Box(mapManager.getWorldUpdater().getObjectManager(),4,4));
-                    int numofmobs = Utils.randomGenerator.nextInt(25);
-                    for (int k = 0; k < numofmobs; k++) {
-                        map.getRoomMatrix()[i][j].addGameObject(new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(),4,4));
-                    }
                 }
             }
         }
@@ -54,7 +49,6 @@ public class MapGenerator {
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout.length; j++) {
                 if(layout[i][j]){
-                    String roomType = "";
                     if(j-1 > 0 && layout[i][j-1]){
                         Room thisRoom = map.getRoomMatrix()[i][j];
                         thisRoom.setLinkedRoomWest(roomMatrix[i][j-1]);
@@ -74,12 +68,29 @@ public class MapGenerator {
                 }
             }
         }
+        //fill the rooms with random shit
+        for (int i = 0; i < map.getRoomMatrix().length; i++) {
+            for (int j = 0; j < map.getRoomMatrix().length; j++) {
+                if(map.getRoomMatrix()[i][j]!=null){
+                    int numofmobs = Utils.randomGenerator.nextInt(25);
+                    for (int k = 0; k < numofmobs; k++) {
+                        int roll  = Utils.randomGenerator.nextInt(100);
+                        System.out.println(map.getRoomMatrix()[i][j].getMobSpawnPoints().size);
+                        Vector2 position = map.getRoomMatrix()[i][j].getMobSpawnPoints().get(Utils.randomGenerator.nextInt(map.getRoomMatrix()[i][j].getMobSpawnPoints().size));
+
+                        if(roll>90) {
+                            map.getRoomMatrix()[i][j].addGameObject(new Box(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y));
+                        }else {
+                            map.getRoomMatrix()[i][j].addGameObject(new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y));
+                        }
+                    }
+                }
+            }
+        }
         //set current room to the one in the center
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
         map.getCurrentRoom().addGameObject(new HealthPotion(mapManager.getWorldUpdater().getObjectManager(), 10, 5, 32, 32, 5f, 0.5f, 2f));
-        map.getCurrentRoom().addGameObject(new DamageUp(mapManager.getWorldUpdater().getObjectManager(),12,5,32,32));
-        map.getCurrentRoom().addGameObject(new SphereOfProtection(mapManager.getWorldUpdater().getObjectManager(),14,5,32,32,5));
-        map.getCurrentRoom().addGameObject(new PoisonProjectiles(mapManager.getWorldUpdater().getObjectManager(),8,5,32,32));
+        map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(),8,5,32,32));
         MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater(),map.getCurrentRoom());
         return map;
     }

@@ -160,8 +160,8 @@ public class MindlessWalker extends Enemy implements Constants{
     public void addToBox2dWorld(World world) {
         this.world = world;
         //setting width and height
-        width = 32;
-        height = 48;
+        width = 32*2;
+        height = 48*2;
 
         //Player body definition
         BodyDef bodyDef = new BodyDef();
@@ -207,7 +207,7 @@ public class MindlessWalker extends Enemy implements Constants{
         stats.changeHealthPoints(-value.getValue() * stats.getDamageResistanceModifier());
         if(value.getValue()!=0) {
             angered = true;
-            Controller.addOnScreenMessage(new TextMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+            Controller.addOnScreenMessage(new TextMessage(String.format("%.1f", value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                     getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont,TextMessage.UP));
         }
     }
@@ -216,7 +216,7 @@ public class MindlessWalker extends Enemy implements Constants{
     public void onHealingTaken(Value amount) {
         stats.changeHealthPoints(amount.getValue());
         if(amount.getValue()!=0) {
-            Controller.addOnScreenMessage(new TextMessage(Float.toString(amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+            Controller.addOnScreenMessage(new TextMessage(String.format("%.1f", amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                     getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.greenFont,TextMessage.UP));
         }
     }

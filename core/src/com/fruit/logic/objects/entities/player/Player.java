@@ -34,6 +34,11 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     private int level = 1;
     //player's experiance points
     private float experiencePoints;
+
+    public float getNextLevelExpRequirement() {
+        return nextLevelExpRequirement;
+    }
+
     //next level exp req
     private float nextLevelExpRequirement;
 
@@ -215,6 +220,7 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     public void onLevelUp(){
         objectManager.getPlayer().onHealingTaken(new Value(10));
         nextLevelExpRequirement*=1.5f;
+        stats.setBaseDamage(stats.getBaseDamage()+0.1f);
         status.setLeveledUp(true);
     }
 }

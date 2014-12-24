@@ -149,6 +149,10 @@ public class Room implements Constants{
         }
     }
 
+    public Array<Vector2> getMobSpawnPoints(){
+        return mobSpawnPoints;
+    }
+
     public void setSpawnPointCenter(Vector2 spawnPointCenter) {
         this.spawnPointCenter = spawnPointCenter;
     }

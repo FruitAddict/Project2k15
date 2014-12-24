@@ -22,7 +22,7 @@
  </layer>
  <layer name="Walls" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJzzZmBg8KYQkwtG9VOuX5AC/XxALEuBfimGgff/qH7KMAChHxC/
+   eJzzZmBg8KYQkwtG9VOu34sC/V5ImFz9A+3/Uf2UYQDcBRHb
   </data>
  </layer>
  <objectgroup name="collisionObjects">
@@ -47,5 +47,12 @@
   <object type="EAST" x="880" y="502" width="12" height="17"/>
   <object type="SOUTH" x="514" y="935"/>
   <object type="NORTH" x="509" y="131"/>
+  <object x="259" y="229"/>
+  <object x="843" y="195"/>
+  <object x="815" y="829"/>
+  <object x="232" y="801"/>
+  <object type="CENTER" x="441" y="438"/>
+  <object x="667" y="717"/>
+  <object x="591" y="513"/>
  </objectgroup>
 </map>

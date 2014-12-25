@@ -25,12 +25,18 @@ public class SplatterRenderer implements Constants {
     //splatter types
     public static final int BLOOD_1 = 1;
     public static final int BLOOD_2 = 2;
+    public static final int BLOOD_3 = 3;
+    public static final int BLOOD_4 = 4;
+    public static final int BLOOD_5 = 5;
 
     //Array holding current splatters
     private Array<Splatter> splatterArray;
 
     private Sprite blood1Sprite;
     private Sprite blood2Sprite;
+    private Sprite blood3Sprite;
+    private Sprite blood4Sprite;
+    private Sprite blood5Sprite;
 
     private TextureRegion combinedTextureRegion;
 
@@ -45,11 +51,17 @@ public class SplatterRenderer implements Constants {
         combinedTextureRegion = new TextureRegion();
         this.batch = batch;
         //init sprites
-        Texture blood1Texture = (Texture)Assets.getAsset("bloodsplatter1.png",Texture.class);
-        Texture blood2Texture = (Texture)Assets.getAsset("bloodsplatter2.png",Texture.class);
+        Texture blood1Texture = (Texture)Assets.getAsset("blood1.png",Texture.class);
+        Texture blood2Texture = (Texture)Assets.getAsset("blood2.png",Texture.class);
+        Texture blood3Texture = (Texture)Assets.getAsset("blood3.png",Texture.class);
+        Texture blood4Texture = (Texture)Assets.getAsset("blood4.png",Texture.class);
+        Texture blood5Texture = (Texture)Assets.getAsset("blood5.png",Texture.class);
 
         blood1Sprite = new Sprite(blood1Texture);
         blood2Sprite = new Sprite(blood2Texture);
+        blood3Sprite = new Sprite(blood3Texture);
+        blood4Sprite = new Sprite(blood4Texture);
+        blood5Sprite = new Sprite(blood5Texture);
 
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888,(int)Controller.getWorldUpdater().getMapManager().getCurrentMapWidth(),
                 (int)Controller.getWorldUpdater().getMapManager().getCurrentMapHeight(),false);
@@ -76,12 +88,35 @@ public class SplatterRenderer implements Constants {
                     blood1Sprite.setPosition(splatter.position.x*PIXELS_TO_METERS,splatter.position.y*PIXELS_TO_METERS);
                     blood1Sprite.setRotation(splatter.rotation);
                     blood1Sprite.draw(batch);
+                    System.out.println("blood1");
                     break;
                 }
                 case SplatterRenderer.BLOOD_2:{
                     blood2Sprite.setPosition(splatter.position.x*PIXELS_TO_METERS,splatter.position.y*PIXELS_TO_METERS);
                     blood2Sprite.setRotation(splatter.rotation);
                     blood2Sprite.draw(batch);
+                    System.out.println("blood2");
+                    break;
+                }
+                case SplatterRenderer.BLOOD_3:{
+                    blood3Sprite.setPosition(splatter.position.x*PIXELS_TO_METERS,splatter.position.y*PIXELS_TO_METERS);
+                    blood3Sprite.setRotation(splatter.rotation);
+                    blood3Sprite.draw(batch);
+                    System.out.println("blood3");
+                    break;
+                }
+                case SplatterRenderer.BLOOD_4:{
+                    blood4Sprite.setPosition(splatter.position.x*PIXELS_TO_METERS,splatter.position.y*PIXELS_TO_METERS);
+                    blood4Sprite.setRotation(splatter.rotation);
+                    blood4Sprite.draw(batch);
+                    System.out.println("blood4");
+                    break;
+                }
+                case SplatterRenderer.BLOOD_5:{
+                    blood5Sprite.setPosition(splatter.position.x*PIXELS_TO_METERS,splatter.position.y*PIXELS_TO_METERS);
+                    blood5Sprite.setRotation(splatter.rotation);
+                    blood5Sprite.draw(batch);
+                    System.out.println("blood5");
                     break;
                 }
             }
@@ -110,9 +145,9 @@ public class SplatterRenderer implements Constants {
         for(int i =0;i<numberOfSplatters;i++) {
             if(range>0) {
                 splatterArray.add(new Splatter(position.add(Utils.getRandomFromRange(-range, range), Utils.getRandomFromRange(-range, range)),
-                        1 + Utils.randomGenerator.nextInt(2), Utils.randomGenerator.nextInt(360)));
+                        1 + Utils.randomGenerator.nextInt(5), Utils.randomGenerator.nextInt(360)));
             } else {
-                splatterArray.add(new Splatter(position,1 + Utils.randomGenerator.nextInt(2), Utils.randomGenerator.nextInt(360)));
+                splatterArray.add(new Splatter(position,1 + Utils.randomGenerator.nextInt(5), Utils.randomGenerator.nextInt(360)));
             }
         }
         renderToFBO();

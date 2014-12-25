@@ -81,13 +81,16 @@ public class MindlessWalkerAnimationPack implements Constants {
             batch.draw(playerSouthRegion[1],pos.x,pos.y,character.getWidth(),character.getHeight());
         }
         if(character.status.isHealing()){
-            effectRenderer.render(batch,stateTime,EffectRenderer.HEALED,pos.x,pos.y,character.getWidth(),character.getHeight());
+            effectRenderer.render(character,batch,stateTime,EffectRenderer.HEALED,pos.x,pos.y,character.getWidth(),character.getHeight());
         }
         if(character.status.isShielded()){
-            effectRenderer.render(batch,stateTime,EffectRenderer.SHIELDED,pos.x,pos.y,character.getWidth(),character.getHeight());
+            effectRenderer.render(character,batch,stateTime,EffectRenderer.SHIELDED,pos.x,pos.y,character.getWidth(),character.getHeight());
         }
         if(character.status.isPoisoned()){
-            effectRenderer.render(batch,stateTime,EffectRenderer.POISONED,pos.x,pos.y,character.getWidth(),character.getHeight());
+            effectRenderer.render(character,batch,stateTime,EffectRenderer.POISONED,pos.x,pos.y,character.getWidth(),character.getHeight());
+        }
+        if(character.status.isEnraged()){
+            effectRenderer.render(character,batch,stateTime,EffectRenderer.HP_BAR,pos.x,pos.y,character.getWidth(),character.getHeight());
         }
     }
 

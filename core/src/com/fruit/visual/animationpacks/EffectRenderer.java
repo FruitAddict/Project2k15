@@ -4,6 +4,8 @@ import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -11,6 +13,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.fruit.Controller;
+import com.fruit.logic.objects.entities.*;
+import com.fruit.logic.objects.entities.Character;
 import com.fruit.utilities.Utils;
 import com.fruit.visual.Assets;
 import com.fruit.visual.tween.SpriteAccessor;
@@ -26,6 +30,7 @@ public class EffectRenderer {
     public static final int POISONED = 2;
     public static final int SHIELDED = 3;
     public static final int LEVEL_UP_TRIGGER = 4;
+    public static final int HP_BAR = 5;
 
     private Animation healingAnimation;
     private Animation poisonedAnimation;
@@ -36,6 +41,8 @@ public class EffectRenderer {
     private Sprite wingLeft;
     private Sprite wingRight;
 
+    private Texture blackTexture;
+    private Texture redTexture;
 
     //level up effect stuff
     private boolean levelUpTweenStarted = false;
@@ -54,8 +61,8 @@ public class EffectRenderer {
         healingAnimation = new Animation(0.1f, animFramesHealed);
 
         //poisoned animation effect
-        Texture testPoisonedTexture = (Texture) Assets.getAsset("effects//poisoneffect.png", Texture.class);
-        TextureRegion[][] tmp = TextureRegion.split(testPoisonedTexture, testPoisonedTexture.getWidth() / 4, testHealTexture.getHeight());
+        Texture testPoisonedTexture = (Texture) Assets.getAsset("effects//poison.png", Texture.class);
+        TextureRegion[][] tmp = TextureRegion.split(testPoisonedTexture, testPoisonedTexture.getWidth() / 4, testPoisonedTexture.getHeight());
         TextureRegion[] animFramesPoisoned = new TextureRegion[4];
         animFramesPoisoned[0] = tmp[0][0];
         animFramesPoisoned[1] = tmp[0][1];
@@ -65,7 +72,7 @@ public class EffectRenderer {
 
         //shielded animation effect
         Texture shieldedTexture = (Texture) Assets.getAsset("effects//shieldeffect.png", Texture.class);
-        TextureRegion[][] tmp3 = TextureRegion.split(shieldedTexture, shieldedTexture.getWidth() / 4, testHealTexture.getHeight());
+        TextureRegion[][] tmp3 = TextureRegion.split(shieldedTexture, shieldedTexture.getWidth() / 4, shieldedTexture.getHeight());
         TextureRegion[] animFramesShielded = new TextureRegion[4];
         animFramesShielded[0] = tmp3[0][0];
         animFramesShielded[1] = tmp3[0][1];
@@ -77,6 +84,17 @@ public class EffectRenderer {
         levelUpText = new Sprite((Texture)Assets.getAsset("effects//leveluptext.png", Texture.class));
         wingLeft = new Sprite((Texture)Assets.getAsset("effects//wing1.png", Texture.class));
         wingRight = new Sprite((Texture)Assets.getAsset("effects//wing2.png", Texture.class));
+
+        //texture for hp bars under mobs
+        Pixmap redPixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        redPixmap.setColor(Color.RED);
+        redPixmap.fill();
+        Pixmap blackPixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        blackPixmap.setColor(Color.BLACK);
+        blackPixmap.fill();
+
+        redTexture = new Texture(redPixmap);
+        blackTexture = new Texture(blackPixmap);
 
         //level up tween callback
         levelUpCallBack = new TweenCallback() {
@@ -92,7 +110,7 @@ public class EffectRenderer {
         };
     }
 
-    public void render(SpriteBatch batch,float stateTime, int effectType, float x, float y, float width, float height){
+    public  <T extends Character> void render(T character, SpriteBatch batch,float stateTime, int effectType, float x, float y, float width, float height){
         // renders continuous effects on mobs etc.
         switch(effectType) {
             case HEALED: {
@@ -116,6 +134,12 @@ public class EffectRenderer {
                     wingLeft.draw(batch);
                     wingRight.draw(batch);
                 }
+                break;
+            }
+            case HP_BAR:{
+                batch.draw(blackTexture,x,y-10,width,10);
+                batch.draw(redTexture,x,y-9,width*character.stats.getHealthPointPercentOfMax(),8);
+                break;
             }
         }
     }

@@ -25,6 +25,7 @@ public class Dummy extends Enemy{
         stats.setMaxVelocity(0);
         setSaveInRooms(DO_SAVE);
         stats.setHealthPoints(99999);
+        stats.setBaseMaximumHealthPoints(1000000);
     }
 
     @Override
@@ -77,14 +78,12 @@ public class Dummy extends Enemy{
     @Override
     public void onDamageTaken(Value value) {
         stats.changeHealthPoints(-value.getValue()*stats.getDamageResistanceModifier());
-        Controller.addOnScreenMessage(new TextMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
-                getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont,TextMessage.UP));
+        super.onDamageTaken(value);
     }
 
     @Override
     public void onHealingTaken(Value amount) {
         stats.changeHealthPoints(amount.getValue());
-        Controller.addOnScreenMessage(new TextMessage(Float.toString(amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
-                getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.greenFont,TextMessage.UP));
+        super.onHealingTaken(amount);
     }
 }

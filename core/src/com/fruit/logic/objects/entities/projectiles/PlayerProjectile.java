@@ -29,7 +29,7 @@ public class PlayerProjectile extends Projectile{
         this.spawnX = spawnX;
         this.spawnY = spawnY;
         onHitEffects = player.getOnHitEffects();
-        damage = new Value(player.stats.getCombinedDamage());
+        damage = new Value(player.stats.getCombinedDamage(),Value.NORMAL_DAMAGE);
         setTypeID(Projectile.PLAYER_PROJECTILE);
         setEntityID(GameObject.PROJECTILE);
         setSaveInRooms(DONT_SAVE);
@@ -43,7 +43,7 @@ public class PlayerProjectile extends Projectile{
             radius*=1.1f;
         }
         direction = dir;
-        this.velocity = new Value(velocity);
+        this.velocity = new Value(velocity, Value.VELOCITY);
         piercing = player.stats.isPiercingProjectiles();
     }
 

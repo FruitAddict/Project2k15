@@ -30,7 +30,6 @@ public class Box extends Enemy{
 
     @Override
     public void update(float delta) {
-        //TODO MAKE SOME SORT OF DROP RNG
         if(stats.getHealthPoints()<0){
             killYourself();
             ItemManager.addRandomItem(objectManager,getBody().getPosition().x,getBody().getPosition().y,1);
@@ -78,7 +77,7 @@ public class Box extends Enemy{
     @Override
     public void onDamageTaken(Value value) {
         stats.changeHealthPoints(-1);
-        Controller.addOnScreenMessage(new TextMessage("!", getBody().getPosition().x * PIXELS_TO_METERS,
+        Controller.addOnScreenMessage(new TextMessage("Crack!", getBody().getPosition().x * PIXELS_TO_METERS,
                 getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont,TextMessage.UP));
     }
 

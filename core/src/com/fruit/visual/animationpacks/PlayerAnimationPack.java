@@ -127,16 +127,16 @@ public class PlayerAnimationPack implements Constants {
         }
         //batch.draw(playerHead,pos.x-3.2f  ,pos.y+character.getHeight()-6,64,64);
         if(player.status.isHealing()){
-            effectRenderer.render(batch,stateTime,EffectRenderer.HEALED,pos.x,pos.y,player.getWidth(),player.getHeight());
+            effectRenderer.render(player,batch,stateTime,EffectRenderer.HEALED,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
         if(player.status.isShielded()){
-            effectRenderer.render(batch,stateTime,EffectRenderer.SHIELDED,pos.x,pos.y,player.getWidth(),player.getHeight());
+            effectRenderer.render(player,batch,stateTime,EffectRenderer.SHIELDED,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
         if(player.status.isPoisoned()){
-            effectRenderer.render(batch,stateTime,EffectRenderer.POISONED,pos.x,pos.y,player.getWidth(),player.getHeight());
+            effectRenderer.render(player,batch,stateTime,EffectRenderer.POISONED,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
         if(player.status.isLeveledUp()){
-            //effectRenderer.render(batch,stateTime,EffectRenderer.LEVEL_UP_TRIGGER,pos.x,pos.y,player.getWidth(),player.getHeight());
+            //effectRenderer.render(player,batch,stateTime,EffectRenderer.LEVEL_UP_TRIGGER,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
     }
 }

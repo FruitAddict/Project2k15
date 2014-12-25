@@ -1,6 +1,7 @@
 package com.fruit.visual.messages;
 
 import aurelienribon.tweenengine.Tween;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
@@ -17,6 +18,7 @@ public class TextRenderer {
     public static BitmapFont redFont;
     public static BitmapFont greenFont;
     public static BitmapFont goldenFont;
+    public static BitmapFont poisonGreenFont;
 
     static{
         //fonts
@@ -31,6 +33,10 @@ public class TextRenderer {
         goldenFont = new BitmapFont();
         goldenFont.setScale(1.5f,1f);
         goldenFont.setColor(1,215/255f,0f,0.9f);
+
+        poisonGreenFont = new BitmapFont();
+        poisonGreenFont.setScale(1.5f, 1f);
+        poisonGreenFont.setColor(new Color(199 / 255f, 228 / 255f, 118 / 255f, 0.9f));
     }
 
     public TextRenderer(){

@@ -56,8 +56,8 @@ public class UserInterface extends Stage {
 
         //touchpad style
         Touchpad.TouchpadStyle touchpadStyle = new Touchpad.TouchpadStyle();
-        touchpadStyle.background = skin.newDrawable("touchBackground",new Color(1,0,0,0f));
-        touchpadStyle.knob = skin.newDrawable("touchKnob", new Color(1,0.2f,0.1f,0.5f));
+        touchpadStyle.background = skin.newDrawable("touchBackground",new Color(0,0,0,0f));
+        touchpadStyle.knob = skin.newDrawable("touchKnob", new Color(0,0f,0f,0.2f));
         skin.add("default",touchpadStyle);
 
         //label style

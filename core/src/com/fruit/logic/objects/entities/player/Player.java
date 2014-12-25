@@ -128,8 +128,7 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         }
         if(value.getValue()!=0) {
             stats.changeHealthPoints(-value.getValue() * stats.getCombinedResistance());
-            Controller.addOnScreenMessage(new TextMessage(Float.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
-                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont,TextMessage.UP));
+            super.onDamageTaken(value);
         }
 
         Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement);
@@ -139,8 +138,7 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     public void onHealingTaken(Value amount) {
         if(amount.getValue()!=0) {
             stats.changeHealthPoints(amount.getValue() * stats.getHealingModifier());
-            Controller.addOnScreenMessage(new TextMessage(Float.toString(amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
-                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.greenFont,TextMessage.UP));
+            super.onHealingTaken(amount);
         }
 
         Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement);
@@ -210,7 +208,7 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         experiencePoints+=value;
         Controller.addOnScreenMessage(new TextMessage("+ "+value+" exp", getBody().getPosition().x * PIXELS_TO_METERS,
                 getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.goldenFont,TextMessage.UP_AND_FALL));
-        if(experiencePoints > nextLevelExpRequirement){
+        if(experiencePoints >= nextLevelExpRequirement){
             experiencePoints = experiencePoints-nextLevelExpRequirement;
             onLevelUp();
         }
@@ -218,7 +216,7 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     }
 
     public void onLevelUp(){
-        objectManager.getPlayer().onHealingTaken(new Value(10));
+        objectManager.getPlayer().onHealingTaken(new Value(10,Value.HEALING));
         nextLevelExpRequirement*=1.5f;
         stats.setBaseDamage(stats.getBaseDamage()+0.1f);
         status.setLeveledUp(true);

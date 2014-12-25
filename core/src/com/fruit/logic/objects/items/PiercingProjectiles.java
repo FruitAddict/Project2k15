@@ -64,7 +64,7 @@ public class PiercingProjectiles extends Item {
         fixtureDef.density = 50f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = ITEM_BIT;
-        fixtureDef.filter.maskBits = PLAYER_BIT | TERRAIN_BIT | PORTAL_BIT;
+        fixtureDef.filter.maskBits = PLAYER_BIT | TERRAIN_BIT | PORTAL_BIT | ITEM_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape

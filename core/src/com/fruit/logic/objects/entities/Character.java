@@ -1,8 +1,11 @@
 package com.fruit.logic.objects.entities;
 
 import com.badlogic.gdx.utils.Array;
+import com.fruit.Controller;
 import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.effects.PassiveEffect;
+import com.fruit.visual.messages.TextMessage;
+import com.fruit.visual.messages.TextRenderer;
 
 /**
  * Abstract character class. Contains method to determine object's facing based on the velocity
@@ -84,11 +87,43 @@ public abstract class Character extends GameObject {
         }
     }
 
-    //what happens when character is damaged
-    public abstract void onDamageTaken(Value value);
+    //what happens when character is damaged, child classes should call this after all the logic is done.
+    //Handles only rendering to the screen using Text Renderer
+    public void onDamageTaken(Value value){
+        //render to the screen as scrolling battle text based on the type
+        switch(value.getType()) {
+            case Value.NORMAL_DAMAGE: {
+                Controller.addOnScreenMessage(new TextMessage(String.format("%.1f", value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                        getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont, TextMessage.UP));
+                break;
+            }
+            case Value.BURNING_DAMAGE: {
+                Controller.addOnScreenMessage(new TextMessage(String.format("%.1f", value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                        getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont, TextMessage.UP));
+                break;
+            }
+            case Value.POISON_DAMAGE: {
+                Controller.addOnScreenMessage(new TextMessage(String.format("%.1f", value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                        getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.poisonGreenFont, TextMessage.UP));
+                break;
+            }
+        }
+        //update the %/max of player's hp (GUI uses that)
+        stats.setHealthPointPercentOfMax(stats.getHealthPoints()/stats.getBaseMaximumHealthPoints());
+    }
 
     //what happens when character is healed
-    public abstract void onHealingTaken(Value amount);
+    public void onHealingTaken(Value amount){
+        switch(amount.getType()) {
+            case Value.HEALING: {
+                Controller.addOnScreenMessage(new TextMessage(String.format("%.1f", amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                        getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.greenFont, TextMessage.UP));
+                break;
+            }
+        }
+        //update the %/max of players hp again
+        stats.setHealthPointPercentOfMax(stats.getHealthPoints()/stats.getBaseMaximumHealthPoints());
+    }
 
     /**
      *

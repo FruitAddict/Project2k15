@@ -45,13 +45,13 @@ public class DummyAnimationPack implements Constants {
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(dummy));
                 batch.draw(animation.getKeyFrame(stateTime, true), pos.x, pos.y, dummy.getWidth(), dummy.getHeight());
         if(dummy.status.isHealing()){
-            effectRenderer.render(batch, stateTime, EffectRenderer.HEALED, pos.x, pos.y, dummy.getWidth(), dummy.getHeight());
+            effectRenderer.render(dummy,batch, stateTime, EffectRenderer.HEALED, pos.x, pos.y, dummy.getWidth(), dummy.getHeight());
         }
         if(dummy.status.isShielded()){
-            effectRenderer.render(batch,stateTime,EffectRenderer.SHIELDED,pos.x,pos.y,dummy.getWidth(),dummy.getHeight());
+            effectRenderer.render(dummy,batch,stateTime,EffectRenderer.SHIELDED,pos.x,pos.y,dummy.getWidth(),dummy.getHeight());
         }
         if(dummy.status.isPoisoned()){
-            effectRenderer.render(batch,stateTime,EffectRenderer.POISONED,pos.x,pos.y,dummy.getWidth(),dummy.getHeight());
+            effectRenderer.render(dummy,batch,stateTime,EffectRenderer.POISONED,pos.x,pos.y,dummy.getWidth(),dummy.getHeight());
         }
     }
 }

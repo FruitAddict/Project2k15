@@ -14,7 +14,6 @@ import com.fruit.visual.PoolablePointLight;
 /**
  * @author FruitAddict
  * Light renderer class, works together with world renderer. Can be used to add lights to the world.
- * TODO make it better-commented and refractoring
  */
 public class LightRenderer implements Constants {
     private WorldRenderer worldRenderer;

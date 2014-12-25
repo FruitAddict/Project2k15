@@ -91,6 +91,7 @@ public class MapGenerator {
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
         map.getCurrentRoom().addGameObject(new HealthPotion(mapManager.getWorldUpdater().getObjectManager(), 10, 5, 32, 32, 5f, 0.5f, 2f));
         map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(),8,5,32,32));
+        map.getCurrentRoom().addGameObject(new PoisonProjectiles(mapManager.getWorldUpdater().getObjectManager(),8,5,32,32));
         MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater(),map.getCurrentRoom());
         return map;
     }

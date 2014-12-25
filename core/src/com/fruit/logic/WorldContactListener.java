@@ -14,7 +14,6 @@ import com.fruit.logic.objects.items.Item;
  * Must check for both bodies (e.g. we dont know if the player will be
  * body 1 or body 2 when the collision happens), so checks for all possible
  * cases are needed. Grouped to make it as readable as possible.
- * TODO distinguish between mob projectiles and player projeciles
  */
 public class WorldContactListener implements ContactListener,Constants {
 

@@ -12,6 +12,7 @@ public class CharacterStats {
     protected float healthPoints;
     protected float baseMaximumHealthPoints;
     protected float maximumHealthPointsMultiplier = 1;
+    private float healthPointPercentOfMax;
 
     private float timeBetweenAttacks=1f;
     private float timeBetweenAttacksModifier = 1f;
@@ -167,5 +168,13 @@ public class CharacterStats {
 
     public void setPiercingProjectiles(boolean piercingProjectiles) {
         this.piercingProjectiles = piercingProjectiles;
+    }
+
+    public float getHealthPointPercentOfMax() {
+        return healthPointPercentOfMax;
+    }
+
+    public void setHealthPointPercentOfMax(float healthPointPercentOfMax) {
+        this.healthPointPercentOfMax = healthPointPercentOfMax;
     }
 }

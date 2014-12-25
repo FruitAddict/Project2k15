@@ -14,18 +14,18 @@ import com.fruit.visual.messages.TextRenderer;
  * @Author FruitAddict
  */
 public class PoisonOnHit extends OnHitEffect implements Constants {
-    private float poisonCount = 5;
+    private int poisonCount;
     private Player player;
 
-    public PoisonOnHit(Player player){
+    public PoisonOnHit(Player player, int charges){
         this.player = player;
+        poisonCount = charges;
     }
 
     @Override
     public void onHit(Enemy enemy, Value damage) {
         if(poisonCount>0) {
-            enemy.addPassiveEffect(new DamageOverTime(enemy, 5f, 0.5f, new Value(damage.getValue() / 8), DamageOverTime.POISONED));
-            damage.setValue(0);
+            enemy.addPassiveEffect(new DamageOverTime(enemy, 5f, 0.5f, new Value(damage.getValue() / 2, Value.POISON_DAMAGE), DamageOverTime.POISONED));
             Controller.addOnScreenMessage(new TextMessage("Poisoned!", enemy.getBody().getPosition().x * PIXELS_TO_METERS,
                     enemy.getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont,TextMessage.UP_AND_FALL));
             poisonCount--;

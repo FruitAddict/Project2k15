@@ -33,7 +33,7 @@ public class PoisonProjectiles extends Item {
 
     @Override
     public void onPickUp(Player player) {
-        player.addOnHitEffect(new PoisonOnHit(player));
+        player.addOnHitEffect(new PoisonOnHit(player,10));
         Controller.addOnScreenMessage(new TextMessage("You poison on hit...",
                 getBody().getPosition().x * PIXELS_TO_METERS, getBody().getPosition().y * PIXELS_TO_METERS, 3, TextRenderer.greenFont,TextMessage.UP_AND_FALL));
         killYourself();
@@ -66,7 +66,7 @@ public class PoisonProjectiles extends Item {
         fixtureDef.density = 50f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = ITEM_BIT;
-        fixtureDef.filter.maskBits = PLAYER_BIT | TERRAIN_BIT | PORTAL_BIT;
+        fixtureDef.filter.maskBits = PLAYER_BIT | TERRAIN_BIT | PORTAL_BIT | ITEM_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape

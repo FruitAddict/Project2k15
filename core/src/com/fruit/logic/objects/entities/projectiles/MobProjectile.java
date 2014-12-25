@@ -34,8 +34,8 @@ public class MobProjectile extends Projectile {
         setEntityID(GameObject.PROJECTILE);
         setSaveInRooms(DONT_SAVE);
         setTypeID(Projectile.MOB_PROJECTILE);
-        damage = new Value(1.5f);
-        this.velocity = new Value(velocity);
+        damage = new Value(1.5f,Value.NORMAL_DAMAGE);
+        this.velocity = new Value(velocity,Value.VELOCITY);
         //setting width, height and radius of the box2d body
         width =24;
         height=24;

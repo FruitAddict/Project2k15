@@ -23,7 +23,6 @@ public class MindlessWalker extends Enemy implements Constants{
     private float timeSpentDoingShit, lastAttack = 0;
     private Random rng = new Random();
     private int random;
-    private boolean angered=false;
     private Vector2 attackDirectionNormalized;
     private Vector2 lastKnownPlayerPosition;
     boolean playerInSight=false;
@@ -39,7 +38,7 @@ public class MindlessWalker extends Enemy implements Constants{
         stats.setMaxVelocity(1.5f);
         stats.setSpeed(0.2f);
         setSaveInRooms(DO_SAVE);
-        stats.setHealthPoints(5);
+        stats.setHealthPoints(10);
         stats.setBaseMaximumHealthPoints(10);
         stats.setTimeBetweenAttacks(0.75f);
         stats.setTimeBetweenAttacksModifier(1f);
@@ -48,6 +47,9 @@ public class MindlessWalker extends Enemy implements Constants{
 
         attackDirectionNormalized = new Vector2();
         lastKnownPlayerPosition = new Vector2();
+
+        width = 32*2;
+        height = 48*2;
     }
 
     @Override
@@ -55,7 +57,7 @@ public class MindlessWalker extends Enemy implements Constants{
         stateTime += delta;
         if(stats.getHealthPoints() <= 0){
             killYourself();
-        }else if(!angered) {
+        }else if(!status.isEnraged()) {
             if (timeSpentDoingShit == 0) {
                 random = rng.nextInt(4);
                 switch (random) {
@@ -159,9 +161,6 @@ public class MindlessWalker extends Enemy implements Constants{
     @Override
     public void addToBox2dWorld(World world) {
         this.world = world;
-        //setting width and height
-        width = 32*2;
-        height = 48*2;
 
         //Player body definition
         BodyDef bodyDef = new BodyDef();
@@ -199,25 +198,23 @@ public class MindlessWalker extends Enemy implements Constants{
 
     @Override
     public void onDirectContact(Player player) {
-        player.onDamageTaken(new Value(stats.getCombinedDamage()));
+        player.onDamageTaken(new Value(stats.getCombinedDamage(),Value.NORMAL_DAMAGE));
     }
 
     @Override
     public void onDamageTaken(Value value) {
         stats.changeHealthPoints(-value.getValue() * stats.getDamageResistanceModifier());
         if(value.getValue()!=0) {
-            angered = true;
-            Controller.addOnScreenMessage(new TextMessage(String.format("%.1f", value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
-                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont,TextMessage.UP));
+            status.setEnraged(true);
+            super.onDamageTaken(value);
         }
     }
 
     @Override
-    public void onHealingTaken(Value amount) {
-        stats.changeHealthPoints(amount.getValue());
-        if(amount.getValue()!=0) {
-            Controller.addOnScreenMessage(new TextMessage(String.format("%.1f", amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
-                    getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.greenFont,TextMessage.UP));
+    public void onHealingTaken(Value value) {
+        stats.changeHealthPoints(value.getValue());
+        if(value.getValue()!=0) {
+            super.onHealingTaken(value);
         }
     }
 

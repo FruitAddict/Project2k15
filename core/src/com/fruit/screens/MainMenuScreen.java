@@ -27,7 +27,6 @@ public class MainMenuScreen implements Screen {
         this.mainGame = mainGame;
 
 
-        //todo json skin again
         skin = new Skin();
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);

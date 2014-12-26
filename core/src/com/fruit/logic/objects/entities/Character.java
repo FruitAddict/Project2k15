@@ -93,36 +93,37 @@ public abstract class Character extends GameObject {
         //render to the screen as scrolling battle text based on the type
         switch(value.getType()) {
             case Value.NORMAL_DAMAGE: {
-                Controller.addOnScreenMessage(new TextMessage(String.format("%.1f", value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                Controller.addOnScreenMessage(new TextMessage(Integer.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                         getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont, TextMessage.UP));
                 break;
             }
             case Value.BURNING_DAMAGE: {
-                Controller.addOnScreenMessage(new TextMessage(String.format("%.1f", value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                Controller.addOnScreenMessage(new TextMessage(Integer.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                         getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont, TextMessage.UP));
                 break;
             }
             case Value.POISON_DAMAGE: {
-                Controller.addOnScreenMessage(new TextMessage(String.format("%.1f", value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                Controller.addOnScreenMessage(new TextMessage(Integer.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
                         getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.poisonGreenFont, TextMessage.UP));
                 break;
             }
         }
         //update the %/max of player's hp (GUI uses that)
-        stats.setHealthPointPercentOfMax(stats.getHealthPoints()/stats.getBaseMaximumHealthPoints());
+        stats.setHealthPointPercentOfMax(stats.getHealthPoints()/(float)stats.getBaseMaximumHealthPoints());
+
     }
 
     //what happens when character is healed
     public void onHealingTaken(Value amount){
         switch(amount.getType()) {
             case Value.HEALING: {
-                Controller.addOnScreenMessage(new TextMessage(String.format("%.1f", amount.getValue()), getBody().getPosition().x * PIXELS_TO_METERS,
+                Controller.addOnScreenMessage(new TextMessage(Integer.toString(amount.getValue())+" HP", getBody().getPosition().x * PIXELS_TO_METERS,
                         getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.greenFont, TextMessage.UP));
                 break;
             }
         }
         //update the %/max of players hp again
-        stats.setHealthPointPercentOfMax(stats.getHealthPoints()/stats.getBaseMaximumHealthPoints());
+        stats.setHealthPointPercentOfMax(stats.getHealthPoints()/(float)stats.getBaseMaximumHealthPoints());
     }
 
     /**

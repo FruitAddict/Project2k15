@@ -1,6 +1,7 @@
 package com.fruit.visual.messages;
 
 import aurelienribon.tweenengine.Tween;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,20 +23,20 @@ public class TextRenderer {
 
     static{
         //fonts
-        redFont = new BitmapFont();
-        redFont.setScale(1.5f, 1f);
+        redFont = new BitmapFont(Gdx.files.internal("fonts//souls.fnt"));
+        redFont.setScale(0.7f, 0.7f);
         redFont.setColor(1.0f, 0.1f, 0.1f, 0.9f);
 
-        greenFont = new BitmapFont();
-        greenFont.setScale(1.5f,1f);
+        greenFont = new BitmapFont(Gdx.files.internal("fonts//souls.fnt"));
+        greenFont.setScale(0.7f, 0.7f);;
         greenFont.setColor(0.1f,1f,0.1f,0.9f);
 
-        goldenFont = new BitmapFont();
-        goldenFont.setScale(1.5f,1f);
+        goldenFont = new BitmapFont(Gdx.files.internal("fonts//souls.fnt"));
+        goldenFont.setScale(0.7f, 0.7f);
         goldenFont.setColor(1,215/255f,0f,0.9f);
 
-        poisonGreenFont = new BitmapFont();
-        poisonGreenFont.setScale(1.5f, 1f);
+        poisonGreenFont = new BitmapFont(Gdx.files.internal("fonts//souls.fnt"));
+        poisonGreenFont.setScale(0.7f, 0.7f);
         poisonGreenFont.setColor(new Color(199 / 255f, 228 / 255f, 118 / 255f, 0.9f));
     }
 

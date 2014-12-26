@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector2;
@@ -51,17 +52,13 @@ public class SplatterRenderer implements Constants {
         combinedTextureRegion = new TextureRegion();
         this.batch = batch;
         //init sprites
-        Texture blood1Texture = (Texture)Assets.getAsset("blood1.png",Texture.class);
-        Texture blood2Texture = (Texture)Assets.getAsset("blood2.png",Texture.class);
-        Texture blood3Texture = (Texture)Assets.getAsset("blood3.png",Texture.class);
-        Texture blood4Texture = (Texture)Assets.getAsset("blood4.png",Texture.class);
-        Texture blood5Texture = (Texture)Assets.getAsset("blood5.png",Texture.class);
+        TextureAtlas splatterAtlas = new TextureAtlas(Gdx.files.internal("splatters//Splatters.pack"));
 
-        blood1Sprite = new Sprite(blood1Texture);
-        blood2Sprite = new Sprite(blood2Texture);
-        blood3Sprite = new Sprite(blood3Texture);
-        blood4Sprite = new Sprite(blood4Texture);
-        blood5Sprite = new Sprite(blood5Texture);
+        blood1Sprite = splatterAtlas.createSprite("blood1");
+        blood2Sprite = splatterAtlas.createSprite("blood2");
+        blood3Sprite = splatterAtlas.createSprite("blood3");
+        blood4Sprite = splatterAtlas.createSprite("blood4");
+        blood5Sprite = splatterAtlas.createSprite("blood5");
 
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888,(int)Controller.getWorldUpdater().getMapManager().getCurrentMapWidth(),
                 (int)Controller.getWorldUpdater().getMapManager().getCurrentMapHeight(),false);
@@ -144,7 +141,8 @@ public class SplatterRenderer implements Constants {
         //TODO make it work properly
         for(int i =0;i<numberOfSplatters;i++) {
             if(range>0) {
-                splatterArray.add(new Splatter(position.add(Utils.getRandomFromRange(-range, range), Utils.getRandomFromRange(-range, range)),
+                float randomSign = Math.signum(Utils.randomGenerator.nextInt());
+                splatterArray.add(new Splatter(position.add(Utils.randomGenerator.nextFloat()*randomSign*range, Utils.randomGenerator.nextFloat()*randomSign*range),
                         1 + Utils.randomGenerator.nextInt(5), Utils.randomGenerator.nextInt(360)));
             } else {
                 splatterArray.add(new Splatter(position,1 + Utils.randomGenerator.nextInt(5), Utils.randomGenerator.nextInt(360)));

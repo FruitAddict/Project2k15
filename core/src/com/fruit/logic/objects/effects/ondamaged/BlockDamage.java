@@ -12,10 +12,10 @@ import com.fruit.visual.messages.TextRenderer;
  * @Author FruitAddict
  */
 public class BlockDamage extends OnDamageTakenEffect implements Constants {
-    private float blockCount;
+    private int blockCount;
     private Player player;
 
-    public BlockDamage(Player player, float blockCount){
+    public BlockDamage(Player player, int blockCount){
         this.blockCount = blockCount;
         this.player = player;
         player.status.setShielded(true);

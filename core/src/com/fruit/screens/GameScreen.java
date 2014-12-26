@@ -2,9 +2,13 @@ package com.fruit.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Scaling;
+import com.fruit.Controller;
 import com.fruit.MainGame;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.logic.input.CustomInputMultiplexer;
@@ -41,10 +45,16 @@ public class GameScreen implements Screen {
     //User Interface in-game. Different than the main menu
     private UserInterface userInterface;
     //vector 2 storing current camera dimensions
-    Vector2 cameraDimensions;
+    private Vector2 cameraDimensions;
+    //boolean indicating whether game is paused
+    public boolean paused = false;
 
     public GameScreen(MainGame game){
         this.game = game;
+        //register to Controller
+
+        Controller.registerGameScreen(this);
+        //init
         worldUpdater = new WorldUpdater();
         camera = new GameCamera();
         spriteBatch = new SpriteBatch();
@@ -58,14 +68,23 @@ public class GameScreen implements Screen {
 
         //make camera follow the player
         camera.setObjectToFollow(worldUpdater.getObjectManager().getPlayer());
+
         //create camera dimensions vector
         cameraDimensions = new Vector2();
     }
     @Override
     public void render(float delta) {
+        //clear screen
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //update input
         customInputMultiplexer.updateInput();
-        worldUpdater.update(delta);
-        worldRenderer.render(delta);
+        //update if game is not paused
+        if(!paused) {
+            worldUpdater.update(delta);
+        }worldRenderer.render(delta);
+
+        //update UI
         userInterface.act(Math.min(1/30f,delta));
         userInterface.draw();
     }

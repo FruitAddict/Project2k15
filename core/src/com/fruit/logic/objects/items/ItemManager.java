@@ -15,7 +15,7 @@ public class ItemManager {
             default:{
                 switch(Utils.randomGenerator.nextInt(5)){
                     case 0:{
-                        objectManager.addObject(new HealthPotion(objectManager,posX,posY,32,32,5f,0.5f,2f));
+                        objectManager.addObject(new HealthPotion(objectManager,posX,posY,32,32,5f,0.5f,2));
                         break;
                     }
                     case 1:{

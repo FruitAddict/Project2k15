@@ -63,6 +63,6 @@ public class DamageOverTime extends PassiveEffect {
     public void join(PassiveEffect passiveEffect){
         DamageOverTime temp = (DamageOverTime)passiveEffect;
         duration = (duration+ temp.getDuration())/2;
-        amount.setValue(amount.getValue()+temp.amount.getValue()/2*1.2f);
+        amount.setValue(amount.getValue()+temp.amount.getValue()/2);
     }
 }

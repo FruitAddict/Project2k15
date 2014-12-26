@@ -1,5 +1,6 @@
 package com.fruit.visual.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +13,6 @@ import com.fruit.logic.WorldUpdater;
 import com.fruit.maps.Room;
 import com.fruit.visual.Assets;
 import com.fruit.visual.GameCamera;
-import com.fruit.visual.messages.TextRenderer;
 
 /**
  * @Author FruitAddict
@@ -39,12 +39,12 @@ public class UserInterface extends Stage {
 
     public void initializeGUI(){
         //create default skin
-        skin = new Skin();
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
 
-        Pixmap biggerPixMap = new Pixmap(20,20, Pixmap.Format.RGBA8888);
+        Pixmap biggerPixMap = new Pixmap(10,10, Pixmap.Format.RGBA8888);
         biggerPixMap.setColor(Color.WHITE);
         biggerPixMap.fill();
 
@@ -52,7 +52,8 @@ public class UserInterface extends Stage {
         skin.add("touchKnob", Assets.getAsset("touchKnob.png",Texture.class));
         skin.add("white", new Texture(pixmap));
         skin.add("bigPix", new Texture(biggerPixMap));
-        skin.add("default", TextRenderer.redFont);
+        skin.add("optimus-font", new BitmapFont(Gdx.files.internal("fonts//souls.fnt")));
+        //skin.add("default", TextRenderer.redFont);
 
         //touchpad style
         Touchpad.TouchpadStyle touchpadStyle = new Touchpad.TouchpadStyle();
@@ -60,22 +61,7 @@ public class UserInterface extends Stage {
         touchpadStyle.knob = skin.newDrawable("touchKnob", new Color(0,0f,0f,0.2f));
         skin.add("default",touchpadStyle);
 
-        //label style
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = new BitmapFont();
-        skin.add("default", labelStyle);
-
-        //progress bar style
-        ProgressBar.ProgressBarStyle progressBarStyleHP = new ProgressBar.ProgressBarStyle();
-        progressBarStyleHP.background = skin.newDrawable("white", new Color(0,0,0,0));
-        progressBarStyleHP.knob = skin.newDrawable("bigPix",new Color(1f,0,0,0));
-        progressBarStyleHP.knobBefore = skin.newDrawable("bigPix", new Color(1f,0,0,0.9f));
-        skin.add("health-bar",progressBarStyleHP);
-        ProgressBar.ProgressBarStyle progressBarStyleEXP = new ProgressBar.ProgressBarStyle();
-        progressBarStyleEXP.background = skin.newDrawable("white", new Color(0,0,0,0));
-        progressBarStyleEXP.knob = skin.newDrawable("bigPix",new Color(0,0,0,0));
-        progressBarStyleEXP.knobBefore = skin.newDrawable("bigPix", new Color(1f,255/215f,0,0.9f));
-        skin.add("exp-bar",progressBarStyleEXP);
+        skin.getFont("default-font").setScale(0.7f,0.7f);
 
         //create touchpads
         createControlTouchPads();
@@ -85,34 +71,42 @@ public class UserInterface extends Stage {
         experienceBar = new ProgressBar(0,100,1,false,skin.get("exp-bar", ProgressBar.ProgressBarStyle.class));
         healthBar.getStyle().knob.setMinHeight(20);
         experienceBar.getStyle().knob.setMinHeight(20);
+        healthBar.getStyle().knobBefore = skin.newDrawable("bigPix",new Color(1f,0,0,0.9f));
+        experienceBar.getStyle().knobBefore = skin.newDrawable("bigPix", new Color(1f,255/215f,0,0.9f));
         healthBar.setValue(Controller.getWorldUpdater().getPlayer().stats.getHealthPoints()/Controller.getWorldUpdater().getPlayer().stats.getBaseMaximumHealthPoints()*100);
         experienceBar.setValue(Controller.getWorldUpdater().getPlayer().getExperiencePoints()/10*100);
-        if(experienceBar.getValue()<1){
-            experienceBar.getStyle().knobBefore = skin.newDrawable("bigPix", new Color(1f,255/215f,0,0f));
-        }
         //create labels
         experienceLabelInfo = new Label("Exp: ",skin);
         healthLabelInfo = new Label("HP: ",skin);
         healthLabelValue = new Label("",skin);
         experienceLabelValue = new Label("",skin);
-
         VerticalGroup barGroup = new VerticalGroup();
         //health stack
         Stack stackHealth = new Stack();
+        stackHealth.setScaleX(1.5f);
         stackHealth.addActor(healthBar);
         stackHealth.addActor(healthLabelInfo);
         stackHealth.addActor(healthLabelValue);
         healthLabelValue.setAlignment(Align.right);
+        //exp stack
         Stack stackExp = new Stack();
+        stackExp.setScaleX(1.5f);
         stackExp.addActor(experienceBar);
         stackExp.addActor(experienceLabelInfo);
         stackExp.addActor(experienceLabelValue);
         experienceLabelValue.setAlignment(Align.right);
+
+        //add everything to bar vertical group
         barGroup.addActor(stackHealth);
         barGroup.addActor(stackExp);
+        barGroup.setColor(new Color(1, 1, 1, 0.5f));
         barGroup.align(Align.topLeft);
+        barGroup.setScaleX(1.2f);
         barGroup.setFillParent(true);
         addActor(barGroup);
+
+        //minimap cointainer alpha
+        miniMapContainer.setColor(new Color(1,1,1,0.5f));
 
         updateMinimap();
         updateStatusBars(Controller.getWorldUpdater().getPlayer().stats.getHealthPoints(),Controller.getWorldUpdater().getPlayer().stats.getBaseMaximumHealthPoints(),
@@ -128,19 +122,11 @@ public class UserInterface extends Stage {
     }
 
     public void updateStatusBars(float hp, float maxHP, float exp, float maxEXP){
-        if(experienceBar.getValue() < 1){
-            if(experienceBar.getValue() + exp/maxEXP*100 > 1){
-                experienceBar.getStyle().knobBefore = skin.newDrawable("bigPix", new Color(1f,255/215f,0,9f));
-            }
-        }
         //todo string formatting
         healthBar.setValue(hp/maxHP*100);
         experienceBar.setValue(exp/maxEXP*100);
         healthLabelValue.setText((int)hp+"/"+(int)maxHP);
         experienceLabelValue.setText((int)exp+"/"+(int)maxEXP);
-        if(experienceBar.getValue()<1){
-            experienceBar.getStyle().knobBefore = skin.newDrawable("bigPix", new Color(1f,255/215f,0,0f));
-        }
     }
 
 
@@ -187,6 +173,18 @@ public class UserInterface extends Stage {
         return minimap;
     }
 
+    public void addDialogBox(String title, String message){
+        ItemDialog dialog = new ItemDialog(title,skin);
+        Controller.pauseGame();
+        Label label = new Label(message,skin);
+        label.setWrap(true);
+        label.setAlignment(Align.left, Align.left);
+        label.setFontScale(0.9f);
+        dialog.getContentTable().add(label).width(400);
+        dialog.button("Ok",true);
+        dialog.show(this);
+    }
+
     @Override
     public void act(float delta){
         super.act(delta);
@@ -200,6 +198,27 @@ public class UserInterface extends Stage {
         }
     }
 
+    private class ItemDialog extends Dialog{
 
+        public ItemDialog(String title, Skin skin) {
+            super(title, skin);
+            Controller.pauseGame();
+        }
+
+        public ItemDialog(String title, Skin skin, String windowStyleName) {
+            super(title, skin, windowStyleName);
+        }
+
+        public ItemDialog(String title, WindowStyle windowStyle) {
+            super(title, windowStyle);
+        }
+
+        @Override
+        public void result(Object object){
+            if((Boolean) object){
+                Controller.unpauseGame();
+            }
+        }
+    }
 
 }

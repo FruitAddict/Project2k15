@@ -3,14 +3,12 @@
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -20,9 +18,7 @@ import com.fruit.logic.Constants;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.maps.Room;
-import com.fruit.utilities.Utils;
 import com.fruit.visual.GameCamera;
-import com.fruit.visual.animationpacks.EffectRenderer;
 import com.fruit.visual.messages.TextRenderer;
 import com.fruit.visual.tween.GameCameraAccessor;
 import com.fruit.visual.tween.TweenUtils;
@@ -57,9 +53,11 @@ public class WorldRenderer implements Constants {
     private float lastMapTextureX, lastMaptextureY;
     private FrameBuffer frameBuffer;
     private Array<GameObject> temporaryObjectArray;
+    //when this boolean is true, some of the rendering functionality will halt.
+    public boolean paused = false;
 
 
-    public WorldRenderer(SpriteBatch batch, GameCamera camera, WorldUpdater worldUpdater){
+    public WorldRenderer(SpriteBatch batch, GameCamera camera, WorldUpdater worldUpdater) {
         Controller.registerWorldRenderer(this);
         this.batch = batch;
         this.camera = camera;
@@ -71,13 +69,13 @@ public class WorldRenderer implements Constants {
         lightRenderer.setPlayerLight(getWorldUpdater().getPlayer().getBody());
         splatterRenderer = new SplatterRenderer(batch);
         //initially add all the lights from the room if those exist
-        for(Room.StaticLightContainer container : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()){
-            lightRenderer.addPointLight(container.color,container.length,container.position.x,container.position.y,true);
+        for (Room.StaticLightContainer container : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()) {
+            lightRenderer.addPointLight(container.color, container.length, container.position.x, container.position.y, true);
         }
         temporaryObjectArray = new Array<GameObject>();
     }
 
-    public void render(float delta){
+    public void render(float delta) {
         //update camera
         camera.update();
         //update tween manager
@@ -86,29 +84,27 @@ public class WorldRenderer implements Constants {
         tiledMapRenderer.setView(camera);
         //set batch projection matrix to camera
         batch.setProjectionMatrix(camera.combined);
-        //clear screen
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //render map
-        //tiledMapRenderer.render();
+        //begin rendering to batch
         batch.begin();
-        tiledMapRenderer.renderTileLayer((TiledMapTileLayer)tiledMapRenderer.getMap().getLayers().get(0));
+        tiledMapRenderer.renderTileLayer((TiledMapTileLayer) tiledMapRenderer.getMap().getLayers().get(0));
         //render splatter effects
         splatterRenderer.render();
         //render walls
-        tiledMapRenderer.renderTileLayer((TiledMapTileLayer)tiledMapRenderer.getMap().getLayers().get(1));
+        tiledMapRenderer.renderTileLayer((TiledMapTileLayer) tiledMapRenderer.getMap().getLayers().get(1));
         //render all objects
-        if(lastMapTexture!=null){
-            batch.draw(lastMapTexture,lastMapTextureX,lastMaptextureY);
+        if (lastMapTexture != null) {
+            batch.draw(lastMapTexture, lastMapTextureX, lastMaptextureY);
         }
         objectRenderer.render(delta, worldUpdater.getObjectManager().getGameObjects(), batch);
         batch.end();
         lightRenderer.render();
-        textRenderer.render(batch, delta);
+        if (!paused) {
+            textRenderer.render(batch, delta);
+        }
         camera.updateCameraMovement();
     }
 
-    public void transitionRender(){
+    public void transitionRender() {
         //transition render method used when map is changed.
         //There is no need to render lights or text here compared to the render method.
         //All battle text is removed anyway and the main render method will take care of
@@ -124,26 +120,26 @@ public class WorldRenderer implements Constants {
         //render objects except for player using temporary object array
         batch.begin();
         temporaryObjectArray.clear();
-        for(GameObject o : worldUpdater.getObjectManager().getGameObjects()){
-            if(o.getEntityID()!= GameObject
-                    .PLAYER){
+        for (GameObject o : worldUpdater.getObjectManager().getGameObjects()) {
+            if (o.getEntityID() != GameObject
+                    .PLAYER) {
                 temporaryObjectArray.add(o);
             }
         }
-        temporaryObjectArray.removeValue(worldUpdater.getPlayer(),true);
+        temporaryObjectArray.removeValue(worldUpdater.getPlayer(), true);
         objectRenderer.render(0, temporaryObjectArray, batch);
         temporaryObjectArray.clear();
         batch.end();
     }
 
-    public void changeRenderedMap(Vector2 prevPortalPos, Vector2 nextPortalPos, int direction, boolean doTransition){
+    public void changeRenderedMap(Vector2 prevPortalPos, Vector2 nextPortalPos, int direction, boolean doTransition) {
         //Method called when map/room change is requested. On room change, it performs a neat room camera transition
         //centered on the doors.
         //First, kill all tweening (dmg scrolling text etc)
         TweenUtils.tweenManager.killAll();
         //remove all the text from text renderer
         textRenderer.removeAll();
-        if(doTransition) {
+        if (doTransition) {
             //Portal Position vector - holds the center of the portal collision rectangle in the previous map
             //Spawn point vector - holds the center of the spawn point from the new map
             //int direction - indicates where the player will appear
@@ -159,26 +155,26 @@ public class WorldRenderer implements Constants {
             //set the camera free, so it doesn't follow the player ( or other objects ).
             camera.setFreeCamera(true);
             //Renders the map into the frame buffer, centered on the doors in the previous map
-            frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int)(camera.viewportWidth*camera.zoom),(int)(camera.viewportHeight*camera.zoom),false);
+            frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) (camera.viewportWidth * camera.zoom), (int) (camera.viewportHeight * camera.zoom), false);
             frameBuffer.begin();
-            switch(direction) {
+            switch (direction) {
                 case NORTH_DIR: {
                     //if player is spawning on the north side of the map, it means that he came from the south
                     //therefore we set the camera position to the south on the portal position on x axis
                     //and half the viewport length on the y axis.
-                    camera.position.set(prevPortalPos.x, viewPortHeight/2*camera.zoom,0);
+                    camera.position.set(prevPortalPos.x, viewPortHeight / 2 * camera.zoom, 0);
                     break;
                 }
-                case SOUTH_DIR:{
-                    camera.position.set(prevPortalPos.x,mapHeight - viewPortHeight/2*camera.zoom,0);
+                case SOUTH_DIR: {
+                    camera.position.set(prevPortalPos.x, mapHeight - viewPortHeight / 2 * camera.zoom, 0);
                     break;
                 }
-                case WEST_DIR:{
-                    camera.position.set(mapWidth-viewPortWidth/2*camera.zoom,prevPortalPos.y,0);
+                case WEST_DIR: {
+                    camera.position.set(mapWidth - viewPortWidth / 2 * camera.zoom, prevPortalPos.y, 0);
                     break;
                 }
-                case EAST_DIR:{
-                    camera.position.set(viewPortWidth/2*camera.zoom,prevPortalPos.y,0);
+                case EAST_DIR: {
+                    camera.position.set(viewPortWidth / 2 * camera.zoom, prevPortalPos.y, 0);
                     break;
                 }
             }
@@ -196,43 +192,43 @@ public class WorldRenderer implements Constants {
             lastMapTexture.flip(false, true);
 
             //perform the tween camera transition based on the direction the player will spawn in
-            switch(direction){
+            switch (direction) {
                 case NORTH_DIR: {
                     //for example, if player will spawn in the north of the new map,
                     //we set the position at which the texture from the frame buffer will be rendered
                     //to spawn point's position  - half of the viewport on the x axis(so it will cover the whole viewport)
                     //and map height on the y axis.
-                    lastMapTextureX = spawnX - viewPortWidth/2*camera.zoom;
+                    lastMapTextureX = spawnX - viewPortWidth / 2 * camera.zoom;
                     lastMaptextureY = mapHeight;
-                    camera.position.set(spawnX,mapHeight+viewPortHeight/2*camera.zoom,0);
-                    Tween.to(camera,GameCameraAccessor.positionXY,0.5f).target(spawnX,mapHeight-viewPortHeight/2*camera.zoom)
+                    camera.position.set(spawnX, mapHeight + viewPortHeight / 2 * camera.zoom, 0);
+                    Tween.to(camera, GameCameraAccessor.positionXY, 0.5f).target(spawnX, mapHeight - viewPortHeight / 2 * camera.zoom)
                             .setCallbackTriggers(TweenCallback.END).setCallback(camera.followObjectCallback)
                             .start(TweenUtils.tweenManager);
                     break;
                 }
                 case SOUTH_DIR: {
-                    lastMapTextureX = spawnX - viewPortWidth/2*camera.zoom;
+                    lastMapTextureX = spawnX - viewPortWidth / 2 * camera.zoom;
                     lastMaptextureY = -lastMapTexture.getRegionHeight();
-                    camera.position.set(spawnX,-viewPortHeight/2*camera.zoom,0);
-                    Tween.to(camera,GameCameraAccessor.positionXY,0.5f).target(spawnX,viewPortHeight/2*camera.zoom)
+                    camera.position.set(spawnX, -viewPortHeight / 2 * camera.zoom, 0);
+                    Tween.to(camera, GameCameraAccessor.positionXY, 0.5f).target(spawnX, viewPortHeight / 2 * camera.zoom)
                             .setCallbackTriggers(TweenCallback.END).setCallback(camera.followObjectCallback)
                             .start(TweenUtils.tweenManager);
                     break;
                 }
                 case EAST_DIR: {
                     lastMapTextureX = mapWidth;
-                    lastMaptextureY = spawnY - viewPortHeight/2*camera.zoom;
-                    camera.position.set(mapWidth+viewPortWidth/2*camera.zoom,spawnY,0);
-                    Tween.to(camera,GameCameraAccessor.positionXY,0.5f).target(mapWidth-viewPortWidth/2*camera.zoom,spawnY)
+                    lastMaptextureY = spawnY - viewPortHeight / 2 * camera.zoom;
+                    camera.position.set(mapWidth + viewPortWidth / 2 * camera.zoom, spawnY, 0);
+                    Tween.to(camera, GameCameraAccessor.positionXY, 0.5f).target(mapWidth - viewPortWidth / 2 * camera.zoom, spawnY)
                             .setCallbackTriggers(TweenCallback.END).setCallback(camera.followObjectCallback)
                             .start(TweenUtils.tweenManager);
                     break;
                 }
                 case WEST_DIR: {
                     lastMapTextureX = -lastMapTexture.getRegionWidth();
-                    lastMaptextureY = spawnY - viewPortHeight/2*camera.zoom;
-                    camera.position.set(-viewPortWidth/2*camera.zoom,spawnY,0);
-                    Tween.to(camera,GameCameraAccessor.positionXY,0.5f).target(viewPortWidth/2*camera.zoom,spawnY)
+                    lastMaptextureY = spawnY - viewPortHeight / 2 * camera.zoom;
+                    camera.position.set(-viewPortWidth / 2 * camera.zoom, spawnY, 0);
+                    Tween.to(camera, GameCameraAccessor.positionXY, 0.5f).target(viewPortWidth / 2 * camera.zoom, spawnY)
                             .setCallbackTriggers(TweenCallback.END).setCallback(camera.followObjectCallback)
                             .start(TweenUtils.tweenManager);
                     break;
@@ -240,12 +236,12 @@ public class WorldRenderer implements Constants {
             }
         }
         //no matter if transition is requested or not, create a new tiled map renderer based on the new map
-        tiledMapRenderer= null;
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getTiledMap(),batch);
+        tiledMapRenderer = null;
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getTiledMap(), batch);
         //free all the lights
         lightRenderer.freeAllLights();
-        for(Room.StaticLightContainer container : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()){
-            lightRenderer.addPointLight(container.color,container.length,container.position.x,container.position.y,true);
+        for (Room.StaticLightContainer container : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()) {
+            lightRenderer.addPointLight(container.color, container.length, container.position.x, container.position.y, true);
         }
         //remove all splatters from the splatter renderer
         //update splatter renderer fbo and camera.
@@ -258,20 +254,19 @@ public class WorldRenderer implements Constants {
         return textRenderer;
     }
 
-    public WorldUpdater getWorldUpdater(){
+    public WorldUpdater getWorldUpdater() {
         return worldUpdater;
     }
 
-    public LightRenderer getLightRenderer(){
+    public LightRenderer getLightRenderer() {
         return lightRenderer;
     }
 
     public SplatterRenderer getSplatterRenderer() {
-        return  splatterRenderer;
+        return splatterRenderer;
     }
 
-    public GameCamera getCamera(){
+    public GameCamera getCamera() {
         return camera;
     }
-
 }

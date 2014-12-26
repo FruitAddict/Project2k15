@@ -43,7 +43,7 @@ public class PlayerProjectile extends Projectile{
             radius*=1.1f;
         }
         direction = dir;
-        this.velocity = new Value(velocity, Value.VELOCITY);
+        this.velocity = velocity;
         piercing = player.stats.isPiercingProjectiles();
     }
 
@@ -67,7 +67,7 @@ public class PlayerProjectile extends Projectile{
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         bodyDef.allowSleep = false;
-        bodyDef.linearVelocity.set(direction.scl(velocity.getValue()));
+        bodyDef.linearVelocity.set(direction.scl(velocity));
 
         //create the body
         body = world.createBody(bodyDef);

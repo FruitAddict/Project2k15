@@ -21,9 +21,9 @@ public class HealthPotion extends Item {
     private ObjectManager objectManager;
     private float healDuration;
     private float healDelay;
-    private float healAmount;
+    private int healAmount;
 
-    public HealthPotion(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height,float healDuration, float delay, float healAmount){
+    public HealthPotion(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height,float healDuration, float delay, int healAmount){
         this.objectManager = objectManager;
         lastKnownX = spawnCoordX;
         lastKnownY = spawnCoordY;

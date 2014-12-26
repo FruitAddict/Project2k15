@@ -69,9 +69,10 @@ public class DamageUp extends Item {
     @Override
     public void onPickUp(Player player){
         player.addPassiveEffect(new com.fruit.logic.objects.effects.passive.DamageUp(player,1));
-        Controller.addOnScreenMessage(new TextMessage("You feel stronger..!", getBody().getPosition().x * PIXELS_TO_METERS,
-                getBody().getPosition().y * PIXELS_TO_METERS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
+        //Controller.addOnScreenMessage(new TextMessage("You feel stronger..!", getBody().getPosition().x * PIXELS_TO_METERS,
+        //        getBody().getPosition().y * PIXELS_TO_METERS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
         killYourself();
+        Controller.getUserInterface().addDialogBox("You've found an item!", "Sword of Zadora Cultists");
     }
 
     @Override

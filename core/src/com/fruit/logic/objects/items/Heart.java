@@ -15,7 +15,7 @@ import com.fruit.logic.objects.entities.player.Player;
 public class Heart extends Item implements Constants {
 
     private ObjectManager objectManager;
-    private float renewValue = 1;
+    private int renewValue = 1;
 
     public Heart(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height){
         this.objectManager = objectManager;
@@ -84,7 +84,7 @@ public class Heart extends Item implements Constants {
         return renewValue;
     }
 
-    public void setRenewValue(float renewValue) {
+    public void setRenewValue(int renewValue) {
         this.renewValue = renewValue;
     }
 }

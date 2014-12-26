@@ -14,6 +14,7 @@ import com.fruit.logic.objects.effects.OnDamageTakenEffect;
 import com.fruit.logic.objects.effects.OnHitEffect;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.projectiles.PlayerProjectile;
+import com.fruit.utilities.Utils;
 import com.fruit.visual.messages.TextMessage;
 import com.fruit.visual.messages.TextRenderer;
 
@@ -33,14 +34,9 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     //player level start with 1
     private int level = 1;
     //player's experiance points
-    private float experiencePoints;
-
-    public float getNextLevelExpRequirement() {
-        return nextLevelExpRequirement;
-    }
-
+    private int experiencePoints;
     //next level exp req
-    private float nextLevelExpRequirement;
+    private int nextLevelExpRequirement;
 
     //Players on hit effects, items can result in attacks slowing enemies down etc, it is passed to
     //every newly created projectile
@@ -65,6 +61,7 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         stats.setHealthPoints(100);
         stats.setBaseMaximumHealthPoints(100);
         stats.setTimeBetweenAttacks(0.25f);
+        stats.setAimSway(10);
 
         //initialize attack direction vector
         attackDirectionNormalized = new Vector2();
@@ -79,8 +76,11 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     public void attack(float directionPercentX, float directionPercentY){
         //if player can attack again, set the vector to the values passed by ui controller
         if(stateTime - lastAttack > stats.getCombinedAttackSpeed()) {
+            float sign = (float)Math.signum(Utils.randomGenerator.nextInt());
+            float sway = Utils.randomGenerator.nextFloat()/stats.getAimSway()*sign;
             //normalize the attack direction vector using new values
             attackDirectionNormalized.set(0 - directionPercentX, 0 - directionPercentY);
+            attackDirectionNormalized.add(sway, sway);
             attackDirectionNormalized.nor();
             attackDirectionNormalized.x*=-1;
             attackDirectionNormalized.y*=-1;
@@ -204,9 +204,13 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         return experiencePoints;
     }
 
+    public int getNextLevelExpRequirement() {
+        return nextLevelExpRequirement;
+    }
+
     public void addExperiencePoints(int value){
         experiencePoints+=value;
-        Controller.addOnScreenMessage(new TextMessage("+ "+value+" exp", getBody().getPosition().x * PIXELS_TO_METERS,
+        Controller.addOnScreenMessage(new TextMessage(value+" exp", getBody().getPosition().x * PIXELS_TO_METERS,
                 getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.goldenFont,TextMessage.UP_AND_FALL));
         if(experiencePoints >= nextLevelExpRequirement){
             experiencePoints = experiencePoints-nextLevelExpRequirement;
@@ -218,7 +222,6 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     public void onLevelUp(){
         objectManager.getPlayer().onHealingTaken(new Value(10,Value.HEALING));
         nextLevelExpRequirement*=1.5f;
-        stats.setBaseDamage(stats.getBaseDamage()+0.1f);
         status.setLeveledUp(true);
     }
 }

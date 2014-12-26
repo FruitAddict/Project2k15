@@ -1,6 +1,7 @@
 package com.fruit;
 
 import com.fruit.logic.WorldUpdater;
+import com.fruit.screens.GameScreen;
 import com.fruit.visual.messages.TextMessage;
 import com.fruit.visual.renderer.WorldRenderer;
 import com.fruit.visual.ui.UserInterface;
@@ -14,6 +15,7 @@ public class Controller {
     private static WorldUpdater worldUpdater;
     private static WorldRenderer worldRenderer;
     private static UserInterface userInterface;
+    private static GameScreen gameScreen;
 
     public static WorldRenderer getWorldRenderer(){
         if(Controller.worldRenderer!=null){
@@ -40,6 +42,14 @@ public class Controller {
         }
     }
 
+    public static GameScreen getGameScreen(){
+        if(Controller.gameScreen!=null){
+            return Controller.gameScreen;
+        }else {
+            throw new NullPointerException("No game screen registered.");
+        }
+    }
+
     public static void addOnScreenMessage(String msg, float positionX, float positionY, float lifeSpan){
         if(Controller.worldRenderer!=null){
             worldRenderer.getTextRenderer().addMessage(msg,positionX,positionY,lifeSpan);
@@ -49,6 +59,20 @@ public class Controller {
     public static void addOnScreenMessage(TextMessage message){
         if(Controller.worldRenderer!=null){
             worldRenderer.getTextRenderer().addMessage(message);
+        }
+    }
+
+    public static synchronized void pauseGame(){
+        if(Controller.gameScreen!=null){
+            Controller.gameScreen.paused = true;
+            Controller.worldRenderer.paused = true;
+        }
+    }
+
+    public static synchronized void unpauseGame(){
+        if(Controller.gameScreen!=null){
+            Controller.gameScreen.paused = false;
+            Controller.worldRenderer.paused = false;
         }
     }
 
@@ -62,5 +86,9 @@ public class Controller {
 
     public static void registerUserInterface(UserInterface userInterface){
         Controller.userInterface = userInterface;
+    }
+
+    public static void registerGameScreen(GameScreen gameScreen){
+        Controller.gameScreen = gameScreen;
     }
 }

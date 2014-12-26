@@ -47,7 +47,7 @@ public class SplashScreen implements Screen {
         timePassed+=delta;
         //update tween manager
         TweenUtils.tweenManager.update(delta);
-        if (Assets.manager.update() && timePassed > 3) {
+        if (Assets.manager.update() && timePassed > 1) {
             this.dispose();
             game.setScreen(new MainMenuScreen(game));
         } else {
@@ -66,8 +66,8 @@ public class SplashScreen implements Screen {
     @Override
     public void show() {
         Tween.set(sprite,SpriteAccessor.ALPHA).target(0).start(TweenUtils.tweenManager);
-        Tween.to(sprite,SpriteAccessor.ALPHA,3).target(1).start(TweenUtils.tweenManager);
-        Tween.to(sprite,SpriteAccessor.POSITION_X,3).target(Gdx.graphics.getWidth()).start(TweenUtils.tweenManager);
+        Tween.to(sprite,SpriteAccessor.ALPHA,1).target(1).start(TweenUtils.tweenManager);
+        Tween.to(sprite,SpriteAccessor.POSITION_X,1).target(Gdx.graphics.getWidth()).start(TweenUtils.tweenManager);
     }
 
     @Override

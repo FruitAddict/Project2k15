@@ -9,16 +9,16 @@ public class CharacterStats {
 
     //Player stats - must contain base value and modifier
 
-    protected float healthPoints;
-    protected float baseMaximumHealthPoints;
-    protected float maximumHealthPointsMultiplier = 1;
+    protected int healthPoints;
+    protected int baseMaximumHealthPoints;
+    protected double maximumHealthPointsMultiplier = 1;
     private float healthPointPercentOfMax;
 
     private float timeBetweenAttacks=1f;
     private float timeBetweenAttacksModifier = 1f;
 
-    private float baseDamage = 1f;
-    private float baseDamageModifier =1f;
+    private int baseDamage = 1;
+    private int baseDamageModifier =1;
 
     private float damageResistanceModifier = 1f;
 
@@ -29,8 +29,10 @@ public class CharacterStats {
     private float criticalHitBase, criticalHitModifier = 1;
 
     private boolean piercingProjectiles = false;
+    //how accurate the character is, the bigger the better
+    private float aimSway = 10f;
 
-    public float getCombinedDamage(){
+    public int getCombinedDamage(){
         return baseDamage * baseDamageModifier;
     }
 
@@ -61,9 +63,37 @@ public class CharacterStats {
      * GETTERS AND SETTERS
      *      SECTION
      */
-    public void setHealthPoints(float value){
-        //set health points
-        healthPoints = value;
+
+    public int getHealthPoints() {
+        return healthPoints;
+    }
+
+    public void setHealthPoints(int healthPoints) {
+        this.healthPoints = healthPoints;
+    }
+
+    public int getBaseMaximumHealthPoints() {
+        return baseMaximumHealthPoints;
+    }
+
+    public void setBaseMaximumHealthPoints(int baseMaximumHealthPoints) {
+        this.baseMaximumHealthPoints = baseMaximumHealthPoints;
+    }
+
+    public double getMaximumHealthPointsMultiplier() {
+        return maximumHealthPointsMultiplier;
+    }
+
+    public void setMaximumHealthPointsMultiplier(double maximumHealthPointsMultiplier) {
+        this.maximumHealthPointsMultiplier = maximumHealthPointsMultiplier;
+    }
+
+    public float getHealthPointPercentOfMax() {
+        return healthPointPercentOfMax;
+    }
+
+    public void setHealthPointPercentOfMax(float healthPointPercentOfMax) {
+        this.healthPointPercentOfMax = healthPointPercentOfMax;
     }
 
     public float getTimeBetweenAttacks() {
@@ -82,19 +112,19 @@ public class CharacterStats {
         this.timeBetweenAttacksModifier = timeBetweenAttacksModifier;
     }
 
-    public float getBaseDamage() {
+    public int getBaseDamage() {
         return baseDamage;
     }
 
-    public void setBaseDamage(float baseDamage) {
+    public void setBaseDamage(int baseDamage) {
         this.baseDamage = baseDamage;
     }
 
-    public float getBaseDamageModifier() {
+    public int getBaseDamageModifier() {
         return baseDamageModifier;
     }
 
-    public void setBaseDamageModifier(float baseDamageModifier) {
+    public void setBaseDamageModifier(int baseDamageModifier) {
         this.baseDamageModifier = baseDamageModifier;
     }
 
@@ -114,14 +144,6 @@ public class CharacterStats {
         this.healingModifier = healingModifier;
     }
 
-    public float getMaxVelocity() {
-        return maxVelocity;
-    }
-
-    public void setMaxVelocity(float maxVelocity) {
-        this.maxVelocity = maxVelocity;
-    }
-
     public float getSpeed() {
         return speed;
     }
@@ -130,20 +152,12 @@ public class CharacterStats {
         this.speed = speed;
     }
 
-    public float getHealthPoints(){
-        return healthPoints;
+    public float getMaxVelocity() {
+        return maxVelocity;
     }
 
-    public void setBaseMaximumHealthPoints(float value){
-        baseMaximumHealthPoints = value;
-    }
-
-    public float getBaseMaximumHealthPoints(){
-        return baseMaximumHealthPoints;
-    }
-
-    public void resetMaxHealthPointsMultiplier(){
-        maximumHealthPointsMultiplier = 1;
+    public void setMaxVelocity(float maxVelocity) {
+        this.maxVelocity = maxVelocity;
     }
 
     public float getCriticalHitBase() {
@@ -170,11 +184,12 @@ public class CharacterStats {
         this.piercingProjectiles = piercingProjectiles;
     }
 
-    public float getHealthPointPercentOfMax() {
-        return healthPointPercentOfMax;
+    public float getAimSway() {
+        return aimSway;
     }
 
-    public void setHealthPointPercentOfMax(float healthPointPercentOfMax) {
-        this.healthPointPercentOfMax = healthPointPercentOfMax;
+    public void setAimSway(float aimSway) {
+        this.aimSway = aimSway;
     }
+
 }

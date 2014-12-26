@@ -13,19 +13,19 @@ public class Value {
     public static final int HEALING = 4;
     public static final int VELOCITY = 5;
 
-    private float value;
+    private int value;
     private int type;
 
-    public Value(float value, int type){
+    public Value(int value, int type){
         this.value = value;
         this.type = type;
     }
 
-    public float getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(float value) {
+    public void setValue(int value) {
         this.value = value;
     }
 

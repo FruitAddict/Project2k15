@@ -21,12 +21,8 @@ public class MobProjectile extends Projectile {
     protected float spawnX;
     protected float spawnY;
 
-    //damage carried by this projectile. Defaulted to 0 unless set.
-    protected Value damage;
-    //speed of this velocity in logic units/s
-    protected Value velocity;
 
-    public MobProjectile(ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity){
+    public MobProjectile(ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity, int damage){
         this.spawnX = spawnX;
         this.spawnY = spawnY;
         this.objectManager = objectManager;
@@ -34,8 +30,8 @@ public class MobProjectile extends Projectile {
         setEntityID(GameObject.PROJECTILE);
         setSaveInRooms(DONT_SAVE);
         setTypeID(Projectile.MOB_PROJECTILE);
-        damage = new Value(1.5f,Value.NORMAL_DAMAGE);
-        this.velocity = new Value(velocity,Value.VELOCITY);
+        this.damage = new Value(damage,Value.NORMAL_DAMAGE);
+        this.velocity = velocity;
         //setting width, height and radius of the box2d body
         width =24;
         height=24;
@@ -60,7 +56,7 @@ public class MobProjectile extends Projectile {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         bodyDef.allowSleep = false;
-        bodyDef.linearVelocity.set(direction.scl(velocity.getValue()));
+        bodyDef.linearVelocity.set(direction.scl(velocity));
 
         //create the body
         body = world.createBody(bodyDef);

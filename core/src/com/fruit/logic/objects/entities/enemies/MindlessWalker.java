@@ -42,8 +42,8 @@ public class MindlessWalker extends Enemy implements Constants{
         stats.setBaseMaximumHealthPoints(10);
         stats.setTimeBetweenAttacks(0.75f);
         stats.setTimeBetweenAttacksModifier(1f);
-        stats.setBaseDamage(1.5f);
-        stats.setBaseDamageModifier(1f);
+        stats.setBaseDamage(2);
+        stats.setBaseDamageModifier(1);
 
         attackDirectionNormalized = new Vector2();
         lastKnownPlayerPosition = new Vector2();
@@ -153,7 +153,7 @@ public class MindlessWalker extends Enemy implements Constants{
             attackDirectionNormalized.nor();
             attackDirectionNormalized.x*=-1;
             attackDirectionNormalized.y*=-1;
-            objectManager.addObject(new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized,5f));
+            objectManager.addObject(new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized,5f,1));
             lastAttack = stateTime;
             }
     }
@@ -192,7 +192,7 @@ public class MindlessWalker extends Enemy implements Constants{
     @Override
     public void killYourself(){
         objectManager.removeObject(this);
-        Controller.getWorldRenderer().getSplatterRenderer().addMultiSplatter(body.getPosition(),3,0);
+        Controller.getWorldRenderer().getSplatterRenderer().addMultiSplatter(body.getPosition(),3,1);
         objectManager.getPlayer().addExperiencePoints(3);
     }
 

@@ -90,10 +90,6 @@ public class TextMessage {
         stateTime+=delta;
     }
 
-    public BitmapFont getBitmapFont() {
-        return bitmapFont;
-    }
-
     public float getLifeSpan() {
         return lifeSpan;
     }

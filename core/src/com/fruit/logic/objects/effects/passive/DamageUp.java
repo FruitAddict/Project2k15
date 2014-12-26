@@ -8,9 +8,9 @@ import com.fruit.logic.objects.entities.Character;
  */
 public class DamageUp extends PassiveEffect {
     private Character character;
-    private float amount;
+    private int amount;
 
-    public DamageUp(Character character, float amount){
+    public DamageUp(Character character, int amount){
         this.character = character;
         this.amount = amount;
         setEffectType(PassiveEffect.DAMAGE_UP);

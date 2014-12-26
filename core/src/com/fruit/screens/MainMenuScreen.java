@@ -27,34 +27,15 @@ public class MainMenuScreen implements Screen {
         this.mainGame = mainGame;
 
 
-        skin = new Skin();
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("white", new Texture(pixmap));
-        skin.add("default", TextRenderer.redFont);
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("white", Color.BLACK);
-        textButtonStyle.down = skin.newDrawable("white", Color.BLACK);
-        textButtonStyle.checked = skin.newDrawable("white", Color.BLACK);
-        textButtonStyle.over = skin.newDrawable("white", Color.BLACK);
-        textButtonStyle.font = skin.getFont("default");
-        skin.add("default",textButtonStyle);
-        Window.WindowStyle windowStyle = new Window.WindowStyle();
-        windowStyle.background = skin.newDrawable("white",Color.BLACK);
-        windowStyle.titleFont = skin.getFont("default");
-        windowStyle.titleFontColor = Color.OLIVE;
-        skin.add("default",windowStyle);
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
         VerticalGroup verticalGroup = new VerticalGroup();
 
         Container<VerticalGroup> container = new Container<>();
-        TextButton playButton = new TextButton("Play",skin);
+        TextButton playButton = new TextButton("New Run",skin);
         TextButton optionsButton = new TextButton("Options",skin);
-        playButton.setFillParent(true);
         verticalGroup.addActor(playButton);
         verticalGroup.addActor(optionsButton);
-        verticalGroup.pack();
-        verticalGroup.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 3);
+
 
         container.setFillParent(true);
         container.setActor(verticalGroup);

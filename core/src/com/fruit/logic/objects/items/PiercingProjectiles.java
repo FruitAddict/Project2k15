@@ -32,9 +32,10 @@ public class PiercingProjectiles extends Item {
     @Override
     public void onPickUp(Player player) {
         player.addPassiveEffect(new com.fruit.logic.objects.effects.passive.PiercingProjectiles(player));
-        Controller.addOnScreenMessage(new TextMessage("Your shots now pierce!",
-                getBody().getPosition().x * PIXELS_TO_METERS, getBody().getPosition().y * PIXELS_TO_METERS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
+        //Controller.addOnScreenMessage(new TextMessage("Your shots now pierce!",
+        //        getBody().getPosition().x * PIXELS_TO_METERS, getBody().getPosition().y * PIXELS_TO_METERS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
         killYourself();
+        Controller.getUserInterface().addDialogBox("You've found an item!", "For some reason your projectiles can now pierce through enemies");
     }
 
     @Override

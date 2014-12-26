@@ -28,7 +28,7 @@ public abstract class Projectile extends GameObject {
     //damage carried by this projectile. Defaulted to 0 unless set.
     protected Value damage;
     //speed of this velocity in logic units/s
-    protected Value velocity;
+    protected float velocity;
     //radius of the projectile
     protected float radius;
 

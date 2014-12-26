@@ -73,10 +73,10 @@ public class LightRenderer implements Constants {
         p.setActive(true);
         p.setDistance(length);
         p.attachToBody(body);
+        p.setXray(true);
         Filter filter = new Filter();
         filter.maskBits = ENEMY_BIT | CLUTTER_BIT |ITEM_BIT | TERRAIN_BIT | TREASURE_BIT | PORTAL_BIT;
         p.setContactFilter(filter);
-        p.setXray(true);
         activeLights.add(p);
     }
 

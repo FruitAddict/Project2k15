@@ -5,14 +5,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.fruit.Controller;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.logic.objects.items.Item;
 import com.fruit.maps.Room;
+import com.fruit.screens.MainMenuScreen;
 import com.fruit.visual.Assets;
 import com.fruit.visual.GameCamera;
 
@@ -52,6 +55,7 @@ public class UserInterface extends Stage {
 
         skin.add("touchBackground", Assets.getAsset("touchBackground.png", Texture.class));
         skin.add("touchKnob", Assets.getAsset("touchKnob.png",Texture.class));
+        skin.add("characterIcon", Assets.getAsset("icon.png",Texture.class));
         skin.add("white", new Texture(pixmap));
         skin.add("bigPix", new Texture(biggerPixMap));
         skin.add("optimus-font", new BitmapFont(Gdx.files.internal("fonts//souls.fnt")));
@@ -101,14 +105,39 @@ public class UserInterface extends Stage {
         //add everything to bar vertical group
         barGroup.addActor(stackHealth);
         barGroup.addActor(stackExp);
-        barGroup.setColor(new Color(1, 1, 1, 0.5f));
-        barGroup.align(Align.topLeft);
         barGroup.setScaleX(1.2f);
-        barGroup.setFillParent(true);
-        addActor(barGroup);
+
+        //horizontal group to hold both bars and the character portrait for accessing menus
+        HorizontalGroup iconAndBarsGroup = new HorizontalGroup();
+        Button menuButtonPortrait = new Button(skin);
+        menuButtonPortrait.getStyle().down = skin.newDrawable("characterIcon",new Color(1,1,1,0.7f));
+        menuButtonPortrait.getStyle().up = skin.newDrawable("characterIcon",new Color(1,1,1,1f));
+
+        iconAndBarsGroup.addActor(menuButtonPortrait);
+        iconAndBarsGroup.addActor(barGroup);
+        iconAndBarsGroup.setFillParent(true);
+        iconAndBarsGroup.align(Align.topLeft);
+        iconAndBarsGroup.setColor(iconAndBarsGroup.getColor().r,iconAndBarsGroup.getColor().g,iconAndBarsGroup.getColor().b,0.6f);
+        addActor(iconAndBarsGroup);
 
         //minimap cointainer alpha
         miniMapContainer.setColor(new Color(1,1,1,0.5f));
+
+        //menu window
+        Container<Window> windowContainer = new Container<>();
+        final GameMenuWindow gameMenuWindow = new GameMenuWindow(skin);
+        gameMenuWindow.setVisible(false);
+        windowContainer.setActor(gameMenuWindow);
+        windowContainer.setFillParent(true);
+        addActor(windowContainer);
+
+        menuButtonPortrait.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Controller.pauseGame();
+                gameMenuWindow.setVisible(true);
+            }
+        });
 
         updateMinimap();
         updateStatusBars(Controller.getWorldUpdater().getPlayer().stats.getHealthPoints(),Controller.getWorldUpdater().getPlayer().stats.getBaseMaximumHealthPoints(),
@@ -255,6 +284,42 @@ public class UserInterface extends Stage {
                     break;
                 }
             }
+        }
+    }
+
+    private class GameMenuWindow extends Window{
+
+        public GameMenuWindow( Skin skin) {
+            super("Menu", skin);
+            TextButton continueButton = new TextButton("Continue",skin);
+            TextButton mainMenuButton = new TextButton("Exit",skin);
+            add(continueButton);
+            row();
+            add(mainMenuButton);
+
+            continueButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    setVisible(false);
+                    Controller.unpauseGame();
+                }
+            });
+
+            mainMenuButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    Controller.getGameScreen().dispose();
+                    Controller.getMainGame().setScreen(new MainMenuScreen(Controller.getMainGame()));
+                }
+            });
+        }
+
+        public GameMenuWindow(String title, Skin skin, String styleName) {
+            super(title, skin, styleName);
+        }
+
+        public GameMenuWindow(String title, WindowStyle style) {
+            super(title, style);
         }
     }
 

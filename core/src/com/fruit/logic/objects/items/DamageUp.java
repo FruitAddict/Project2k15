@@ -22,7 +22,7 @@ public class DamageUp extends Item {
         lastKnownY = spawnCoordY;
         this.width = width;
         this.height = height;
-        description = "You feel more powerful.";
+        description = "Fabled sword with an epic backstory. You are stronger.";
         setSaveInRooms(DO_SAVE);
         setItemType(Item.DAMAGE_UP_1);
         setEntityID(GameObject.ITEM);

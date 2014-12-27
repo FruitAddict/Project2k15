@@ -52,9 +52,7 @@ public class WorldUpdater {
     }
 
     public Player getPlayer(){
-        System.out.println("called");
         if(objectManager!=null){
-            System.out.println("returning player");
             return objectManager.getPlayer();
         } else {
             System.out.println("not returning player(object manager is null)");

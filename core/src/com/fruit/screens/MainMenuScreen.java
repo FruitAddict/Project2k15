@@ -16,6 +16,7 @@ import com.fruit.Configuration;
 import com.fruit.Controller;
 import com.fruit.MainGame;
 import com.fruit.logic.Constants;
+import com.fruit.visual.Assets;
 import com.fruit.visual.messages.TextRenderer;
 
 /**
@@ -37,8 +38,10 @@ public class MainMenuScreen implements Screen {
         final Container<VerticalGroup> container = new Container<>();
         TextButton playButton = new TextButton("New Run",skin);
         TextButton optionsButton = new TextButton("Options",skin);
+        TextButton exitButton = new TextButton("Exit",skin);
         verticalGroup.addActor(playButton);
         verticalGroup.addActor(optionsButton);
+        verticalGroup.addActor(exitButton);
 
 
         container.setFillParent(true);
@@ -107,6 +110,15 @@ public class MainMenuScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 optionsWindow.setVisible(false);
                 container.setVisible(true);
+            }
+        });
+
+        exitButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Assets.disposeAll();
+                TextRenderer.disposeAllFonts();
+                Gdx.app.exit();
             }
         });
 

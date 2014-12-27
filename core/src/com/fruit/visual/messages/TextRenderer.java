@@ -75,4 +75,11 @@ public class TextRenderer {
     public void removeAll(){
         messageList.clear();
     }
+
+    public static void disposeAllFonts(){
+        redFont.dispose();
+        greenFont.dispose();
+        goldenFont.dispose();
+        poisonGreenFont.dispose(); //todo merge with assets
+    }
 }

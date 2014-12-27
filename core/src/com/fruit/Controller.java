@@ -16,6 +16,7 @@ public class Controller {
     private static WorldRenderer worldRenderer;
     private static UserInterface userInterface;
     private static GameScreen gameScreen;
+    private static MainGame mainGame;
 
     public static WorldRenderer getWorldRenderer(){
         if(Controller.worldRenderer!=null){
@@ -47,6 +48,14 @@ public class Controller {
             return Controller.gameScreen;
         }else {
             throw new NullPointerException("No game screen registered.");
+        }
+    }
+
+    public static MainGame getMainGame(){
+        if(Controller.mainGame!=null){
+            return Controller.mainGame;
+        }else {
+            throw new NullPointerException("No main game class registered.");
         }
     }
 
@@ -90,5 +99,9 @@ public class Controller {
 
     public static void registerGameScreen(GameScreen gameScreen){
         Controller.gameScreen = gameScreen;
+    }
+
+    public static void registerMainGame(MainGame mainGame) {
+        Controller.mainGame = mainGame;
     }
 }

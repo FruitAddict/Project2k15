@@ -13,7 +13,7 @@ public class ItemManager {
     public static void addRandomItem(ObjectManager objectManager,float posX, float posY, int circleNumber){
         switch(circleNumber){
             default:{
-                switch(Utils.randomGenerator.nextInt(5)){
+                switch(Utils.randomGenerator.nextInt(6)){
                     case 0:{
                         objectManager.addObject(new HealthPotion(objectManager,posX,posY,32,32,5f,0.5f,2));
                         break;
@@ -28,9 +28,15 @@ public class ItemManager {
                     }
                     case 3:{
                         objectManager.addObject(new PoisonProjectiles(objectManager,posX,posY,32,32));
+                        break;
                     }
                     case 4:{
                         objectManager.addObject(new PiercingProjectiles(objectManager,posX,posY,32,32));
+                        break;
+                    }
+                    case 5:{
+                        objectManager.addObject(new MoreProjectiles(objectManager,posX,posY,32,32));
+                        break;
                     }
                     default:{
                         break;

@@ -270,7 +270,7 @@ public class UserInterfaceMess extends Stage {
         sliderAttack.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                updater.getObjectManager().getPlayer().stats.setTimeBetweenAttacks(sliderAttack.getValue());
+                updater.getObjectManager().getPlayer().stats.setAttackSpeed(sliderAttack.getValue());
             }
         });
         addMob.addListener(new ChangeListener() {

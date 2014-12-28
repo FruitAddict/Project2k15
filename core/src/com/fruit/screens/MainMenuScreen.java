@@ -33,19 +33,20 @@ public class MainMenuScreen implements Screen {
 
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
-        VerticalGroup verticalGroup = new VerticalGroup();
+        Table menuTable = new Table();
 
-        final Container<VerticalGroup> container = new Container<>();
+        final Container<Table> container = new Container<>();
         TextButton playButton = new TextButton("New Run",skin);
         TextButton optionsButton = new TextButton("Options",skin);
         TextButton exitButton = new TextButton("Exit",skin);
-        verticalGroup.addActor(playButton);
-        verticalGroup.addActor(optionsButton);
-        verticalGroup.addActor(exitButton);
-
+        menuTable.add(playButton).width(Gdx.graphics.getWidth() / 3);
+        menuTable.row();
+        menuTable.add(optionsButton).width(Gdx.graphics.getWidth() / 3);
+        menuTable.row();
+        menuTable.add(exitButton).width(Gdx.graphics.getWidth()/3);
 
         container.setFillParent(true);
-        container.setActor(verticalGroup);
+        container.setActor(menuTable);
         container.align(Align.center);
         menuStage.addActor(container);
 

@@ -60,7 +60,7 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         setSaveInRooms(DONT_SAVE);
         stats.setHealthPoints(100);
         stats.setBaseMaximumHealthPoints(100);
-        stats.setTimeBetweenAttacks(0.25f);
+        stats.setAttackSpeed(0.25f);
         stats.setAimSway(10);
 
         //initialize attack direction vector
@@ -70,7 +70,9 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         onDamageTakenEffects = new Array<OnDamageTakenEffect>();
 
         //todo more
-        nextLevelExpRequirement = 15;
+        nextLevelExpRequirement = 25;
+
+        stats.setNumberOfProjectiles(1);
     }
 
     public void attack(float directionPercentX, float directionPercentY){
@@ -78,13 +80,31 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         if(stateTime - lastAttack > stats.getCombinedAttackSpeed()) {
             float sign = (float)Math.signum(Utils.randomGenerator.nextInt());
             float sway = Utils.randomGenerator.nextFloat()/stats.getAimSway()*sign;
+            float lastDegreeDifference = 7f;
             //normalize the attack direction vector using new values
             attackDirectionNormalized.set(0 - directionPercentX, 0 - directionPercentY);
             attackDirectionNormalized.add(sway, sway);
             attackDirectionNormalized.nor();
             attackDirectionNormalized.x*=-1;
             attackDirectionNormalized.y*=-1;
-            objectManager.addObject(new PlayerProjectile(this,objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized,6f));
+            //todo maybe make it modular
+            switch(stats.getNumberOfProjectiles()){
+                case 1: {
+                    objectManager.addObject(new PlayerProjectile(this, objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy(), 6f));
+                    break;
+                }
+                case 2: {
+                    objectManager.addObject(new PlayerProjectile(this, objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.rotate(-5), 6f));
+                    objectManager.addObject(new PlayerProjectile(this, objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(10), 6f));
+                    break;
+                }
+                case 3:{
+                    objectManager.addObject(new PlayerProjectile(this, objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized, 6f));
+                    objectManager.addObject(new PlayerProjectile(this, objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(7), 6f));
+                    objectManager.addObject(new PlayerProjectile(this, objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(-7), 6f));
+                    break;
+                }
+            }
             lastAttack = stateTime;
         }
     }
@@ -183,6 +203,9 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     public void update(float delta) {
         updatePassiveEffects(delta);
         updateFacing();
+        if(stats.getHealthPoints()<0){
+            Controller.onPlayerDeath();
+        }
         stateTime+=delta;
     }
 

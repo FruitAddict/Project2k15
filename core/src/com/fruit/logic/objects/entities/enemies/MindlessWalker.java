@@ -10,10 +10,6 @@ import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.logic.objects.entities.projectiles.MobProjectile;
-import com.fruit.utilities.Utils;
-import com.fruit.visual.messages.TextMessage;
-import com.fruit.visual.messages.TextRenderer;
-import com.fruit.visual.renderer.SplatterRenderer;
 
 import java.util.Random;
 
@@ -38,10 +34,10 @@ public class MindlessWalker extends Enemy implements Constants{
         stats.setMaxVelocity(1.5f);
         stats.setSpeed(0.2f);
         setSaveInRooms(DO_SAVE);
-        stats.setHealthPoints(10);
-        stats.setBaseMaximumHealthPoints(10);
-        stats.setTimeBetweenAttacks(0.75f);
-        stats.setTimeBetweenAttacksModifier(1f);
+        stats.setHealthPoints(20);
+        stats.setBaseMaximumHealthPoints(20);
+        stats.setAttackSpeed(0.75f);
+        stats.setAttackSpeedModifier(1f);
         stats.setBaseDamage(2);
         stats.setBaseDamageModifier(1);
 

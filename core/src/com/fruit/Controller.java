@@ -104,4 +104,8 @@ public class Controller {
     public static void registerMainGame(MainGame mainGame) {
         Controller.mainGame = mainGame;
     }
+
+    public static void onPlayerDeath() {
+        
+    }
 }

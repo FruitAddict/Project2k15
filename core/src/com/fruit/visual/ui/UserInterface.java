@@ -236,6 +236,7 @@ public class UserInterface extends Stage {
             getContentTable().add(label).width(400);
             button("Ok", true);
             show(stage);
+            setWidth(400);
             Controller.pauseGame();
         }
 
@@ -279,7 +280,7 @@ public class UserInterface extends Stage {
                     break;
                 }
                 case 3:{
-                    player.stats.setTimeBetweenAttacksModifier(player.stats.getTimeBetweenAttacksModifier()*0.8f);
+                    player.stats.setAttackSpeedModifier(player.stats.getAttackSpeedModifier() * 0.8f);
                     Controller.unpauseGame();
                     break;
                 }
@@ -293,9 +294,9 @@ public class UserInterface extends Stage {
             super("Menu", skin);
             TextButton continueButton = new TextButton("Continue",skin);
             TextButton mainMenuButton = new TextButton("Exit",skin);
-            add(continueButton);
+            add(continueButton).width(Gdx.graphics.getWidth() / 3);
             row();
-            add(mainMenuButton);
+            add(mainMenuButton).width(Gdx.graphics.getWidth() / 3);
 
             continueButton.addListener(new ChangeListener() {
                 @Override

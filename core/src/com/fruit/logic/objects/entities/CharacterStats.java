@@ -12,10 +12,11 @@ public class CharacterStats {
     protected int healthPoints;
     protected int baseMaximumHealthPoints;
     protected double maximumHealthPointsMultiplier = 1;
+    //helper variable, should berecreated each time entity's health is changed
     private float healthPointPercentOfMax;
 
-    private float timeBetweenAttacks=1f;
-    private float timeBetweenAttacksModifier = 1f;
+    private float attackSpeed =1f;
+    private float attackSpeedModifier = 1f;
 
     private int baseDamage = 1;
     private int baseDamageModifier =1;
@@ -28,6 +29,8 @@ public class CharacterStats {
 
     private float criticalHitBase, criticalHitModifier = 1;
 
+    private int numberOfProjectiles = 1;
+
     private boolean piercingProjectiles = false;
     //how accurate the character is, the bigger the better
     private float aimSway = 10f;
@@ -37,7 +40,7 @@ public class CharacterStats {
     }
 
     public float getCombinedAttackSpeed(){
-        return timeBetweenAttacks*timeBetweenAttacksModifier;
+        return attackSpeed * attackSpeedModifier;
     }
 
     public float getCombinedResistance(){
@@ -96,20 +99,20 @@ public class CharacterStats {
         this.healthPointPercentOfMax = healthPointPercentOfMax;
     }
 
-    public float getTimeBetweenAttacks() {
-        return timeBetweenAttacks;
+    public float getAttackSpeed() {
+        return attackSpeed;
     }
 
-    public void setTimeBetweenAttacks(float timeBetweenAttacks) {
-        this.timeBetweenAttacks = timeBetweenAttacks;
+    public void setAttackSpeed(float attackSpeed) {
+        this.attackSpeed = attackSpeed;
     }
 
-    public float getTimeBetweenAttacksModifier() {
-        return timeBetweenAttacksModifier;
+    public float getAttackSpeedModifier() {
+        return attackSpeedModifier;
     }
 
-    public void setTimeBetweenAttacksModifier(float timeBetweenAttacksModifier) {
-        this.timeBetweenAttacksModifier = timeBetweenAttacksModifier;
+    public void setAttackSpeedModifier(float attackSpeedModifier) {
+        this.attackSpeedModifier = attackSpeedModifier;
     }
 
     public int getBaseDamage() {
@@ -190,6 +193,14 @@ public class CharacterStats {
 
     public void setAimSway(float aimSway) {
         this.aimSway = aimSway;
+    }
+
+    public int getNumberOfProjectiles() {
+        return numberOfProjectiles;
+    }
+
+    public void setNumberOfProjectiles(int numberOfProjectiles) {
+        this.numberOfProjectiles = numberOfProjectiles;
     }
 
 }

@@ -20,6 +20,7 @@ public class ItemAnimationPack implements Constants {
     private Sprite sphereOfProtectionSprite;
     private Sprite poisonTouchSprite;
     private Sprite piercingProjectilesSprite;
+    private Sprite moreProjectilesSprite;
     private boolean loaded = false;
 
     public void load(){
@@ -37,6 +38,8 @@ public class ItemAnimationPack implements Constants {
             poisonTouchSprite = new Sprite(poisonTouchTexture);
             Texture piercingProjectileTexture = (Texture)Assets.getAsset("circle.png",Texture.class);
             piercingProjectilesSprite = new Sprite(piercingProjectileTexture);
+            Texture morePRojectilesTexture = (Texture)Assets.getAsset("items//triforce.png",Texture.class);
+            moreProjectilesSprite = new Sprite(morePRojectilesTexture);
             loaded = true;
         }
     }
@@ -44,23 +47,35 @@ public class ItemAnimationPack implements Constants {
 
     public void render(float stateTime, Item item, SpriteBatch batch){
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(item));
-        if (item.getItemType() == Item.HEART){
-            batch.draw(heartSprite, pos.x, pos.y, item.getWidth(), item.getHeight());
-        }
-        else if (item.getItemType() == Item.DAMAGE_UP_1){
-            batch.draw(dmgUpSprite, pos.x, pos.y, item.getWidth(), item.getHeight());
-        }
-        else if (item.getItemType() == Item.HEALTH_POTION){
-            batch.draw(healthPotionSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
-        }
-        else if(item.getItemType() == Item.SPHERE_OF_PROTECTION){
-            batch.draw(sphereOfProtectionSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
-        }
-        else if(item.getItemType() == Item.POISON_TOUCH){
-            batch.draw(poisonTouchSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
-        }
-        else if(item.getItemType() == Item.PIERCING_PROJECTILE){
-            batch.draw(piercingProjectilesSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
-        }
+       switch(item.getItemType()){
+           case Item.HEART: {
+               batch.draw(heartSprite, pos.x, pos.y, item.getWidth(), item.getHeight());
+               break;
+           }
+           case Item.DAMAGE_UP_1: {
+               batch.draw(dmgUpSprite, pos.x, pos.y, item.getWidth(), item.getHeight());
+               break;
+           }
+           case Item.HEALTH_POTION: {
+               batch.draw(healthPotionSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
+               break;
+           }
+           case Item.SPHERE_OF_PROTECTION: {
+               batch.draw(sphereOfProtectionSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
+               break;
+           }
+           case Item.POISON_TOUCH: {
+               batch.draw(poisonTouchSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
+               break;
+           }
+           case Item.PIERCING_PROJECTILE: {
+               batch.draw(piercingProjectilesSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
+               break;
+           }
+           case Item.MORE_PROJECTILES: {
+               batch.draw(moreProjectilesSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
+               break;
+           }
+       }
     }
 }

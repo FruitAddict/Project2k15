@@ -4,14 +4,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.fruit.Controller;
 import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.Value;
-import com.fruit.logic.objects.entities.Enemy;
-import com.fruit.logic.objects.entities.GameObject;
+import com.fruit.logic.objects.entities.*;
 import com.fruit.logic.objects.entities.player.Player;
-import com.fruit.visual.messages.TextMessage;
-import com.fruit.visual.messages.TextRenderer;
 
 public class Dummy extends Enemy{
 
@@ -53,7 +49,7 @@ public class Dummy extends Enemy{
 
         //Shape definiton
         CircleShape shape = new CircleShape();
-        shape.setRadius(Math.min(width, height) / 2 / PIXELS_TO_METERS);
+        shape.setRadius(Math.min(width, height) / 2 / PIXELS_TO_UNITS);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();
@@ -72,7 +68,12 @@ public class Dummy extends Enemy{
     }
 
     @Override
-    public void onDirectContact(Player player) {
+    public void onDirectContact(com.fruit.logic.objects.entities.Character player) {
+    }
+
+    @Override
+    public void onContactWithTerrain(int direction) {
+
     }
 
     @Override

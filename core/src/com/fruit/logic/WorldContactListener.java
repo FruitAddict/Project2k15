@@ -3,6 +3,8 @@ package com.fruit.logic;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.fruit.logic.objects.entities.Enemy;
+import com.fruit.logic.objects.entities.GameObject;
+import com.fruit.logic.objects.entities.enemies.TheEye;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.logic.objects.entities.projectiles.MobProjectile;
 import com.fruit.logic.objects.entities.projectiles.PlayerProjectile;
@@ -46,6 +48,18 @@ public class WorldContactListener implements ContactListener,Constants {
 
         }
 
+        if(f1.getFilterData().categoryBits == DETECTOR_BIT || f2.getFilterData().categoryBits == DETECTOR_BIT){
+            if(f1.getFilterData().categoryBits == DETECTOR_BIT){
+                if(((GameObject)f1.getBody().getUserData()).getEntityID() == GameObject.THE_EYE){
+                    ((TheEye)f1.getBody().getUserData()).onPlayerDetected();
+                }
+            }else {
+                if(((GameObject)f2.getBody().getUserData()).getEntityID() == GameObject.THE_EYE){
+                    ((TheEye)f2.getBody().getUserData()).onPlayerDetected();
+                }
+            }
+        }
+
         if(f1.getFilterData().categoryBits == ENEMY_BIT || f2.getFilterData().categoryBits == ENEMY_BIT){
             if(f1.getFilterData().categoryBits == PLAYER_BIT || f2.getFilterData().categoryBits == PLAYER_BIT){
                 if(f1.getFilterData().categoryBits == PLAYER_BIT){
@@ -58,6 +72,39 @@ public class WorldContactListener implements ContactListener,Constants {
                     e.onDirectContact(p);
                 }
             }
+            if(f1.getFilterData().categoryBits==TERRAIN_BIT || f2.getFilterData().categoryBits == TERRAIN_BIT){
+                if(f1.getFilterData().categoryBits==ENEMY_BIT){
+                    Vector2 con = contact.getWorldManifold().getNormal();
+                    Enemy enemy = (Enemy)f1.getBody().getUserData();
+                    if(con.x == 1){
+                        enemy.onContactWithTerrain(EAST_DIR);
+                    }
+                    if(con.x == -1){
+                        enemy.onContactWithTerrain(WEST_DIR);
+                    }
+                    if(con.y == 1){
+                        enemy.onContactWithTerrain(NORTH_DIR);
+                    }
+                    if(con.y == -1){
+                        enemy.onContactWithTerrain(SOUTH_DIR);
+                    }
+                }else {
+                    Vector2 con = contact.getWorldManifold().getNormal();
+                    Enemy enemy = (Enemy)f2.getBody().getUserData();
+                    if(con.x == 1){
+                        enemy.onContactWithTerrain(EAST_DIR);
+                    }
+                    if(con.x == -1){
+                        enemy.onContactWithTerrain(WEST_DIR);
+                    }
+                    if(con.y == 1){
+                        enemy.onContactWithTerrain(NORTH_DIR);
+                    }
+                    if(con.y == -1){
+                        enemy.onContactWithTerrain(SOUTH_DIR);
+                    }
+                }
+            }
 
         }
         if(f1.getFilterData().categoryBits == PLAYER_PROJECTILE_BIT || f2.getFilterData().categoryBits == PLAYER_PROJECTILE_BIT){
@@ -66,14 +113,10 @@ public class WorldContactListener implements ContactListener,Constants {
                     Enemy enemy = (Enemy)f1.getBody().getUserData();
                     PlayerProjectile projectile = (PlayerProjectile)f2.getBody().getUserData();
                     projectile.onHit(enemy);
-                    enemy.getBody().applyLinearImpulse(new Vector2(enemy.getBody().getPosition().x - projectile.getBody().getPosition().x
-                            ,enemy.getBody().getPosition().y - projectile.getBody().getPosition().y).nor().scl(15f),enemy.getBody().getPosition(),true);
                 }else {
                     Enemy enemy = (Enemy)f2.getBody().getUserData();
                     PlayerProjectile projectile = (PlayerProjectile)f1.getBody().getUserData();
                     projectile.onHit(enemy);
-                    enemy.getBody().applyLinearImpulse(new Vector2(enemy.getBody().getPosition().x - projectile.getBody().getPosition().x
-                            ,enemy.getBody().getPosition().y - projectile.getBody().getPosition().y).nor().scl(15f),enemy.getBody().getPosition(),true);
                 }
             }
             else if(f1.getFilterData().categoryBits == TERRAIN_BIT || f2.getFilterData().categoryBits == TERRAIN_BIT){

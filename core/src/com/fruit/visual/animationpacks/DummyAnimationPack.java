@@ -14,10 +14,10 @@ public class DummyAnimationPack implements Constants {
     private boolean loaded;
     private Animation animation;
     private Vector2 pos;
-    private EffectRenderer effectRenderer;
+    private OnCharacterEffectPack onCharacteREffectPack;
 
-    public DummyAnimationPack(EffectRenderer effectRenderer){
-        this.effectRenderer = effectRenderer;
+    public DummyAnimationPack(OnCharacterEffectPack onCharacteREffectPack){
+        this.onCharacteREffectPack = onCharacteREffectPack;
     }
 
     public void load(){
@@ -45,13 +45,13 @@ public class DummyAnimationPack implements Constants {
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(dummy));
                 batch.draw(animation.getKeyFrame(stateTime, true), pos.x, pos.y, dummy.getWidth(), dummy.getHeight());
         if(dummy.status.isHealing()){
-            effectRenderer.render(dummy,batch, stateTime, EffectRenderer.HEALED, pos.x, pos.y, dummy.getWidth(), dummy.getHeight());
+            onCharacteREffectPack.render(dummy,batch, stateTime, OnCharacterEffectPack.HEALED, pos.x, pos.y, dummy.getWidth(), dummy.getHeight());
         }
         if(dummy.status.isShielded()){
-            effectRenderer.render(dummy,batch,stateTime,EffectRenderer.SHIELDED,pos.x,pos.y,dummy.getWidth(),dummy.getHeight());
+            onCharacteREffectPack.render(dummy,batch,stateTime, OnCharacterEffectPack.SHIELDED,pos.x,pos.y,dummy.getWidth(),dummy.getHeight());
         }
         if(dummy.status.isPoisoned()){
-            effectRenderer.render(dummy,batch,stateTime,EffectRenderer.POISONED,pos.x,pos.y,dummy.getWidth(),dummy.getHeight());
+            onCharacteREffectPack.render(dummy,batch,stateTime, OnCharacterEffectPack.POISONED,pos.x,pos.y,dummy.getWidth(),dummy.getHeight());
         }
     }
 }

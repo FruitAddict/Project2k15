@@ -219,4 +219,15 @@ public class WorldInputProcessor implements InputProcessor, Constants {
             player.attack(0,-100);
         }
     }
+
+    public void resetAll(){
+        movingRight = false;
+        movingLeft = false;
+        movingUp = false;
+        movingDown = false;
+        attackingDown = false;
+        attackingUp = false;
+        attackingRight = false;
+        attackingLeft =false;
+    }
 }

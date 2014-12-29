@@ -52,8 +52,8 @@ public class GameCamera extends OrthographicCamera implements Constants {
              //Camera translating algorithm. Initially lerps the camera to the player position (centered), then checks whether the current camera
              //position overlaps the map boundaries. If so, sets it to the corner
 
-            lerpVector.set((((followedObject.getBody().getPosition().x) * PIXELS_TO_METERS)),
-                    (followedObject.getBody().getPosition().y * PIXELS_TO_METERS), 0);
+            lerpVector.set((((followedObject.getBody().getPosition().x) * PIXELS_TO_UNITS)),
+                    (followedObject.getBody().getPosition().y * PIXELS_TO_UNITS), 0);
 
             position.lerp(lerpVector, lerpValue);
 

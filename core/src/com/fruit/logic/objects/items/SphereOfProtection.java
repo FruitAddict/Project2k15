@@ -57,7 +57,7 @@ public class SphereOfProtection extends Item {
 
         //Shape definiton
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/PIXELS_TO_METERS/2,height/PIXELS_TO_METERS/2);
+        shape.setAsBox(width/ PIXELS_TO_UNITS /2,height/ PIXELS_TO_UNITS /2);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();
@@ -74,7 +74,7 @@ public class SphereOfProtection extends Item {
     @Override
     public void killYourself() {
         objectManager.removeObject(this);
-        Controller.addOnScreenMessage(new TextMessage("You feel protected...", getBody().getPosition().x * PIXELS_TO_METERS,
-                getBody().getPosition().y * PIXELS_TO_METERS, 3, TextRenderer.greenFont,TextMessage.UP_AND_FALL));
+        Controller.addOnScreenMessage(new TextMessage("You feel protected...", getBody().getPosition().x * PIXELS_TO_UNITS,
+                getBody().getPosition().y * PIXELS_TO_UNITS, 3, TextRenderer.greenFont,TextMessage.UP_AND_FALL));
     }
 }

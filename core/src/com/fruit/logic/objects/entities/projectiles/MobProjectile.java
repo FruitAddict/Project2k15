@@ -5,7 +5,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.fruit.SoundManager;
 import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.entities.Character;
@@ -64,7 +63,7 @@ public class MobProjectile extends Projectile {
 
         //Shape definiton
         CircleShape shape = new CircleShape();
-        shape.setRadius(radius / PIXELS_TO_METERS);
+        shape.setRadius(radius / PIXELS_TO_UNITS);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();

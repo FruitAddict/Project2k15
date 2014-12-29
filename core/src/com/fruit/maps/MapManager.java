@@ -98,8 +98,8 @@ public class MapManager implements Constants {
         worldUpdater.getObjectManager().onMapChange();
         //tell the world renderer to change map that is rendered to the new one and pass it the new spawn position
         //and transition boolean (see changeRenderedMap method)
-        Controller.getWorldRenderer().changeRenderedMap(new Vector2(portalPosition.x*PIXELS_TO_METERS,portalPosition.y*PIXELS_TO_METERS),
-                new Vector2(spawnPos.x*PIXELS_TO_METERS, spawnPos.y*PIXELS_TO_METERS), direction, doSmoothTransition);
+        Controller.getWorldRenderer().changeRenderedMap(new Vector2(portalPosition.x* PIXELS_TO_UNITS,portalPosition.y* PIXELS_TO_UNITS),
+                new Vector2(spawnPos.x* PIXELS_TO_UNITS, spawnPos.y* PIXELS_TO_UNITS), direction, doSmoothTransition);
     }
 
     public float getCurrentMapWidth(){

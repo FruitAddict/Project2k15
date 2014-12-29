@@ -24,7 +24,7 @@ import com.fruit.visual.tween.TweenUtils;
  * Class dedicated to rendering effects on stuff. Like, a bleeding particle effect around a mob
  * If it has a poison stats etc.
  */
-public class EffectRenderer {
+public class OnCharacterEffectPack {
     //effect ids
     public static final int HEALED = 1;
     public static final int POISONED = 2;
@@ -49,7 +49,7 @@ public class EffectRenderer {
     public TweenCallback levelUpCallBack;
     private float savedPosX, savedPosY;
 
-    public EffectRenderer(){
+    public OnCharacterEffectPack(){
         //Healing animation effect
         Texture testHealTexture = (Texture) Assets.getAsset("effects//healeffect.png", Texture.class);
         TextureRegion[][] tmp2 = TextureRegion.split(testHealTexture, testHealTexture.getWidth() / 4, testHealTexture.getHeight());

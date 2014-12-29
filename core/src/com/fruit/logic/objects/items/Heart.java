@@ -48,7 +48,7 @@ public class Heart extends Item implements Constants {
 
         //Shape definiton
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/PIXELS_TO_METERS/2,height/PIXELS_TO_METERS/2);
+        shape.setAsBox(width/ PIXELS_TO_UNITS /2,height/ PIXELS_TO_UNITS /2);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();

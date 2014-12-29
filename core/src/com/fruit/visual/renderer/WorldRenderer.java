@@ -3,6 +3,7 @@
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -265,13 +266,12 @@ public class WorldRenderer implements Constants {
     /**
      * Called when the rendering is paused, sets the paused boolean to true ( so some
      * of the rendering functionality is disabled ).
-     * @param alphaModulation
      * Batch alpha change, can be used make the screen darker when the game is paused and some
      * menus are displayed for example.
      */
-    public void pauseRendering(float alphaModulation){
+    public void pauseRendering(){
         paused = true;
-        batch.setColor(1,1,1,alphaModulation);
+        batch.setColor(Color.DARK_GRAY);
     }
 
     public void unpauseRendering(){

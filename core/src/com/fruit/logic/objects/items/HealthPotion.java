@@ -40,8 +40,8 @@ public class HealthPotion extends Item {
     public void onPickUp(Player player) {
         killYourself();
         player.addPassiveEffect(new HealOverTime(player,healDuration,healDelay,new Value(healAmount,Value.HEALING)));
-        Controller.addOnScreenMessage(new TextMessage("A health potion!",getBody().getPosition().x*PIXELS_TO_METERS,
-                getBody().getPosition().y*PIXELS_TO_METERS,3, TextRenderer.greenFont,TextMessage.UP_AND_FALL));
+        Controller.addOnScreenMessage(new TextMessage("A health potion!",getBody().getPosition().x* PIXELS_TO_UNITS,
+                getBody().getPosition().y* PIXELS_TO_UNITS,3, TextRenderer.greenFont,TextMessage.UP_AND_FALL));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class HealthPotion extends Item {
 
         //Shape definiton
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/PIXELS_TO_METERS/2,height/PIXELS_TO_METERS/2);
+        shape.setAsBox(width/ PIXELS_TO_UNITS /2,height/ PIXELS_TO_UNITS /2);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();

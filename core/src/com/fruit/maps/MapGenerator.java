@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.logic.objects.entities.enemies.MindlessWalker;
+import com.fruit.logic.objects.entities.enemies.TheEye;
 import com.fruit.logic.objects.entities.misc.Box;
 import com.fruit.logic.objects.items.*;
 import com.fruit.utilities.MapObjectParser;
@@ -75,13 +76,17 @@ public class MapGenerator {
                     int numofmobs = Utils.mapRandomNumberGenerator.nextInt(25);
                     for (int k = 0; k < numofmobs; k++) {
                         int roll  = Utils.mapRandomNumberGenerator.nextInt(100);
-                        System.out.println(map.getRoomMatrix()[i][j].getMobSpawnPoints().size);
                         Vector2 position = map.getRoomMatrix()[i][j].getMobSpawnPoints().get(Utils.mapRandomNumberGenerator.nextInt(map.getRoomMatrix()[i][j].getMobSpawnPoints().size));
 
                         if(roll>90) {
                             map.getRoomMatrix()[i][j].addGameObject(new Box(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y));
                         }else {
-                            map.getRoomMatrix()[i][j].addGameObject(new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y));
+                            roll = Utils.mapRandomNumberGenerator.nextInt(100);
+                            if(roll>50) {
+                                map.getRoomMatrix()[i][j].addGameObject(new TheEye(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y));
+                            }else {
+                                map.getRoomMatrix()[i][j].addGameObject(new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y));
+                            }
                         }
                     }
                 }
@@ -89,9 +94,9 @@ public class MapGenerator {
         }
         //set current room to the one in the center
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
-        map.getCurrentRoom().addGameObject(new HealthPotion(mapManager.getWorldUpdater().getObjectManager(), 10, 5, 32, 32, 5f, 0.5f, 2));
         map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(),8,5,32,32));
-        map.getCurrentRoom().addGameObject(new PoisonProjectiles(mapManager.getWorldUpdater().getObjectManager(),8,5,32,32));
+        map.getCurrentRoom().addGameObject(new PoisonProjectiles(mapManager.getWorldUpdater().getObjectManager(),10,5,32,32));
+        map.getCurrentRoom().addGameObject(new MoreProjectiles(mapManager.getWorldUpdater().getObjectManager(),12,5,32,32));
         MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater(),map.getCurrentRoom());
         return map;
     }

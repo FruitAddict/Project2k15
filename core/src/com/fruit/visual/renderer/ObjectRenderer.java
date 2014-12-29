@@ -1,7 +1,6 @@
 package com.fruit.visual.renderer;
 
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.logic.Constants;
@@ -9,6 +8,7 @@ import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.Projectile;
 import com.fruit.logic.objects.entities.enemies.Dummy;
 import com.fruit.logic.objects.entities.enemies.MindlessWalker;
+import com.fruit.logic.objects.entities.enemies.TheEye;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.logic.objects.items.Item;
 import com.fruit.visual.animationpacks.*;
@@ -24,7 +24,7 @@ public class ObjectRenderer implements Constants {
     private float stateTime;
 
     //Effect Renderer that will take care of rendering effects for each entity based on their stats.
-    EffectRenderer effectRenderer;
+    OnCharacterEffectPack onCharacteREffectPack;
     //animation packs that will handle drawing specific entities
     PlayerAnimationPack playerAnimationPack;
     MindlessWalkerAnimationPack mindlessWalkerAnimationPack;
@@ -32,16 +32,18 @@ public class ObjectRenderer implements Constants {
     ProjectileAnimationPack projectileAnimationPack;
     DummyAnimationPack dummyAnimationPack;
     ItemAnimationPack itemAnimationPack;
+    TheEyeAnimationPack theEyeAnimationPack;
 
     public ObjectRenderer(){
         //some animation packs (for rendering characters) will need instance of effect renderer.
-        effectRenderer = new EffectRenderer();
-        playerAnimationPack = new PlayerAnimationPack(effectRenderer);
-        mindlessWalkerAnimationPack = new MindlessWalkerAnimationPack(effectRenderer);
+        onCharacteREffectPack = new OnCharacterEffectPack();
+        playerAnimationPack = new PlayerAnimationPack(onCharacteREffectPack);
+        mindlessWalkerAnimationPack = new MindlessWalkerAnimationPack(onCharacteREffectPack);
         utilityAnimationPack = new UtilityAnimationPack();
         projectileAnimationPack = new ProjectileAnimationPack();
-        dummyAnimationPack = new DummyAnimationPack(effectRenderer);
+        dummyAnimationPack = new DummyAnimationPack(onCharacteREffectPack);
         itemAnimationPack = new ItemAnimationPack();
+        theEyeAnimationPack = new TheEyeAnimationPack(onCharacteREffectPack);
     }
 
     public void render(float delta, Array<GameObject> objects, SpriteBatch batch){
@@ -93,6 +95,11 @@ public class ObjectRenderer implements Constants {
                 case GameObject.DUMMY:{
                     dummyAnimationPack.load();
                     dummyAnimationPack.render(stateTime,(Dummy)e,batch);
+                    break;
+                }
+                case GameObject.THE_EYE:{
+                    theEyeAnimationPack.load();
+                    theEyeAnimationPack.render(((TheEye)e).stateTime,(TheEye)e,batch);
                     break;
                 }
             }

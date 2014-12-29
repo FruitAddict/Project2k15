@@ -3,7 +3,7 @@ package com.fruit.logic;
 public interface Constants {
     public final int UNSPECIFIED = -1;
     //converter constant. 64 pixels in the rendered world represent 1 meter in the logic module
-    public final int PIXELS_TO_METERS = 64;
+    public final int PIXELS_TO_UNITS = 64;
     //category bits for use with object filtering
     public final int TERRAIN_BIT = 0b1;
     public final int PLAYER_BIT = 0b10;
@@ -15,6 +15,7 @@ public interface Constants {
     public final int ITEM_BIT = 0b10000000;
     public final int TREASURE_BIT = 0b100000000;
     public final int PLAYER_PROJECTILE_BIT = 0b1000000000;
+    public final int DETECTOR_BIT = 0b10000000000;
     //directions
     public final int NORTH_DIR = 1001;
     public final int EAST_DIR = 1002;

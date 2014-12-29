@@ -5,20 +5,17 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.fruit.logic.Constants;
-import com.fruit.logic.objects.entities.Character;
 import com.fruit.utilities.Utils;
 import com.fruit.visual.Assets;
 
+/**
+ * @Author FruitAddict
+ */
+public class TheEyeAnimationPack {
 
-public class MindlessWalkerAnimationPack implements Constants {
     private Vector2 pos;
 
     private Animation playerAnimationNorth;
-    private Animation playerAnimationNorthEast;
-    private Animation playerAnimationNorthWest;
-    private Animation playerAnimationSouthWest;
-    private Animation playerAnimationSouthEast;
     private Animation playerAnimationSouth;
     private Animation playerAnimationWest;
     private Animation playerAnimationEast;
@@ -34,7 +31,7 @@ public class MindlessWalkerAnimationPack implements Constants {
     private boolean loaded = false;
     private OnCharacterEffectPack onCharacteREffectPack;
 
-    public MindlessWalkerAnimationPack(OnCharacterEffectPack onCharacteREffectPack){
+    public TheEyeAnimationPack(OnCharacterEffectPack onCharacteREffectPack){
         this.onCharacteREffectPack = onCharacteREffectPack;
     }
 
@@ -42,32 +39,28 @@ public class MindlessWalkerAnimationPack implements Constants {
         //nullify the old references
         if(!loaded) {
             pos = new Vector2();
-            Texture testPlayerTexture = (Texture) Assets.getAsset("slime.png", Texture.class);
-            TextureRegion[][] tmp = TextureRegion.split(testPlayerTexture, testPlayerTexture.getWidth() / 4, testPlayerTexture.getHeight() / 4);
-            playerSouthRegion = new TextureRegion[4];
-            playerNorthRegion = new TextureRegion[4];
-            playerEastRegion = new TextureRegion[4];
-            playerWestRegion = new TextureRegion[4];
-            playerNorthEastRegion = new TextureRegion[8];
-            playerNorthWestRegion = new TextureRegion[8];
-            playerSouthEastRegion = new TextureRegion[8];
-            playerSouthWestRegion = new TextureRegion[8];
-            for (int i = 0; i < 4; i++) {
-                playerSouthRegion[i] = tmp[0][i];
+            Texture testPlayerTexture = (Texture) Assets.getAsset("borrowed//eyeball.png", Texture.class);
+            TextureRegion[][] tmp = TextureRegion.split(testPlayerTexture, testPlayerTexture.getWidth() / 3, testPlayerTexture.getHeight() / 4);
+            playerSouthRegion = new TextureRegion[3];
+            playerNorthRegion = new TextureRegion[3];
+            playerEastRegion = new TextureRegion[3];
+            playerWestRegion = new TextureRegion[3];
+            for (int i = 0; i < 3; i++) {
+                playerNorthRegion[i] = tmp[0][i];
                 playerWestRegion[i] = tmp[1][i];
-                playerEastRegion[i] = tmp[2][i];
-                playerNorthRegion[i] = tmp[3][i];
+                playerSouthRegion[i] = tmp[2][i];
+                playerEastRegion[i] = tmp[3][i];
 
             }
-            playerAnimationSouth = new Animation(0.1f, playerSouthRegion);
-            playerAnimationNorth = new Animation(0.1f, playerNorthRegion);
-            playerAnimationWest = new Animation(0.1f, playerWestRegion);
-            playerAnimationEast = new Animation(0.1f, playerEastRegion);
+            playerAnimationSouth = new Animation(0.3f, playerSouthRegion);
+            playerAnimationNorth = new Animation(0.3f, playerNorthRegion);
+            playerAnimationWest = new Animation(0.3f, playerWestRegion);
+            playerAnimationEast = new Animation(0.3f, playerEastRegion);
             loaded = true;
         }
     }
 
-    public void render(float stateTime, Character character, SpriteBatch batch){
+    public void render(float stateTime, com.fruit.logic.objects.entities.Character character, SpriteBatch batch){
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(character));
         if(character.facingN || character.facingNE || character.facingNW){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());

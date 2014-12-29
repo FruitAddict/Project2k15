@@ -42,6 +42,8 @@ public class GameScreen implements Screen {
     private SpriteBatch spriteBatch;
     //Input multiplexer to reroute user input between Stage (UI) and Game World.
     private CustomInputMultiplexer customInputMultiplexer;
+    //Input processor for gestures (outside of gui)
+    private WorldInputProcessor worldInputProcessor;
     //User Interface in-game. Different than the main menu
     private UserInterface userInterface;
     //vector 2 storing current camera dimensions
@@ -62,7 +64,7 @@ public class GameScreen implements Screen {
         userInterface = new UserInterface(camera,worldUpdater);
 
         //input stuff
-        WorldInputProcessor worldInputProcessor = new WorldInputProcessor(worldUpdater.getObjectManager().getPlayer(), camera);
+        worldInputProcessor = new WorldInputProcessor(worldUpdater.getObjectManager().getPlayer(), camera);
         customInputMultiplexer = new CustomInputMultiplexer(userInterface, worldInputProcessor);
         Gdx.input.setInputProcessor(customInputMultiplexer);
 
@@ -124,5 +126,9 @@ public class GameScreen implements Screen {
     public void dispose() {
         spriteBatch.dispose();
         userInterface.dispose();
+    }
+
+    public WorldInputProcessor getWorldInputProcessor(){
+        return worldInputProcessor;
     }
 }

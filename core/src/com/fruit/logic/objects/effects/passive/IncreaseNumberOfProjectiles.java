@@ -23,8 +23,8 @@ public class IncreaseNumberOfProjectiles extends PassiveEffect {
     public void join(PassiveEffect passiveEffect) {
         onRemove();
         amount += ((IncreaseNumberOfProjectiles)passiveEffect).amount;
-        if(amount>3){
-            amount = 3;
+        if(amount>2){
+            amount = 2;
         }
         character.stats.setNumberOfProjectiles(character.stats.getNumberOfProjectiles()+amount);
         character.stats.setAttackSpeedModifier(character.stats.getAttackSpeedModifier()*(amount+1));
@@ -32,9 +32,6 @@ public class IncreaseNumberOfProjectiles extends PassiveEffect {
 
     @Override
     public void apply() {
-        if(amount>3){
-            amount =3;
-        }
         character.stats.setNumberOfProjectiles(character.stats.getNumberOfProjectiles()+amount);
         character.stats.setAttackSpeedModifier(character.stats.getAttackSpeedModifier()*(amount+1));
     }

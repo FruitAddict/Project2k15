@@ -37,11 +37,11 @@ public class MapObjectParser implements Constants {
             float originX = rec.getX() + rec.getWidth()/2;
             float originY = rec.getY() + rec.getHeight()/2;
             //divide them both by our pixels to box2d unit scaling
-            originX /= PIXELS_TO_METERS;
-            originY /= PIXELS_TO_METERS;
+            originX /= PIXELS_TO_UNITS;
+            originY /= PIXELS_TO_UNITS;
             //get half width and half height of the rectangle and divide them by unit scaling
-            float halfWidth = rec.getWidth()/PIXELS_TO_METERS/2;
-            float halfHeight = rec.getHeight()/PIXELS_TO_METERS/2;
+            float halfWidth = rec.getWidth()/ PIXELS_TO_UNITS /2;
+            float halfHeight = rec.getHeight()/ PIXELS_TO_UNITS /2;
 
             //create a new bodyDef for static terrain object
             //Player body definition
@@ -107,11 +107,11 @@ public class MapObjectParser implements Constants {
             float originX = rec.getX() + rec.getWidth()/2;
             float originY = rec.getY() + rec.getHeight()/2;
             //divide them both by our pixels to box2d unit scaling
-            originX /= PIXELS_TO_METERS;
-            originY /= PIXELS_TO_METERS;
+            originX /= PIXELS_TO_UNITS;
+            originY /= PIXELS_TO_UNITS;
             //get half width and half height of the rectangle and divide them by unit scaling
-            float halfWidth = rec.getWidth()/PIXELS_TO_METERS/2;
-            float halfHeight = rec.getHeight()/PIXELS_TO_METERS/2;
+            float halfWidth = rec.getWidth()/ PIXELS_TO_UNITS /2;
+            float halfHeight = rec.getHeight()/ PIXELS_TO_UNITS /2;
 
             //create a new bodyDef for static terrain object
             //Player body definition
@@ -167,34 +167,34 @@ public class MapObjectParser implements Constants {
                 if (request != null) {
                     switch (request) {
                         case "NORTH": {
-                            room.setSpawnPointNorth(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_METERS,
-                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                            room.setSpawnPointNorth(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_UNITS,
+                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_UNITS));
                             break;
                         }
                         case "SOUTH": {
-                            room.setSpawnPointSouth(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_METERS,
-                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                            room.setSpawnPointSouth(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_UNITS,
+                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_UNITS));
                             break;
                         }
                         case "EAST": {
-                            room.setSpawnPointEast(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_METERS,
-                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                            room.setSpawnPointEast(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_UNITS,
+                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_UNITS));
                             break;
                         }
                         case "WEST": {
-                            room.setSpawnPointWest(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_METERS,
-                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                            room.setSpawnPointWest(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_UNITS,
+                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_UNITS));
                             break;
                         }
                         case "CENTER": {
-                            room.setSpawnPointCenter(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_METERS,
-                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                            room.setSpawnPointCenter(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_UNITS,
+                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_UNITS));
                             break;
                         }
                         default: {
                             System.out.println("adding " + request);
-                            room.addMobSpawnPoint(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_METERS,
-                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                            room.addMobSpawnPoint(new Vector2((spawnPointRecs.get(i).getX() + spawnPointRecs.get(i).getWidth() / 2) / PIXELS_TO_UNITS,
+                                    (spawnPointRecs.get(i).getY() + spawnPointRecs.get(i).getHeight() / 2) / PIXELS_TO_UNITS));
                             break;
                         }
                     }
@@ -220,23 +220,23 @@ public class MapObjectParser implements Constants {
                         //portalMapObjects and portalRectangles are the same size ( second is created on the base of first), so we know
                         //this object was created and we can use it to set the portal center position(for use with map transition animation
                         //alignment)
-                        room.setPortalPointNorth(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
-                                (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                        room.setPortalPointNorth(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_UNITS,
+                                (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_UNITS));
                         break;
                     }
                     case "SOUTH": {
-                        room.setPortalPointSouth(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
-                                (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                        room.setPortalPointSouth(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_UNITS,
+                                (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_UNITS));
                         break;
                     }
                     case "WEST": {
-                        room.setPortalPointWest(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
-                                (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                        room.setPortalPointWest(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_UNITS,
+                                (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_UNITS));
                         break;
                     }
                     case "EAST": {
-                        room.setPortalPointEast(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_METERS,
-                                (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_METERS));
+                        room.setPortalPointEast(new Vector2((portalRectangles.get(i).getX() + portalRectangles.get(i).getWidth() / 2) / PIXELS_TO_UNITS,
+                                (portalRectangles.get(i).getY() + portalRectangles.get(i).getHeight() / 2) / PIXELS_TO_UNITS));
                         break;
                     }
                 }
@@ -261,7 +261,7 @@ public class MapObjectParser implements Constants {
                 float blue= Float.parseFloat(blueProperty);
                 String lengthProperty = (object.getProperties().get("LENGTH")!=null)?object.getProperties().get("LENGTH",String.class):"2";
                 float length = Float.parseFloat(lengthProperty);
-                room.addStaticLight(new Vector2(object.getRectangle().getX()/PIXELS_TO_METERS,object.getRectangle().getY()/PIXELS_TO_METERS),
+                room.addStaticLight(new Vector2(object.getRectangle().getX()/ PIXELS_TO_UNITS,object.getRectangle().getY()/ PIXELS_TO_UNITS),
                         new Color(red,green,blue,1f),length);
             }
         }else {

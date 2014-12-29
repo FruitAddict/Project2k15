@@ -26,8 +26,8 @@ public class PoisonOnHit extends OnHitEffect implements Constants {
     public void onHit(Enemy enemy, Value damage) {
         if(poisonCount>0) {
             enemy.addPassiveEffect(new DamageOverTime(enemy, 5f, 0.5f, new Value(Math.max(1,damage.getValue() / 2), Value.POISON_DAMAGE), DamageOverTime.POISONED));
-            Controller.addOnScreenMessage(new TextMessage("Poisoned!", enemy.getBody().getPosition().x * PIXELS_TO_METERS,
-                    enemy.getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.redFont,TextMessage.UP_AND_FALL));
+            Controller.addOnScreenMessage(new TextMessage("Poisoned!", enemy.getBody().getPosition().x * PIXELS_TO_UNITS,
+                    enemy.getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.redFont,TextMessage.UP_AND_FALL));
             poisonCount--;
         }else {
             player.removeOnHitEffect(this);

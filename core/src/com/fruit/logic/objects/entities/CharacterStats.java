@@ -31,6 +31,8 @@ public class CharacterStats {
 
     private int numberOfProjectiles = 1;
 
+    private float knockBack = 1;
+
     private boolean piercingProjectiles = false;
     //how accurate the character is, the bigger the better
     private float aimSway = 10f;
@@ -203,4 +205,11 @@ public class CharacterStats {
         this.numberOfProjectiles = numberOfProjectiles;
     }
 
+    public float getKnockBack() {
+        return knockBack;
+    }
+
+    public void setKnockBack(float knockBack) {
+        this.knockBack = knockBack;
+    }
 }

@@ -49,7 +49,7 @@ public class LightRenderer implements Constants {
     }
 
     public void render(){
-        rayHandler.setCombinedMatrix(worldRenderer.getCamera().combined.scl(PIXELS_TO_METERS));
+        rayHandler.setCombinedMatrix(worldRenderer.getCamera().combined.scl(PIXELS_TO_UNITS));
         rayHandler.updateAndRender();
     }
 

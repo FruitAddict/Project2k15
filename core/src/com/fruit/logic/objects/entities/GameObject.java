@@ -18,6 +18,8 @@ public abstract class GameObject implements Constants{
     public static final int ITEM = 4;
     public static final int DUMMY = 5;
     public static final int PROJECTILE = 6;
+    public static final int THE_EYE = 7;
+    public static final int EXPLOSION = 8;
 
     //general boolean for debug purposes, can be used to make some additional functionality of the object available
     public boolean debug = false;

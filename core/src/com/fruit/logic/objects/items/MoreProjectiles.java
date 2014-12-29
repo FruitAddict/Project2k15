@@ -32,7 +32,7 @@ public class MoreProjectiles extends Item {
     public void onPickUp(Player player) {
         player.addPassiveEffect(new IncreaseNumberOfProjectiles(player,1));
         //Controller.addOnScreenMessage(new TextMessage("Your shots now pierce!",
-        //        getBody().getPosition().x * PIXELS_TO_METERS, getBody().getPosition().y * PIXELS_TO_METERS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
+        //        getBody().getPosition().x * PIXELS_TO_UNITS, getBody().getPosition().y * PIXELS_TO_UNITS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
         killYourself();
         Controller.getUserInterface().addItemDialogBox(this);
     }
@@ -57,7 +57,7 @@ public class MoreProjectiles extends Item {
 
         //Shape definiton
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/PIXELS_TO_METERS/2,height/PIXELS_TO_METERS/2);
+        shape.setAsBox(width/ PIXELS_TO_UNITS /2,height/ PIXELS_TO_UNITS /2);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();

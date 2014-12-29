@@ -1,34 +1,51 @@
 package com.fruit.logic.objects.entities.misc;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.fruit.Controller;
 import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.entities.*;
-import com.fruit.logic.objects.entities.player.Player;
-import com.fruit.logic.objects.items.ItemManager;
-import com.fruit.visual.messages.TextMessage;
-import com.fruit.visual.messages.TextRenderer;
+import com.fruit.logic.objects.entities.Character;
 
-public class Box extends Enemy{
+/**
+ * @Author FruitAddict
+ */
+public class Explosion extends Enemy {
     private World world;
     private ObjectManager objectManager;
+    private float stateTime;
+    private float lifeTime;
+    private int damage;
+    private float range;
 
-    public Box(ObjectManager objectManager,float spawnX, float spawnY) {
+    public Explosion(ObjectManager objectManager,float spawnX, float spawnY,float range, float lifeTime, int damage) {
         lastKnownX = spawnX;
         lastKnownY= spawnY;
         this.objectManager = objectManager;
-        setEntityID(GameObject.BOX);
-        setSaveInRooms(DO_SAVE);
-        stats.setHealthPoints(5);
-        stats.setBaseMaximumHealthPoints(5);
+        setEntityID(GameObject.EXPLOSION);
+        setSaveInRooms(DONT_SAVE);
+        this.lifeTime = lifeTime;
+        this.damage = damage;
+        this.range = range;
+    }
+
+    @Override
+    public void onDirectContact(Character character) {
+        character.onDamageTaken(new Value(damage,Value.BURNING_DAMAGE));
+        character.getBody().applyLinearImpulse(new Vector2(character.getBody().getPosition().x - getBody().getPosition().x
+                ,character.getBody().getPosition().y - getBody().getPosition().y).nor().scl(50), character.getBody().getPosition(),true);
+    }
+
+    @Override
+    public void onContactWithTerrain(int direction) {
+
     }
 
     @Override
     public void update(float delta) {
-        if(stats.getHealthPoints()<0){
+        stateTime+=delta;
+        if(stateTime>lifeTime){
             killYourself();
-            ItemManager.addRandomItem(objectManager,getBody().getPosition().x,getBody().getPosition().y,1);
         }
     }
 
@@ -52,13 +69,14 @@ public class Box extends Enemy{
 
         //Shape definiton
         CircleShape shape = new CircleShape();
-        shape.setRadius(Math.min(getWidth(),getHeight())/PIXELS_TO_UNITS);
+        shape.setRadius(range);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 99999f;
         fixtureDef.shape = shape;
-        fixtureDef.filter.categoryBits = TREASURE_BIT;
+        fixtureDef.filter.categoryBits = ENEMY_BIT;
+        fixtureDef.filter.maskBits = PLAYER_BIT | ENEMY_BIT | TERRAIN_BIT | CLUTTER_BIT | ITEM_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape
@@ -70,25 +88,7 @@ public class Box extends Enemy{
         objectManager.removeObject(this);
     }
 
-    @Override
-    public void onDamageTaken(Value value) {
-        stats.changeHealthPoints(-1);
-        Controller.addOnScreenMessage(new TextMessage("Crack!", getBody().getPosition().x * PIXELS_TO_UNITS,
-                getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.redFont,TextMessage.UP));
-    }
-
-    @Override
-    public void onHealingTaken(Value amount) {
-
-    }
-
-    @Override
-    public void onDirectContact(com.fruit.logic.objects.entities.Character player) {
-
-    }
-
-    @Override
-    public void onContactWithTerrain(int direction) {
-
+    public float getLifeTime() {
+        return lifeTime;
     }
 }

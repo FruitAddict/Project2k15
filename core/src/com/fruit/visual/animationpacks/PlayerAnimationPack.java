@@ -2,7 +2,6 @@ package com.fruit.visual.animationpacks;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -48,10 +47,10 @@ public class PlayerAnimationPack implements Constants {
     private Animation playerheadAnimationEast;
 
     private boolean loaded = false;
-    private EffectRenderer effectRenderer;
+    private OnCharacterEffectPack onCharacteREffectPack;
 
-    public PlayerAnimationPack(EffectRenderer effectRenderer){
-        this.effectRenderer = effectRenderer;
+    public PlayerAnimationPack(OnCharacterEffectPack onCharacteREffectPack){
+        this.onCharacteREffectPack = onCharacteREffectPack;
     }
 
     public void load(){
@@ -127,13 +126,13 @@ public class PlayerAnimationPack implements Constants {
         }
         //batch.draw(playerHead,pos.x-3.2f  ,pos.y+character.getHeight()-6,64,64);
         if(player.status.isHealing()){
-            effectRenderer.render(player,batch,stateTime,EffectRenderer.HEALED,pos.x,pos.y,player.getWidth(),player.getHeight());
+            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.HEALED,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
         if(player.status.isShielded()){
-            effectRenderer.render(player,batch,stateTime,EffectRenderer.SHIELDED,pos.x,pos.y,player.getWidth(),player.getHeight());
+            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.SHIELDED,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
         if(player.status.isPoisoned()){
-            effectRenderer.render(player,batch,stateTime,EffectRenderer.POISONED,pos.x,pos.y,player.getWidth(),player.getHeight());
+            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.POISONED,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
         if(player.status.isLeveledUp()){
             //effectRenderer.render(player,batch,stateTime,EffectRenderer.LEVEL_UP_TRIGGER,pos.x,pos.y,player.getWidth(),player.getHeight());

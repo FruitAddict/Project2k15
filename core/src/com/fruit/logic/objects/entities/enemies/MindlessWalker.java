@@ -8,7 +8,7 @@ import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.GameObject;
-import com.fruit.logic.objects.entities.player.Player;
+import com.fruit.logic.objects.entities.Character;
 import com.fruit.logic.objects.entities.projectiles.MobProjectile;
 
 import java.util.Random;
@@ -172,14 +172,14 @@ public class MindlessWalker extends Enemy implements Constants{
 
         //Shape definiton
         CircleShape shape = new CircleShape();
-        shape.setRadius(Math.min(width, height)/2 / PIXELS_TO_METERS);
+        shape.setRadius(Math.min(width, height)/2 / PIXELS_TO_UNITS);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 100f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = ENEMY_BIT;
-        fixtureDef.filter.maskBits = PLAYER_BIT |TERRAIN_BIT | CLUTTER_BIT | PLAYER_PROJECTILE_BIT | ITEM_BIT | TREASURE_BIT | PORTAL_BIT;
+        fixtureDef.filter.maskBits = ENEMY_BIT |PLAYER_BIT |TERRAIN_BIT | CLUTTER_BIT | PLAYER_PROJECTILE_BIT | ITEM_BIT | TREASURE_BIT | PORTAL_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape
@@ -193,8 +193,26 @@ public class MindlessWalker extends Enemy implements Constants{
     }
 
     @Override
-    public void onDirectContact(Player player) {
-        player.onDamageTaken(new Value(stats.getCombinedDamage(),Value.NORMAL_DAMAGE));
+    public void onDirectContact(Character character) {
+        character.onDamageTaken(new Value(stats.getCombinedDamage(), Value.NORMAL_DAMAGE));
+    }
+
+    @Override
+    public void onContactWithTerrain(int direction) {
+        switch(direction){
+            case NORTH_DIR:{
+                break;
+            }
+            case SOUTH_DIR:{
+                break;
+            }
+            case EAST_DIR:{
+                break;
+            }
+            case WEST_DIR:{
+
+            }
+        }
     }
 
     @Override

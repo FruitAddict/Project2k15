@@ -1,7 +1,6 @@
 package com.fruit.visual.renderer;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.utils.Array;
 import com.fruit.Controller;
 import com.fruit.logic.Constants;
 import com.fruit.utilities.Utils;
-import com.fruit.visual.Assets;
 
 /**
  * @Author FruitAddict
@@ -97,35 +95,35 @@ public class SplatterRenderer implements Constants {
             for (Splatter splatter : splatterArray) {
                 switch (splatter.type) {
                     case SplatterRenderer.BLOOD_1: {
-                        blood1Sprite.setPosition(splatter.position.x * PIXELS_TO_METERS, splatter.position.y * PIXELS_TO_METERS);
+                        blood1Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood1Sprite.setRotation(splatter.rotation);
                         blood1Sprite.draw(batch);
                         System.out.println("blood1");
                         break;
                     }
                     case SplatterRenderer.BLOOD_2: {
-                        blood2Sprite.setPosition(splatter.position.x * PIXELS_TO_METERS, splatter.position.y * PIXELS_TO_METERS);
+                        blood2Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood2Sprite.setRotation(splatter.rotation);
                         blood2Sprite.draw(batch);
                         System.out.println("blood2");
                         break;
                     }
                     case SplatterRenderer.BLOOD_3: {
-                        blood3Sprite.setPosition(splatter.position.x * PIXELS_TO_METERS, splatter.position.y * PIXELS_TO_METERS);
+                        blood3Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood3Sprite.setRotation(splatter.rotation);
                         blood3Sprite.draw(batch);
                         System.out.println("blood3");
                         break;
                     }
                     case SplatterRenderer.BLOOD_4: {
-                        blood4Sprite.setPosition(splatter.position.x * PIXELS_TO_METERS, splatter.position.y * PIXELS_TO_METERS);
+                        blood4Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood4Sprite.setRotation(splatter.rotation);
                         blood4Sprite.draw(batch);
                         System.out.println("blood4");
                         break;
                     }
                     case SplatterRenderer.BLOOD_5: {
-                        blood5Sprite.setPosition(splatter.position.x * PIXELS_TO_METERS, splatter.position.y * PIXELS_TO_METERS);
+                        blood5Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood5Sprite.setRotation(splatter.rotation);
                         blood5Sprite.draw(batch);
                         System.out.println("blood5");

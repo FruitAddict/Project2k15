@@ -73,6 +73,7 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         nextLevelExpRequirement = 25;
 
         stats.setNumberOfProjectiles(1);
+        stats.setKnockBack(5);
     }
 
     public void attack(float directionPercentX, float directionPercentY){
@@ -180,14 +181,14 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
 
         //Shape definiton
         CircleShape shape = new CircleShape();
-        shape.setRadius(Math.min(width, height) / 2 / PIXELS_TO_METERS);
+        shape.setRadius(Math.min(width, height) / 2 / PIXELS_TO_UNITS);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 1000f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = PLAYER_BIT;
-        fixtureDef.filter.maskBits= PROJECTILE_BIT |CLUTTER_BIT | TERRAIN_BIT |ENEMY_BIT | PORTAL_BIT | ITEM_BIT |TREASURE_BIT;
+        fixtureDef.filter.maskBits= PROJECTILE_BIT |CLUTTER_BIT | TERRAIN_BIT |ENEMY_BIT | PORTAL_BIT | ITEM_BIT |TREASURE_BIT |DETECTOR_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape
@@ -233,8 +234,8 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
 
     public void addExperiencePoints(int value){
         experiencePoints+=value;
-        Controller.addOnScreenMessage(new TextMessage(value+" exp", getBody().getPosition().x * PIXELS_TO_METERS,
-                getBody().getPosition().y * PIXELS_TO_METERS, 1.5f, TextRenderer.goldenFont,TextMessage.UP_AND_FALL));
+        Controller.addOnScreenMessage(new TextMessage(value+" exp", getBody().getPosition().x * PIXELS_TO_UNITS,
+                getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.goldenFont,TextMessage.UP_AND_FALL));
         if(experiencePoints >= nextLevelExpRequirement){
             experiencePoints = experiencePoints-nextLevelExpRequirement;
             onLevelUp();

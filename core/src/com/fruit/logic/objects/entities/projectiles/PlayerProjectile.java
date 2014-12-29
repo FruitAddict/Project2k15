@@ -6,7 +6,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.fruit.SoundManager;
 import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.effects.OnHitEffect;
@@ -24,6 +23,8 @@ public class PlayerProjectile extends Projectile{
     //Player-created projectiles should have a reference to player's on hit effect list on their creation
     private Array<OnHitEffect> onHitEffects;
     private boolean piercing;
+    private float knockBack;
+
     public PlayerProjectile(Player player, ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity) {
         this.objectManager = objectManager;
         this.spawnX = spawnX;
@@ -45,6 +46,7 @@ public class PlayerProjectile extends Projectile{
         direction = dir;
         this.velocity = velocity;
         piercing = player.stats.isPiercingProjectiles();
+        knockBack = player.stats.getKnockBack();
     }
 
     @Override
@@ -53,6 +55,8 @@ public class PlayerProjectile extends Projectile{
             onHitEffect.onHit((Enemy)character,damage);
         }
         character.onDamageTaken(damage);
+        character.getBody().applyLinearImpulse(new Vector2(character.getBody().getPosition().x - character.getBody().getPosition().x
+                ,character.getBody().getPosition().y - getBody().getPosition().y).nor().scl(knockBack),character.getBody().getPosition(),true);
         if(!piercing) {
             killYourself();
         }
@@ -75,7 +79,7 @@ public class PlayerProjectile extends Projectile{
 
         //Shape definiton
         CircleShape shape = new CircleShape();
-        shape.setRadius(radius/PIXELS_TO_METERS);
+        shape.setRadius(radius/ PIXELS_TO_UNITS);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();

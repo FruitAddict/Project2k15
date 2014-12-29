@@ -33,9 +33,9 @@ public class Utils implements Constants {
 
     public static Vector2 getDrawPositionBasedOnBox2dCircle(GameObject gameObject){
         //returns chinese stuff i literally forgot what it does 5 minutes after writing it
-        return new Vector2((gameObject.getBody().getPosition().x*PIXELS_TO_METERS)-Math.min(gameObject.getWidth(), gameObject.getHeight())/2
+        return new Vector2((gameObject.getBody().getPosition().x* PIXELS_TO_UNITS)-Math.min(gameObject.getWidth(), gameObject.getHeight())/2
                 -(gameObject.getWidth()>gameObject.getHeight()?((gameObject.getWidth()-gameObject.getHeight())/2):0),
-                (gameObject.getBody().getPosition().y*PIXELS_TO_METERS)-Math.min(gameObject.getWidth(), gameObject.getHeight())/2);
+                (gameObject.getBody().getPosition().y* PIXELS_TO_UNITS)-Math.min(gameObject.getWidth(), gameObject.getHeight())/2);
     }
 
     public static <T> void fill2dArray(T[][] array,T value){

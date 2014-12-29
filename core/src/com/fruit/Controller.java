@@ -73,15 +73,17 @@ public class Controller {
 
     public static synchronized void pauseGame(){
         if(Controller.gameScreen!=null){
-            Controller.gameScreen.paused = true;
-            Controller.worldRenderer.pauseRendering(0.3f);
+            Controller.getGameScreen().paused = true;
+            Controller.worldRenderer.pauseRendering();
+            Controller.getGameScreen().getWorldInputProcessor().resetAll();
         }
     }
 
     public static synchronized void unpauseGame(){
-        if(Controller.gameScreen!=null){
-            Controller.gameScreen.paused = false;
-            Controller.worldRenderer.unpauseRendering();
+        if(Controller.getGameScreen()!=null){
+            Controller.getGameScreen().paused = false;
+            Controller.getWorldRenderer().unpauseRendering();
+            Controller.getGameScreen().getWorldInputProcessor().resetAll();
         }
     }
 
@@ -106,6 +108,6 @@ public class Controller {
     }
 
     public static void onPlayerDeath() {
-        
+
     }
 }

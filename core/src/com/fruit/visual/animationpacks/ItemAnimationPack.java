@@ -21,6 +21,7 @@ public class ItemAnimationPack implements Constants {
     private Sprite poisonTouchSprite;
     private Sprite piercingProjectilesSprite;
     private Sprite moreProjectilesSprite;
+    private Sprite michaelBaySprite;
     private boolean loaded = false;
 
     public void load(){
@@ -40,6 +41,8 @@ public class ItemAnimationPack implements Constants {
             piercingProjectilesSprite = new Sprite(piercingProjectileTexture);
             Texture morePRojectilesTexture = (Texture)Assets.getAsset("items//triforce.png",Texture.class);
             moreProjectilesSprite = new Sprite(morePRojectilesTexture);
+            Texture michaelBayTexture = (Texture)Assets.getAsset("items//bay.png",Texture.class);
+            michaelBaySprite = new Sprite(michaelBayTexture);
             loaded = true;
         }
     }
@@ -75,6 +78,9 @@ public class ItemAnimationPack implements Constants {
            case Item.MORE_PROJECTILES: {
                batch.draw(moreProjectilesSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
                break;
+           }
+           case Item.MICHAEL_BAY: {
+               batch.draw(michaelBaySprite,pos.x,pos.y,item.getWidth(),item.getHeight());
            }
        }
     }

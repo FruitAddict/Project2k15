@@ -32,4 +32,8 @@ public class Value {
     public int getType(){
         return type;
     }
+
+    public Value cpy(){
+        return new Value(value,type);
+    }
 }

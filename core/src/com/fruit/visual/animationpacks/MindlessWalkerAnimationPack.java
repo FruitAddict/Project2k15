@@ -89,8 +89,11 @@ public class MindlessWalkerAnimationPack implements Constants {
         if(character.status.isPoisoned()){
             onCharacteREffectPack.render(character,batch,stateTime, OnCharacterEffectPack.POISONED,pos.x,pos.y,character.getWidth(),character.getHeight());
         }
-        if(character.status.isEnraged()){
+        if(character.status.isAttackedByPlayer()){
             onCharacteREffectPack.render(character,batch,stateTime, OnCharacterEffectPack.HP_BAR,pos.x,pos.y,character.getWidth(),character.getHeight());
+        }
+        if(character.status.isBurning()){
+            onCharacteREffectPack.render(character,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,character.getWidth(),character.getHeight());
         }
     }
 

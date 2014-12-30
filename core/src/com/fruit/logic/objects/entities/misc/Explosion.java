@@ -2,10 +2,14 @@ package com.fruit.logic.objects.entities.misc;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.fruit.Controller;
 import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.Value;
+import com.fruit.logic.objects.effects.passive.DamageOverTime;
 import com.fruit.logic.objects.entities.*;
 import com.fruit.logic.objects.entities.Character;
+import com.fruit.visual.messages.TextMessage;
+import com.fruit.visual.messages.TextRenderer;
 
 /**
  * @Author FruitAddict
@@ -13,7 +17,7 @@ import com.fruit.logic.objects.entities.Character;
 public class Explosion extends Enemy {
     private World world;
     private ObjectManager objectManager;
-    private float stateTime;
+    public float stateTime;
     private float lifeTime;
     private int damage;
     private float range;
@@ -27,13 +31,21 @@ public class Explosion extends Enemy {
         this.lifeTime = lifeTime;
         this.damage = damage;
         this.range = range;
+        width = range*2*PIXELS_TO_UNITS;
+        height = range*2*PIXELS_TO_UNITS;
     }
 
     @Override
     public void onDirectContact(Character character) {
         character.onDamageTaken(new Value(damage,Value.BURNING_DAMAGE));
+        character.addPassiveEffect(new DamageOverTime(character, 5f, 0.5f, new Value(Math.max(1,damage/2), Value.POISON_DAMAGE), DamageOverTime.BURNING));
+
+        Controller.addOnScreenMessage(new TextMessage("Burning!!", character.getBody().getPosition().x * PIXELS_TO_UNITS,
+                character.getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.redFont, TextMessage.UP_AND_FALL));
+
         character.getBody().applyLinearImpulse(new Vector2(character.getBody().getPosition().x - getBody().getPosition().x
-                ,character.getBody().getPosition().y - getBody().getPosition().y).nor().scl(50), character.getBody().getPosition(),true);
+                ,character.getBody().getPosition().y - getBody().getPosition().y).nor().scl(500), character.getBody().getPosition(),true);
+
     }
 
     @Override
@@ -52,9 +64,7 @@ public class Explosion extends Enemy {
     @Override
     public void addToBox2dWorld(World world) {
         this.world = world;
-        //setting width and height
-        width = 64;
-        height = 64;
+
 
         //Player body definition
         BodyDef bodyDef = new BodyDef();
@@ -75,8 +85,9 @@ public class Explosion extends Enemy {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 99999f;
         fixtureDef.shape = shape;
-        fixtureDef.filter.categoryBits = ENEMY_BIT;
-        fixtureDef.filter.maskBits = PLAYER_BIT | ENEMY_BIT | TERRAIN_BIT | CLUTTER_BIT | ITEM_BIT;
+        fixtureDef.filter.categoryBits = AREA_OF_EFFECT_BIT;
+        fixtureDef.filter.maskBits = PLAYER_BIT | ENEMY_BIT ;
+        fixtureDef.isSensor = true;
         body.createFixture(fixtureDef);
 
         //dispose shape

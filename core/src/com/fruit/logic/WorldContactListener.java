@@ -48,6 +48,32 @@ public class WorldContactListener implements ContactListener,Constants {
 
         }
 
+        if(f1.getFilterData().categoryBits == AREA_OF_EFFECT_BIT || f2.getFilterData().categoryBits == AREA_OF_EFFECT_BIT){
+            if(f1.getFilterData().categoryBits == PLAYER_BIT || f2.getFilterData().categoryBits == PLAYER_BIT) {
+                if(f1.getFilterData().categoryBits== PLAYER_BIT){
+                    Player p = (Player) f1.getBody().getUserData();
+                    Enemy e = (Enemy) f2.getBody().getUserData();
+                    e.onDirectContact(p);
+                }else {
+                    Player p = (Player) f2.getBody().getUserData();
+                    Enemy e = (Enemy) f1.getBody().getUserData();
+                    e.onDirectContact(p);
+                }
+            }
+            if(f1.getFilterData().categoryBits == ENEMY_BIT || f2.getFilterData().categoryBits == ENEMY_BIT){
+                if(f1.getFilterData().categoryBits == ENEMY_BIT){
+                    Enemy p = (Enemy) f1.getBody().getUserData();
+                    Enemy e = (Enemy) f2.getBody().getUserData();
+                    e.onDirectContact(p);
+                }else {
+                    Enemy p = (Enemy) f2.getBody().getUserData();
+                    Enemy e = (Enemy) f1.getBody().getUserData();
+                    e.onDirectContact(p);
+                }
+            }
+
+        }
+
         if(f1.getFilterData().categoryBits == DETECTOR_BIT || f2.getFilterData().categoryBits == DETECTOR_BIT){
             if(f1.getFilterData().categoryBits == DETECTOR_BIT){
                 if(((GameObject)f1.getBody().getUserData()).getEntityID() == GameObject.THE_EYE){

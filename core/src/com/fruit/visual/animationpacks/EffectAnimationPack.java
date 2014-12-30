@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.items.Item;
 import com.fruit.utilities.Utils;
 import com.fruit.visual.Assets;
@@ -31,7 +32,8 @@ public class EffectAnimationPack {
         explosionAnimation = new Animation(1/25f,frames);
     }
 
-    public void render(float stateTime, Item item, SpriteBatch batch) {
-        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(item));
+    public void render(float stateTime, GameObject gameObject, SpriteBatch batch) {
+        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(gameObject));
+        batch.draw(explosionAnimation.getKeyFrame(stateTime,false),pos.x,pos.y,gameObject.getWidth(),gameObject.getHeight());
     }
 }

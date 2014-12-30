@@ -137,5 +137,9 @@ public class PlayerAnimationPack implements Constants {
         if(player.status.isLeveledUp()){
             //effectRenderer.render(player,batch,stateTime,EffectRenderer.LEVEL_UP_TRIGGER,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
+        if(player.status.isBurning()){
+            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,player.getWidth(),player.getHeight());
+
+        }
     }
 }

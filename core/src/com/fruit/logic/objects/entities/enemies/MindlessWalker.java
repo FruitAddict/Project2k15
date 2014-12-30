@@ -53,7 +53,7 @@ public class MindlessWalker extends Enemy implements Constants{
         stateTime += delta;
         if(stats.getHealthPoints() <= 0){
             killYourself();
-        }else if(!status.isEnraged()) {
+        }else if(!status.isAttackedByPlayer()) {
             if (timeSpentDoingShit == 0) {
                 random = rng.nextInt(4);
                 switch (random) {
@@ -179,7 +179,7 @@ public class MindlessWalker extends Enemy implements Constants{
         fixtureDef.density = 100f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = ENEMY_BIT;
-        fixtureDef.filter.maskBits = ENEMY_BIT |PLAYER_BIT |TERRAIN_BIT | CLUTTER_BIT | PLAYER_PROJECTILE_BIT | ITEM_BIT | TREASURE_BIT | PORTAL_BIT;
+        fixtureDef.filter.maskBits = AREA_OF_EFFECT_BIT | ENEMY_BIT |PLAYER_BIT |TERRAIN_BIT | CLUTTER_BIT | PLAYER_PROJECTILE_BIT | ITEM_BIT | TREASURE_BIT | PORTAL_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape
@@ -219,7 +219,7 @@ public class MindlessWalker extends Enemy implements Constants{
     public void onDamageTaken(Value value) {
         stats.changeHealthPoints(-value.getValue() * stats.getDamageResistanceModifier());
         if(value.getValue()!=0) {
-            status.setEnraged(true);
+            status.setAttackedByPlayer(true);
             super.onDamageTaken(value);
         }
     }

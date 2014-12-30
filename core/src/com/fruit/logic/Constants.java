@@ -16,6 +16,7 @@ public interface Constants {
     public final int TREASURE_BIT = 0b100000000;
     public final int PLAYER_PROJECTILE_BIT = 0b1000000000;
     public final int DETECTOR_BIT = 0b10000000000;
+    public final int AREA_OF_EFFECT_BIT = 0b100000000000;
     //directions
     public final int NORTH_DIR = 1001;
     public final int EAST_DIR = 1002;

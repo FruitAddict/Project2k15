@@ -98,35 +98,30 @@ public class SplatterRenderer implements Constants {
                         blood1Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood1Sprite.setRotation(splatter.rotation);
                         blood1Sprite.draw(batch);
-                        System.out.println("blood1");
                         break;
                     }
                     case SplatterRenderer.BLOOD_2: {
                         blood2Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood2Sprite.setRotation(splatter.rotation);
                         blood2Sprite.draw(batch);
-                        System.out.println("blood2");
                         break;
                     }
                     case SplatterRenderer.BLOOD_3: {
                         blood3Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood3Sprite.setRotation(splatter.rotation);
                         blood3Sprite.draw(batch);
-                        System.out.println("blood3");
                         break;
                     }
                     case SplatterRenderer.BLOOD_4: {
                         blood4Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood4Sprite.setRotation(splatter.rotation);
                         blood4Sprite.draw(batch);
-                        System.out.println("blood4");
                         break;
                     }
                     case SplatterRenderer.BLOOD_5: {
                         blood5Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood5Sprite.setRotation(splatter.rotation);
                         blood5Sprite.draw(batch);
-                        System.out.println("blood5");
                         break;
                     }
                 }

@@ -31,10 +31,12 @@ public class OnCharacterEffectPack {
     public static final int SHIELDED = 3;
     public static final int LEVEL_UP_TRIGGER = 4;
     public static final int HP_BAR = 5;
+    public static final int BURNING = 6;
 
     private Animation healingAnimation;
     private Animation poisonedAnimation;
     private Animation shieldedAnimation;
+    private Animation burnedAnimation;
 
     //level up effect sprites
     private Sprite levelUpText;
@@ -80,6 +82,21 @@ public class OnCharacterEffectPack {
         animFramesShielded[3] = tmp3[0][3];
         shieldedAnimation = new Animation(0.1f, animFramesShielded);
 
+        //burned animation effect
+        Texture burnedTexture = (Texture) Assets.getAsset("effects//fireeffect.png", Texture.class);
+        TextureRegion[][] tmp4 = TextureRegion.split(burnedTexture, burnedTexture.getWidth() / 8, burnedTexture.getHeight());
+        TextureRegion[] burnedFrames = new TextureRegion[8];
+        burnedFrames[0] = tmp4[0][0];
+        burnedFrames[1] = tmp4[0][1];
+        burnedFrames[2] = tmp4[0][2];
+        burnedFrames[3] = tmp4[0][3];
+        burnedFrames[4] = tmp4[0][4];
+        burnedFrames[5] = tmp4[0][5];
+        burnedFrames[6] = tmp4[0][6];
+        burnedFrames[7] = tmp4[0][7];
+        burnedAnimation = new Animation(0.1f, burnedFrames);
+
+
         //level up sprites
         levelUpText = new Sprite((Texture)Assets.getAsset("effects//leveluptext.png", Texture.class));
         wingLeft = new Sprite((Texture)Assets.getAsset("effects//wing1.png", Texture.class));
@@ -121,6 +138,10 @@ public class OnCharacterEffectPack {
                 batch.draw(poisonedAnimation.getKeyFrame(stateTime,true),x,y+48,width,20);
                 break;
             }
+            case BURNING:{
+                batch.draw(burnedAnimation.getKeyFrame(stateTime,true),x,y,width,height);
+                break;
+            }
             case SHIELDED: {
                 batch.draw(shieldedAnimation.getKeyFrame(stateTime,true),x,y,width,height);
                 break;
@@ -141,6 +162,7 @@ public class OnCharacterEffectPack {
                 batch.draw(redTexture,x,y-9,width*character.stats.getHealthPointPercentOfMax(),8);
                 break;
             }
+
         }
     }
 

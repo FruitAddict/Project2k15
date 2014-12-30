@@ -9,7 +9,7 @@ public class CharacterStatus {
             freezing,
             healing,
             overpowering,
-            enraged,
+            attackedByPlayer,
             dying,
             poisoned,
             shielded,
@@ -47,12 +47,12 @@ public class CharacterStatus {
         this.overpowering = overpowering;
     }
 
-    public boolean isEnraged() {
-        return enraged;
+    public boolean isAttackedByPlayer() {
+        return attackedByPlayer;
     }
 
-    public void setEnraged(boolean enraged) {
-        this.enraged = enraged;
+    public void setAttackedByPlayer(boolean attackedByPlayer) {
+        this.attackedByPlayer = attackedByPlayer;
     }
 
     public boolean isDying() {

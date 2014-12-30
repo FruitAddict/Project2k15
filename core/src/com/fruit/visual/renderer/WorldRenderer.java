@@ -105,7 +105,6 @@ public class WorldRenderer implements Constants {
         //update splatter effects ( must've been done after finishing the batch as this uses fbo and cannot be nested in
         //another batch)
         splatterRenderer.update(delta);
-
     }
 
     /**

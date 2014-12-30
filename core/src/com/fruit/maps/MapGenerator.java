@@ -82,7 +82,7 @@ public class MapGenerator {
                             map.getRoomMatrix()[i][j].addGameObject(new Box(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y));
                         }else {
                             roll = Utils.mapRandomNumberGenerator.nextInt(100);
-                            if(roll>50) {
+                            if(roll>75) {
                                 map.getRoomMatrix()[i][j].addGameObject(new TheEye(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y));
                             }else {
                                 map.getRoomMatrix()[i][j].addGameObject(new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y));
@@ -94,9 +94,9 @@ public class MapGenerator {
         }
         //set current room to the one in the center
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
-        map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(),8,5,32,32));
-        map.getCurrentRoom().addGameObject(new PoisonProjectiles(mapManager.getWorldUpdater().getObjectManager(),10,5,32,32));
+        map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 8, 5, 32, 32));
         map.getCurrentRoom().addGameObject(new MoreProjectiles(mapManager.getWorldUpdater().getObjectManager(),12,5,32,32));
+        map.getCurrentRoom().addGameObject(new MichaelBay(mapManager.getWorldUpdater().getObjectManager(),14,5,32,32));
         MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater(),map.getCurrentRoom());
         return map;
     }

@@ -50,7 +50,7 @@ public class TheEye extends Enemy {
     @Override
     public void onDirectContact(Character character) {
         killYourself();
-        objectManager.addObject(new Explosion(objectManager,body.getPosition().x,body.getPosition().y,3,1f,stats.getCombinedDamage()*2));
+        objectManager.addObject(new Explosion(objectManager,body.getPosition().x,body.getPosition().y,1.5f,1f,stats.getCombinedDamage()*2));
     }
 
     @Override
@@ -137,7 +137,7 @@ public class TheEye extends Enemy {
         fixtureDef.density = 100f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = ENEMY_BIT;
-        fixtureDef.filter.maskBits = PLAYER_BIT |TERRAIN_BIT | CLUTTER_BIT | PLAYER_PROJECTILE_BIT | ITEM_BIT | TREASURE_BIT | PORTAL_BIT | ENEMY_BIT;
+        fixtureDef.filter.maskBits = AREA_OF_EFFECT_BIT | PLAYER_BIT |TERRAIN_BIT | CLUTTER_BIT | PLAYER_PROJECTILE_BIT | ITEM_BIT | TREASURE_BIT | PORTAL_BIT | ENEMY_BIT;
 
         FixtureDef detectorDef = new FixtureDef();
         detectorDef.filter.categoryBits = DETECTOR_BIT;
@@ -156,7 +156,8 @@ public class TheEye extends Enemy {
     public void onDamageTaken(Value value) {
         stats.changeHealthPoints(-value.getValue() * stats.getDamageResistanceModifier());
         if(value.getValue()!=0) {
-            status.setEnraged(true);
+            status.setAttackedByPlayer(true);
+            onPlayerDetected();
             super.onDamageTaken(value);
         }
     }
@@ -171,7 +172,13 @@ public class TheEye extends Enemy {
 
     @Override
     public void killYourself() {
-        objectManager.removeObject(this);
+        if(!playerFound) {
+            objectManager.removeObject(this);
+        }else {
+            objectManager.removeObject(this);
+            objectManager.addObject(new Explosion(objectManager,body.getPosition().x,body.getPosition().y,1.5f,1f,stats.getCombinedDamage()));
+
+        }
         Controller.getWorldRenderer().getSplatterRenderer().addMultiSplatter(body.getPosition(),2,0);
         objectManager.getPlayer().addExperiencePoints(4);
     }

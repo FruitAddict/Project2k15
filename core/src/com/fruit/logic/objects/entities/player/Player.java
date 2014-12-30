@@ -12,6 +12,7 @@ import com.fruit.logic.ObjectManager;
 import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.effects.OnDamageTakenEffect;
 import com.fruit.logic.objects.effects.OnHitEffect;
+import com.fruit.logic.objects.effects.onhit.ExplodeOnHit;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.projectiles.PlayerProjectile;
 import com.fruit.utilities.Utils;
@@ -144,12 +145,13 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
 
     @Override
     public void onDamageTaken(Value value){
+        Value copied = value.cpy();
         for(OnDamageTakenEffect onDamageTakenEffect : onDamageTakenEffects){
-            onDamageTakenEffect.onDamageTaken(value);
+            onDamageTakenEffect.onDamageTaken(copied);
         }
         if(value.getValue()!=0) {
-            stats.changeHealthPoints(-value.getValue() * stats.getCombinedResistance());
-            super.onDamageTaken(value);
+            stats.changeHealthPoints(-copied.getValue() * stats.getCombinedResistance());
+            super.onDamageTaken(copied);
         }
 
         Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement);
@@ -157,9 +159,10 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
 
     @Override
     public void onHealingTaken(Value amount) {
+        Value copied = amount.cpy();
         if(amount.getValue()!=0) {
-            stats.changeHealthPoints(amount.getValue() * stats.getHealingModifier());
-            super.onHealingTaken(amount);
+            stats.changeHealthPoints(copied.getValue() * stats.getHealingModifier());
+            super.onHealingTaken(copied);
         }
 
         Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement);
@@ -188,7 +191,7 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
         fixtureDef.density = 1000f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = PLAYER_BIT;
-        fixtureDef.filter.maskBits= PROJECTILE_BIT |CLUTTER_BIT | TERRAIN_BIT |ENEMY_BIT | PORTAL_BIT | ITEM_BIT |TREASURE_BIT |DETECTOR_BIT;
+        fixtureDef.filter.maskBits= PROJECTILE_BIT |CLUTTER_BIT | TERRAIN_BIT |ENEMY_BIT | PORTAL_BIT | ITEM_BIT |TREASURE_BIT |DETECTOR_BIT | AREA_OF_EFFECT_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape

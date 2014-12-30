@@ -54,6 +54,7 @@ public class MainMenuScreen implements Screen {
         Container<Window> windowContainer = new Container<>();
         final Window optionsWindow = new Window("Options",skin);
         optionsWindow.setVisible(false);
+        optionsWindow.top().center();
 
         final TextButton confirmButton = new TextButton("Done",skin);
         confirmButton.center();

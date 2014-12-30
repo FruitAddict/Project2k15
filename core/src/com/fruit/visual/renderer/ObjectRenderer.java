@@ -9,6 +9,7 @@ import com.fruit.logic.objects.entities.Projectile;
 import com.fruit.logic.objects.entities.enemies.Dummy;
 import com.fruit.logic.objects.entities.enemies.MindlessWalker;
 import com.fruit.logic.objects.entities.enemies.TheEye;
+import com.fruit.logic.objects.entities.misc.Explosion;
 import com.fruit.logic.objects.entities.player.Player;
 import com.fruit.logic.objects.items.Item;
 import com.fruit.visual.animationpacks.*;
@@ -33,6 +34,7 @@ public class ObjectRenderer implements Constants {
     DummyAnimationPack dummyAnimationPack;
     ItemAnimationPack itemAnimationPack;
     TheEyeAnimationPack theEyeAnimationPack;
+    EffectAnimationPack effectAnimationPack;
 
     public ObjectRenderer(){
         //some animation packs (for rendering characters) will need instance of effect renderer.
@@ -44,6 +46,7 @@ public class ObjectRenderer implements Constants {
         dummyAnimationPack = new DummyAnimationPack(onCharacteREffectPack);
         itemAnimationPack = new ItemAnimationPack();
         theEyeAnimationPack = new TheEyeAnimationPack(onCharacteREffectPack);
+        effectAnimationPack = new EffectAnimationPack();
     }
 
     public void render(float delta, Array<GameObject> objects, SpriteBatch batch){
@@ -100,6 +103,11 @@ public class ObjectRenderer implements Constants {
                 case GameObject.THE_EYE:{
                     theEyeAnimationPack.load();
                     theEyeAnimationPack.render(((TheEye)e).stateTime,(TheEye)e,batch);
+                    break;
+                }
+                case GameObject.EXPLOSION:{
+                    effectAnimationPack.load();
+                    effectAnimationPack.render(((Explosion)e).stateTime,e,batch);
                     break;
                 }
             }

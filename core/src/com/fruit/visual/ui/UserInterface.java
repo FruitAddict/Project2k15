@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fruit.Controller;
 import com.fruit.logic.WorldUpdater;
 import com.fruit.logic.objects.entities.player.Player;
@@ -18,6 +20,8 @@ import com.fruit.maps.Room;
 import com.fruit.screens.MainMenuScreen;
 import com.fruit.visual.Assets;
 import com.fruit.visual.GameCamera;
+
+import java.util.ResourceBundle;
 
 /**
  * @Author FruitAddict

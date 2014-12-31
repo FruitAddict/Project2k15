@@ -103,8 +103,8 @@ public class GameScreen implements Screen {
     public void show() {
         //setting up the camera after show is called (e.g. switching from app to app)
         cameraDimensions.set(Scaling.fit.apply(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),840,480));
-        camera.setToOrtho(false, cameraDimensions.x,cameraDimensions.y);
-        userInterface.getViewport().update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),true);
+        camera.setToOrtho(false, cameraDimensions.x, cameraDimensions.y);
+        userInterface.getViewport().update((int)cameraDimensions.x,(int)cameraDimensions.y,true);
     }
 
     @Override
@@ -130,5 +130,9 @@ public class GameScreen implements Screen {
 
     public WorldInputProcessor getWorldInputProcessor(){
         return worldInputProcessor;
+    }
+
+    public Vector2 getCameraDimensions(){
+        return cameraDimensions;
     }
 }

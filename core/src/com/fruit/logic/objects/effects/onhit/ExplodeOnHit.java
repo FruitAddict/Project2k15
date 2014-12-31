@@ -1,10 +1,8 @@
 package com.fruit.logic.objects.effects.onhit;
 
-import com.fruit.Controller;
 import com.fruit.logic.Constants;
 import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.effects.OnHitEffect;
-import com.fruit.logic.objects.effects.passive.DamageOverTime;
 import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.misc.Explosion;
 import com.fruit.logic.objects.entities.player.Player;
@@ -19,6 +17,7 @@ public class ExplodeOnHit extends OnHitEffect implements Constants {
     public ExplodeOnHit(Player player, int charges){
         this.player = player;
         explosionCount = charges;
+        setEffectID(OnHitEffect.EXPLODE_ON_HIT);
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.fruit.logic.objects.entities.Enemy;
 import com.fruit.logic.objects.entities.GameObject;
 import com.fruit.logic.objects.entities.Character;
 import com.fruit.logic.objects.entities.misc.Explosion;
+import com.fruit.logic.objects.items.HealthPotion;
 import com.fruit.utilities.Utils;
 
 
@@ -179,7 +180,10 @@ public class TheEye extends Enemy {
             objectManager.addObject(new Explosion(objectManager,body.getPosition().x,body.getPosition().y,1.5f,1f,stats.getCombinedDamage()));
 
         }
-        Controller.getWorldRenderer().getSplatterRenderer().addMultiSplatter(body.getPosition(),2,0);
+        Controller.getWorldRenderer().getSplatterRenderer().addMultiBloodSprite(body.getPosition(),0.7f, 1, 0);
+        if( Utils.randomGenerator.nextInt(100)>75){
+            objectManager.addObject(new HealthPotion(objectManager,body.getPosition().x,body.getPosition().y,32,32,5f,0.5f,2));
+        }
         objectManager.getPlayer().addExperiencePoints(4);
     }
 

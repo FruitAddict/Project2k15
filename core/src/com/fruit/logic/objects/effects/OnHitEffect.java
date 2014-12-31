@@ -9,7 +9,9 @@ import com.fruit.logic.objects.entities.Enemy;
  */
 public abstract class OnHitEffect {
     //types of OnHitEffect
-    public static int SPAWN_OBJECT_ON_HIT = 1;
+    public static final int SPAWN_OBJECT_ON_HIT = 1;
+    public static final int POISON_ON_HIT = 2;
+    public static final int EXPLODE_ON_HIT = 3;
     //instance effect id
     private int effectID;
 

@@ -27,6 +27,7 @@ public class SplatterRenderer implements Constants {
     public static final int BLOOD_3 = 3;
     public static final int BLOOD_4 = 4;
     public static final int BLOOD_5 = 5;
+    public static final int EXPLOSION_BLAST_1 = 6;
 
     //Array holding current splatters
     private Array<Splatter> splatterArray;
@@ -36,6 +37,7 @@ public class SplatterRenderer implements Constants {
     private Sprite blood3Sprite;
     private Sprite blood4Sprite;
     private Sprite blood5Sprite;
+    private Sprite explosion1Sprite;
 
     private TextureRegion combinedTextureRegion;
 
@@ -55,13 +57,14 @@ public class SplatterRenderer implements Constants {
         combinedTextureRegion = new TextureRegion();
         this.batch = batch;
         //init sprites
-        TextureAtlas splatterAtlas = new TextureAtlas(Gdx.files.internal("splatters//Splatters.pack"));
+        TextureAtlas splatterAtlas = new TextureAtlas(Gdx.files.internal("splatters//Splatters.atlas"));
 
         blood1Sprite = splatterAtlas.createSprite("blood1");
         blood2Sprite = splatterAtlas.createSprite("blood2");
         blood3Sprite = splatterAtlas.createSprite("blood3");
         blood4Sprite = splatterAtlas.createSprite("blood4");
         blood5Sprite = splatterAtlas.createSprite("blood5");
+        explosion1Sprite = splatterAtlas.createSprite("explosion1");
 
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888,(int)Controller.getWorldUpdater().getMapManager().getCurrentMapWidth(),
                 (int)Controller.getWorldUpdater().getMapManager().getCurrentMapHeight(),false);
@@ -97,31 +100,49 @@ public class SplatterRenderer implements Constants {
                     case SplatterRenderer.BLOOD_1: {
                         blood1Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood1Sprite.setRotation(splatter.rotation);
+                        blood1Sprite.setAlpha(splatter.alpha);
+                        blood1Sprite.setScale(splatter.scale);
                         blood1Sprite.draw(batch);
                         break;
                     }
                     case SplatterRenderer.BLOOD_2: {
                         blood2Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood2Sprite.setRotation(splatter.rotation);
+                        blood2Sprite.setAlpha(splatter.alpha);
+                        blood2Sprite.setScale(splatter.scale);
                         blood2Sprite.draw(batch);
                         break;
                     }
                     case SplatterRenderer.BLOOD_3: {
                         blood3Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood3Sprite.setRotation(splatter.rotation);
+                        blood3Sprite.setAlpha(splatter.alpha);
+                        blood3Sprite.setScale(splatter.scale);
                         blood3Sprite.draw(batch);
                         break;
                     }
                     case SplatterRenderer.BLOOD_4: {
                         blood4Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood4Sprite.setRotation(splatter.rotation);
+                        blood4Sprite.setAlpha(splatter.alpha);
+                        blood4Sprite.setScale(splatter.scale);
                         blood4Sprite.draw(batch);
                         break;
                     }
                     case SplatterRenderer.BLOOD_5: {
                         blood5Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS, splatter.position.y * PIXELS_TO_UNITS);
                         blood5Sprite.setRotation(splatter.rotation);
+                        blood5Sprite.setAlpha(splatter.alpha);
+                        blood5Sprite.setScale(splatter.scale);
                         blood5Sprite.draw(batch);
+                        break;
+                    }
+                    case SplatterRenderer.EXPLOSION_BLAST_1: {
+                        explosion1Sprite.setPosition(splatter.position.x * PIXELS_TO_UNITS , splatter.position.y * PIXELS_TO_UNITS);
+                        explosion1Sprite.setRotation(splatter.rotation);
+                        explosion1Sprite.setAlpha(splatter.alpha);
+                        explosion1Sprite.setScale(splatter.scale);
+                        explosion1Sprite.draw(batch);
                         break;
                     }
                 }
@@ -150,7 +171,7 @@ public class SplatterRenderer implements Constants {
         splatterArray.add(new Splatter(position,type,rotationDegrees));
     }
 
-    public void addMultiSplatter(Vector2 position, int numberOfSplatters, int range) {
+    public void addMultiBloodSprite(Vector2 position, int numberOfSplatters, int range) {
         for (int i = 0; i < numberOfSplatters; i++) {
             if (range > 0) {
                 float randomSign = Math.signum(Utils.randomGenerator.nextInt());
@@ -160,6 +181,27 @@ public class SplatterRenderer implements Constants {
                 splatterArray.add(new Splatter(position,1 + Utils.randomGenerator.nextInt(5), Utils.randomGenerator.nextInt(360)));
             }
         }
+    }
+
+    public void addMultiBloodSprite(Vector2 position, float scale, int numberOfSplatters, int range) {
+        for (int i = 0; i < numberOfSplatters; i++) {
+            if (range > 0) {
+                float randomSign = Math.signum(Utils.randomGenerator.nextInt());
+                splatterArray.add(new Splatter(position.cpy().add(Utils.randomGenerator.nextFloat()*randomSign*range, Utils.randomGenerator.nextFloat()*randomSign*range),
+                        1 + Utils.randomGenerator.nextInt(5), scale, Utils.randomGenerator.nextInt(360)));
+            } else {
+                splatterArray.add(new Splatter(position,1 + Utils.randomGenerator.nextInt(5), Utils.randomGenerator.nextInt(360)));
+            }
+        }
+    }
+
+    public void addExplosionSplatter(Vector2 position, float scale){
+        int randomRotation = Utils.randomGenerator.nextInt(360);
+        splatterArray.add(new Splatter(position,SplatterRenderer.EXPLOSION_BLAST_1,0.5f, scale, randomRotation));
+        randomRotation = Utils.randomGenerator.nextInt(360);
+        splatterArray.add(new Splatter(position,SplatterRenderer.EXPLOSION_BLAST_1,0.7f, scale*0.7f, randomRotation));
+        randomRotation = Utils.randomGenerator.nextInt(360);
+        splatterArray.add(new Splatter(position,SplatterRenderer.EXPLOSION_BLAST_1,0.8f, scale*0.4f, randomRotation));
     }
 
     public void updateFrameBufferAndCamera(){
@@ -174,14 +216,36 @@ public class SplatterRenderer implements Constants {
     }
 
     private class Splatter{
+        /**
+         * Inner class that holds data about splatter that is about to be rendered to the screen.
+         * 3 overloaded constructors as scale is 1 by default (original splatter texture size ),
+         * and alpha is 1 by default
+         */
         private Vector2 position;
         private int type;
         private float rotation;
+        private float scale = 1f;
+        private float alpha = 1f;
 
         public Splatter(Vector2 position, int type, float rotation){
             this.position = position.cpy();
             this.type = type;
             this.rotation = rotation;
+        }
+
+        public Splatter(Vector2 position, int type, float scale, float rotation){
+            this.position = position.cpy();
+            this.type = type;
+            this.rotation = rotation;
+            this.scale = scale;
+        }
+
+        public Splatter(Vector2 position, int type, float alpha, float scale, float rotation){
+            this.position = position.cpy();
+            this.type = type;
+            this.rotation = rotation;
+            this.scale = scale;
+            this.alpha = alpha;
         }
     }
 }

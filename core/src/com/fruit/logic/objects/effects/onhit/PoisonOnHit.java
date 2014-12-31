@@ -20,6 +20,7 @@ public class PoisonOnHit extends OnHitEffect implements Constants {
     public PoisonOnHit(Player player, int charges){
         this.player = player;
         poisonCount = charges;
+        setEffectID(OnHitEffect.POISON_ON_HIT);
     }
 
     @Override

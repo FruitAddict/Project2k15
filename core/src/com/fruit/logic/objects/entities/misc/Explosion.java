@@ -97,6 +97,7 @@ public class Explosion extends Enemy {
     @Override
     public void killYourself() {
         objectManager.removeObject(this);
+        Controller.getWorldRenderer().getSplatterRenderer().addExplosionSplatter(getBody().getPosition(),width/64f);
     }
 
     public float getLifeTime() {

@@ -225,7 +225,7 @@ public class SplatterRenderer implements Constants {
         private int type;
         private float rotation;
         private float scale = 1f;
-        private float alpha = 1f;
+        private float alpha = 0.9f;
 
         public Splatter(Vector2 position, int type, float rotation){
             this.position = position.cpy();

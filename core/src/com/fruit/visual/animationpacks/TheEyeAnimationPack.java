@@ -40,31 +40,31 @@ public class TheEyeAnimationPack {
         if(!loaded) {
             pos = new Vector2();
             Texture testPlayerTexture = (Texture) Assets.getAsset("borrowed//eyeball.png", Texture.class);
-            TextureRegion[][] tmp = TextureRegion.split(testPlayerTexture, testPlayerTexture.getWidth() / 3, testPlayerTexture.getHeight() / 4);
+            TextureRegion[][] tmp = TextureRegion.split(testPlayerTexture, testPlayerTexture.getWidth() / 4, testPlayerTexture.getHeight() / 4);
             playerSouthRegion = new TextureRegion[3];
             playerNorthRegion = new TextureRegion[3];
             playerEastRegion = new TextureRegion[3];
             playerWestRegion = new TextureRegion[3];
             for (int i = 0; i < 3; i++) {
-                playerNorthRegion[i] = tmp[0][i];
+                playerSouthRegion[i] = tmp[0][i];
                 playerWestRegion[i] = tmp[1][i];
-                playerSouthRegion[i] = tmp[2][i];
-                playerEastRegion[i] = tmp[3][i];
+                playerEastRegion[i] = tmp[2][i];
+                playerNorthRegion[i] = tmp[3][i];
 
             }
-            playerAnimationSouth = new Animation(0.3f, playerSouthRegion);
-            playerAnimationNorth = new Animation(0.3f, playerNorthRegion);
-            playerAnimationWest = new Animation(0.3f, playerWestRegion);
-            playerAnimationEast = new Animation(0.3f, playerEastRegion);
+            playerAnimationSouth = new Animation(0.15f, playerSouthRegion);
+            playerAnimationNorth = new Animation(0.15f, playerNorthRegion);
+            playerAnimationWest = new Animation(0.15f, playerWestRegion);
+            playerAnimationEast = new Animation(0.15f, playerEastRegion);
             loaded = true;
         }
     }
 
     public void render(float stateTime, com.fruit.logic.objects.entities.Character character, SpriteBatch batch){
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(character));
-        if(character.facingN || character.facingNE || character.facingNW){
+        if(character.facingN ){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
-        }else if(character.facingS || character.facingSE || character.facingSW){
+        }else if(character.facingS){
             batch.draw(playerAnimationSouth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
         }else if(character.facingE){
             batch.draw(playerAnimationEast.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());

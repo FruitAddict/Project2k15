@@ -103,11 +103,11 @@ public class PlayerAnimationPack implements Constants {
     public void render(float stateTime, Player player, SpriteBatch batch){
         //position for rendering, this alghorithm is the same for every renderable object
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(player));
-        if(player.facingN || player.facingNW || player.facingNE){
+        if(player.facingN ){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
             batch.draw(playerHeadAnimationNorth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-26
                     ,64,88);
-        }else if(player.facingS || player.facingSE || player.facingSW){
+        }else if(player.facingS ){
             batch.draw(playerAnimationSouth.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
             batch.draw(playerHeadAnimationSouth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-26
                     ,64,88);

@@ -1,5 +1,10 @@
 package com.fruit.logic.objects.entities.enemies;
 
+import com.badlogic.gdx.ai.steer.SteeringAcceleration;
+import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.steer.behaviors.MatchVelocity;
+import com.badlogic.gdx.ai.steer.behaviors.Wander;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -27,14 +32,16 @@ public class TheEye extends Enemy {
     private float directionY;
     private boolean playerFound = false;
 
+    private SteeringBehavior<Vector2> steeringBehavior;
+
 
     public TheEye(ObjectManager objectManager, float spawnX, float spawnY){
         this.objectManager = objectManager;
         lastKnownX = spawnX;
         lastKnownY = spawnY;
         setEntityID(GameObject.THE_EYE);
-        stats.setMaxVelocity(2.2f);
-        stats.setSpeed(0.25f);
+        stats.setMaxVelocity(3f);
+        stats.setSpeed(4f);
         setSaveInRooms(DO_SAVE);
         stats.setHealthPoints(10);
         stats.setBaseMaximumHealthPoints(10);
@@ -43,15 +50,15 @@ public class TheEye extends Enemy {
         stats.setBaseDamage(2);
         stats.setBaseDamageModifier(1);
         width = 32;
-        height = 48;
+        height = 32;
         directionX = Math.signum((Utils.randomGenerator.nextInt()));
         directionY = Math.signum((Utils.randomGenerator.nextInt()));
+        steeringBehavior = new Wander<>(this).setWanderRadius(15).setWanderOrientation(10f);
     }
 
     @Override
     public void onDirectContact(Character character) {
-        killYourself();
-        objectManager.addObject(new Explosion(objectManager,body.getPosition().x,body.getPosition().y,1.5f,1f,stats.getCombinedDamage()*2));
+        character.onDamageTaken(new Value(stats.getCombinedDamage(),Value.BURNING_DAMAGE));
     }
 
     @Override
@@ -86,29 +93,8 @@ public class TheEye extends Enemy {
         }
         updateFacing();
         updatePassiveEffects(delta);
-        if(!playerFound) {
-            if (directionX == 1) {
-                moveEast();
-            } else {
-                moveWest();
-            }
-            if (directionY == 1) {
-                moveNorth();
-            } else {
-                moveSouth();
-            }
-        }else {
-            if (objectManager.getPlayer().getBody().getPosition().x > getBody().getPosition().x) {
-                moveEast();
-            } else if (objectManager.getPlayer().getBody().getPosition().x < getBody().getPosition().x) {
-                moveWest();
-            }
-            if (objectManager.getPlayer().getBody().getPosition().y > getBody().getPosition().y) {
-                moveNorth();
-            } else if (objectManager.getPlayer().getBody().getPosition().y < getBody().getPosition().y) {
-                moveSouth();
-            }
-        }
+        steeringBehavior.calculateSteering(steeringOutput);
+        applySteering( delta);
     }
 
     @Override
@@ -120,7 +106,7 @@ public class TheEye extends Enemy {
         bodyDef.position.set(lastKnownX,lastKnownY);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
-        bodyDef.linearDamping = 2.0f;
+        bodyDef.linearDamping = 3.0f;
         bodyDef.allowSleep = false;
 
         //create the body
@@ -190,4 +176,5 @@ public class TheEye extends Enemy {
     public void onPlayerDetected(){
         playerFound = true;
     }
+
 }

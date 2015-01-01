@@ -82,10 +82,10 @@ public class MapGenerator {
                             map.getRoomMatrix()[i][j].addGameObject(new Box(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y));
                         }else {
                             roll = Utils.mapRandomNumberGenerator.nextInt(100);
-                            if(roll>75) {
+                            if(roll>86) {
                                 map.getRoomMatrix()[i][j].addGameObject(new TheEye(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y));
                             }else {
-                                map.getRoomMatrix()[i][j].addGameObject(new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y));
+                                map.getRoomMatrix()[i][j].addGameObject(new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y,1));
                             }
                         }
                     }
@@ -209,8 +209,6 @@ public class MapGenerator {
         thirdRoom.setLinkedRoomWest(secondRoom);
         firstRoom.setLinkedRoomNorth(fourthRoom);
         fourthRoom.setLinkedRoomSouth(firstRoom);
-
-        firstRoom.addGameObject(new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(),4,4));
 
         map.setCurrentRoom(firstRoom);
         //initially add all the game objects manually as no references to managers exist yet.

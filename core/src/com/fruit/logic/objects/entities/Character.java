@@ -1,5 +1,8 @@
 package com.fruit.logic.objects.entities;
 
+import com.badlogic.gdx.ai.steer.Steerable;
+import com.badlogic.gdx.ai.steer.SteeringAcceleration;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.Controller;
 import com.fruit.logic.objects.Value;
@@ -16,11 +19,12 @@ import com.fruit.visual.messages.TextRenderer;
  * Contains easy methods to move the object around in the game world(logic)
  * e.g. moveEast(), moveWest(). etc. Those methods will move the object automatically
  * according to their speed and maxVelocity (the entity can still be pushed over its limit)
+ *
+ * Every character (including the player) should be Steerable for use with gdx-ai.
  */
-public abstract class Character extends GameObject {
+public abstract class Character extends GameObject implements Steerable<Vector2> {
 
-    public boolean facingW, facingE, facingN, facingS,
-                   facingNE, facingNW, facingSE, facingSW, idle;
+    public boolean facingW, facingE, facingN, facingS, idle;
 
     //array of passive effects, as both player and enemies can have those.
     private Array<PassiveEffect> effectArray = new Array<>();
@@ -32,6 +36,11 @@ public abstract class Character extends GameObject {
     // a container for everything stats related. Provides easy getters for
     //calculated stats and de-clutters everything.
     public CharacterStats stats = new CharacterStats();
+    //steering output that is used by ai
+    protected final SteeringAcceleration<Vector2> steeringOutput =
+            new SteeringAcceleration<Vector2>(new Vector2());
+    //temporary speed vector
+    private Vector2 newVelocity = new Vector2();
 
     public void setFacings(boolean bool){
         //sets all the facing booleans to @bool.
@@ -39,51 +48,32 @@ public abstract class Character extends GameObject {
         facingN = bool;
         facingE = bool;
         facingS = bool;
-        facingNE = bool;
-        facingNW = bool;
-        facingSE = bool;
-        facingSW = bool;
         idle = bool;
     }
 
     public void updateFacing(){
         //updates facing booleans based on valocity
-        if(body.getLinearVelocity().x <=0.55f && body.getLinearVelocity().x >=-0.55f && body.getLinearVelocity().y<=0.55f && body.getLinearVelocity().y >=-0.55f){
+        float angle = body.getLinearVelocity().angle();
+        if(body.getLinearVelocity().x <= stats.getMaxVelocity()/9 && body.getLinearVelocity().x >=-stats.getMaxVelocity()/9 && body.getLinearVelocity().y<=stats.getMaxVelocity()/9 && body.getLinearVelocity().y >=-stats.getMaxVelocity()/9){
             //body is idle
             setFacings(false);
             idle = true;
-        }else if(body.getLinearVelocity().y > stats.getMaxVelocity()/3 && body.getLinearVelocity().x < stats.getMaxVelocity()/3 && body.getLinearVelocity().x > -stats.getMaxVelocity()/3){
-            //body is facing NORTH
+        }
+        else if(angle > 45 && angle <= 135){
             setFacings(false);
             facingN = true;
-        }else if(body.getLinearVelocity().y>stats.getMaxVelocity()/3 && body.getLinearVelocity().x > stats.getMaxVelocity()/3){
-            //body is facing NORTH-EAST
-            setFacings(false);
-            facingNE = true;
-        }else if(body.getLinearVelocity().y>stats.getMaxVelocity()/3 && body.getLinearVelocity().x < -stats.getMaxVelocity()/3){
-            //body is facing NORTH-WEST
-            setFacings(false);
-            facingNW = true;
-        }else if(body.getLinearVelocity().x>stats.getMaxVelocity()/3 && body.getLinearVelocity().y <stats.getMaxVelocity()/3 && body.getLinearVelocity().y>-stats.getMaxVelocity()/3){
-            //body is facing EAST
-            setFacings(false);
-            facingE=true;
-        }else if(body.getLinearVelocity().x <= -stats.getMaxVelocity()/3 && body.getLinearVelocity().y < stats.getMaxVelocity()/3 && body.getLinearVelocity().y >-stats.getMaxVelocity()/3){
-            //body is facing WEST
+        }
+        else if(angle>135 && angle <= 225){
             setFacings(false);
             facingW = true;
-        }else if(body.getLinearVelocity().x <= -stats.getMaxVelocity()/3 && body.getLinearVelocity().y <=-stats.getMaxVelocity()/3){
-            //body is facing SOUTH-WEST
-            setFacings(false);
-            facingSW = true;
-        }else if(body.getLinearVelocity().y < -stats.getMaxVelocity()/3 && body.getLinearVelocity().x < stats.getMaxVelocity()/3 && body.getLinearVelocity().x > -stats.getMaxVelocity()/3){
-            //body is facing SOUTH
+        }
+        else if(angle>225 && angle <= 315){
             setFacings(false);
             facingS = true;
-        }else if(body.getLinearVelocity().x > stats.getMaxVelocity()/3 && body.getLinearVelocity().y < -stats.getMaxVelocity()/3){
-            //body is facing SOUTH-EAST
+        }
+        else if(angle > 315 || angle <= 45){
             setFacings(false);
-            facingSE=true;
+            facingE = true;
         }
     }
 
@@ -187,23 +177,117 @@ public abstract class Character extends GameObject {
         }
     }
 
-    public void moveNorthEast() {
-        moveNorth();
-        moveEast();
+    public void addLinearVelocity(float velX,float velY){
+        newVelocity.set(body.getLinearVelocity().add(velX,velY));
+        if(newVelocity.x>stats.getMaxVelocity()){
+            newVelocity.x = stats.getMaxVelocity();
+        }
+        else if(newVelocity.x < -stats.getMaxVelocity()){
+            newVelocity.x = -stats.getMaxVelocity();
+        }
+        if(newVelocity.y>stats.getMaxVelocity()){
+            newVelocity.y = stats.getMaxVelocity();
+        }
+        else if(newVelocity.y < -stats.getMaxVelocity()){
+            newVelocity.y = -stats.getMaxVelocity();
+        }
+
+        body.setLinearVelocity(newVelocity);
     }
 
-    public void moveNorthWest(){
-        moveNorth();
-        moveWest();
+    @Override
+    public Vector2 getPosition() {
+        return body.getPosition();
     }
 
-    public void moveSouthEast(){
-        moveSouth();
-        moveEast();
+    @Override
+    public float getOrientation() {
+        return body.getLinearVelocity().angle();
     }
 
-    public void moveSouthWest(){
-        moveSouth();
-        moveWest();
+    @Override
+    public Vector2 getLinearVelocity() {
+        return body.getLinearVelocity();
+    }
+
+    @Override
+    public float getAngularVelocity() {
+        return body.getAngularVelocity();
+    }
+
+    @Override
+    public float getBoundingRadius() {
+        return Math.min(width, height)/2 / PIXELS_TO_UNITS;
+    }
+
+    @Override
+    public boolean isTagged() {
+        return status.isTagged();
+    }
+
+    @Override
+    public void setTagged(boolean b) {
+        status.setTagged(b);
+    }
+
+    @Override
+    public Vector2 newVector() {
+        return new Vector2();
+    }
+
+    @Override
+    public float vectorToAngle(Vector2 vector2) {
+        return (float)Math.toRadians(vector2.angle());
+    }
+
+    @Override
+    public Vector2 angleToVector(Vector2 vector2, float v) {
+        vector2.set(1,0);
+        vector2.rotate(v);
+        return vector2;
+    }
+
+    @Override
+    public float getMaxLinearSpeed() {
+        return stats.getMaxVelocity();
+    }
+
+    @Override
+    public void setMaxLinearSpeed(float v) {
+        stats.setMaxVelocity(v);
+    }
+
+    @Override
+    public float getMaxLinearAcceleration() {
+        return 10;
+    }
+
+    @Override
+    public void setMaxLinearAcceleration(float v) {
+        stats.setSpeed(v);
+    }
+
+    @Override
+    public float getMaxAngularSpeed() {
+        return 0;
+    }
+
+    @Override
+    public void setMaxAngularSpeed(float v) {
+
+    }
+
+    @Override
+    public float getMaxAngularAcceleration() {
+        return 0;
+    }
+
+    @Override
+    public void setMaxAngularAcceleration(float v) {
+
+    }
+
+    protected void applySteering (float deltaTime){
+        addLinearVelocity(steeringOutput.linear.x*deltaTime , steeringOutput.linear.y*deltaTime);
     }
 }

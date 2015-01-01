@@ -39,12 +39,8 @@ public class Explosion extends Enemy {
     public void onDirectContact(Character character) {
         character.onDamageTaken(new Value(damage,Value.BURNING_DAMAGE));
         character.addPassiveEffect(new DamageOverTime(character, 5f, 0.5f, new Value(Math.max(1,damage/2), Value.POISON_DAMAGE), DamageOverTime.BURNING));
-
-        Controller.addOnScreenMessage(new TextMessage("Burning!!", character.getBody().getPosition().x * PIXELS_TO_UNITS,
-                character.getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.redFont, TextMessage.UP_AND_FALL));
-
         character.getBody().applyLinearImpulse(new Vector2(character.getBody().getPosition().x - getBody().getPosition().x
-                ,character.getBody().getPosition().y - getBody().getPosition().y).nor().scl(500), character.getBody().getPosition(),true);
+                ,character.getBody().getPosition().y - getBody().getPosition().y).nor().scl(100), character.getBody().getPosition(),true);
 
     }
 

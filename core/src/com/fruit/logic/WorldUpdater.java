@@ -26,8 +26,6 @@ public class WorldUpdater {
         objectManager = new ObjectManager(this);
         mapManager = new MapManager(this, Configuration.seed);
         System.out.println(Configuration.seed);
-        //add any objects that are in the current room to the game world.
-        //MapObjectParser.addMapObjectsToWorld(this, mapManager.getCurrentMap().getCurrentRoom());
     }
 
     public void update(float delta){

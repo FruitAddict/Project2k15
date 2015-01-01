@@ -1,5 +1,9 @@
 package com.fruit.logic.objects.entities.enemies;
 
+import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.steer.behaviors.Flee;
+import com.badlogic.gdx.ai.steer.behaviors.Seek;
+import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.fruit.Controller;
@@ -20,24 +24,29 @@ public class MindlessWalker extends Enemy implements Constants{
     private ObjectManager objectManager;
     private float timeSpentDoingShit, lastAttack = 0;
     private Random rng = new Random();
-    private int random;
+    private int random, generationNumber;
     private Vector2 attackDirectionNormalized;
     private Vector2 lastKnownPlayerPosition;
     boolean playerInSight=false;
     private float lastRayCastCheck = 0;
     public float stateTime;
+    private boolean followingPlayer = false;
+    private boolean fleeing = false;
+    //test
+
+    private SteeringBehavior<Vector2> steeringBehavior;
 
 
-    public MindlessWalker(ObjectManager objectManager, float spawnX, float spawnY){
+    public MindlessWalker(ObjectManager objectManager, float spawnX, float spawnY, int generationNumber){
         this.objectManager = objectManager;
         lastKnownX = spawnX;
         lastKnownY = spawnY;
         setEntityID(GameObject.MINDLESS_WALKER);
-        stats.setMaxVelocity(1.5f);
-        stats.setSpeed(0.2f);
+        stats.setMaxVelocity(2f/generationNumber);
+        stats.setSpeed(3f);
         setSaveInRooms(DO_SAVE);
-        stats.setHealthPoints(20);
-        stats.setBaseMaximumHealthPoints(20);
+        stats.setHealthPoints(20/generationNumber);
+        stats.setBaseMaximumHealthPoints(20/generationNumber);
         stats.setAttackSpeed(0.75f);
         stats.setAttackSpeedModifier(1f);
         stats.setBaseDamage(2);
@@ -46,12 +55,26 @@ public class MindlessWalker extends Enemy implements Constants{
         attackDirectionNormalized = new Vector2();
         lastKnownPlayerPosition = new Vector2();
 
-        width = 32*2;
-        height = 48*2;
-    }
+        width = 32*2/generationNumber;
+        height = 48*2/generationNumber;
 
+
+        steeringBehavior = new Wander<Vector2>(this).setWanderRadius(4).setWanderOrientation(15f);
+        this.generationNumber = generationNumber;
+    }
     @Override
-    public void update(float delta) {
+    public void update(float delta){
+        if(stats.getHealthPoints() <= 0) {
+            killYourself();
+        }
+        updateFacing();
+        updatePassiveEffects(delta);
+        stateTime+=delta;
+        steeringBehavior.calculateSteering(steeringOutput);
+        applySteering(delta);
+    }
+    /*
+    public void update(float delta, String deprecated) {
         stateTime += delta;
         if(stats.getHealthPoints() <= 0){
             killYourself();
@@ -142,6 +165,7 @@ public class MindlessWalker extends Enemy implements Constants{
         updateFacing();
         updatePassiveEffects(delta);
     }
+    */
 
     public void attack(){
         if(stateTime - lastAttack > stats.getCombinedAttackSpeed()) {
@@ -165,7 +189,7 @@ public class MindlessWalker extends Enemy implements Constants{
         bodyDef.position.set(lastKnownX,lastKnownY);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
-        bodyDef.linearDamping = 2.0f;
+        bodyDef.linearDamping = 3.0f;
         bodyDef.allowSleep = false;
 
         //create the body
@@ -191,10 +215,14 @@ public class MindlessWalker extends Enemy implements Constants{
     public void killYourself(){
         objectManager.removeObject(this);
         Controller.getWorldRenderer().getSplatterRenderer().addMultiBloodSprite(body.getPosition(), 3, 0);
-        if( Utils.randomGenerator.nextInt(100)>75){
+        if( Utils.randomGenerator.nextInt(100)>75 && generationNumber == 3){
             objectManager.addObject(new HealthPotion(objectManager,body.getPosition().x,body.getPosition().y,32,32,5f,0.5f,2));
         }
         objectManager.getPlayer().addExperiencePoints(3);
+        if(generationNumber<3){
+            objectManager.addObject(new MindlessWalker(objectManager,body.getPosition().x+0.1f,body.getPosition().y,generationNumber+1));
+            objectManager.addObject(new MindlessWalker(objectManager,body.getPosition().x,body.getPosition().y,generationNumber+1));
+        }
     }
 
     @Override
@@ -224,9 +252,25 @@ public class MindlessWalker extends Enemy implements Constants{
     public void onDamageTaken(Value value) {
         stats.changeHealthPoints(-value.getValue() * stats.getDamageResistanceModifier());
         if(value.getValue()!=0) {
-            status.setAttackedByPlayer(true);
+            if(generationNumber==1) {
+                status.setAttackedByPlayer(true);
+            }
+            if(!followingPlayer) {
+                changeSteeringBehavior(new Seek<Vector2>(this, objectManager.getPlayer()));
+                followingPlayer = true;
+            }
             super.onDamageTaken(value);
         }
+        if(stats.getHealthPoints()> 0 && stats.getHealthPoints() < stats.getBaseMaximumHealthPoints()/5 && !fleeing){
+            changeSteeringBehavior(new Flee<Vector2>(this,objectManager.getPlayer()));
+            fleeing = true;
+        }
+        if(generationNumber>1 && !fleeing){
+            changeSteeringBehavior(new Flee<Vector2>(this,objectManager.getPlayer()));
+            status.setAttackedByPlayer(true);
+            fleeing=true;
+        }
+
     }
 
     @Override
@@ -237,4 +281,7 @@ public class MindlessWalker extends Enemy implements Constants{
         }
     }
 
+    public void changeSteeringBehavior(SteeringBehavior<Vector2> steeringBehavior){
+        this.steeringBehavior = steeringBehavior;
+    }
 }

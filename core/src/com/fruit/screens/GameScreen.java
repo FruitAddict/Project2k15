@@ -73,6 +73,7 @@ public class GameScreen implements Screen {
 
         //create camera dimensions vector
         cameraDimensions = new Vector2();
+
     }
     @Override
     public void render(float delta) {

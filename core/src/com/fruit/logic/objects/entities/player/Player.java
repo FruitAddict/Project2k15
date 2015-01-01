@@ -56,7 +56,7 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
 
         //setting important stuff
         setEntityID(GameObject.PLAYER);
-        stats.setMaxVelocity(3);
+        stats.setMaxVelocity(4);
         stats.setSpeed(0.25f);
         setSaveInRooms(DONT_SAVE);
         stats.setHealthPoints(100);
@@ -207,16 +207,12 @@ public class Player extends com.fruit.logic.objects.entities.Character implement
     public void update(float delta) {
         updatePassiveEffects(delta);
         updateFacing();
-        if(stats.getHealthPoints()<0){
+        if (stats.getHealthPoints() < 0) {
             Controller.onPlayerDeath();
         }
-        stateTime+=delta;
+        stateTime += delta;
     }
 
-    public void addLinearVelocity(float velX,float velY){
-        body.setLinearVelocity(body.getLinearVelocity().x + velX, body.getLinearVelocity().y);
-        body.setLinearVelocity(body.getLinearVelocity().x, body.getLinearVelocity().y+velY);
-    }
 
     public ObjectManager getObjectManager(){
         return objectManager;

@@ -25,9 +25,6 @@ public abstract class GameObject implements Constants{
     public boolean debug = false;
     //Box2d rigid body representing this object.
     protected Body body;
-    //bodydef to be used when re-creating
-    //body category bit, for use with collsiion filtering
-    protected int categoryBit;
     //entityID for this object to be used with rendering ( each object will have its own animation/resource pack that will
     //know how to draw this specific object).
     protected int entityID;

@@ -1,13 +1,17 @@
 package com.fruit.logic.objects.effects.passive;
 
+import com.fruit.Controller;
+import com.fruit.logic.Constants;
 import com.fruit.logic.objects.Value;
 import com.fruit.logic.objects.effects.PassiveEffect;
 import com.fruit.logic.objects.entities.Character;
+import com.fruit.visual.messages.TextMessage;
+import com.fruit.visual.messages.TextRenderer;
 
 /**
  * @Author FruitAddict
  */
-public class DamageOverTime extends PassiveEffect {
+public class DamageOverTime extends PassiveEffect implements Constants {
     //DoT types
     public static final int BURNING = 1;
     public static final int POISONED = 2;
@@ -43,8 +47,12 @@ public class DamageOverTime extends PassiveEffect {
     public void apply(){
         if(damageOverTimeType==BURNING) {
             character.status.setBurning(true);
+            Controller.addOnScreenMessage(new TextMessage("Burning!", character.getBody().getPosition().x * PIXELS_TO_UNITS,
+                    character.getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.redFont, TextMessage.UP_AND_FALL));
         }else if(damageOverTimeType ==POISONED){
             character.status.setPoisoned(true);
+            Controller.addOnScreenMessage(new TextMessage("Poisoned!", character.getBody().getPosition().x * PIXELS_TO_UNITS,
+                    character.getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.redFont, TextMessage.UP_AND_FALL));
         }
     }
 

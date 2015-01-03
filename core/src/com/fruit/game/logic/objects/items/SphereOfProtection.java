@@ -21,12 +21,21 @@ public class SphereOfProtection extends Item {
     private ObjectManager objectManager;
     private float blockCount;
 
-    public SphereOfProtection(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height, int blockCount){
+    public SphereOfProtection(ObjectManager objectManager, float spawnCoordX, float spawnCoordY, int blockCount){
         this.objectManager = objectManager;
         lastKnownX = spawnCoordX;
         lastKnownY = spawnCoordY;
-        this.width = width;
-        this.height = height;
+        width = 32;
+        height = 32;
+        this.blockCount = blockCount;
+        setSaveInRooms(DO_SAVE);
+        setItemType(Item.SPHERE_OF_PROTECTION);
+        setEntityID(GameObject.ITEM);
+    }
+    public SphereOfProtection(ObjectManager objectManager, int blockCount){
+        this.objectManager = objectManager;
+        width = 32;
+        height = 32;
         this.blockCount = blockCount;
         setSaveInRooms(DO_SAVE);
         setItemType(Item.SPHERE_OF_PROTECTION);

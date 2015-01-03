@@ -1,6 +1,8 @@
 package com.fruit.game.logic.objects.entities.enemies;
 
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
+import com.badlogic.gdx.ai.steer.behaviors.CollisionAvoidance;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -164,9 +166,7 @@ public class TheEye extends Enemy {
 
         }
         Controller.getWorldRenderer().getSplatterRenderer().addMultiBloodSprite(body.getPosition(),0.7f, 1, 0);
-        if( Utils.randomGenerator.nextInt(100)>75){
-            objectManager.addObject(new HealthPotion(objectManager,body.getPosition().x,body.getPosition().y,32,32,5f,0.5f,2));
-        }
+        dropAllLoot(objectManager);
         objectManager.getPlayer().addExperiencePoints(4);
     }
 

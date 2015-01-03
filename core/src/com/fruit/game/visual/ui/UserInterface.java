@@ -36,6 +36,7 @@ public class UserInterface extends Stage {
     private Label healthLabelInfo, healthLabelValue, experienceLabelInfo,experienceLabelValue;
     private Skin skin;
     private TextButton menuButtonPortrait;
+    private VisWindow optionsWindow;
 
     public UserInterface(GameCamera camera, WorldUpdater worldUpdater){
         this.gameCamera = camera;
@@ -59,7 +60,7 @@ public class UserInterface extends Stage {
 
         skin.add("touchBackground", Assets.getAsset("touchBackground.png", Texture.class));
         skin.add("touchKnob", Assets.getAsset("touchKnob.png",Texture.class));
-        skin.add("characterIcon", Assets.getAsset("icon.png",Texture.class));
+        skin.add("characterIcon", Assets.getAsset("pentagram.jpg",Texture.class));
         skin.add("white", new Texture(pixmap));
         skin.add("bigPix", new Texture(biggerPixMap));
         skin.add("optimus-font", new BitmapFont(Gdx.files.internal("fonts//souls.fnt")));
@@ -131,11 +132,14 @@ public class UserInterface extends Stage {
         iconAndBarsGroup.setColor(new Color(1,1,1,0.5f));
 
         Container<VisWindow> windowContainer = new Container<>();
-        final VisWindow optionsWindow = new VisWindow("Menu", true);
+        optionsWindow = new VisWindow("Menu", true);
         VisTextButton continueButton = new VisTextButton("Continue");
+        VisTextButton statsButton = new VisTextButton("Character");
         VisTextButton exitButton = new VisTextButton("Main Menu");
 
         optionsWindow.add(continueButton).width(200).height(50);
+        optionsWindow.row();
+        optionsWindow.add(statsButton).width(200).height(50);
         optionsWindow.row();
         optionsWindow.add(exitButton).width(200).height(50);
         optionsWindow.setTitleAlignment(Align.center);
@@ -146,6 +150,16 @@ public class UserInterface extends Stage {
         windowContainer.center();
         windowContainer.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         this.addActor(windowContainer);
+
+        //Character window
+        Container<VisWindow> characterWindowContainer = new Container<>();
+        final CharacterWindow characterWindow = new CharacterWindow(Controller.getWorldUpdater().getPlayer(),"Character");
+        characterWindow.setTitleAlignment(Align.center);
+        characterWindow.setVisible(false);
+        characterWindowContainer.setActor(characterWindow);
+        characterWindowContainer.setFillParent(true);
+        characterWindowContainer.center();
+        this.addActor(characterWindowContainer);
 
         menuButtonPortrait.addListener(new ChangeListener() {
             @Override
@@ -170,12 +184,21 @@ public class UserInterface extends Stage {
                 Controller.getMainGame().setScreen(new MainMenuScreen(Controller.getMainGame()));
             }
         });
+        statsButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                characterWindow.updateText();
+                optionsWindow.setVisible(false);
+                characterWindow.setVisible(true);
+            }
+        });
+
 
 
 
         updateMinimap();
         updateStatusBars(Controller.getWorldUpdater().getPlayer().stats.getHealthPoints(),Controller.getWorldUpdater().getPlayer().stats.getBaseMaximumHealthPoints(),
-                Controller.getWorldUpdater().getPlayer().getExperiencePoints(),Controller.getWorldUpdater().getPlayer().getNextLevelExpRequirement());
+                Controller.getWorldUpdater().getPlayer().getExperiencePoints(),Controller.getWorldUpdater().getPlayer().getNextLevelExpRequirement(),Controller.getWorldUpdater().getPlayer().getStatPoints());
     }
 
     public void updateMinimap(){
@@ -186,15 +209,14 @@ public class UserInterface extends Stage {
         addActor(miniMapContainer);
     }
 
-    public void updateStatusBars(float hp, float maxHP, float exp, float maxEXP){
+    public void updateStatusBars(int hp, int maxHP, int exp, int maxEXP, int statPoints){
         //todo string formatting
-        healthBar.setValue(hp/maxHP*100);
-        experienceBar.setValue(exp/maxEXP*100);
-        healthLabelValue.setText((int)hp+"/"+(int)maxHP);
-        experienceLabelValue.setText((int)exp+"/"+(int)maxEXP);
-        menuButtonPortrait.setText("Lv. "+worldUpdater.getPlayer().getLevel());
+        healthBar.setValue((float)hp/maxHP*100);
+        experienceBar.setValue((float)exp/maxEXP*100);
+        healthLabelValue.setText(hp+"/"+maxHP);
+        experienceLabelValue.setText(exp+"/"+maxEXP);
+        menuButtonPortrait.setText(statPoints>0?"+ "+statPoints:"");
     }
-
 
     public void createControlTouchPads(){
         Container<Touchpad> containerMove = new Container<>();
@@ -253,51 +275,17 @@ public class UserInterface extends Stage {
               }
           }
         };
+        Image itemSprite = new Image(Controller.getWorldRenderer().getObjectRenderer().itemAnimationPack.getItemSpriteByType(item.getItemType()));
         VisLabel descriptionLabel = new VisLabel(item.getDescription());
         descriptionLabel.setFontScale(0.8f);
         descriptionLabel.setWrap(true);
+        itemDialog.getContentTable().add(itemSprite).colspan(3);
+        itemDialog.row();
         itemDialog.getContentTable().add(descriptionLabel).width(400).height(100);
         itemDialog.button("Okay", 1);
         itemDialog.show(this);
     }
 
-    public void addLevelUpDialog(Player player){
-        final Player player1 = player;
-        Controller.pauseGame();
-        final VisDialog itemDialog = new VisDialog("Level up!"){
-            @Override
-            public void result(Object o){
-                int result =(Integer)o;
-                switch(result){
-                    case 1 : {
-                        player1.stats.setBaseMaximumHealthPoints(player1.stats.getBaseMaximumHealthPoints()+10);
-                        Controller.unpauseGame();
-                        break;
-                    }
-                    case 2 : {
-                        player1.stats.setMaxVelocity(player1.stats.getMaxVelocity()+0.5f);
-                        Controller.unpauseGame();
-                        break;
-                    }
-                    case 3 : {
-                        player1.stats.setAttackSpeedModifier(player1.stats.getAttackSpeedModifier()*0.8f);
-                        Controller.unpauseGame();
-                        break;
-                    }
-                    case 4 : {
-                        player1.stats.setBaseDamage(player1.stats.getBaseDamage()+1);
-                        Controller.unpauseGame();
-                        break;
-                    }
-                }
-            }
-        };
-        itemDialog.button("Hp", 1);
-        itemDialog.button("Speed", 2);
-        itemDialog.button("Attack Speed", 3);
-        itemDialog.button("Damage", 4);
-        itemDialog.show(this);
-    }
 
     @Override
     public void act(float delta){
@@ -315,6 +303,136 @@ public class UserInterface extends Stage {
     @Override
     public void dispose(){
         VisUI.dispose();
+    }
+
+    private class CharacterWindow extends VisWindow{
+        VisLabel levelInfoLabel;
+        VisLabel statPointLabel;
+        VisLabel hpLabel;
+        VisTextButton hpButton;
+        VisLabel aspdLabel;
+        VisTextButton aspdButton;
+        VisLabel speedLabel;
+        VisTextButton speedButton;
+        VisLabel damageLabel;
+        VisTextButton damageButton;
+        VisLabel aimLabel;
+        VisTextButton aimButton;
+        private Player player;
+
+        public CharacterWindow(final Player player, String title) {
+            super(title);
+            this.player = player;
+            levelInfoLabel = new VisLabel();
+            levelInfoLabel.setFontScale(0.8f);
+            levelInfoLabel.setColor(Color.RED);
+            add(levelInfoLabel).width(300).height(50).colspan(2);
+            row();
+            statPointLabel = new VisLabel();
+            statPointLabel.setFontScale(0.8f);
+            statPointLabel.setColor(Color.RED);
+            add(statPointLabel).width(300).height(50).colspan(2);
+            row();
+            hpLabel = new VisLabel();
+            hpLabel.setFontScale(0.8f);
+            hpButton = new VisTextButton("+");
+            add(hpLabel).width(300).height(50);
+            add(hpButton);
+            row();
+            aspdLabel = new VisLabel();
+            aspdLabel.setFontScale(0.8f);
+            aspdButton = new VisTextButton("+");
+            add(aspdLabel).width(300).height(50);
+            add(aspdButton);
+            row();
+            speedLabel = new VisLabel();
+            speedLabel.setFontScale(0.8f);
+            speedButton = new VisTextButton("+");
+            add(speedLabel).width(300).height(50);
+            add(speedButton);
+            row();
+            damageLabel = new VisLabel();
+            damageLabel.setFontScale(0.8f);
+            damageButton = new VisTextButton("+");
+            add(damageLabel).width(300).height(50);
+            add(damageButton);
+            row();
+            aimLabel = new VisLabel();
+            aimLabel.setFontScale(0.8f);
+            aimButton = new VisTextButton("+");
+            add(aimLabel).width(300).height(50);
+            add(aimButton);
+            row();
+            VisTextButton confirmButton = new VisTextButton("Confirm");
+            add(confirmButton).width(200).height(50).colspan(2);
+            confirmButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                    optionsWindow.setVisible(true);
+                    setVisible(false);
+                }
+            });
+            hpButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    if(player.getStatPoints()>0){
+                        player.stats.setBaseMaximumHealthPoints(player.stats.getBaseMaximumHealthPoints()+25);
+                        player.setStatPoints(player.getStatPoints()-1);
+                        updateText();
+                    }
+                }
+            });
+            aspdButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    if(player.getStatPoints()>0){
+                        player.stats.setAttackSpeedModifier(player.stats.getAttackSpeedModifier()*0.8f);
+                        player.setStatPoints(player.getStatPoints()-1);
+                        updateText();
+                    }
+                }
+            });
+            speedButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    if(player.getStatPoints()>0){
+                        player.stats.setMaxVelocity(player.stats.getMaxVelocity()+0.5f);
+                        player.setStatPoints(player.getStatPoints()-1);
+                        updateText();
+                    }
+                }
+            });
+            damageButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    if(player.getStatPoints()>0){
+                        player.stats.setBaseDamage(player.stats.getBaseDamage()+1);
+                        player.setStatPoints(player.getStatPoints() - 1);
+                        updateText();
+                    }
+                }
+            });
+            aimButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    if(player.getStatPoints()>0){
+                        player.stats.setAimSway(player.stats.getAimSway()+2);
+                        player.setStatPoints(player.getStatPoints()-1);
+                        updateText();
+                    }
+                }
+            });
+        }
+
+        public void updateText(){
+            levelInfoLabel.setText("Level: "+player.getLevel());
+            statPointLabel.setText("Stat points: "+player.getStatPoints());
+            hpLabel.setText("Max. health points: "+player.stats.getBaseMaximumHealthPoints());
+            aspdLabel.setText(String.format("Attack speed: %.2f",player.stats.getCombinedAttackSpeed()));
+            speedLabel.setText("Movement speed: " + player.stats.getMaxVelocity());
+            damageLabel.setText("Damage: "+player.stats.getCombinedDamage());
+            aimLabel.setText("Aim sway: "+player.stats.getAimSway());
+        }
     }
 
 }

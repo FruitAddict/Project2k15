@@ -14,18 +14,27 @@ import com.fruit.game.logic.objects.entities.player.Player;
 /**
  * @Author FruitAddict
  */
-public class MichaelBay extends Item {
+public class ExplodingProjectiles extends Item {
 
     private ObjectManager objectManager;
     private int renewValue = 1;
 
-    public MichaelBay(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height){
+    public ExplodingProjectiles(ObjectManager objectManager, float spawnCoordX, float spawnCoordY){
         this.objectManager = objectManager;
         lastKnownX = spawnCoordX;
         lastKnownY = spawnCoordY;
-        this.width = width;
-        this.height = height;
-        description = "Directed by Michael Bay.";
+        width=32;
+        height=32;
+        description = "Your projectiles now explode on hit, it will come to an end though.";
+        setSaveInRooms(DO_SAVE);
+        setItemType(Item.MICHAEL_BAY);
+        setEntityID(GameObject.ITEM);
+    }
+    public ExplodingProjectiles(ObjectManager objectManager){
+        this.objectManager = objectManager;
+        width=32;
+        height=32;
+        description = "Your projectiles now explode on hit, it will come to an end though.";
         setSaveInRooms(DO_SAVE);
         setItemType(Item.MICHAEL_BAY);
         setEntityID(GameObject.ITEM);

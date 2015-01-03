@@ -4,6 +4,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.fruit.game.Controller;
 import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.Value;
@@ -23,15 +24,14 @@ public class Box extends Enemy {
         this.objectManager = objectManager;
         setEntityID(GameObject.BOX);
         setSaveInRooms(DO_SAVE);
-        stats.setHealthPoints(5);
-        stats.setBaseMaximumHealthPoints(5);
+        stats.setHealthPoints(3);
+        stats.setBaseMaximumHealthPoints(3);
     }
 
     @Override
     public void update(float delta) {
         if(stats.getHealthPoints()<0){
             killYourself();
-            ItemManager.addRandomItem(objectManager, getBody().getPosition().x, getBody().getPosition().y, 1);
         }
     }
 
@@ -71,12 +71,13 @@ public class Box extends Enemy {
     @Override
     public void killYourself() {
         objectManager.removeObject(this);
+        dropAllLoot(objectManager);
     }
 
     @Override
     public void onDamageTaken(Value value) {
         stats.changeHealthPoints(-1);
-        Controller.addOnScreenMessage(new TextMessage("Crack!", getBody().getPosition().x * PIXELS_TO_UNITS,
+        Controller.addOnScreenMessage(new TextMessage("-1", getBody().getPosition().x * PIXELS_TO_UNITS,
                 getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.redFont, TextMessage.UP));
     }
 

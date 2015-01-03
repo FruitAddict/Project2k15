@@ -1,5 +1,7 @@
 package com.fruit.game.logic.objects.entities.enemies;
 
+import com.badlogic.gdx.ai.steer.Proximity;
+import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.Flee;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
@@ -218,9 +220,7 @@ public class MindlessWalker extends Enemy implements Constants {
     public void killYourself(){
         objectManager.removeObject(this);
         Controller.getWorldRenderer().getSplatterRenderer().addMultiBloodSprite(body.getPosition(), 3, 0);
-        if( Utils.randomGenerator.nextInt(100)>75 && generationNumber == 3){
-            objectManager.addObject(new HealthPotion(objectManager,body.getPosition().x,body.getPosition().y,32,32,5f,0.5f,2));
-        }
+        dropAllLoot(objectManager);
         objectManager.getPlayer().addExperiencePoints(3);
         if(generationNumber<3){
             objectManager.addObject(new MindlessWalker(objectManager,body.getPosition().x+0.1f,body.getPosition().y,generationNumber+1));
@@ -279,4 +279,5 @@ public class MindlessWalker extends Enemy implements Constants {
     public void changeSteeringBehavior(SteeringBehavior<Vector2> steeringBehavior){
         this.steeringBehavior = steeringBehavior;
     }
+
 }

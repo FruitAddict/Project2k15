@@ -3,12 +3,12 @@ package com.fruit.game.maps;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.fruit.game.logic.objects.items.PiercingProjectiles;
+import com.fruit.game.logic.objects.items.DamageUp;
+import com.fruit.game.logic.objects.items.ItemManager;
 import com.fruit.game.logic.objects.entities.enemies.MindlessWalker;
 import com.fruit.game.logic.objects.entities.enemies.TheEye;
 import com.fruit.game.logic.objects.entities.misc.Box;
-import com.fruit.game.logic.objects.items.MichaelBay;
-import com.fruit.game.logic.objects.items.MoreProjectiles;
+import com.fruit.game.logic.objects.items.PiercingProjectiles;
 import com.fruit.game.utilities.MapObjectParser;
 import com.fruit.game.utilities.Utils;
 import com.fruit.game.visual.Assets;
@@ -81,13 +81,23 @@ public class MapGenerator {
                         Vector2 position = map.getRoomMatrix()[i][j].getMobSpawnPoints().get(Utils.mapRandomNumberGenerator.nextInt(map.getRoomMatrix()[i][j].getMobSpawnPoints().size));
 
                         if(roll>90) {
-                            map.getRoomMatrix()[i][j].addGameObject(new Box(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y));
+                            Box box = new Box(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y);
+                            ItemManager.addItemToEnemy(mapManager.getWorldUpdater().getObjectManager(),box,ItemManager.TYPE_RARE);
+                            map.getRoomMatrix()[i][j].addGameObject(box);
                         }else {
                             roll = Utils.mapRandomNumberGenerator.nextInt(100);
                             if(roll>86) {
-                                map.getRoomMatrix()[i][j].addGameObject(new TheEye(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y));
+                                TheEye theEye = new TheEye(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y);
+                                if(Utils.mapRandomNumberGenerator.nextInt(100)>50){
+                                    ItemManager.addItemToEnemy(mapManager.getWorldUpdater().getObjectManager(),theEye,ItemManager.TYPE_COMMON);
+                                }
+                                map.getRoomMatrix()[i][j].addGameObject(theEye);
                             }else {
-                                map.getRoomMatrix()[i][j].addGameObject(new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y,1));
+                                MindlessWalker mindlessWalker = new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y,1);
+                                if(Utils.mapRandomNumberGenerator.nextInt(100)>50){
+                                    ItemManager.addItemToEnemy(mapManager.getWorldUpdater().getObjectManager(),mindlessWalker,ItemManager.TYPE_COMMON);
+                                }
+                                map.getRoomMatrix()[i][j].addGameObject(mindlessWalker);
                             }
                         }
                     }
@@ -96,9 +106,8 @@ public class MapGenerator {
         }
         //set current room to the one in the center
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
-        map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 8, 5, 32, 32));
-        map.getCurrentRoom().addGameObject(new MoreProjectiles(mapManager.getWorldUpdater().getObjectManager(),12,5,32,32));
-        map.getCurrentRoom().addGameObject(new MichaelBay(mapManager.getWorldUpdater().getObjectManager(),14,5,32,32));
+        map.getCurrentRoom().addGameObject(new DamageUp(mapManager.getWorldUpdater().getObjectManager(),4,4));
+        map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(),6,4));
         MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater(), map.getCurrentRoom());
         return map;
     }
@@ -228,7 +237,7 @@ public class MapGenerator {
         Utils.fill2dArray(roomLayout,'-');
         //dead center of the room should be the starting room
         roomLayout[4][4] = 'R';
-        int targetNumOfRooms = 10;
+        int targetNumOfRooms = 15;
         int currentNumOfRooms = 1;
 
         while(currentNumOfRooms < targetNumOfRooms) {

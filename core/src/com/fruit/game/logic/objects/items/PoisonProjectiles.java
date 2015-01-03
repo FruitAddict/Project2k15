@@ -19,13 +19,20 @@ public class PoisonProjectiles extends Item {
 
     private ObjectManager objectManager;
 
-    public PoisonProjectiles(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height) {
+    public PoisonProjectiles(ObjectManager objectManager, float spawnCoordX, float spawnCoordY) {
         this.objectManager = objectManager;
         lastKnownX = spawnCoordX;
         lastKnownY = spawnCoordY;
-        this.width = width;
-        this.height = height;
-
+        width=32;
+        height=32;
+        setSaveInRooms(DO_SAVE);
+        setItemType(Item.POISON_TOUCH);
+        setEntityID(GameObject.ITEM);
+    }
+    public PoisonProjectiles(ObjectManager objectManager) {
+        this.objectManager = objectManager;
+        width=32;
+        height=32;
         setSaveInRooms(DO_SAVE);
         setItemType(Item.POISON_TOUCH);
         setEntityID(GameObject.ITEM);

@@ -26,16 +26,16 @@ public class ObjectRenderer implements Constants {
     private float stateTime;
 
     //Effect Renderer that will take care of rendering effects for each entity based on their stats.
-    OnCharacterEffectPack onCharacteREffectPack;
+    public OnCharacterEffectPack onCharacteREffectPack;
     //animation packs that will handle drawing specific entities
-    PlayerAnimationPack playerAnimationPack;
-    MindlessWalkerAnimationPack mindlessWalkerAnimationPack;
-    UtilityAnimationPack utilityAnimationPack;
-    ProjectileAnimationPack projectileAnimationPack;
-    DummyAnimationPack dummyAnimationPack;
-    ItemAnimationPack itemAnimationPack;
-    TheEyeAnimationPack theEyeAnimationPack;
-    EffectAnimationPack effectAnimationPack;
+    public PlayerAnimationPack playerAnimationPack;
+    public MindlessWalkerAnimationPack mindlessWalkerAnimationPack;
+    public UtilityAnimationPack utilityAnimationPack;
+    public ProjectileAnimationPack projectileAnimationPack;
+    public DummyAnimationPack dummyAnimationPack;
+    public ItemAnimationPack itemAnimationPack;
+    public TheEyeAnimationPack theEyeAnimationPack;
+    public EffectAnimationPack effectAnimationPack;
 
     public ObjectRenderer(){
         //some animation packs (for rendering characters) will need instance of effect renderer.

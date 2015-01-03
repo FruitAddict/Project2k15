@@ -24,12 +24,23 @@ public class HealthPotion extends Item {
     private float healDelay;
     private int healAmount;
 
-    public HealthPotion(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height,float healDuration, float delay, int healAmount){
+    public HealthPotion(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float healDuration, float delay, int healAmount){
         this.objectManager = objectManager;
         lastKnownX = spawnCoordX;
         lastKnownY = spawnCoordY;
-        this.width = width;
-        this.height = height;
+        width = 32;
+        height = 32;
+        this.healDuration = healDuration;
+        this.healDelay= delay;
+        this.healAmount = healAmount;
+        setSaveInRooms(DO_SAVE);
+        setItemType(Item.HEALTH_POTION);
+        setEntityID(GameObject.ITEM);
+    }
+    public HealthPotion(ObjectManager objectManager,float healDuration, float delay, int healAmount){
+        this.objectManager = objectManager;
+        width = 32;
+        height = 32;
         this.healDuration = healDuration;
         this.healDelay= delay;
         this.healAmount = healAmount;
@@ -41,8 +52,10 @@ public class HealthPotion extends Item {
     public void onPickUp(Player player) {
         killYourself();
         player.addPassiveEffect(new HealOverTime(player,healDuration,healDelay,new Value(healAmount,Value.HEALING)));
-        Controller.addOnScreenMessage(new TextMessage("A health potion!", getBody().getPosition().x * PIXELS_TO_UNITS,
-                getBody().getPosition().y * PIXELS_TO_UNITS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
+        if(!player.status.isHealing()) {
+            Controller.addOnScreenMessage(new TextMessage("A health potion!", getBody().getPosition().x * PIXELS_TO_UNITS,
+                    getBody().getPosition().y * PIXELS_TO_UNITS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
+        }
     }
 
     @Override

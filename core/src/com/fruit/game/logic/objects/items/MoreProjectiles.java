@@ -18,17 +18,27 @@ import com.fruit.game.logic.objects.entities.player.Player;
 public class MoreProjectiles extends Item {
     private ObjectManager objectManager;
 
-    public MoreProjectiles(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height) {
+    public MoreProjectiles(ObjectManager objectManager, float spawnCoordX, float spawnCoordY) {
         this.objectManager = objectManager;
         lastKnownX = spawnCoordX;
         lastKnownY = spawnCoordY;
-        this.width = width;
-        this.height = height;
+        width=32;
+        height=32;
         description = "One additional projectile for you, but not without a cost.";
         setSaveInRooms(DO_SAVE);
         setItemType(Item.MORE_PROJECTILES);
         setEntityID(GameObject.ITEM);
     }
+    public MoreProjectiles(ObjectManager objectManager) {
+        this.objectManager = objectManager;
+        width=32;
+        height=32;
+        description = "One additional projectile for you, but not without a cost.";
+        setSaveInRooms(DO_SAVE);
+        setItemType(Item.MORE_PROJECTILES);
+        setEntityID(GameObject.ITEM);
+    }
+
 
     @Override
     public void onPickUp(Player player) {

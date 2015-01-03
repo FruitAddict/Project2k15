@@ -33,11 +33,7 @@ public class Player extends Character implements Constants {
     private Vector2 attackDirectionNormalized;
 
     //player level start with 1
-    private int level = 1;
-    //player's experiance points
-    private int experiencePoints;
-    //next level exp req
-    private int nextLevelExpRequirement;
+    private int level, experiencePoints, nextLevelExpRequirement, statPoints;
 
     //Players on hit effects, items can result in attacks slowing enemies down etc, it is passed to
     //every newly created projectile
@@ -63,8 +59,8 @@ public class Player extends Character implements Constants {
         setSaveInRooms(DONT_SAVE);
         stats.setHealthPoints(100);
         stats.setBaseMaximumHealthPoints(100);
-        stats.setAttackSpeed(0.25f);
-        stats.setAimSway(10);
+        stats.setAttackSpeed(0.3f);
+        stats.setAimSway(3);
 
         //initialize attack direction vector
         attackDirectionNormalized = new Vector2();
@@ -74,7 +70,6 @@ public class Player extends Character implements Constants {
 
         //todo more
         nextLevelExpRequirement = 25;
-
         stats.setNumberOfProjectiles(1);
         stats.setKnockBack(5);
     }
@@ -91,7 +86,6 @@ public class Player extends Character implements Constants {
             attackDirectionNormalized.nor();
             attackDirectionNormalized.x*=-1;
             attackDirectionNormalized.y*=-1;
-            //todo maybe make it modular
             switch(stats.getNumberOfProjectiles()){
                 case 1: {
                     objectManager.addObject(new PlayerProjectile(this, objectManager, getBody().getPosition().x+xOffset, getBody().getPosition().y+yOffset,
@@ -162,7 +156,7 @@ public class Player extends Character implements Constants {
             super.onDamageTaken(copied);
         }
 
-        Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement);
+        Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement,statPoints);
     }
 
     @Override
@@ -173,7 +167,7 @@ public class Player extends Character implements Constants {
             super.onHealingTaken(copied);
         }
 
-        Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement);
+        Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement,statPoints);
     }
 
     @Override
@@ -259,7 +253,7 @@ public class Player extends Character implements Constants {
     }
 
 
-    public float getExperiencePoints() {
+    public int getExperiencePoints() {
         return experiencePoints;
     }
 
@@ -275,15 +269,18 @@ public class Player extends Character implements Constants {
             experiencePoints = experiencePoints-nextLevelExpRequirement;
             onLevelUp();
         }
-        Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement);
+        Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement,statPoints);
     }
 
     public void onLevelUp(){
-        objectManager.getPlayer().onHealingTaken(new Value(10,Value.HEALING));
+        Controller.addOnScreenMessage(new TextMessage("Level up! +1 stat points.", getBody().getPosition().x * PIXELS_TO_UNITS,
+                getBody().getPosition().y * PIXELS_TO_UNITS, 2.2f, TextRenderer.goldenFont,TextMessage.UP_AND_FALL));
+        objectManager.getPlayer().onHealingTaken(new Value(15,Value.HEALING));
         nextLevelExpRequirement*=1.5f;
         status.setLeveledUp(true);
-        Controller.getUserInterface().addLevelUpDialog(this);
         level+=1;
+        statPoints+=1;
+        Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement,statPoints);
     }
 
     public int getLevel() {
@@ -292,5 +289,13 @@ public class Player extends Character implements Constants {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public int getStatPoints() {
+        return statPoints;
+    }
+
+    public void setStatPoints(int value){
+        this.statPoints = value;
     }
 }

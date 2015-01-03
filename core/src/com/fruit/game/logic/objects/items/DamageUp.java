@@ -17,13 +17,22 @@ public class DamageUp extends Item {
     private ObjectManager objectManager;
     private float renewValue = 1;
 
-    public DamageUp(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height){
+    public DamageUp(ObjectManager objectManager, float spawnCoordX, float spawnCoordY){
         this.objectManager = objectManager;
         lastKnownX = spawnCoordX;
         lastKnownY = spawnCoordY;
-        this.width = width;
-        this.height = height;
-        description = "Fabled sword with an epic backstory. You are stronger.";
+        width = 32;
+        height = 32;
+        description = "Power of the ancient surges through your veins as you feel stronger and sexier.";
+        setSaveInRooms(DO_SAVE);
+        setItemType(Item.DAMAGE_UP_1);
+        setEntityID(GameObject.ITEM);
+    }
+    public DamageUp(ObjectManager objectManager){
+        this.objectManager = objectManager;
+        width = 32;
+        height = 32;
+        description = "Power of the ancient surges through your veins as you feel stronger and sexier.";
         setSaveInRooms(DO_SAVE);
         setItemType(Item.DAMAGE_UP_1);
         setEntityID(GameObject.ITEM);

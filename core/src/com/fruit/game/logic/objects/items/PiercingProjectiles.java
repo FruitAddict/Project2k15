@@ -16,13 +16,22 @@ import com.fruit.game.logic.objects.entities.player.Player;
 public class PiercingProjectiles extends Item {
     private ObjectManager objectManager;
 
-    public PiercingProjectiles(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height) {
+    public PiercingProjectiles(ObjectManager objectManager, float spawnCoordX, float spawnCoordY) {
         this.objectManager = objectManager;
         lastKnownX = spawnCoordX;
         lastKnownY = spawnCoordY;
-        this.width = width;
-        this.height = height;
-        description = "For some cool reason your projectiles now pierce!";
+        width=32;
+        height=32;
+        description = "You've failed this city. Your projectiles can now pierce through the enemies.";
+        setSaveInRooms(DO_SAVE);
+        setItemType(Item.PIERCING_PROJECTILE);
+        setEntityID(GameObject.ITEM);
+    }
+    public PiercingProjectiles(ObjectManager objectManager) {
+        this.objectManager = objectManager;
+        width=32;
+        height=32;
+        description = "You've failed this city. Your projectiles can now pierce through the enemies.";
         setSaveInRooms(DO_SAVE);
         setItemType(Item.PIERCING_PROJECTILE);
         setEntityID(GameObject.ITEM);

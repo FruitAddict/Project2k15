@@ -37,11 +37,11 @@ public class ItemAnimationPack implements Constants {
             sphereOfProtectionSprite = new Sprite(sphereOfProtectionTexture);
             Texture poisonTouchTexture = (Texture)Assets.getAsset("items//poisontouch.png", Texture.class);
             poisonTouchSprite = new Sprite(poisonTouchTexture);
-            Texture piercingProjectileTexture = (Texture)Assets.getAsset("circle.png",Texture.class);
+            Texture piercingProjectileTexture = (Texture)Assets.getAsset("items//piercex2.png",Texture.class);
             piercingProjectilesSprite = new Sprite(piercingProjectileTexture);
             Texture morePRojectilesTexture = (Texture)Assets.getAsset("items//triforce.png",Texture.class);
             moreProjectilesSprite = new Sprite(morePRojectilesTexture);
-            Texture michaelBayTexture = (Texture)Assets.getAsset("items//bay.png",Texture.class);
+            Texture michaelBayTexture = (Texture)Assets.getAsset("items//bayx2.png",Texture.class);
             michaelBaySprite = new Sprite(michaelBayTexture);
             loaded = true;
         }
@@ -83,5 +83,25 @@ public class ItemAnimationPack implements Constants {
                batch.draw(michaelBaySprite,pos.x,pos.y,item.getWidth(),item.getHeight());
            }
        }
+    }
+
+    public Sprite getItemSpriteByType(int type){
+        switch(type){
+            case Item.DAMAGE_UP_1:{
+                return dmgUpSprite;
+            }
+            case Item.MICHAEL_BAY:{
+                return michaelBaySprite;
+            }
+            case Item.PIERCING_PROJECTILE:{
+                return piercingProjectilesSprite;
+            }
+            case Item.MORE_PROJECTILES:{
+                return moreProjectilesSprite;
+            }
+            default:{
+                return heartSprite;
+            }
+        }
     }
 }

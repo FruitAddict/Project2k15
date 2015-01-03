@@ -298,4 +298,8 @@ import com.fruit.game.visual.tween.TweenUtils;
      public GameCamera getCamera() {
          return camera;
      }
+
+     public ObjectRenderer getObjectRenderer(){
+         return objectRenderer;
+     }
  }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="24" height="24" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="ExitPoints" value="NESW"/>
+ </properties>
+ <tileset firstgid="1" name="32test" tilewidth="32" tileheight="32">
+  <image source="32test.png" width="64" height="64"/>
+ </tileset>
+ <layer name="Ground" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJxjYKA9YKEhHurmM42aP2r+qPmj5g+Q+aN4FI9kDABo3Ah9
+  </data>
+ </layer>
+ <layer name="Walls" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJxjYmBgYKIxphUYDubTEoyaP2r+qPmj5uMzf6iXn6PmD3/zaYkBxA4AoQ==
+  </data>
+ </layer>
+ <objectgroup name="collisionObjects">
+  <object x="0" y="0" width="768" height="32"/>
+  <object x="0" y="0" width="32" height="768"/>
+  <object x="736" y="0" width="32" height="768"/>
+  <object x="0" y="736" width="768" height="32"/>
+ </objectgroup>
+ <objectgroup name="portalObjects">
+  <object type="NORTH" x="352" y="0" width="64" height="32"/>
+  <object type="WEST" x="0" y="352" width="32" height="64"/>
+  <object type="SOUTH" x="352" y="736" width="64" height="32"/>
+  <object type="EAST" x="736" y="352" width="32" height="64"/>
+ </objectgroup>
+ <objectgroup name="spawnPoints">
+  <properties>
+   <property name="ExitPoints" value="NESW"/>
+  </properties>
+  <object type="CENTER" x="384" y="340"/>
+  <object type="NORTH" x="381.333" y="100"/>
+  <object type="WEST" x="96" y="384"/>
+  <object type="EAST" x="693.333" y="380.667"/>
+  <object type="SOUTH" x="382" y="681.333"/>
+ </objectgroup>
+</map>

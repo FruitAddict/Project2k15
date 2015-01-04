@@ -1,7 +1,7 @@
 package com.fruit.game.logic.objects.effects;
 
 import com.fruit.game.logic.objects.Value;
-import com.fruit.game.logic.objects.entities.Enemy;
+import com.fruit.game.logic.objects.entities.Character;
 
 /**t
  * @Author FruitAddict
@@ -16,7 +16,7 @@ public abstract class OnHitEffect {
     private int effectID;
 
     //what happens when enemy is hit
-    public abstract void onHit(Enemy enemy, Value damage);
+    public abstract void onHit(Character enemy, Value damage);
 
     public abstract void join(OnHitEffect onHitEffect);
 

@@ -20,6 +20,7 @@ public abstract class GameObject implements Constants {
     public static final int PROJECTILE = 6;
     public static final int THE_EYE = 7;
     public static final int EXPLOSION = 8;
+    public static final int ENORMOUS_GLUTTON = 9;
 
     //general boolean for debug purposes, can be used to make some additional functionality of the object available
     public boolean debug = false;
@@ -29,7 +30,7 @@ public abstract class GameObject implements Constants {
     //know how to draw this specific object).
     protected int entityID;
     //saveInRooms boolean, used to mark a game object so rooms can determine whether they should save them or not
-    protected int saveInRooms;
+    protected boolean saveInRooms;
     //last known x position of this object, useful when loading it to the world after it has been
     //temporally removed, for example when changing maps back and forth.
     protected float lastKnownX;
@@ -59,11 +60,11 @@ public abstract class GameObject implements Constants {
         this.entityID = entityID;
     }
 
-    public int getSaveInRooms() {
+    public boolean getSaveInRooms() {
         return saveInRooms;
     }
 
-    public void setSaveInRooms(int saveInRooms) {
+    public void setSaveInRooms(boolean saveInRooms) {
         this.saveInRooms = saveInRooms;
     }
 
@@ -81,6 +82,14 @@ public abstract class GameObject implements Constants {
 
     public float getHeight(){
         return height;
+    }
+
+    public void setWidth(float value){
+        this.width = value;
+    }
+
+    public void setHeight(float value){
+        this.height = value;
     }
 
 }

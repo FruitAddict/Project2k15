@@ -9,5 +9,5 @@ import com.fruit.game.logic.Constants;
 public class Configuration implements Constants {
     public static boolean shadowsEnabled = true;
     public static boolean showFPS = false;
-    public static int seed = UNSPECIFIED;
+    public static long seed = UNSPECIFIED;
 }

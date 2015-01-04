@@ -102,6 +102,12 @@ public class PlayerAnimationPack implements Constants {
     public void render(float stateTime, Player player, SpriteBatch batch){
         //position for rendering, this alghorithm is the same for every renderable object
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(player));
+        if(player.status.isBurning()){
+            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,player.getWidth(),player.getHeight());
+        }
+        if(player.status.isShielded()){
+            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.SHIELDED,pos.x,pos.y,player.getWidth(),player.getHeight());
+        }
         if(player.facingN ){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
             batch.draw(playerHeadAnimationNorth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-26
@@ -127,18 +133,12 @@ public class PlayerAnimationPack implements Constants {
         if(player.status.isHealing()){
             onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.HEALED,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
-        if(player.status.isShielded()){
-            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.SHIELDED,pos.x,pos.y,player.getWidth(),player.getHeight());
-        }
         if(player.status.isPoisoned()){
             onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.POISONED,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
         if(player.status.isLeveledUp()){
             //effectRenderer.render(player,batch,stateTime,EffectRenderer.LEVEL_UP_TRIGGER,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
-        if(player.status.isBurning()){
-            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,player.getWidth(),player.getHeight());
 
-        }
     }
 }

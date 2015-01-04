@@ -2,6 +2,7 @@ package com.fruit.game;
 
 
 import com.fruit.game.logic.WorldUpdater;
+import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.screens.GameScreen;
 import com.fruit.game.visual.messages.TextMessage;
 import com.fruit.game.visual.renderer.WorldRenderer;
@@ -108,7 +109,7 @@ public class Controller {
         Controller.mainGame = mainGame;
     }
 
-    public static void onPlayerDeath() {
-
+    public static void onPlayerDeath(Player player) {
+        Controller.userInterface.addOnDeathDialog(player);
     }
 }

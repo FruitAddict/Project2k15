@@ -17,6 +17,7 @@ public class ProjectileAnimationPack implements Constants {
     private Animation animation;
     private Sprite mobProjectile1;
     private Sprite mobProjectile2;
+    private Sprite mindlessWalkerProjectile;
 
     public void load(){
         if(!loaded) {
@@ -33,8 +34,11 @@ public class ProjectileAnimationPack implements Constants {
             Texture mobProjectile1Texture = (Texture) Assets.getAsset("metal_red.png",Texture.class);
             mobProjectile1 = new Sprite(mobProjectile1Texture);
 
-            Texture mobProjectile2Texture = (Texture) Assets.getAsset("metal_blue.png",Texture.class);
+            Texture mobProjectile2Texture = (Texture) Assets.getAsset("proj.png",Texture.class);
             mobProjectile2 = new Sprite(mobProjectile2Texture);
+
+            Texture mindlessWalkerTexture = (Texture) Assets.getAsset("mindlessprojectile.png",Texture.class);
+            mindlessWalkerProjectile= new Sprite(mindlessWalkerTexture);
 
             mobProjectile1.setColor(new com.badlogic.gdx.graphics.Color(1f,0,0,1));
 
@@ -55,6 +59,12 @@ public class ProjectileAnimationPack implements Constants {
                 mobProjectile1.setPosition(pos.x,pos.y);
                 mobProjectile1.setSize(projectile.getWidth(),projectile.getHeight());
                 mobProjectile1.draw(batch);
+                break;
+            }
+            case Projectile.MINDLESS_PROJECTILE:{
+                mindlessWalkerProjectile.setPosition(pos.x,pos.y);
+                mindlessWalkerProjectile.setSize(projectile.getWidth(),projectile.getHeight());
+                mindlessWalkerProjectile.draw(batch);
                 break;
             }
         }

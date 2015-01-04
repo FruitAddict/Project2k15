@@ -25,8 +25,7 @@ public class MoreProjectiles extends Item {
         width=32;
         height=32;
         description = "One additional projectile for you, but not without a cost.";
-        setSaveInRooms(DO_SAVE);
-        setItemType(Item.MORE_PROJECTILES);
+        setSaveInRooms(true);        setItemType(Item.MORE_PROJECTILES);
         setEntityID(GameObject.ITEM);
     }
     public MoreProjectiles(ObjectManager objectManager) {
@@ -34,8 +33,7 @@ public class MoreProjectiles extends Item {
         width=32;
         height=32;
         description = "One additional projectile for you, but not without a cost.";
-        setSaveInRooms(DO_SAVE);
-        setItemType(Item.MORE_PROJECTILES);
+        setSaveInRooms(true);        setItemType(Item.MORE_PROJECTILES);
         setEntityID(GameObject.ITEM);
     }
 

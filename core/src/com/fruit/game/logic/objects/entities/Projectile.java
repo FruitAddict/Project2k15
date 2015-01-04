@@ -11,6 +11,7 @@ public abstract class Projectile extends GameObject {
     //projectile types
     public static final int PLAYER_PROJECTILE = 1;
     public static final int MOB_PROJECTILE = 2;
+    public static final int MINDLESS_PROJECTILE = 3;
     //like with every game object it needs access to this to kill itself
     protected ObjectManager objectManager;
     //every projectile should know its direction

@@ -26,8 +26,7 @@ public class ExplodingProjectiles extends Item {
         width=32;
         height=32;
         description = "Your projectiles now explode on hit, it will come to an end though.";
-        setSaveInRooms(DO_SAVE);
-        setItemType(Item.MICHAEL_BAY);
+        setSaveInRooms(true);        setItemType(Item.MICHAEL_BAY);
         setEntityID(GameObject.ITEM);
     }
     public ExplodingProjectiles(ObjectManager objectManager){
@@ -35,8 +34,7 @@ public class ExplodingProjectiles extends Item {
         width=32;
         height=32;
         description = "Your projectiles now explode on hit, it will come to an end though.";
-        setSaveInRooms(DO_SAVE);
-        setItemType(Item.MICHAEL_BAY);
+        setSaveInRooms(true);        setItemType(Item.MICHAEL_BAY);
         setEntityID(GameObject.ITEM);
     }
     @Override

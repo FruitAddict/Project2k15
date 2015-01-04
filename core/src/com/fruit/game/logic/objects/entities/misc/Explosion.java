@@ -29,7 +29,7 @@ public class Explosion extends Enemy {
         lastKnownY= spawnY;
         this.objectManager = objectManager;
         setEntityID(GameObject.EXPLOSION);
-        setSaveInRooms(DONT_SAVE);
+        setSaveInRooms(true);
         this.lifeTime = lifeTime;
         this.damage = damage;
         this.range = range;

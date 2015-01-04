@@ -33,7 +33,7 @@ public class PlayerProjectile extends Projectile {
         damage = new Value(player.stats.getCombinedDamage(),Value.NORMAL_DAMAGE);
         setTypeID(Projectile.PLAYER_PROJECTILE);
         setEntityID(GameObject.PROJECTILE);
-        setSaveInRooms(DONT_SAVE);
+        setSaveInRooms(false);
         //setting width, height and radius of the box2d body
         width =24;
         height=24;

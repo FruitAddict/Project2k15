@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.fruit.game.Controller;
 import com.fruit.game.MainGame;
 import com.fruit.game.logic.WorldUpdater;
@@ -13,6 +15,7 @@ import com.fruit.game.logic.input.CustomInputMultiplexer;
 import com.fruit.game.logic.input.WorldInputProcessor;
 import com.fruit.game.maps.MapManager;
 import com.fruit.game.visual.GameCamera;
+import com.fruit.game.visual.messages.TextRenderer;
 import com.fruit.game.visual.renderer.WorldRenderer;
 import com.fruit.game.visual.ui.UserInterface;
 
@@ -47,6 +50,8 @@ public class GameScreen implements Screen {
     private Vector2 cameraDimensions;
     //boolean indicating whether game is paused
     public boolean paused = false;
+    //float holding time the logic updating is running(so it doesnt count when its paused)
+    public float gameLogicStateTime;
 
     public GameScreen(MainGame game){
         this.game = game;
@@ -82,6 +87,7 @@ public class GameScreen implements Screen {
         //update if game is not paused
         if(!paused) {
             worldUpdater.update(delta);
+            gameLogicStateTime +=delta;
         }worldRenderer.render(delta);
 
         //update UI
@@ -100,9 +106,10 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         //setting up the camera after show is called (e.g. switching from app to app)
-        cameraDimensions.set(Scaling.fit.apply(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),840,480));
+        cameraDimensions.set(Scaling.fit.apply(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 840, 480));
         camera.setToOrtho(false, cameraDimensions.x, cameraDimensions.y);
-        userInterface.getViewport().update((int)cameraDimensions.x,(int)cameraDimensions.y,true);
+        userInterface.setViewport(new StretchViewport(cameraDimensions.x,cameraDimensions.y));
+        TextRenderer.reloadFonts();
     }
 
     @Override

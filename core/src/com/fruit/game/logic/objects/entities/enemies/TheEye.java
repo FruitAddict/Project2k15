@@ -41,7 +41,7 @@ public class TheEye extends Enemy {
         setEntityID(GameObject.THE_EYE);
         stats.setMaxVelocity(3f);
         stats.setSpeed(4f);
-        setSaveInRooms(DO_SAVE);
+        setSaveInRooms(true);
         stats.setHealthPoints(10);
         stats.setBaseMaximumHealthPoints(10);
         stats.setAttackSpeed(0.75f);
@@ -158,6 +158,7 @@ public class TheEye extends Enemy {
 
     @Override
     public void killYourself() {
+        Controller.getWorldUpdater().getPlayer().addSlainEnemy();
         if(!playerFound) {
             objectManager.removeObject(this);
         }else {

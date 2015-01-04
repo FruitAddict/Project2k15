@@ -18,6 +18,7 @@ import com.fruit.game.Controller;
 import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.WorldUpdater;
 import com.fruit.game.logic.objects.entities.GameObject;
+import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.maps.Room;
 import com.fruit.game.visual.GameCamera;
 import com.fruit.game.visual.messages.TextRenderer;
@@ -66,7 +67,7 @@ import com.fruit.game.visual.tween.TweenUtils;
          objectRenderer = new ObjectRenderer();
          textRenderer = new TextRenderer();
          lightRenderer = new LightRenderer(this, worldUpdater.getWorld());
-         lightRenderer.setPlayerLight(getWorldUpdater().getPlayer().getBody());
+         lightRenderer.setPlayerLight(worldUpdater.getPlayer());
          splatterRenderer = new SplatterRenderer(batch);
          //initially add all the lights from the room if those exist
          for (Room.StaticLightContainer container : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()) {
@@ -101,7 +102,7 @@ import com.fruit.game.visual.tween.TweenUtils;
          if (!paused) {
              textRenderer.render(batch, delta);
          }
-         camera.updateCameraMovement();
+         camera.updateCameraMovement(delta);
          //update splatter effects ( must've been done after finishing the batch as this uses fbo and cannot be nested in
          //another batch)
          splatterRenderer.update(delta);
@@ -270,12 +271,14 @@ import com.fruit.game.visual.tween.TweenUtils;
       */
      public void pauseRendering(){
          paused = true;
+         camera.pauseTransition();
          batch.setColor(Color.DARK_GRAY);
      }
 
      public void unpauseRendering(){
          //analogically to the pauseRendering method, set batch colors to its normal values.
          paused = false;
+         camera.unpauseTransition();
          batch.setColor(1,1,1,1);
      }
 

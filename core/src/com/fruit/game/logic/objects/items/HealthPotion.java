@@ -33,8 +33,7 @@ public class HealthPotion extends Item {
         this.healDuration = healDuration;
         this.healDelay= delay;
         this.healAmount = healAmount;
-        setSaveInRooms(DO_SAVE);
-        setItemType(Item.HEALTH_POTION);
+        setSaveInRooms(true);        setItemType(Item.HEALTH_POTION);
         setEntityID(GameObject.ITEM);
     }
     public HealthPotion(ObjectManager objectManager,float healDuration, float delay, int healAmount){
@@ -44,8 +43,7 @@ public class HealthPotion extends Item {
         this.healDuration = healDuration;
         this.healDelay= delay;
         this.healAmount = healAmount;
-        setSaveInRooms(DO_SAVE);
-        setItemType(Item.HEALTH_POTION);
+        setSaveInRooms(true);        setItemType(Item.HEALTH_POTION);
         setEntityID(GameObject.ITEM);
     }
     @Override

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.fruit.game.Configuration;
 import com.fruit.game.Controller;
 import com.fruit.game.logic.WorldUpdater;
 import com.fruit.game.logic.objects.entities.player.Player;
@@ -286,6 +287,36 @@ public class UserInterface extends Stage {
         itemDialog.show(this);
     }
 
+    public void addOnDeathDialog(Player player){
+        Controller.pauseGame();
+        final VisDialog deathDialog = new VisDialog("You're dead."){
+          @Override
+        public void result(Object o){
+              Controller.getGameScreen().dispose();
+              Controller.getMainGame().setScreen(new MainMenuScreen(Controller.getMainGame()));
+          }
+        };
+        int minutes = (int)Controller.getGameScreen().gameLogicStateTime/60;
+        int seconds = (int)Controller.getGameScreen().gameLogicStateTime%60;
+        VisLabel survivalTime = new VisLabel(String.format("You've survived for %02d:%02d",minutes,seconds));
+        survivalTime.setWrap(true);
+        survivalTime.setFontScale(0.8f);
+        VisLabel slainEnemies = new VisLabel("You've slain "+player.getSlainEnemies()+" enemies");
+        slainEnemies.setWrap(true);
+        slainEnemies.setFontScale(0.8f);
+        VisLabel seedLabel = new VisLabel("Map seed: "+ Configuration.seed);
+        seedLabel.setWrap(true);
+        seedLabel.setFontScale(0.8f);
+        deathDialog.getContentTable().add(survivalTime).width(400).height(50);
+        deathDialog.getContentTable().row();
+        deathDialog.getContentTable().add(slainEnemies).width(400).height(50);
+        deathDialog.getContentTable().row();
+        deathDialog.getContentTable().add(seedLabel).width(400).height(50);
+        deathDialog.row();
+        deathDialog.button("Confirm");
+        deathDialog.show(this);
+    }
+
 
     @Override
     public void act(float delta){
@@ -379,6 +410,8 @@ public class UserInterface extends Stage {
                         player.stats.setBaseMaximumHealthPoints(player.stats.getBaseMaximumHealthPoints()+25);
                         player.setStatPoints(player.getStatPoints()-1);
                         updateText();
+                        updateStatusBars(player.stats.getHealthPoints(),player.stats.getBaseMaximumHealthPoints(),
+                                player.getExperiencePoints(),player.getNextLevelExpRequirement(),player.getStatPoints());
                     }
                 }
             });
@@ -389,6 +422,8 @@ public class UserInterface extends Stage {
                         player.stats.setAttackSpeedModifier(player.stats.getAttackSpeedModifier()*0.8f);
                         player.setStatPoints(player.getStatPoints()-1);
                         updateText();
+                        updateStatusBars(player.stats.getHealthPoints(),player.stats.getBaseMaximumHealthPoints(),
+                                player.getExperiencePoints(),player.getNextLevelExpRequirement(),player.getStatPoints());
                     }
                 }
             });
@@ -399,6 +434,8 @@ public class UserInterface extends Stage {
                         player.stats.setMaxVelocity(player.stats.getMaxVelocity()+0.5f);
                         player.setStatPoints(player.getStatPoints()-1);
                         updateText();
+                        updateStatusBars(player.stats.getHealthPoints(),player.stats.getBaseMaximumHealthPoints(),
+                                player.getExperiencePoints(),player.getNextLevelExpRequirement(),player.getStatPoints());
                     }
                 }
             });
@@ -409,6 +446,8 @@ public class UserInterface extends Stage {
                         player.stats.setBaseDamage(player.stats.getBaseDamage()+1);
                         player.setStatPoints(player.getStatPoints() - 1);
                         updateText();
+                        updateStatusBars(player.stats.getHealthPoints(),player.stats.getBaseMaximumHealthPoints(),
+                                player.getExperiencePoints(),player.getNextLevelExpRequirement(),player.getStatPoints());
                     }
                 }
             });
@@ -419,6 +458,8 @@ public class UserInterface extends Stage {
                         player.stats.setAimSway(player.stats.getAimSway()+2);
                         player.setStatPoints(player.getStatPoints()-1);
                         updateText();
+                        updateStatusBars(player.stats.getHealthPoints(),player.stats.getBaseMaximumHealthPoints(),
+                                player.getExperiencePoints(),player.getNextLevelExpRequirement(),player.getStatPoints());
                     }
                 }
             });

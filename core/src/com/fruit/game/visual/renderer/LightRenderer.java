@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.fruit.game.Configuration;
 import com.fruit.game.logic.Constants;
+import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.visual.PoolablePointLight;
 
 /**
@@ -85,14 +86,18 @@ public class LightRenderer implements Constants {
         activeLights.add(p);
     }
 
-    public void setPlayerLight(Body body){
-        playerLight.attachToBody(body);
+    public void setPlayerLight(Player player){
+        playerLight.attachToBody(player.getBody());
         playerLight.setDistance(4.5f);
         playerLight.setColor(new Color(0f,0f,0f,1f));
         playerLight.setXray(true);
         Filter filter = new Filter();
         filter.maskBits = ENEMY_BIT | CLUTTER_BIT |ITEM_BIT | TERRAIN_BIT | TREASURE_BIT | PORTAL_BIT;
         playerLight.setContactFilter(filter);
+    }
+
+    public void updatePlayerLightLength(float length){
+        playerLight.setDistance(length);
     }
 
     public RayHandler getRayHandler(){

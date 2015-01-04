@@ -23,7 +23,7 @@ public class Heart extends Item implements Constants {
         lastKnownY = spawnCoordY;
         this.width = width;
         this.height = height;
-        setSaveInRooms(DO_SAVE);
+        setSaveInRooms(true);
         setItemType(Item.HEART);
         setEntityID(GameObject.ITEM);
     }

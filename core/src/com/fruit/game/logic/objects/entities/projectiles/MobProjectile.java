@@ -27,7 +27,7 @@ public class MobProjectile extends Projectile {
         this.objectManager = objectManager;
         this.direction = dir;
         setEntityID(GameObject.PROJECTILE);
-        setSaveInRooms(DONT_SAVE);
+        setSaveInRooms(false);
         setTypeID(Projectile.MOB_PROJECTILE);
         this.damage = new Value(damage,Value.NORMAL_DAMAGE);
         this.velocity = velocity;

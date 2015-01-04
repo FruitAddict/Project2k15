@@ -68,7 +68,7 @@ public class Room implements Constants {
     }
 
     public void addGameObject(GameObject o){
-        if(o.getSaveInRooms()== DO_SAVE){
+        if(o.getSaveInRooms()){
             gameObjectsStored.add(o);
         }
     }

@@ -20,7 +20,7 @@ public class Dummy extends Enemy {
         this.objectManager = objectManager;
         setEntityID(GameObject.DUMMY);
         stats.setMaxVelocity(0);
-        setSaveInRooms(DO_SAVE);
+        setSaveInRooms(true);
         stats.setHealthPoints(99999);
         stats.setBaseMaximumHealthPoints(1000000);
     }

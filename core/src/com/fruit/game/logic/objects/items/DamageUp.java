@@ -24,7 +24,7 @@ public class DamageUp extends Item {
         width = 32;
         height = 32;
         description = "Power of the ancient surges through your veins as you feel stronger and sexier.";
-        setSaveInRooms(DO_SAVE);
+        setSaveInRooms(true);
         setItemType(Item.DAMAGE_UP_1);
         setEntityID(GameObject.ITEM);
     }
@@ -33,7 +33,7 @@ public class DamageUp extends Item {
         width = 32;
         height = 32;
         description = "Power of the ancient surges through your veins as you feel stronger and sexier.";
-        setSaveInRooms(DO_SAVE);
+        setSaveInRooms(true);
         setItemType(Item.DAMAGE_UP_1);
         setEntityID(GameObject.ITEM);
     }

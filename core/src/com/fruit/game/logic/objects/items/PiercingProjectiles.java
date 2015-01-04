@@ -23,8 +23,7 @@ public class PiercingProjectiles extends Item {
         width=32;
         height=32;
         description = "You've failed this city. Your projectiles can now pierce through the enemies.";
-        setSaveInRooms(DO_SAVE);
-        setItemType(Item.PIERCING_PROJECTILE);
+        setSaveInRooms(true);        setItemType(Item.PIERCING_PROJECTILE);
         setEntityID(GameObject.ITEM);
     }
     public PiercingProjectiles(ObjectManager objectManager) {
@@ -32,8 +31,7 @@ public class PiercingProjectiles extends Item {
         width=32;
         height=32;
         description = "You've failed this city. Your projectiles can now pierce through the enemies.";
-        setSaveInRooms(DO_SAVE);
-        setItemType(Item.PIERCING_PROJECTILE);
+        setSaveInRooms(true);        setItemType(Item.PIERCING_PROJECTILE);
         setEntityID(GameObject.ITEM);
     }
 

@@ -25,16 +25,14 @@ public class PoisonProjectiles extends Item {
         lastKnownY = spawnCoordY;
         width=32;
         height=32;
-        setSaveInRooms(DO_SAVE);
-        setItemType(Item.POISON_TOUCH);
+        setSaveInRooms(true);        setItemType(Item.POISON_TOUCH);
         setEntityID(GameObject.ITEM);
     }
     public PoisonProjectiles(ObjectManager objectManager) {
         this.objectManager = objectManager;
         width=32;
         height=32;
-        setSaveInRooms(DO_SAVE);
-        setItemType(Item.POISON_TOUCH);
+        setSaveInRooms(true);        setItemType(Item.POISON_TOUCH);
         setEntityID(GameObject.ITEM);
     }
 

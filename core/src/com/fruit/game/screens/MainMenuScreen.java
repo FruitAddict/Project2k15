@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.fruit.game.Configuration;
 import com.fruit.game.MainGame;
 import com.fruit.game.logic.Constants;
@@ -152,7 +153,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-
+        menuStage.setViewport(new StretchViewport(840,480));
     }
 
     @Override

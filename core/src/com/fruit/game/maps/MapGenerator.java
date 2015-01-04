@@ -75,7 +75,7 @@ public class MapGenerator {
         for (int i = 0; i < map.getRoomMatrix().length; i++) {
             for (int j = 0; j < map.getRoomMatrix().length; j++) {
                 if(map.getRoomMatrix()[i][j]!=null){
-                    int numofmobs = Utils.mapRandomNumberGenerator.nextInt(25);
+                    int numofmobs = Utils.mapRandomNumberGenerator.nextInt(10);
                     for (int k = 0; k < numofmobs; k++) {
                         int roll  = Utils.mapRandomNumberGenerator.nextInt(100);
                         Vector2 position = map.getRoomMatrix()[i][j].getMobSpawnPoints().get(Utils.mapRandomNumberGenerator.nextInt(map.getRoomMatrix()[i][j].getMobSpawnPoints().size));
@@ -209,10 +209,10 @@ public class MapGenerator {
     @Deprecated
     public static Map generateTestLevel(MapManager mapManager){
         Map map = new Map(mapManager,9);
-        Room firstRoom = new Room((TiledMap) Assets.getAsset("maps//Room1.tmx", TiledMap.class));
-        Room secondRoom = new Room((TiledMap)Assets.getAsset("maps//Room2.tmx",TiledMap.class));
-        Room thirdRoom = new Room((TiledMap)Assets.getAsset("maps//Room3.tmx",TiledMap.class));
-        Room fourthRoom = new Room((TiledMap)Assets.getAsset("maps//Room4.tmx",TiledMap.class));
+        Room firstRoom = new Room((TiledMap) Assets.getAsset("maps//32maps//NESW.tmx", TiledMap.class));
+        Room secondRoom = new Room((TiledMap) Assets.getAsset("maps//32maps//NESW.tmx", TiledMap.class));
+        Room thirdRoom = new Room((TiledMap) Assets.getAsset("maps//32maps//NESW.tmx", TiledMap.class));
+        Room fourthRoom = new Room((TiledMap) Assets.getAsset("maps//32maps//NESW.tmx", TiledMap.class));
 
         firstRoom.setLinkedRoomEast(secondRoom);
         secondRoom.setLinkedRoomWest(firstRoom);
@@ -220,6 +220,8 @@ public class MapGenerator {
         thirdRoom.setLinkedRoomWest(secondRoom);
         firstRoom.setLinkedRoomNorth(fourthRoom);
         fourthRoom.setLinkedRoomSouth(firstRoom);
+
+        firstRoom.addGameObject(new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(),4,4,1));
 
         map.setCurrentRoom(firstRoom);
         //initially add all the game objects manually as no references to managers exist yet.

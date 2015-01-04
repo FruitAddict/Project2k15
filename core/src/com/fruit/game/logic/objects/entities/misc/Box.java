@@ -23,7 +23,7 @@ public class Box extends Enemy {
         lastKnownY= spawnY;
         this.objectManager = objectManager;
         setEntityID(GameObject.BOX);
-        setSaveInRooms(DO_SAVE);
+        setSaveInRooms(true);
         stats.setHealthPoints(3);
         stats.setBaseMaximumHealthPoints(3);
     }

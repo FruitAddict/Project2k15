@@ -4,6 +4,7 @@ import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.fruit.game.Controller;
 import com.fruit.game.logic.Constants;
@@ -23,6 +24,7 @@ public class GameCamera extends OrthographicCamera implements Constants {
     private GameObject followedObject;
     public TweenCallback followObjectCallback;
     private Vector3 lerpVector;
+    private boolean paused;
 
     public GameCamera(){
         //call super default constructor of the orthographic camera class
@@ -44,8 +46,8 @@ public class GameCamera extends OrthographicCamera implements Constants {
         zoom = 0.65f;
     }
 
-    public void updateCameraMovement(){
-        if(!freeCamera && followedObject!= null){
+    public void updateCameraMovement(float delta){
+        if(!freeCamera && followedObject!= null && !paused){
             float mapWidth = Controller.getWorldUpdater().getMapManager().getCurrentMapWidth();
             float mapHeight = Controller.getWorldUpdater().getMapManager().getCurrentMapHeight();
 
@@ -98,4 +100,11 @@ public class GameCamera extends OrthographicCamera implements Constants {
         this.lerpValue = lerpValue;
     }
 
+    public void pauseTransition() {
+        paused = true;
+    }
+
+    public void unpauseTransition(){
+        paused = false;
+    }
 }

@@ -28,8 +28,7 @@ public class SphereOfProtection extends Item {
         width = 32;
         height = 32;
         this.blockCount = blockCount;
-        setSaveInRooms(DO_SAVE);
-        setItemType(Item.SPHERE_OF_PROTECTION);
+        setSaveInRooms(true);        setItemType(Item.SPHERE_OF_PROTECTION);
         setEntityID(GameObject.ITEM);
     }
     public SphereOfProtection(ObjectManager objectManager, int blockCount){
@@ -37,8 +36,7 @@ public class SphereOfProtection extends Item {
         width = 32;
         height = 32;
         this.blockCount = blockCount;
-        setSaveInRooms(DO_SAVE);
-        setItemType(Item.SPHERE_OF_PROTECTION);
+        setSaveInRooms(true);        setItemType(Item.SPHERE_OF_PROTECTION);
         setEntityID(GameObject.ITEM);
     }
     @Override

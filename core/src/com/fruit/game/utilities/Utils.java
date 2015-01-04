@@ -1,6 +1,7 @@
 package com.fruit.game.utilities;
 
 import com.badlogic.gdx.math.Vector2;
+import com.fruit.game.Configuration;
 import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.objects.entities.GameObject;
 
@@ -27,7 +28,8 @@ public class Utils implements Constants {
         if(seed!=UNSPECIFIED) {
             mapRandomNumberGenerator = new Random(seed);
         }else {
-            mapRandomNumberGenerator = new Random();
+            Configuration.seed = System.currentTimeMillis();
+            mapRandomNumberGenerator = new Random(Configuration.seed);
         }
     }
 

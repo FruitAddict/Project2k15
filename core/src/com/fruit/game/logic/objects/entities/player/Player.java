@@ -25,11 +25,11 @@ public class Player extends Character implements Constants {
     private float spawnCoordY;
     //object manager reference.
     private ObjectManager objectManager;
-    //objects life time is stored here, used with determining whether player can attack again
+    //objects life time is stored here, used with determining whether player can throwYourselfAtPlayer again
     public float stateTime;
     //variables to help with attacking delay.
     private float lastAttack;
-    //attack direction vector, so no new vectors can be created constantly every frame
+    //throwYourselfAtPlayer direction vector, so no new vectors can be created constantly every frame
     private Vector2 attackDirectionNormalized;
 
     //player level start with 1
@@ -44,10 +44,13 @@ public class Player extends Character implements Constants {
     //projectile spawn point offset when colliding with walls
     private float xOffset, yOffset;
 
-    public Player(ObjectManager objectManager, float spawnCoordX, float spawnCoordY,float width, float height){
+    //slain enemies int
+    private float slainEnemies;
+
+    public Player(ObjectManager objectManager, float spawnCoordX, float spawnCoordY){
         //constructor of every entity should take object manager, initial spawn coords and width and height of this entity
-        this.width = width;
-        this.height = height;
+        width = 36;
+        height = 25;
         this.spawnCoordY = spawnCoordY;
         this.spawnCoordX = spawnCoordX;
         this.objectManager = objectManager;
@@ -56,13 +59,13 @@ public class Player extends Character implements Constants {
         setEntityID(GameObject.PLAYER);
         stats.setMaxVelocity(4);
         stats.setSpeed(0.25f);
-        setSaveInRooms(DONT_SAVE);
+        setSaveInRooms(false);
         stats.setHealthPoints(100);
         stats.setBaseMaximumHealthPoints(100);
         stats.setAttackSpeed(0.3f);
         stats.setAimSway(3);
 
-        //initialize attack direction vector
+        //initialize throwYourselfAtPlayer direction vector
         attackDirectionNormalized = new Vector2();
         //initialize onHit and onDamageTaken arrays
         onHitEffects = new Array<OnHitEffect>();
@@ -75,12 +78,12 @@ public class Player extends Character implements Constants {
     }
 
     public void attack(float directionPercentX, float directionPercentY){
-        //if player can attack again, set the vector to the values passed by ui controller
+        //if player can throwYourselfAtPlayer again, set the vector to the values passed by ui controller
         if(stateTime - lastAttack > stats.getCombinedAttackSpeed()) {
             float sign = (float)Math.signum(Utils.randomGenerator.nextInt());
             float sway = Utils.randomGenerator.nextFloat()/stats.getAimSway()*sign;
             float lastDegreeDifference = 7f;
-            //normalize the attack direction vector using new values
+            //normalize the throwYourselfAtPlayer direction vector using new values
             attackDirectionNormalized.set(0 - directionPercentX, 0 - directionPercentY);
             attackDirectionNormalized.add(sway, sway);
             attackDirectionNormalized.nor();
@@ -238,11 +241,14 @@ public class Player extends Character implements Constants {
         updatePassiveEffects(delta);
         updateFacing();
         if (stats.getHealthPoints() < 0) {
-            Controller.onPlayerDeath();
+            onDeath();
         }
         stateTime += delta;
     }
 
+    private void onDeath() {
+        Controller.onPlayerDeath(this);
+    }
 
     public ObjectManager getObjectManager(){
         return objectManager;
@@ -297,5 +303,13 @@ public class Player extends Character implements Constants {
 
     public void setStatPoints(int value){
         this.statPoints = value;
+    }
+
+    public float getSlainEnemies() {
+        return slainEnemies;
+    }
+
+    public void addSlainEnemy(){
+        slainEnemies++;
     }
 }

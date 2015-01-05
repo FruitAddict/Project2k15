@@ -1,5 +1,6 @@
 package com.fruit.game.logic.objects.items;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -39,8 +40,7 @@ public class PoisonProjectiles extends Item {
     @Override
     public void onPickUp(Player player) {
         player.addOnHitEffect(new PoisonOnHit(player,20));
-        Controller.addOnScreenMessage(new TextMessage("You poison on hit...",
-                getBody().getPosition().x * PIXELS_TO_UNITS, getBody().getPosition().y * PIXELS_TO_UNITS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
+        Controller.getUserInterface().getMessageHandler().addMessage("You poison on hit.", Color.GREEN, 3f);
         killYourself();
     }
 

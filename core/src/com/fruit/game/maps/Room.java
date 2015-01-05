@@ -38,6 +38,8 @@ public class Room implements Constants {
     private Array<StaticLightContainer> staticLightPositions;
     //holds boolean indicating player presence in this room
     private boolean containsPlayer;
+    //indicated whether this room is a boss room
+    private boolean bossRoom;
 
     public Room(TiledMap tiledMap){
         this.tiledMap = tiledMap;
@@ -247,6 +249,14 @@ public class Room implements Constants {
 
     public void setContainsPlayer(boolean containsPlayer) {
         this.containsPlayer = containsPlayer;
+    }
+
+    public boolean isBossRoom() {
+        return bossRoom;
+    }
+
+    public void setBossRoom(boolean bossRoom) {
+        this.bossRoom = bossRoom;
     }
 
     public class StaticLightContainer{

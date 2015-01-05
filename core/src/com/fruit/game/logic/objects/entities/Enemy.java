@@ -39,7 +39,6 @@ public abstract class Enemy extends Character {
     }
 
     public void dropAllLoot(ObjectManager objectManager){
-        System.out.println(lootItems.size);
         for(Item item: lootItems){
             item.setLastKnownX(body.getPosition().x);
             item.setLastKnownY(body.getPosition().y);

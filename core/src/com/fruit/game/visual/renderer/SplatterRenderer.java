@@ -88,7 +88,6 @@ public class SplatterRenderer implements Constants {
 
     public void renderToFBO(){
         if(splatterArray.size >0) {
-            System.out.println("rendering to fbo..");
             camera.setToOrtho(false, Controller.getWorldUpdater().getMapManager().getCurrentMapWidth(),
                     Controller.getWorldUpdater().getMapManager().getCurrentMapHeight());
             frameBuffer.begin();

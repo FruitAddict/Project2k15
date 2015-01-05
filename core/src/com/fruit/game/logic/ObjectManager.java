@@ -3,7 +3,9 @@ package com.fruit.game.logic;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
+import com.fruit.game.Controller;
 import com.fruit.game.logic.objects.entities.GameObject;
+import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
 import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.utilities.MapObjectParser;
 

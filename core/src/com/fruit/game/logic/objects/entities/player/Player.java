@@ -1,5 +1,6 @@
 package com.fruit.game.logic.objects.entities.player;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -279,8 +280,7 @@ public class Player extends Character implements Constants {
     }
 
     public void onLevelUp(){
-        Controller.addOnScreenMessage(new TextMessage("Level up! +1 stat points.", getBody().getPosition().x * PIXELS_TO_UNITS,
-                getBody().getPosition().y * PIXELS_TO_UNITS, 2.2f, TextRenderer.goldenFont,TextMessage.UP_AND_FALL));
+        Controller.getUserInterface().getMessageHandler().addMessage("Level up! +1 stat point",new Color(1,215/255f,0f,1f),2.5f);
         objectManager.getPlayer().onHealingTaken(new Value(15,Value.HEALING));
         nextLevelExpRequirement*=1.5f;
         status.setLeveledUp(true);

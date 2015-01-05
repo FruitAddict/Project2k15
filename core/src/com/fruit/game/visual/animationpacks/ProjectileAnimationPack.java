@@ -37,7 +37,7 @@ public class ProjectileAnimationPack implements Constants {
             Texture mobProjectile2Texture = (Texture) Assets.getAsset("proj.png",Texture.class);
             mobProjectile2 = new Sprite(mobProjectile2Texture);
 
-            Texture mindlessWalkerTexture = (Texture) Assets.getAsset("mindlessprojectile.png",Texture.class);
+            Texture mindlessWalkerTexture = (Texture) Assets.getAsset("Rock3.png",Texture.class);
             mindlessWalkerProjectile= new Sprite(mindlessWalkerTexture);
 
             mobProjectile1.setColor(new com.badlogic.gdx.graphics.Color(1f,0,0,1));

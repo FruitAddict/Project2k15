@@ -1,5 +1,6 @@
 package com.fruit.game.logic.objects.items;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -82,7 +83,6 @@ public class SphereOfProtection extends Item {
     @Override
     public void killYourself() {
         objectManager.removeObject(this);
-        Controller.addOnScreenMessage(new TextMessage("You feel protected...", getBody().getPosition().x * PIXELS_TO_UNITS,
-                getBody().getPosition().y * PIXELS_TO_UNITS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
+        Controller.getUserInterface().getMessageHandler().addMessage("You're protected.", Color.GREEN, 3f);
     }
 }

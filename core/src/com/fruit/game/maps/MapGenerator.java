@@ -3,6 +3,7 @@ package com.fruit.game.maps;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
 import com.fruit.game.logic.objects.items.DamageUp;
 import com.fruit.game.logic.objects.items.ItemManager;
 import com.fruit.game.logic.objects.entities.enemies.MindlessWalker;
@@ -71,10 +72,28 @@ public class MapGenerator {
                 }
             }
         }
+        //third room, find candidate for the boss room
+        Array<Room> candidates = new Array<>();
+        for(int i = 0; i<map.getRoomMatrix().length;i++){
+            for (int j = 0; j < map.getRoomMatrix().length; j++) {
+                if(layout[i][j]) {
+                    System.out.println(getNumberOfNeighbours(layout, true, i, j));
+                    if (getNumberOfNeighbours(layout, true, i, j) == 1) {
+                        candidates.add(map.getRoomMatrix()[i][j]);
+                    }
+                }
+            }
+        }
+        if(candidates.size>0){
+            System.out.println(candidates.size);
+            int randomCandidate = Utils.mapRandomNumberGenerator.nextInt(candidates.size);
+            candidates.get(randomCandidate).setBossRoom(true);
+            candidates.get(randomCandidate).addGameObject(new EnormousGlutton(mapManager.getWorldUpdater().getObjectManager(),5,5));
+        }
         //fill the rooms with random shit
         for (int i = 0; i < map.getRoomMatrix().length; i++) {
             for (int j = 0; j < map.getRoomMatrix().length; j++) {
-                if(map.getRoomMatrix()[i][j]!=null){
+                if(map.getRoomMatrix()[i][j]!=null && !map.getRoomMatrix()[i][j].isBossRoom()){
                     int numofmobs = Utils.mapRandomNumberGenerator.nextInt(10);
                     for (int k = 0; k < numofmobs; k++) {
                         int roll  = Utils.mapRandomNumberGenerator.nextInt(100);
@@ -106,8 +125,9 @@ public class MapGenerator {
         }
         //set current room to the one in the center
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
-        map.getCurrentRoom().addGameObject(new DamageUp(mapManager.getWorldUpdater().getObjectManager(),4,4));
+        map.getCurrentRoom().addGameObject(new DamageUp(mapManager.getWorldUpdater().getObjectManager(), 4, 4));
         map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(),6,4));
+
         MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater(), map.getCurrentRoom());
         return map;
     }

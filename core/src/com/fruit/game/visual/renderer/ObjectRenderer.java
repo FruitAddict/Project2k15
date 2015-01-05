@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.Projectile;
+import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
 import com.fruit.game.logic.objects.entities.enemies.Dummy;
 import com.fruit.game.logic.objects.entities.enemies.MindlessWalker;
 import com.fruit.game.logic.objects.entities.enemies.TheEye;
@@ -36,6 +37,7 @@ public class ObjectRenderer implements Constants {
     public ItemAnimationPack itemAnimationPack;
     public TheEyeAnimationPack theEyeAnimationPack;
     public EffectAnimationPack effectAnimationPack;
+    public EnormousGluttonPack enormousGluttonPack;
 
     public ObjectRenderer(){
         //some animation packs (for rendering characters) will need instance of effect renderer.
@@ -48,6 +50,7 @@ public class ObjectRenderer implements Constants {
         itemAnimationPack = new ItemAnimationPack();
         theEyeAnimationPack = new TheEyeAnimationPack(onCharacteREffectPack);
         effectAnimationPack = new EffectAnimationPack();
+        enormousGluttonPack = new EnormousGluttonPack(onCharacteREffectPack);
     }
 
     public void render(float delta, Array<GameObject> objects, SpriteBatch batch){
@@ -109,6 +112,11 @@ public class ObjectRenderer implements Constants {
                 case GameObject.EXPLOSION:{
                     effectAnimationPack.load();
                     effectAnimationPack.render(((Explosion)e).stateTime,e,batch);
+                    break;
+                }
+                case GameObject.ENORMOUS_GLUTTON:{
+                    enormousGluttonPack.load();
+                    enormousGluttonPack.render(((EnormousGlutton)e).stateTime,(EnormousGlutton)e,batch);
                     break;
                 }
             }

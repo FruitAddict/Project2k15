@@ -1,11 +1,22 @@
 package com.fruit.game.logic.objects.entities.bosses;
 
+import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.steer.behaviors.Seek;
+import com.badlogic.gdx.ai.steer.behaviors.Wander;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.fruit.game.Controller;
 import com.fruit.game.logic.ObjectManager;
+import com.fruit.game.logic.objects.Value;
+import com.fruit.game.logic.objects.effects.OnHitEffect;
 import com.fruit.game.logic.objects.entities.*;
+import com.fruit.game.logic.objects.entities.Character;
+import com.fruit.game.logic.objects.entities.enemies.MindlessWalker;
+import com.fruit.game.logic.objects.entities.projectiles.MobProjectile;
+import com.fruit.game.logic.objects.entities.projectiles.MobProjectileWithEffect;
 import com.fruit.game.maps.Room;
 
 /**
@@ -16,6 +27,12 @@ public class EnormousGlutton extends Enemy {
     private World world;
     private ObjectManager objectManager;
     public float stateTime;
+    private SteeringBehavior<Vector2> steeringBehavior;
+    private float lastVomit;
+    private float lastThrowMobs;
+    private Vector2 attackDirectionNormalized;
+    private boolean enragedBehavior = false;
+    private boolean barAdded = false;
 
     public EnormousGlutton(ObjectManager objectManager, float spawnX, float spawnY){
         this.objectManager = objectManager;
@@ -25,11 +42,20 @@ public class EnormousGlutton extends Enemy {
         height = 128;
         setEntityID(GameObject.ENORMOUS_GLUTTON);
         setSaveInRooms(true);
+        stats.setHealthPoints(1000);
+        stats.setBaseMaximumHealthPoints(1000);
+        stats.setMaxVelocity(1);
+        stats.setSpeed(1);
+        stats.setAttackSpeedModifier(1);
+        stats.setAttackSpeed(2f);
+        stats.setBaseDamage(5);
+        steeringBehavior = new Wander<>(this).setWanderRadius(4).setWanderOrientation(15f);
+        attackDirectionNormalized = new Vector2();
     }
 
     @Override
     public void onDirectContact(com.fruit.game.logic.objects.entities.Character character) {
-
+        character.onDamageTaken(new Value(stats.getCombinedDamage(),Value.NORMAL_DAMAGE));
     }
 
     @Override
@@ -39,7 +65,82 @@ public class EnormousGlutton extends Enemy {
 
     @Override
     public void update(float delta) {
+        if(!barAdded){
+            Controller.getUserInterface().addBossHealthBar("Enormous Glutton");
+        }
+        if(stats.getHealthPoints()<0){
+            killYourself();
+            Controller.getUserInterface().removeBossBar();
+        }
+        Controller.getUserInterface().updateBossBar(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),stats.getHealthPointPercentOfMax());
+        updatePassiveEffects(delta);
+        updateFacing();
+        stateTime+=delta;
+        steeringBehavior.calculateSteering(steeringOutput);
+        applySteering(delta);
 
+        if(status.isAttackedByPlayer()){
+            vomitProjectiles();
+        }
+        if(stats.getHealthPointPercentOfMax()<75){
+            throwMobs();
+        }
+    }
+
+    public void throwMobs(){
+        if(stateTime - lastThrowMobs > 5) {
+            //normalize the throwYourselfAtPlayer direction vector using new values
+            attackDirectionNormalized.set(getBody().getPosition().x - Controller.getWorldUpdater().getPlayer().getPosition().x,
+                    getBody().getPosition().y - Controller.getWorldUpdater().getPlayer().getPosition().y);
+            attackDirectionNormalized.nor();
+            attackDirectionNormalized.x*=-1;
+            attackDirectionNormalized.y*=-1;
+            OnHitEffect spawnShit = new OnHitEffect() {
+                @Override
+                public void onHit(Character enemy, Value damage) {
+                    objectManager.addObject(new MindlessWalker(objectManager,enemy.getPosition().x,enemy.getPosition().y,3));
+                }
+
+                @Override
+                public void join(OnHitEffect onHitEffect) {
+
+                }
+            };
+            MobProjectileWithEffect proj = new MobProjectileWithEffect(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized, 9f, stats.getCombinedDamage(),spawnShit);
+            MobProjectileWithEffect proj2 = new MobProjectileWithEffect(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(-7),9f, stats.getCombinedDamage(),spawnShit);
+            MobProjectileWithEffect proj3 = new MobProjectileWithEffect(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(7), 9f, stats.getCombinedDamage(),spawnShit);
+
+            proj.setTypeID(Projectile.MINDLESS_PROJECTILE);
+            proj2.setTypeID(Projectile.MINDLESS_PROJECTILE);
+            proj3.setTypeID(Projectile.MINDLESS_PROJECTILE);
+            objectManager.addObject(proj);
+            objectManager.addObject(proj2);
+            objectManager.addObject(proj3);
+            lastThrowMobs = stateTime;
+        }
+    }
+
+    public void vomitProjectiles(){
+        if(stateTime - lastVomit > stats.getCombinedAttackSpeed()) {
+            //normalize the throwYourselfAtPlayer direction vector using new values
+            attackDirectionNormalized.set(getBody().getPosition().x - Controller.getWorldUpdater().getPlayer().getPosition().x,
+                    getBody().getPosition().y - Controller.getWorldUpdater().getPlayer().getPosition().y);
+            attackDirectionNormalized.nor();
+            attackDirectionNormalized.x*=-1;
+            attackDirectionNormalized.y*=-1;
+            MobProjectile proj = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized, 7f, stats.getCombinedDamage());
+            MobProjectile proj2 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(-7), 5f, stats.getCombinedDamage());
+            MobProjectile proj3 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(7), 5f, stats.getCombinedDamage());
+            MobProjectile proj4 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(-14), 7f, stats.getCombinedDamage());
+            MobProjectile proj5 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(14), 7f, stats.getCombinedDamage());
+
+            objectManager.addObject(proj);
+            objectManager.addObject(proj2);
+            objectManager.addObject(proj3);
+            objectManager.addObject(proj4);
+            objectManager.addObject(proj5);
+            lastVomit = stateTime;
+        }
     }
 
     @Override
@@ -73,9 +174,36 @@ public class EnormousGlutton extends Enemy {
         //dispose shape
         shape.dispose();
     }
+    @Override
+    public void onDamageTaken(Value value) {
+        stats.changeHealthPoints(-value.getValue() * stats.getDamageResistanceModifier());
+        if(value.getValue()!=0) {
+            status.setAttackedByPlayer(true);
+            super.onDamageTaken(value);
+            if(!enragedBehavior){
+                changeSteeringBehavior(new Seek<Vector2>(this,Controller.getWorldUpdater().getPlayer()));
+                enragedBehavior = true;
+            }
+        }
+    }
+
+    @Override
+    public void onHealingTaken(Value value) {
+        stats.changeHealthPoints(value.getValue());
+        if(value.getValue()!=0) {
+            super.onHealingTaken(value);
+        }
+    }
+
+    public void changeSteeringBehavior(SteeringBehavior<Vector2> steeringBehavior){
+        this.steeringBehavior = steeringBehavior;
+    }
+
 
     @Override
     public void killYourself() {
-
+        objectManager.removeObject(this);
+        Controller.getWorldUpdater().getPlayer().addExperiencePoints(250);
+        Controller.getWorldRenderer().getSplatterRenderer().addMultiBloodSprite(getPosition(),10,2);
     }
 }

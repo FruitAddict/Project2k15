@@ -261,6 +261,7 @@ import com.fruit.game.visual.tween.TweenUtils;
          splatterRenderer.updateFrameBufferAndCamera();
          //update minimap
          Controller.getUserInterface().updateMinimap();
+         Controller.getUserInterface().removeBossBar();
      }
 
      /**

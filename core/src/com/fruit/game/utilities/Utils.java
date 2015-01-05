@@ -1,6 +1,8 @@
 package com.fruit.game.utilities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.fruit.game.Configuration;
 import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.objects.entities.GameObject;
@@ -10,7 +12,7 @@ import java.util.Random;
 /**
  * @author FruitAddict
  */
-public class Utils implements Constants {
+public abstract class Utils implements Constants {
     public static Random randomGenerator = new Random();
 
     public static Random mapRandomNumberGenerator;
@@ -22,6 +24,10 @@ public class Utils implements Constants {
     public static void setRandomGeneratorSeed(long seed){
         randomGenerator = new Random(seed);
     }
+
+    //color interpolation temps
+    private static final Vector3 tmp1 = new Vector3(), tmp2 = new Vector3();
+    private static final Color colorTmp = new Color();
 
     public static void initializeMapRandomGen(long seed){
         //if the seed is set in config, use it, if not unspecified
@@ -57,5 +63,13 @@ public class Utils implements Constants {
             }
             System.out.println();
         }
+    }
+
+    public static Color interpolateColours(Color color1, Color color2, float interpolation) {
+        tmp1.set(color1.r, color1.g, color1.b).scl(1 - interpolation);
+        tmp2.set(color2.r, color2.g, color2.b).scl(interpolation);
+        tmp1.add(tmp2);
+
+        return colorTmp.set(tmp1.x, tmp1.y, tmp1.z, color1.a * (1 - interpolation) + color2.a * interpolation);
     }
 }

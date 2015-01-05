@@ -67,6 +67,7 @@ public class EnormousGlutton extends Enemy {
     public void update(float delta) {
         if(!barAdded){
             Controller.getUserInterface().addBossHealthBar("Enormous Glutton");
+            barAdded=true;
         }
         if(stats.getHealthPoints()<0){
             killYourself();
@@ -146,7 +147,7 @@ public class EnormousGlutton extends Enemy {
     @Override
     public void addToBox2dWorld(World world) {
         this.world = world;
-
+        barAdded = false;
         //Player body definition
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(lastKnownX,lastKnownY);

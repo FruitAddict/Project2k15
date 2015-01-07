@@ -13,6 +13,7 @@ import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.Value;
 import com.fruit.game.logic.objects.effects.OnDamageTakenEffect;
 import com.fruit.game.logic.objects.effects.OnHitEffect;
+import com.fruit.game.logic.objects.effects.onhit.ForkOnHit;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.projectiles.PlayerProjectile;
 import com.fruit.game.logic.objects.entities.Character;
@@ -60,7 +61,7 @@ public class Player extends Character implements Constants {
         setEntityID(GameObject.PLAYER);
         stats.setMaxVelocity(4);
         stats.setSpeed(0.25f);
-        setSaveInRooms(false);
+        setSaveInRooms(true);
         stats.setHealthPoints(100);
         stats.setBaseMaximumHealthPoints(100);
         stats.setAttackSpeed(0.3f);
@@ -76,6 +77,8 @@ public class Player extends Character implements Constants {
         nextLevelExpRequirement = 25;
         stats.setNumberOfProjectiles(1);
         stats.setKnockBack(5);
+
+
     }
 
     public void attack(float directionPercentX, float directionPercentY){
@@ -209,7 +212,7 @@ public class Player extends Character implements Constants {
         bodyDef.position.set(spawnCoordX,spawnCoordY);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
-        bodyDef.linearDamping = 3.0f;
+        bodyDef.linearDamping = GLOBAL_MOVEMENT_DAMPING;
         bodyDef.allowSleep = false;
 
         //create the body
@@ -225,7 +228,7 @@ public class Player extends Character implements Constants {
         fixtureDef.density = 1000f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = PLAYER_BIT;
-        fixtureDef.filter.maskBits= PROJECTILE_BIT |CLUTTER_BIT | TERRAIN_BIT |ENEMY_BIT | PORTAL_BIT | ITEM_BIT |TREASURE_BIT |DETECTOR_BIT | AREA_OF_EFFECT_BIT;
+        fixtureDef.filter.maskBits= PLAYER_BIT | PROJECTILE_BIT |CLUTTER_BIT | TERRAIN_BIT |ENEMY_BIT | PORTAL_BIT | ITEM_BIT |TREASURE_BIT |DETECTOR_BIT | AREA_OF_EFFECT_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape
@@ -245,6 +248,10 @@ public class Player extends Character implements Constants {
             onDeath();
         }
         stateTime += delta;
+        if(steeringBehavior!=null){
+            steeringBehavior.calculateSteering(steeringOutput);
+            applySteering(delta);
+        }
     }
 
     private void onDeath() {

@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.fruit.game.Controller;
 import com.fruit.game.MainGame;
 import com.fruit.game.logic.WorldUpdater;
+import com.fruit.game.logic.input.CustomGestureProcessor;
 import com.fruit.game.logic.input.CustomInputMultiplexer;
 import com.fruit.game.logic.input.WorldInputProcessor;
 import com.fruit.game.maps.MapManager;
@@ -67,7 +68,7 @@ public class GameScreen implements Screen {
 
         //input stuff
         worldInputProcessor = new WorldInputProcessor(worldUpdater.getObjectManager().getPlayer(), camera);
-        customInputMultiplexer = new CustomInputMultiplexer(userInterface, worldInputProcessor);
+        customInputMultiplexer = new CustomInputMultiplexer(userInterface, worldInputProcessor, new CustomGestureProcessor(worldUpdater.getObjectManager().getPlayer()));
         Gdx.input.setInputProcessor(customInputMultiplexer);
 
         //make camera follow the player

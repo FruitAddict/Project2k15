@@ -2,6 +2,7 @@ package com.fruit.game.logic.objects.entities;
 
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
+import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.game.Controller;
@@ -41,6 +42,7 @@ public abstract class Character extends GameObject implements Steerable<Vector2>
             new SteeringAcceleration<Vector2>(new Vector2());
     //temporary speed vector
     private Vector2 newVelocity = new Vector2();
+    protected SteeringBehavior<Vector2> steeringBehavior;
 
     public void setFacings(boolean bool){
         //sets all the facing booleans to @bool.
@@ -293,6 +295,9 @@ public abstract class Character extends GameObject implements Steerable<Vector2>
 
     }
 
+    public void changeSteeringBehavior(SteeringBehavior<Vector2> steeringBehavior){
+        this.steeringBehavior = steeringBehavior;
+    }
     protected void applySteering (float deltaTime){
         addLinearVelocity(steeringOutput.linear.x*deltaTime , steeringOutput.linear.y*deltaTime);
     }

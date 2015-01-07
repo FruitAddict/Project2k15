@@ -2,6 +2,7 @@ package com.fruit.game.logic.objects.effects;
 
 import com.fruit.game.logic.objects.Value;
 import com.fruit.game.logic.objects.entities.Character;
+import com.fruit.game.logic.objects.entities.Projectile;
 
 /**t
  * @Author FruitAddict
@@ -14,9 +15,11 @@ public abstract class OnHitEffect {
     public static final int EXPLODE_ON_HIT = 3;
     //instance effect id
     private int effectID;
+    //owner
+    protected Projectile projectile;
 
     //what happens when enemy is hit
-    public abstract void onHit(Character enemy, Value damage);
+    public abstract void onHit(Projectile proj,Character enemy, Value damage);
 
     public abstract void join(OnHitEffect onHitEffect);
 

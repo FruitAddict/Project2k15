@@ -22,6 +22,7 @@ public class ItemAnimationPack implements Constants {
     private Sprite piercingProjectilesSprite;
     private Sprite moreProjectilesSprite;
     private Sprite michaelBaySprite;
+    private Sprite forkingProjectilesSprite;
     private boolean loaded = false;
 
     public void load(){
@@ -43,6 +44,8 @@ public class ItemAnimationPack implements Constants {
             moreProjectilesSprite = new Sprite(morePRojectilesTexture);
             Texture michaelBayTexture = (Texture)Assets.getAsset("items//bayx2.png",Texture.class);
             michaelBaySprite = new Sprite(michaelBayTexture);
+            Texture forkingProjectilesTexture = (Texture)Assets.getAsset("items//tridentx2.png",Texture.class);
+            forkingProjectilesSprite = new Sprite(forkingProjectilesTexture);
             loaded = true;
         }
     }
@@ -81,6 +84,11 @@ public class ItemAnimationPack implements Constants {
            }
            case Item.MICHAEL_BAY: {
                batch.draw(michaelBaySprite,pos.x,pos.y,item.getWidth(),item.getHeight());
+               break;
+           }
+           case Item.FORKING_PROJECTILES:{
+               batch.draw(forkingProjectilesSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
+               break;
            }
        }
     }
@@ -98,6 +106,9 @@ public class ItemAnimationPack implements Constants {
             }
             case Item.MORE_PROJECTILES:{
                 return moreProjectilesSprite;
+            }
+            case Item.FORKING_PROJECTILES:{
+                return forkingProjectilesSprite;
             }
             default:{
                 return heartSprite;

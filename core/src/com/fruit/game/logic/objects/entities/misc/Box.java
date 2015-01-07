@@ -46,7 +46,7 @@ public class Box extends Enemy {
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(lastKnownX,lastKnownY);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.linearDamping = 1.0f;
+        bodyDef.linearDamping = GLOBAL_MOVEMENT_DAMPING;
         bodyDef.fixedRotation = true;
 
         //create the body

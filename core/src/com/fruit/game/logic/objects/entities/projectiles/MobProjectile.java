@@ -19,6 +19,7 @@ public class MobProjectile extends Projectile {
     protected Vector2 direction;
     protected float spawnX;
     protected float spawnY;
+    private float startAngle = 20;
 
 
     public MobProjectile(ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity, int damage){
@@ -43,9 +44,8 @@ public class MobProjectile extends Projectile {
     }
     @Override
     public void update(float delta) {
-        stateTime+=delta;
+        stateTime += delta;
     }
-
     @Override
     public void addToBox2dWorld(World world) {
 
@@ -55,7 +55,7 @@ public class MobProjectile extends Projectile {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         bodyDef.allowSleep = false;
-        bodyDef.linearVelocity.set(direction.scl(velocity));
+        bodyDef.linearVelocity.set(direction.cpy().scl(velocity));
 
         //create the body
         body = world.createBody(bodyDef);
@@ -84,4 +84,6 @@ public class MobProjectile extends Projectile {
         objectManager.removeObject(this);
         //SoundManager.sound.play();
     }
+
+
 }

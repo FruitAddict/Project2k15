@@ -90,7 +90,7 @@ public class MindlessWalker extends Enemy implements Constants {
             attackDirectionNormalized.y*=-1;
             MobProjectileWithEffect proj = new MobProjectileWithEffect(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized, 5f, 1, new OnHitEffect() {
                 @Override
-                public void onHit(Character enemy, Value damage) {
+                public void onHit(Projectile proj, Character enemy, Value damage) {
                     objectManager.addObject(new MindlessWalker(objectManager,enemy.getPosition().x,enemy.getPosition().y,3));
                     reference.stats.setHealthPoints(reference.stats.getBaseMaximumHealthPoints());
                 }
@@ -117,7 +117,7 @@ public class MindlessWalker extends Enemy implements Constants {
         bodyDef.position.set(lastKnownX,lastKnownY);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
-        bodyDef.linearDamping = 3.0f;
+        bodyDef.linearDamping = GLOBAL_MOVEMENT_DAMPING;
         bodyDef.allowSleep = false;
 
         //create the body

@@ -1,14 +1,12 @@
 package com.fruit.game.visual.ui;
 
 
-import aurelienribon.tweenengine.Timeline;
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.equations.Quad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -17,20 +15,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.fruit.game.Configuration;
 import com.fruit.game.Controller;
 import com.fruit.game.logic.WorldUpdater;
-import com.fruit.game.logic.objects.entities.Enemy;
 import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.logic.objects.items.Item;
 import com.fruit.game.maps.Room;
 import com.fruit.game.screens.MainMenuScreen;
 import com.fruit.game.visual.Assets;
 import com.fruit.game.visual.GameCamera;
-import com.fruit.game.visual.tween.OnScreenMessageAccessor;
-import com.fruit.game.visual.tween.TweenUtils;
 import pl.kotcrab.vis.ui.VisTable;
 import pl.kotcrab.vis.ui.VisUI;
 import pl.kotcrab.vis.ui.widget.*;
 
-import java.util.PriorityQueue;
 
 /**
  * @Author FruitAddict
@@ -50,6 +44,8 @@ public class UserInterface extends Stage {
     private TextButton menuButtonPortrait;
     private VisWindow optionsWindow;
     private MessageHandler messageHandler;
+    private float angle;
+    private Vector2 movementVector;
 
     public UserInterface(GameCamera camera, WorldUpdater worldUpdater){
         this.gameCamera = camera;
@@ -57,6 +53,7 @@ public class UserInterface extends Stage {
         miniMapContainer = new Container<>();
         Controller.registerUserInterface(this);
         messageHandler = new MessageHandler(this);
+        movementVector = new Vector2();
         //init gui
         initializeGUI();
     }
@@ -132,6 +129,7 @@ public class UserInterface extends Stage {
         characterWindowContainer.setActor(characterWindow);
         characterWindowContainer.setFillParent(true);
         characterWindowContainer.center();
+        characterWindow.pack();
         this.addActor(characterWindowContainer);
 
         menuButtonPortrait.addListener(new ChangeListener() {
@@ -291,7 +289,7 @@ public class UserInterface extends Stage {
         containerAttack.align(Align.bottomRight);
         containerAttack.setFillParent(true);
 
-        addActor(containerMove);
+        //addActor(containerMove);
         addActor(containerAttack);
     }
 
@@ -364,7 +362,7 @@ public class UserInterface extends Stage {
         VisLabel survivalTime = new VisLabel(String.format("You've survived for %02d:%02d",minutes,seconds));
         survivalTime.setWrap(true);
         survivalTime.setFontScale(0.8f);
-        VisLabel slainEnemies = new VisLabel("You've slain "+player.getSlainEnemies()+" enemies");
+        VisLabel slainEnemies = new VisLabel("You've slain "+(int)player.getSlainEnemies()+" enemies");
         slainEnemies.setWrap(true);
         slainEnemies.setFontScale(0.8f);
         VisLabel seedLabel = new VisLabel("Map seed: "+ Configuration.seed);
@@ -382,13 +380,27 @@ public class UserInterface extends Stage {
 
 
 
-
     @Override
     public void act(float delta){
         super.act(delta);
+        float angle;
         if(touchpadMove.getKnobPercentX()!=0 && touchpadMove.getKnobPercentY()!=0) {
-            worldUpdater.getObjectManager().getPlayer().addLinearVelocity(touchpadMove.getKnobPercentX() * worldUpdater
-                    .getObjectManager().getPlayer().stats.getSpeed(), touchpadMove.getKnobPercentY() * worldUpdater.getObjectManager().getPlayer().stats.getSpeed());
+            //worldUpdater.getObjectManager().getPlayer().addLinearVelocity(touchpadMove.getKnobPercentX() * worldUpdater
+            //        .getObjectManager().getPlayer().stats.getSpeed(), touchpadMove.getKnobPercentY() * worldUpdater.getObjectManager().getPlayer().stats.getSpeed());
+            angle = movementVector.set(touchpadMove.getKnobPercentX(),touchpadMove.getKnobPercentY()).angle();
+            if(angle > 45 && angle <= 135){
+                worldUpdater.getObjectManager().getPlayer().addLinearVelocity(0,worldUpdater.getObjectManager().getPlayer().stats.getSpeed());
+            }
+            else if(angle>135 && angle <= 225){
+                worldUpdater.getObjectManager().getPlayer().addLinearVelocity(-worldUpdater.getObjectManager().getPlayer().stats.getSpeed(),0);
+            }
+            else if(angle>225 && angle <= 315){
+                worldUpdater.getObjectManager().getPlayer().addLinearVelocity(0,-worldUpdater.getObjectManager().getPlayer().stats.getSpeed());
+
+            }
+            else if(angle > 315 || angle <= 45){
+                worldUpdater.getObjectManager().getPlayer().addLinearVelocity(worldUpdater.getObjectManager().getPlayer().stats.getSpeed(),0);
+            }
         }
         //update attacking
         if(touchpadAttack.getKnobPercentY()!=0 && touchpadAttack.getKnobPercentX()!=0) {
@@ -407,155 +419,7 @@ public class UserInterface extends Stage {
         return messageHandler;
     }
 
-    public class MessageHandler {
-        private VisLabel messageLabel;
-        private PriorityQueue<OnScreenMessage> messageQueue;
-        private Stage stage;
-        private float messageTimer;
-        private OnScreenMessage currentMsg;
 
-        public MessageHandler(Stage stage){
-            Tween.registerAccessor(OnScreenMessage.class, new OnScreenMessageAccessor());
-            messageLabel = new VisLabel();
-            messageQueue = new PriorityQueue<>();
-            messageLabel.setAlignment(Align.bottom);
-            messageLabel.setFillParent(true);
-            stage.addActor(messageLabel);
-            this.stage = stage;
-        }
-
-        public void update(float delta){
-            if(currentMsg != null && messageTimer > currentMsg.time){
-                if(!messageQueue.isEmpty()){
-                    System.out.println("setting new message");
-                    currentMsg = messageQueue.poll();
-                    messageLabel.setText(currentMsg.message);
-                    messageTimer = 0;
-                    startTween();
-                }else {
-                    currentMsg = null;
-                    messageLabel.setText("");
-                    messageTimer = 0;
-                }
-            }else if(currentMsg == null && !messageQueue.isEmpty()){
-                System.out.println("setting new message");
-                currentMsg = messageQueue.poll();
-                messageLabel.setText(currentMsg.message);
-                messageTimer = 0;
-                startTween();
-            }
-            if(currentMsg!=null){
-                messageTimer+=delta;
-                messageLabel.setColor(currentMsg.getColor().r,currentMsg.getColor().g,currentMsg.getColor().b,currentMsg.getAlpha());
-                messageLabel.setPosition(messageLabel.getX(),currentMsg.posY);
-                messageLabel.setFontScale(currentMsg.getScale());
-            }
-        }
-
-        public void startTween() {
-                //starts the tweening sequence
-            Timeline.createSequence()
-                    .push(Tween.set(currentMsg, OnScreenMessageAccessor.ALPHA).target(0f))
-                    .push(Tween.set(currentMsg, OnScreenMessageAccessor.POSITION_Y).target(currentMsg.getPosY()))
-                    .push(Tween.set(currentMsg,OnScreenMessageAccessor.SCALE).target(0.9f))
-                    .beginParallel()
-                    .push(Tween.to(currentMsg, OnScreenMessageAccessor.POSITION_Y, currentMsg.time * 2 / 3).target(currentMsg.getPosY() + 35).ease(Quad.INOUT))
-                    .push(Tween.to(currentMsg, OnScreenMessageAccessor.ALPHA, currentMsg.time * 2 / 3).target(1f))
-                    .push(Tween.to(currentMsg, OnScreenMessageAccessor.SCALE, currentMsg.time * 2 / 3).target(1f))
-                    .end()
-                    .beginParallel()
-                    .push(Tween.to(currentMsg, OnScreenMessageAccessor.POSITION_Y, currentMsg.time * 1 / 3).target(currentMsg.getPosY()).ease(Quad.INOUT))
-                    .push(Tween.to(currentMsg, OnScreenMessageAccessor.ALPHA, currentMsg.time * 1 / 3).target(0f))
-                    .push(Tween.to(currentMsg, OnScreenMessageAccessor.SCALE, currentMsg.time * 1 / 3).target(0.9f))
-                    .end()
-                    .start(TweenUtils.tweenManager);
-        }
-
-
-        public void addMessage(String message, Color color, float lifespan){
-            messageQueue.offer(new OnScreenMessage(message,color,lifespan));
-        }
-
-        public class OnScreenMessage implements Comparable<OnScreenMessage>{
-            private String message;
-            private Color color;
-            private float time;
-            private float alpha;
-            private float posX, posY;
-            private int priority;
-            private float scale;
-
-            public OnScreenMessage(String msg, Color color, float time, int priority){
-                this.message = msg;
-                this.color = color;
-                this.time = time;
-                this.priority = priority;
-                posY = Controller.getUserInterface().getViewport().getScreenY()/3f;
-                scale = 1;
-            }
-
-            public OnScreenMessage(String msg, Color color, float time){
-                this.message = msg;
-                this.color = color;
-                this.time = time;
-                this.priority = 1;
-                scale = 1;
-                posY = Controller.getUserInterface().getViewport().getScreenY()/3f;
-                System.out.println(Controller.getUserInterface().getHeight() / 3f);
-                System.out.println(Controller.getUserInterface().getHeight() / 2f);
-                System.out.println(Controller.getUserInterface().getHeight());
-            }
-
-            public float getAlpha() {
-                return alpha;
-            }
-
-            public void setAlpha(float alpha) {
-                this.alpha = alpha;
-            }
-
-            public float getPosX() {
-                return posX;
-            }
-
-            public void setPosX(float posX) {
-                this.posX = posX;
-            }
-
-            public float getPosY() {
-                return posY;
-            }
-
-            public void setPosY(float posY) {
-                this.posY = posY;
-            }
-
-            public float getScale() {
-                return scale;
-            }
-
-            public void setScale(float scale) {
-                this.scale = scale;
-            }
-
-            @Override
-            public int compareTo(OnScreenMessage another) {
-                if(priority > another.priority){
-                    return 1;
-                }
-                else if( priority == another.priority){
-                    return 0;
-                } else {
-                    return -1;
-                }
-            }
-
-            public Color getColor() {
-                return color;
-            }
-        }
-
-    }
 
     private class CharacterWindow extends VisWindow{
         VisLabel levelInfoLabel;
@@ -577,12 +441,12 @@ public class UserInterface extends Stage {
             this.player = player;
             levelInfoLabel = new VisLabel();
             levelInfoLabel.setFontScale(0.8f);
-            levelInfoLabel.setColor(Color.RED);
+            levelInfoLabel.setColor(Color.OLIVE);
             add(levelInfoLabel).width(300).height(50).colspan(2);
             row();
             statPointLabel = new VisLabel();
             statPointLabel.setFontScale(0.8f);
-            statPointLabel.setColor(Color.RED);
+            statPointLabel.setColor(Color.OLIVE);
             add(statPointLabel).width(300).height(50).colspan(2);
             row();
             hpLabel = new VisLabel();

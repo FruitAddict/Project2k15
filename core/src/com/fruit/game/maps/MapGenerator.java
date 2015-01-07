@@ -1,10 +1,13 @@
 package com.fruit.game.maps;
 
+import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
+import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.logic.objects.items.DamageUp;
+import com.fruit.game.logic.objects.items.ForkingProjectiles;
 import com.fruit.game.logic.objects.items.ItemManager;
 import com.fruit.game.logic.objects.entities.enemies.MindlessWalker;
 import com.fruit.game.logic.objects.entities.enemies.TheEye;
@@ -125,9 +128,6 @@ public class MapGenerator {
         }
         //set current room to the one in the center
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
-        map.getCurrentRoom().addGameObject(new DamageUp(mapManager.getWorldUpdater().getObjectManager(), 4, 4));
-        map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(),6,4));
-
         MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater(), map.getCurrentRoom());
         return map;
     }

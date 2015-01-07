@@ -1,6 +1,7 @@
 package com.fruit.game.logic.objects.entities.bosses;
 
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.steer.behaviors.MatchVelocity;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.math.Vector2;
@@ -78,6 +79,7 @@ public class EnormousGlutton extends Enemy {
         updateFacing();
         stateTime+=delta;
         steeringBehavior.calculateSteering(steeringOutput);
+        steeringOutput.linear.scl(-1);
         applySteering(delta);
 
         if(status.isAttackedByPlayer()){
@@ -98,7 +100,7 @@ public class EnormousGlutton extends Enemy {
             attackDirectionNormalized.y*=-1;
             OnHitEffect spawnShit = new OnHitEffect() {
                 @Override
-                public void onHit(Character enemy, Value damage) {
+                public void onHit(Projectile projectile1, Character enemy, Value damage) {
                     objectManager.addObject(new MindlessWalker(objectManager,enemy.getPosition().x,enemy.getPosition().y,3));
                 }
 
@@ -153,7 +155,7 @@ public class EnormousGlutton extends Enemy {
         bodyDef.position.set(lastKnownX,lastKnownY);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
-        bodyDef.linearDamping = 3.0f;
+        bodyDef.linearDamping = GLOBAL_MOVEMENT_DAMPING;
         bodyDef.allowSleep = false;
 
         //create the body
@@ -182,7 +184,7 @@ public class EnormousGlutton extends Enemy {
             status.setAttackedByPlayer(true);
             super.onDamageTaken(value);
             if(!enragedBehavior){
-                changeSteeringBehavior(new Seek<Vector2>(this,Controller.getWorldUpdater().getPlayer()));
+                changeSteeringBehavior(new MatchVelocity<Vector2>(this,Controller.getWorldUpdater().getPlayer()));
                 enragedBehavior = true;
             }
         }

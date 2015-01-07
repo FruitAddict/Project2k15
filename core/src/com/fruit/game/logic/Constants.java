@@ -25,5 +25,7 @@ public interface Constants {
     //Room storage filtering ID's (whether a game object shold be saved in a room after leaving it or not)
     public final int DONT_SAVE = 10001;
     public final int DO_SAVE = 10002;
+    //other
+    public final float GLOBAL_MOVEMENT_DAMPING = 5.0f;
 
 }

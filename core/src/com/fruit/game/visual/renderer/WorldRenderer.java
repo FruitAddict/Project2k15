@@ -12,7 +12,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.game.Controller;
 import com.fruit.game.logic.Constants;
@@ -56,6 +58,9 @@ import com.fruit.game.visual.tween.TweenUtils;
      private Array<GameObject> temporaryObjectArray;
      //when this boolean is true, some of the rendering functionality will halt.
      private boolean paused = false;
+     //debug renderer
+     Box2DDebugRenderer debugRenderer;
+     Matrix4 debugMatrix = new Matrix4();
 
 
      public WorldRenderer(SpriteBatch batch, GameCamera camera, WorldUpdater worldUpdater) {
@@ -74,6 +79,10 @@ import com.fruit.game.visual.tween.TweenUtils;
              lightRenderer.addPointLight(container.color, container.length, container.position.x, container.position.y, true);
          }
          temporaryObjectArray = new Array<GameObject>();
+         //debug draw
+         debugMatrix=new Matrix4(camera.combined);
+         debugMatrix.scale(1/PIXELS_TO_UNITS,1/PIXELS_TO_UNITS, 1f);
+         debugRenderer=new Box2DDebugRenderer();
      }
 
      public void render(float delta) {

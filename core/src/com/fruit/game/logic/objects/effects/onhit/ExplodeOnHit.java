@@ -5,6 +5,7 @@ import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.objects.Value;
 import com.fruit.game.logic.objects.effects.OnHitEffect;
 import com.fruit.game.logic.objects.entities.Character;
+import com.fruit.game.logic.objects.entities.Projectile;
 import com.fruit.game.logic.objects.entities.misc.Explosion;
 import com.fruit.game.logic.objects.entities.player.Player;
 
@@ -22,7 +23,7 @@ public class ExplodeOnHit extends OnHitEffect implements Constants {
     }
 
     @Override
-    public void onHit(Character enemy, Value damage) {
+    public void onHit(Projectile proj, Character enemy, Value damage) {
         if(explosionCount >0) {
             player.getObjectManager().addObject(new Explosion(player.getObjectManager(),enemy.getBody().getPosition().x,enemy.getBody().getPosition().y,1f,1f,2));
             explosionCount--;

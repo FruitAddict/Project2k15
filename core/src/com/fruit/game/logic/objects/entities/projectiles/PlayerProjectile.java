@@ -52,7 +52,7 @@ public class PlayerProjectile extends Projectile {
     @Override
     public void onHit(Character character){
         for(OnHitEffect onHitEffect : onHitEffects ){
-            onHitEffect.onHit((Enemy)character,damage);
+            onHitEffect.onHit(this,character,damage);
         }
         character.onDamageTaken(damage);
         character.getBody().applyLinearImpulse(new Vector2(character.getBody().getPosition().x - character.getBody().getPosition().x
@@ -71,7 +71,7 @@ public class PlayerProjectile extends Projectile {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         bodyDef.allowSleep = false;
-        bodyDef.linearVelocity.set(direction.scl(velocity));
+        bodyDef.linearVelocity.set(direction.cpy().scl(velocity));
 
         //create the body
         body = world.createBody(bodyDef);

@@ -1,13 +1,11 @@
 package com.fruit.game.visual.tween;
 
 import aurelienribon.tweenengine.TweenAccessor;
-import com.fruit.game.visual.ui.UserInterface;
-import com.fruit.game.visual.ui.UserInterface.MessageHandler;
-
+import com.fruit.game.visual.ui.MessageHandler;
 /**
  * @Author FruitAddict
  */
-public class OnScreenMessageAccessor implements TweenAccessor<UserInterface.MessageHandler.OnScreenMessage> {
+public class OnScreenMessageAccessor implements TweenAccessor<MessageHandler.OnScreenMessage> {
     public static final int POSITION_X = 0;
     public static final int POSITION_Y = 1;
     public static final int ALPHA = 2;

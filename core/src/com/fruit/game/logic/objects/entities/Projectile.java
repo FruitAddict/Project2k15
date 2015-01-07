@@ -19,10 +19,8 @@ public abstract class Projectile extends GameObject {
     //spawn coordinates
     protected float spawnX;
     protected float spawnY;
-
     //state time
     public float stateTime;
-
     //projectile type
     protected int typeID;
 
@@ -30,8 +28,11 @@ public abstract class Projectile extends GameObject {
     protected Value damage;
     //speed of this velocity in logic units/s
     protected float velocity;
+
     //radius of the projectile
     protected float radius;
+    //boolean marking projecitle as forked
+    private boolean forked = false;
 
     public abstract void onHit(Character character);
 
@@ -44,5 +45,46 @@ public abstract class Projectile extends GameObject {
     public void setTypeID(int typeID) {
         this.typeID = typeID;
     }
+    public float getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(float velocity) {
+        this.velocity = velocity;
+    }
+
+    public Vector2 getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Vector2 direction) {
+        this.direction = direction;
+    }
+
+
+    public boolean isForked() {
+        return forked;
+    }
+
+    public void setForked(boolean forked) {
+        this.forked = forked;
+    }
+
+    public float getRadius() {
+        return radius;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
+    }
+
+    public Value getDamage() {
+        return damage;
+    }
+
+    public void setDamage(Value damage) {
+        this.damage = damage;
+    }
+
 
 }

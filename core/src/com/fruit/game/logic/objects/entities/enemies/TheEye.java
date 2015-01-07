@@ -105,7 +105,7 @@ public class TheEye extends Enemy {
         bodyDef.position.set(lastKnownX,lastKnownY);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
-        bodyDef.linearDamping = 3.0f;
+        bodyDef.linearDamping = GLOBAL_MOVEMENT_DAMPING;
         bodyDef.allowSleep = false;
 
         //create the body

@@ -46,7 +46,7 @@ public class LightRenderer implements Constants {
         activeLights = new Array<PoolablePointLight>();
 
         //point light reserved for player.
-        playerLight = new PointLight(rayHandler,20);
+        playerLight = new PointLight(rayHandler,12);
     }
 
     public void render(){

@@ -19,7 +19,7 @@ public class MobProjectileWithEffect extends MobProjectile {
     @Override
     public void onHit(Character character){
         super.onHit(character);
-        onHitEffect.onHit(character, damage);
+        onHitEffect.onHit(this,character, damage);
     }
 
 }

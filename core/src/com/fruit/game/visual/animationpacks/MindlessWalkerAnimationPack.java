@@ -42,7 +42,7 @@ public class MindlessWalkerAnimationPack implements Constants {
         //nullify the old references
         if(!loaded) {
             pos = new Vector2();
-            Texture testPlayerTexture = (Texture) Assets.getAsset("slime.png", Texture.class);
+            Texture testPlayerTexture = (Texture) Assets.getAsset("v2.png", Texture.class);
             TextureRegion[][] tmp = TextureRegion.split(testPlayerTexture, testPlayerTexture.getWidth() / 4, testPlayerTexture.getHeight() / 4);
             playerSouthRegion = new TextureRegion[4];
             playerNorthRegion = new TextureRegion[4];

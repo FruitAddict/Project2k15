@@ -199,7 +199,6 @@ public abstract class Character extends GameObject implements Steerable<Vector2>
         else if(newVelocity.y < -stats.getMaxVelocity()){
             newVelocity.y = -stats.getMaxVelocity();
         }
-
         body.setLinearVelocity(newVelocity);
     }
 

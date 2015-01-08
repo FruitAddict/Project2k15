@@ -250,6 +250,7 @@ public class Player extends Character implements Constants {
         stateTime += delta;
         if(steeringBehavior!=null){
             steeringBehavior.calculateSteering(steeringOutput);
+            steeringOutput.scl(-1);
             applySteering(delta);
         }
     }
@@ -294,6 +295,7 @@ public class Player extends Character implements Constants {
         level+=1;
         statPoints+=1;
         Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement,statPoints);
+        Controller.getUserInterface().updateIcon(statPoints);
     }
 
     public int getLevel() {

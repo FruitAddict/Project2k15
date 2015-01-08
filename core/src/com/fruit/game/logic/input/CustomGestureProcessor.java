@@ -2,6 +2,7 @@ package com.fruit.game.logic.input;
 
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.fruit.game.Controller;
 import com.fruit.game.logic.objects.entities.player.Player;
 
 /**
@@ -42,7 +43,9 @@ public class CustomGestureProcessor implements GestureDetector.GestureListener {
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         System.out.println(x+" "+y+" | "+deltaX+" "+deltaY);
-        gestureDetector.invalidateTapSquare();
+        if(deltaX>0){
+
+        }
         //stillMoving = true;
         return false;
     }

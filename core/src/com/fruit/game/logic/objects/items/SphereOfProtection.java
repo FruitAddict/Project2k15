@@ -52,35 +52,6 @@ public class SphereOfProtection extends Item {
     }
 
     @Override
-    public void addToBox2dWorld(World world) {
-        //Player body definition
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(lastKnownX,lastKnownY);
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.linearDamping = 1.0f;
-        bodyDef.fixedRotation = true;
-
-        //create the body
-        body = world.createBody(bodyDef);
-        body.setUserData(this);
-
-        //Shape definiton
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/ PIXELS_TO_UNITS /2,height/ PIXELS_TO_UNITS /2);
-
-        //fixture
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.density = 50f;
-        fixtureDef.shape = shape;
-        fixtureDef.filter.categoryBits = ITEM_BIT;
-        fixtureDef.filter.maskBits = PLAYER_BIT | TERRAIN_BIT | PORTAL_BIT| ITEM_BIT | ENEMY_BIT;
-        body.createFixture(fixtureDef);
-
-        //dispose shape
-        shape.dispose();
-    }
-
-    @Override
     public void killYourself() {
         objectManager.removeObject(this);
         Controller.getUserInterface().getMessageHandler().addMessage("You're protected.", Color.GREEN, 3f);

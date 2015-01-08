@@ -132,7 +132,7 @@ public class OnCharacterEffectPack {
                 break;
             }
             case POISONED: {
-                batch.draw(poisonedAnimation.getKeyFrame(stateTime,true),x,y+48,width,20);
+                batch.draw(poisonedAnimation.getKeyFrame(stateTime,true),x,y+height,width,height/4);
                 break;
             }
             case BURNING:{

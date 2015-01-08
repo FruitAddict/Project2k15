@@ -1,12 +1,10 @@
 package com.fruit.game.maps;
 
-import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.fruit.game.Configuration;
 import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
-import com.fruit.game.logic.objects.entities.player.Player;
-import com.fruit.game.logic.objects.items.DamageUp;
 import com.fruit.game.logic.objects.items.ForkingProjectiles;
 import com.fruit.game.logic.objects.items.ItemManager;
 import com.fruit.game.logic.objects.entities.enemies.MindlessWalker;
@@ -103,19 +101,22 @@ public class MapGenerator {
                         Vector2 position = map.getRoomMatrix()[i][j].getMobSpawnPoints().get(Utils.mapRandomNumberGenerator.nextInt(map.getRoomMatrix()[i][j].getMobSpawnPoints().size));
 
                         if(roll>90) {
-                            Box box = new Box(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y);
+                            Box box = new Box(mapManager.getWorldUpdater().getObjectManager(), position.x+(Utils.randomGenerator.nextFloat()/10)
+                                    , position.y+(Utils.randomGenerator.nextFloat()/10));
                             ItemManager.addItemToEnemy(mapManager.getWorldUpdater().getObjectManager(),box,ItemManager.TYPE_RARE);
                             map.getRoomMatrix()[i][j].addGameObject(box);
                         }else {
                             roll = Utils.mapRandomNumberGenerator.nextInt(100);
                             if(roll>86) {
-                                TheEye theEye = new TheEye(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y);
+                                TheEye theEye = new TheEye(mapManager.getWorldUpdater().getObjectManager(), position.x+(Utils.randomGenerator.nextFloat()/10)
+                                        , position.y+(Utils.randomGenerator.nextFloat()/10));
                                 if(Utils.mapRandomNumberGenerator.nextInt(100)>50){
                                     ItemManager.addItemToEnemy(mapManager.getWorldUpdater().getObjectManager(),theEye,ItemManager.TYPE_COMMON);
                                 }
                                 map.getRoomMatrix()[i][j].addGameObject(theEye);
                             }else {
-                                MindlessWalker mindlessWalker = new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(), position.x, position.y,1);
+                                MindlessWalker mindlessWalker = new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(), position.x+(Utils.randomGenerator.nextFloat()/10)
+                                        , position.y+(Utils.randomGenerator.nextFloat()/10),1);
                                 if(Utils.mapRandomNumberGenerator.nextInt(100)>50){
                                     ItemManager.addItemToEnemy(mapManager.getWorldUpdater().getObjectManager(),mindlessWalker,ItemManager.TYPE_COMMON);
                                 }
@@ -128,7 +129,12 @@ public class MapGenerator {
         }
         //set current room to the one in the center
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
+        if(Configuration.debugItemsEnabled) {
+            map.getCurrentRoom().addGameObject(new ForkingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 4, 4));
+            map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 5, 4));
+        }
         MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater(), map.getCurrentRoom());
+
         return map;
     }
 

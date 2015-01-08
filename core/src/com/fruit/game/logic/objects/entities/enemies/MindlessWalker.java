@@ -61,8 +61,8 @@ public class MindlessWalker extends Enemy implements Constants {
         attackDirectionNormalized = new Vector2();
         lastKnownPlayerPosition = new Vector2();
 
-        width = 32*2/generationNumber;
-        height = 48*2/generationNumber;
+        width = 32*1.5f/generationNumber;
+        height = 48*1.5f/generationNumber;
 
 
         steeringBehavior = new Wander<Vector2>(this).setWanderRadius(4).setWanderOrientation(15f);

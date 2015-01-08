@@ -57,8 +57,19 @@ public class MainMenuScreen implements Screen {
         VisLabel infoSeedLabel = new VisLabel("Seed: ");
         VisTextButton confirmButton = new VisTextButton("Confirm");
 
+        final VisLabel infoJoyStickEnabled = new VisLabel("Joystick: ");
+        final VisTextButton joystickbutton = new VisTextButton(Configuration.joyStickSteeringEnabled?"Enabled":"Disabled");
+        final VisLabel infoDebug = new VisLabel("Debug: ");
+        final VisTextButton debugButton = new VisTextButton(Configuration.debugItemsEnabled?"Enabled":"Disabled");
+
         optionsWindow.add(infoSeedLabel);
-        optionsWindow.add(seedField);
+        optionsWindow.add(seedField).width(200);
+        optionsWindow.row();
+        optionsWindow.add(infoJoyStickEnabled);
+        optionsWindow.add(joystickbutton).width(200);
+        optionsWindow.row();
+        optionsWindow.add(infoDebug);
+        optionsWindow.add(debugButton).width(200);
         optionsWindow.row();
         optionsWindow.add(confirmButton).colspan(3);
         optionsWindow.setTitleAlignment(Align.center);
@@ -134,6 +145,20 @@ public class MainMenuScreen implements Screen {
                 Assets.disposeAll();
                 TextRenderer.disposeAllFonts();
                 Gdx.app.exit();
+            }
+        });
+        joystickbutton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Configuration.joyStickSteeringEnabled = !Configuration.joyStickSteeringEnabled;
+                joystickbutton.setText(Configuration.joyStickSteeringEnabled ? "Enabled" : "Disabled");
+            }
+        });
+        debugButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Configuration.debugItemsEnabled = !Configuration.debugItemsEnabled;
+                debugButton.setText(Configuration.debugItemsEnabled ? "Enabled" : "Disabled");
             }
         });
 

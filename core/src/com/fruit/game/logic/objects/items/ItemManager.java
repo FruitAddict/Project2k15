@@ -1,7 +1,9 @@
 package com.fruit.game.logic.objects.items;
 
+import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.entities.Enemy;
+import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.utilities.Utils;
 
 /**

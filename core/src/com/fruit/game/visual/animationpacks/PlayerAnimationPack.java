@@ -111,7 +111,7 @@ public class PlayerAnimationPack implements Constants {
         if(player.facingN ){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
             batch.draw(playerHeadAnimationNorth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-26
-                    ,64,88);
+                   ,64,88);
         }else if(player.facingS ){
             batch.draw(playerAnimationSouth.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
             batch.draw(playerHeadAnimationSouth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-26
@@ -119,7 +119,7 @@ public class PlayerAnimationPack implements Constants {
         }else if(player.facingE ){
             batch.draw(playerAnimationEast.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
             batch.draw(playerheadAnimationEast.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-26
-                    ,64,88);
+                   ,64,88);
         }else if(player.facingW){
             batch.draw(playerAnimationWest.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
             batch.draw(playerHeadAnimationWest.getKeyFrame(stateTime,true),pos.x-15f  ,pos.y+player.getHeight()-26
@@ -127,9 +127,8 @@ public class PlayerAnimationPack implements Constants {
         } else {
             batch.draw(playerSouthRegion[0],pos.x,pos.y,player.getWidth(),player.getHeight());
             batch.draw(playerHeadAnimationSouth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-25
-                    ,64,88);
+                   ,64,88);
         }
-        //batch.draw(playerHead,pos.x-3.2f  ,pos.y+character.getHeight()-6,64,64);
         if(player.status.isHealing()){
             onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.HEALED,pos.x,pos.y,player.getWidth(),player.getHeight());
         }

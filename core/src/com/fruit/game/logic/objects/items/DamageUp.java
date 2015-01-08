@@ -43,39 +43,6 @@ public class DamageUp extends Item {
     }
 
     @Override
-    public void addToBox2dWorld(World world) {
-        //setting width and height
-        width = 32;
-        height = 32;
-
-        //Player body definition
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(lastKnownX,lastKnownY);
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.linearDamping = 1.0f;
-        bodyDef.fixedRotation = true;
-
-        //create the body
-        body = world.createBody(bodyDef);
-        body.setUserData(this);
-
-        //Shape definiton
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/ PIXELS_TO_UNITS /2,height/ PIXELS_TO_UNITS /2);
-
-        //fixture
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.density = 50f;
-        fixtureDef.shape = shape;
-        fixtureDef.filter.categoryBits = ITEM_BIT;
-        fixtureDef.filter.maskBits = PLAYER_BIT | TERRAIN_BIT | PORTAL_BIT | ENEMY_BIT| ITEM_BIT | ENEMY_BIT;
-        body.createFixture(fixtureDef);
-
-        //dispose shape
-        shape.dispose();
-    }
-
-    @Override
     public void onPickUp(Player player){
         player.addPassiveEffect(new com.fruit.game.logic.objects.effects.passive.DamageUp(player,1));
         //Controller.addOnScreenMessage(new TextMessage("You feel stronger..!", getBody().getPosition().x * PIXELS_TO_UNITS,

@@ -58,9 +58,6 @@ import com.fruit.game.visual.tween.TweenUtils;
      private Array<GameObject> temporaryObjectArray;
      //when this boolean is true, some of the rendering functionality will halt.
      private boolean paused = false;
-     //debug renderer
-     Box2DDebugRenderer debugRenderer;
-     Matrix4 debugMatrix = new Matrix4();
 
 
      public WorldRenderer(SpriteBatch batch, GameCamera camera, WorldUpdater worldUpdater) {
@@ -79,10 +76,6 @@ import com.fruit.game.visual.tween.TweenUtils;
              lightRenderer.addPointLight(container.color, container.length, container.position.x, container.position.y, true);
          }
          temporaryObjectArray = new Array<GameObject>();
-         //debug draw
-         debugMatrix=new Matrix4(camera.combined);
-         debugMatrix.scale(1/PIXELS_TO_UNITS,1/PIXELS_TO_UNITS, 1f);
-         debugRenderer=new Box2DDebugRenderer();
      }
 
      public void render(float delta) {

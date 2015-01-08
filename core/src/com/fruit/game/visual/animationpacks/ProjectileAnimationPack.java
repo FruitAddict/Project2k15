@@ -34,7 +34,7 @@ public class ProjectileAnimationPack implements Constants {
             Texture mobProjectile1Texture = (Texture) Assets.getAsset("metal_red.png",Texture.class);
             mobProjectile1 = new Sprite(mobProjectile1Texture);
 
-            Texture mobProjectile2Texture = (Texture) Assets.getAsset("proj.png",Texture.class);
+            Texture mobProjectile2Texture = (Texture) Assets.getAsset("testprojecitle.png",Texture.class);
             mobProjectile2 = new Sprite(mobProjectile2Texture);
 
             Texture mindlessWalkerTexture = (Texture) Assets.getAsset("Rock3.png",Texture.class);

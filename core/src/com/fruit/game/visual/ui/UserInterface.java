@@ -71,7 +71,8 @@ public class UserInterface extends Stage {
 
         skin.add("touchBackground", Assets.getAsset("touchBackground.png", Texture.class));
         skin.add("touchKnob", Assets.getAsset("touchKnob.png",Texture.class));
-        skin.add("characterIcon", Assets.getAsset("pentagram.jpg",Texture.class));
+        skin.add("characterIcon", Assets.getAsset("pentagram.png",Texture.class));
+        skin.add("characterUp",Assets.getAsset("pentagramup.png",Texture.class));
         skin.add("white", new Texture(pixmap));
         skin.add("bigPix", new Texture(biggerPixMap));
         skin.add("optimus-font", new BitmapFont(Gdx.files.internal("fonts//souls.fnt")));
@@ -82,13 +83,15 @@ public class UserInterface extends Stage {
         //touchpad style
         Touchpad.TouchpadStyle touchpadStyle = new Touchpad.TouchpadStyle();
         touchpadStyle.background = skin.newDrawable("touchBackground",new Color(0,0,0,0f));
-        touchpadStyle.knob = skin.newDrawable("touchKnob", new Color(0,0f,0f,0.2f));
+        touchpadStyle.knob = skin.newDrawable("touchKnob", new Color(0,0f,0f,0.4f));
         skin.add("default",touchpadStyle);
 
         skin.getFont("default-font").setScale(0.7f,0.7f);
 
         //create touchpads
-        createControlTouchPads();
+        if(Configuration.joyStickSteeringEnabled) {
+            createControlTouchPads();
+        }
 
         //create hp/exp bars
         createStatusBars();
@@ -246,9 +249,14 @@ public class UserInterface extends Stage {
 
         //horizontal group to hold both bars and the character portrait for accessing menus
         HorizontalGroup iconAndBarsGroup = new HorizontalGroup();
-        menuButtonPortrait = new TextButton("Lv."+worldUpdater.getPlayer().getLevel(),skin);
-        menuButtonPortrait.getStyle().down = skin.newDrawable("characterIcon",new Color(1,1,1,0.7f));
-        menuButtonPortrait.getStyle().up = skin.newDrawable("characterIcon",new Color(1,1,1,1f));
+        menuButtonPortrait = new TextButton("",skin);
+        if(Controller.getWorldUpdater().getPlayer().getStatPoints()>0){
+            menuButtonPortrait.getStyle().up = skin.newDrawable("characterUp", new Color(1,1,1,1f));
+            menuButtonPortrait.getStyle().down = skin.newDrawable("characterUp",new Color(1,1,1,0.7f));
+        }else {
+            menuButtonPortrait.getStyle().up = skin.newDrawable("characterIcon");
+            menuButtonPortrait.getStyle().down = skin.newDrawable("characterIcon",new Color(1,1,1,0.7f));
+        }
 
         iconAndBarsGroup.addActor(menuButtonPortrait);
         iconAndBarsGroup.addActor(barGroup);
@@ -268,12 +276,20 @@ public class UserInterface extends Stage {
     }
 
     public void updateStatusBars(int hp, int maxHP, int exp, int maxEXP, int statPoints){
-        //todo string formatting
         healthBar.setValue((float)hp/maxHP*100);
         experienceBar.setValue((float)exp/maxEXP*100);
         healthLabelValue.setText(hp+"/"+maxHP);
         experienceLabelValue.setText(exp+"/"+maxEXP);
-        menuButtonPortrait.setText(statPoints>0?"+ "+statPoints:"");
+    }
+
+    public void updateIcon(int statPoints){
+        if(statPoints>0){
+            menuButtonPortrait.getStyle().up = skin.newDrawable("characterUp", new Color(1,1,1,1f));
+            menuButtonPortrait.getStyle().down = skin.newDrawable("characterUp",new Color(1,1,1,0.7f));
+        }else {
+            menuButtonPortrait.getStyle().up = skin.newDrawable("characterIcon");
+            menuButtonPortrait.getStyle().down = skin.newDrawable("characterIcon",new Color(1,1,1,0.7f));
+        }
     }
 
     public void createControlTouchPads(){
@@ -289,7 +305,7 @@ public class UserInterface extends Stage {
         containerAttack.align(Align.bottomRight);
         containerAttack.setFillParent(true);
 
-        //addActor(containerMove);
+        addActor(containerMove);
         addActor(containerAttack);
     }
 
@@ -383,28 +399,46 @@ public class UserInterface extends Stage {
     @Override
     public void act(float delta){
         super.act(delta);
-        float angle;
-        if(touchpadMove.getKnobPercentX()!=0 && touchpadMove.getKnobPercentY()!=0) {
-            //worldUpdater.getObjectManager().getPlayer().addLinearVelocity(touchpadMove.getKnobPercentX() * worldUpdater
-            //        .getObjectManager().getPlayer().stats.getSpeed(), touchpadMove.getKnobPercentY() * worldUpdater.getObjectManager().getPlayer().stats.getSpeed());
-            angle = movementVector.set(touchpadMove.getKnobPercentX(),touchpadMove.getKnobPercentY()).angle();
-            if(angle > 45 && angle <= 135){
-                worldUpdater.getObjectManager().getPlayer().addLinearVelocity(0,worldUpdater.getObjectManager().getPlayer().stats.getSpeed());
+        if(Configuration.joyStickSteeringEnabled) {
+            float angle;
+            if (touchpadMove.getKnobPercentX() != 0 && touchpadMove.getKnobPercentY() != 0) {
+                worldUpdater.getObjectManager().getPlayer().addLinearVelocity(touchpadMove.getKnobPercentX() * worldUpdater
+                        .getObjectManager().getPlayer().stats.getSpeed(), touchpadMove.getKnobPercentY() * worldUpdater.getObjectManager().getPlayer().stats.getSpeed());
+                /**
+                angle = movementVector.set(touchpadMove.getKnobPercentX(), touchpadMove.getKnobPercentY()).angle();
+                float speed = worldUpdater.getObjectManager().getPlayer().stats.getSpeed();
+                if (angle > 337.5 || angle <= 22.5) {
+                    //right
+                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(speed, 0 );
+                } else if (angle > 22.5 && angle <= 67.5) {
+                    //northeast
+                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(speed,speed);
+                } else if (angle >67.5 && angle <= 112.5) {
+                    //north
+                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(0, speed);
+                } else if (angle > 112.5 && angle <= 157.5) {
+                    //northwest
+                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(-speed,speed);
+                } else if(angle > 157.5 && angle <= 202.5){
+                    //west
+                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(-speed,0);
+                } else if(angle > 202.5 && angle <= 247.5){
+                    //southwest
+                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(-speed,-speed);
+                } else if(angle>  247.5 && angle <= 292.5){
+                    //south
+                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(0,-speed);
+                } else if(angle > 292.5 && angle <= 337.5){
+                    //southeast
+                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(speed,-speed);
+                }
+                 */
             }
-            else if(angle>135 && angle <= 225){
-                worldUpdater.getObjectManager().getPlayer().addLinearVelocity(-worldUpdater.getObjectManager().getPlayer().stats.getSpeed(),0);
-            }
-            else if(angle>225 && angle <= 315){
-                worldUpdater.getObjectManager().getPlayer().addLinearVelocity(0,-worldUpdater.getObjectManager().getPlayer().stats.getSpeed());
 
+            //update attacking
+            if (touchpadAttack.getKnobPercentY() != 0 && touchpadAttack.getKnobPercentX() != 0) {
+                worldUpdater.getObjectManager().getPlayer().attack(touchpadAttack.getKnobPercentX(), touchpadAttack.getKnobPercentY());
             }
-            else if(angle > 315 || angle <= 45){
-                worldUpdater.getObjectManager().getPlayer().addLinearVelocity(worldUpdater.getObjectManager().getPlayer().stats.getSpeed(),0);
-            }
-        }
-        //update attacking
-        if(touchpadAttack.getKnobPercentY()!=0 && touchpadAttack.getKnobPercentX()!=0) {
-            worldUpdater.getObjectManager().getPlayer().attack(touchpadAttack.getKnobPercentX(),touchpadAttack.getKnobPercentY());
         }
 
         messageHandler.update(delta);
@@ -484,6 +518,7 @@ public class UserInterface extends Stage {
             confirmButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                    updateIcon(player.getStatPoints());
                     optionsWindow.setVisible(true);
                     setVisible(false);
                 }

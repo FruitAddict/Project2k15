@@ -10,4 +10,6 @@ public class Configuration implements Constants {
     public static boolean shadowsEnabled = true;
     public static boolean showFPS = false;
     public static long seed = UNSPECIFIED;
+    public static boolean joyStickSteeringEnabled = true;
+    public static boolean debugItemsEnabled = false;
 }

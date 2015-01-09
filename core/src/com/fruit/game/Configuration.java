@@ -12,4 +12,5 @@ public class Configuration implements Constants {
     public static long seed = UNSPECIFIED;
     public static boolean joyStickSteeringEnabled = true;
     public static boolean debugItemsEnabled = false;
+    public static boolean battleTextEnabled = true;
 }

@@ -158,6 +158,7 @@ public class TheEye extends Enemy {
 
     @Override
     public void killYourself() {
+        super.killYourself();
         Controller.getWorldUpdater().getPlayer().addSlainEnemy();
         if(!playerFound) {
             objectManager.removeObject(this);

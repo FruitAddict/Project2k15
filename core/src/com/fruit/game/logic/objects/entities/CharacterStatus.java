@@ -6,15 +6,14 @@ package com.fruit.game.logic.objects.entities;
 public class CharacterStatus {
     //stats booleans
     private boolean burning,
-            freezing,
             healing,
-            overpowering,
             attackedByPlayer,
             dying,
             poisoned,
             shielded,
             leveledUp,
-            tagged= false;
+            tagged,
+            justHit = false;
 
     public boolean isBurning() {
         return burning;
@@ -24,28 +23,12 @@ public class CharacterStatus {
         this.burning = burning;
     }
 
-    public boolean isFreezing() {
-        return freezing;
-    }
-
-    public void setFreezing(boolean freezing) {
-        this.freezing = freezing;
-    }
-
     public boolean isHealing() {
         return healing;
     }
 
     public void setHealing(boolean healing) {
         this.healing = healing;
-    }
-
-    public boolean isOverpowering() {
-        return overpowering;
-    }
-
-    public void setOverpowering(boolean overpowering) {
-        this.overpowering = overpowering;
     }
 
     public boolean isAttackedByPlayer() {
@@ -95,5 +78,13 @@ public class CharacterStatus {
 
     public void setTagged(boolean tagged) {
         this.tagged = tagged;
+    }
+
+    public boolean isJustHit() {
+        return justHit;
+    }
+
+    public void setJustHit(boolean justHit) {
+        this.justHit = justHit;
     }
 }

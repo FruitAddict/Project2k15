@@ -18,8 +18,8 @@ public class DamageOverTime extends PassiveEffect implements Constants {
     public static final int POISONED = 2;
     //amount of healing every tick.
     private Value amount;
-    private Character character;
     private int damageOverTimeType;
+    private Character character;
 
     public DamageOverTime(Character character, float duration, float delay, Value amount, int dOTType){
         this.duration = duration;
@@ -48,12 +48,12 @@ public class DamageOverTime extends PassiveEffect implements Constants {
     public void apply(){
         if(damageOverTimeType==BURNING) {
             character.status.setBurning(true);
-            Controller.addOnScreenMessage(new TextMessage("Burning!", character.getBody().getPosition().x * PIXELS_TO_UNITS,
-                    character.getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.redFont, TextMessage.UP_AND_FALL));
+            Controller.addOnScreenMessage(
+                    new TextMessage("Burning!",character.getPosition(),character.getHeight(),2.0f,TextRenderer.redFont,TextMessage.DYNAMIC_UPFALL));
         }else if(damageOverTimeType ==POISONED){
             character.status.setPoisoned(true);
-            Controller.addOnScreenMessage(new TextMessage("Poisoned!", character.getBody().getPosition().x * PIXELS_TO_UNITS,
-                    character.getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.redFont, TextMessage.UP_AND_FALL));
+            Controller.addOnScreenMessage(
+                    new TextMessage("Poisoned!",character.getPosition(),character.getHeight(),2.0f,TextRenderer.poisonGreenFont,TextMessage.DYNAMIC_UPFALL));
         }
     }
 

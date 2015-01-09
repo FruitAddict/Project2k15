@@ -50,6 +50,7 @@ public class EnormousGlutton extends Enemy {
         stats.setAttackSpeedModifier(1);
         stats.setAttackSpeed(2f);
         stats.setBaseDamage(5);
+        stats.setKnockBack(10);
         steeringBehavior = new Wander<>(this).setWanderRadius(4).setWanderOrientation(15f);
         attackDirectionNormalized = new Vector2();
     }
@@ -131,11 +132,11 @@ public class EnormousGlutton extends Enemy {
             attackDirectionNormalized.nor();
             attackDirectionNormalized.x*=-1;
             attackDirectionNormalized.y*=-1;
-            MobProjectile proj = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized, 7f, stats.getCombinedDamage());
-            MobProjectile proj2 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(-7), 5f, stats.getCombinedDamage());
-            MobProjectile proj3 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(7), 5f, stats.getCombinedDamage());
-            MobProjectile proj4 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(-14), 7f, stats.getCombinedDamage());
-            MobProjectile proj5 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(14), 7f, stats.getCombinedDamage());
+            MobProjectile proj = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized, 7f, stats.getCombinedDamage(),stats.getKnockBack());
+            MobProjectile proj2 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(-7), 5f, stats.getCombinedDamage(),stats.getKnockBack());
+            MobProjectile proj3 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(7), 5f, stats.getCombinedDamage(),stats.getKnockBack());
+            MobProjectile proj4 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(-14), 7f, stats.getCombinedDamage(),stats.getKnockBack());
+            MobProjectile proj5 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(14), 7f, stats.getCombinedDamage(),stats.getKnockBack());
 
             objectManager.addObject(proj);
             objectManager.addObject(proj2);
@@ -205,6 +206,7 @@ public class EnormousGlutton extends Enemy {
 
     @Override
     public void killYourself() {
+        super.killYourself();
         objectManager.removeObject(this);
         Controller.getWorldUpdater().getPlayer().addExperiencePoints(250);
         Controller.getWorldRenderer().getSplatterRenderer().addMultiBloodSprite(getPosition(),10,2);

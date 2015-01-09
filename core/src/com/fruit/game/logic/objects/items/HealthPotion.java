@@ -55,7 +55,7 @@ public class HealthPotion extends Item {
         killYourself();
         if(!player.status.isHealing()) {
             //Controller.addOnScreenMessage(new TextMessage("A health potion!", getBody().getPosition().x * PIXELS_TO_UNITS,
-            //      getBody().getPosition().y * PIXELS_TO_UNITS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
+            //      getBody().getPosition().y * PIXELS_TO_UNITS, 3, TextRenderer.greenFont, TextMessage.FIXED_POINT_UPFALL));
             Controller.getUserInterface().getMessageHandler().addMessage("A health potion!",Color.GREEN,3f);
         }
         player.addPassiveEffect(new HealOverTime(player,healDuration,healDelay,new Value(healAmount,Value.HEALING)));

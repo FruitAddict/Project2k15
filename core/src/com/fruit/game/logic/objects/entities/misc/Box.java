@@ -4,12 +4,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.fruit.game.Controller;
 import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.Value;
 import com.fruit.game.logic.objects.entities.*;
-import com.fruit.game.logic.objects.items.ItemManager;
 import com.fruit.game.visual.messages.TextMessage;
 import com.fruit.game.visual.messages.TextRenderer;
 import com.fruit.game.logic.objects.entities.Character;
@@ -70,6 +68,7 @@ public class Box extends Enemy {
 
     @Override
     public void killYourself() {
+        super.killYourself();
         objectManager.removeObject(this);
         dropAllLoot(objectManager);
     }
@@ -78,7 +77,7 @@ public class Box extends Enemy {
     public void onDamageTaken(Value value) {
         stats.changeHealthPoints(-1);
         Controller.addOnScreenMessage(new TextMessage("-1", getBody().getPosition().x * PIXELS_TO_UNITS,
-                getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.redFont, TextMessage.UP));
+                getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.redFont, TextMessage.FIXED_POINT_UP));
     }
 
     @Override

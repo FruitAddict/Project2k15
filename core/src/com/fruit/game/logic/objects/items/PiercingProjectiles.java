@@ -39,7 +39,7 @@ public class PiercingProjectiles extends Item {
     public void onPickUp(Player player) {
         player.addPassiveEffect(new com.fruit.game.logic.objects.effects.passive.PiercingProjectiles(player));
         //Controller.addOnScreenMessage(new TextMessage("Your shots now pierce!",
-        //        getBody().getPosition().x * PIXELS_TO_UNITS, getBody().getPosition().y * PIXELS_TO_UNITS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
+        //        getBody().getPosition().x * PIXELS_TO_UNITS, getBody().getPosition().y * PIXELS_TO_UNITS, 3, TextRenderer.greenFont, TextMessage.FIXED_POINT_UPFALL));
         killYourself();
         Controller.getUserInterface().addItemDialogBox(this);
     }

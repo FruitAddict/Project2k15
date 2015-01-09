@@ -35,9 +35,9 @@ public class PlayerProjectile extends Projectile {
         setEntityID(GameObject.PROJECTILE);
         setSaveInRooms(false);
         //setting width, height and radius of the box2d body
-        width =24;
-        height=24;
-        radius = 12;
+        width =16;
+        height=16;
+        radius = 8;
         if(damage.getValue()>=2){
             width*=1.1f;
             height*=1.1f;
@@ -55,8 +55,7 @@ public class PlayerProjectile extends Projectile {
             onHitEffect.onHit(this,character,damage);
         }
         character.onDamageTaken(damage);
-        character.getBody().applyLinearImpulse(new Vector2(character.getBody().getPosition().x - character.getBody().getPosition().x
-                ,character.getBody().getPosition().y - getBody().getPosition().y).nor().scl(knockBack),character.getBody().getPosition(),true);
+        character.addLinearVelocity(direction.x*knockBack,direction.y*knockBack);
         if(!piercing) {
             killYourself();
         }

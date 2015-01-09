@@ -19,8 +19,7 @@ public class MobProjectile extends Projectile {
     protected Vector2 direction;
     protected float spawnX;
     protected float spawnY;
-    private float startAngle = 20;
-
+    protected float knockback;
 
     public MobProjectile(ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity, int damage){
         this.spawnX = spawnX;
@@ -37,9 +36,26 @@ public class MobProjectile extends Projectile {
         height=24;
         radius = 12;
     }
+    public MobProjectile(ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity, int damage, float knockback){
+        this.spawnX = spawnX;
+        this.spawnY = spawnY;
+        this.objectManager = objectManager;
+        this.direction = dir;
+        setEntityID(GameObject.PROJECTILE);
+        setSaveInRooms(false);
+        setTypeID(Projectile.MOB_PROJECTILE);
+        this.damage = new Value(damage,Value.NORMAL_DAMAGE);
+        this.velocity = velocity;
+        this.knockback = knockback;
+        //setting width, height and radius of the box2d body
+        width =24;
+        height=24;
+        radius = 12;
+    }
     @Override
     public void onHit(Character character){
         character.onDamageTaken(damage);
+        character.addLinearVelocity(direction.x*knockback,direction.y*knockback);
         killYourself();
     }
     @Override

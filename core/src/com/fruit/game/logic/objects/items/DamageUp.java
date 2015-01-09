@@ -46,7 +46,7 @@ public class DamageUp extends Item {
     public void onPickUp(Player player){
         player.addPassiveEffect(new com.fruit.game.logic.objects.effects.passive.DamageUp(player,1));
         //Controller.addOnScreenMessage(new TextMessage("You feel stronger..!", getBody().getPosition().x * PIXELS_TO_UNITS,
-        //        getBody().getPosition().y * PIXELS_TO_UNITS, 3, TextRenderer.greenFont, TextMessage.UP_AND_FALL));
+        //        getBody().getPosition().y * PIXELS_TO_UNITS, 3, TextRenderer.greenFont, TextMessage.FIXED_POINT_UPFALL));
         killYourself();
         Controller.getUserInterface().addItemDialogBox(this);
     }

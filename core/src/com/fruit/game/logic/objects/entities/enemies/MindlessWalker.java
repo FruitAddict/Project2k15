@@ -141,6 +141,7 @@ public class MindlessWalker extends Enemy implements Constants {
     }
     @Override
     public void killYourself(){
+        super.killYourself();
         Controller.getWorldRenderer().getSplatterRenderer().addMultiBloodSprite(body.getPosition(), 3, 0);
         Controller.getWorldUpdater().getPlayer().addSlainEnemy();
         dropAllLoot(objectManager);

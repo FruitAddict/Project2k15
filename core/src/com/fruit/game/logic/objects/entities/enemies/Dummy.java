@@ -65,6 +65,7 @@ public class Dummy extends Enemy {
 
     @Override
     public void killYourself() {
+        super.killYourself();
         objectManager.removeObject(this);
     }
 

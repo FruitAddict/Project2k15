@@ -16,6 +16,13 @@ public class MobProjectileWithEffect extends MobProjectile {
         super(objectManager, spawnX, spawnY, dir, velocity, damage);
         this.onHitEffect = onHitEffect;
     }
+
+
+    public MobProjectileWithEffect(ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity, int damage, float knockback, OnHitEffect onHitEffect) {
+        super(objectManager, spawnX, spawnY, dir, velocity, damage);
+        this.onHitEffect = onHitEffect;
+    }
+
     @Override
     public void onHit(Character character){
         super.onHit(character);

@@ -103,37 +103,37 @@ public class PlayerAnimationPack implements Constants {
         //position for rendering, this alghorithm is the same for every renderable object
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(player));
         if(player.status.isBurning()){
-            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,player.getWidth(),player.getHeight());
+            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,player.getWidth(),player.getBodyHeight());
         }
         if(player.status.isShielded()){
-            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.SHIELDED,pos.x,pos.y,player.getWidth(),player.getHeight());
+            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.SHIELDED,pos.x,pos.y,player.getWidth(),player.getBodyHeight());
         }
         if(player.facingN ){
-            batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
-            batch.draw(playerHeadAnimationNorth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-26
+            batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getBodyHeight());
+            batch.draw(playerHeadAnimationNorth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getBodyHeight()-26
                    ,64,88);
         }else if(player.facingS ){
-            batch.draw(playerAnimationSouth.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
-            batch.draw(playerHeadAnimationSouth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-26
+            batch.draw(playerAnimationSouth.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getBodyHeight());
+            batch.draw(playerHeadAnimationSouth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getBodyHeight()-26
                     ,64,88);
         }else if(player.facingE ){
-            batch.draw(playerAnimationEast.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
-            batch.draw(playerheadAnimationEast.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-26
+            batch.draw(playerAnimationEast.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getBodyHeight());
+            batch.draw(playerheadAnimationEast.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getBodyHeight()-26
                    ,64,88);
         }else if(player.facingW){
-            batch.draw(playerAnimationWest.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getHeight());
-            batch.draw(playerHeadAnimationWest.getKeyFrame(stateTime,true),pos.x-15f  ,pos.y+player.getHeight()-26
+            batch.draw(playerAnimationWest.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getBodyHeight());
+            batch.draw(playerHeadAnimationWest.getKeyFrame(stateTime,true),pos.x-15f  ,pos.y+player.getBodyHeight()-26
                     ,64,88);
         } else {
-            batch.draw(playerSouthRegion[0],pos.x,pos.y,player.getWidth(),player.getHeight());
-            batch.draw(playerHeadAnimationSouth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getHeight()-25
+            batch.draw(playerSouthRegion[0],pos.x,pos.y,player.getWidth(),player.getBodyHeight());
+            batch.draw(playerHeadAnimationSouth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getBodyHeight()-25
                    ,64,88);
         }
         if(player.status.isHealing()){
-            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.HEALED,pos.x,pos.y,player.getWidth(),player.getHeight());
+            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.HEALED,pos.x,pos.y,player.getWidth(),player.getBodyHeight());
         }
         if(player.status.isPoisoned()){
-            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.POISONED,pos.x,pos.y,player.getWidth(),player.getHeight());
+            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.POISONED,pos.x,pos.y,player.getWidth(),player.getBodyHeight());
         }
         if(player.status.isLeveledUp()){
             //effectRenderer.render(player,batch,stateTime,EffectRenderer.LEVEL_UP_TRIGGER,pos.x,pos.y,player.getWidth(),player.getHeight());

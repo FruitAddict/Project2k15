@@ -61,9 +61,14 @@ public class MainMenuScreen implements Screen {
         final VisTextButton joystickbutton = new VisTextButton(Configuration.joyStickSteeringEnabled?"Enabled":"Disabled");
         final VisLabel infoDebug = new VisLabel("Debug: ");
         final VisTextButton debugButton = new VisTextButton(Configuration.debugItemsEnabled?"Enabled":"Disabled");
+        final VisLabel infoBattleText = new VisLabel("Battle text: ");
+        final VisTextButton battleTextButton = new VisTextButton(Configuration.battleTextEnabled?"Enabled":"Disabled");
 
         optionsWindow.add(infoSeedLabel);
         optionsWindow.add(seedField).width(200);
+        optionsWindow.row();
+        optionsWindow.add(infoBattleText);
+        optionsWindow.add(battleTextButton).width(200);
         optionsWindow.row();
         optionsWindow.add(infoJoyStickEnabled);
         optionsWindow.add(joystickbutton).width(200);
@@ -85,7 +90,7 @@ public class MainMenuScreen implements Screen {
         Container<VisWindow> aboutContainer = new Container<>();
         final VisWindow aboutWindow = new VisWindow("About");
         aboutWindow.setTitleAlignment(Align.center);
-        VisLabel aboutArea = new VisLabel("Programming done by FruitAddict, graphics are done by tenszi and some are stolen.");
+        VisLabel aboutArea = new VisLabel("I TOLD YOU THIS WOULD HAPPEN.");
         aboutArea.setWrap(true);
         VisTextButton okButton = new VisTextButton("Ok");
         aboutWindow.add(aboutArea).width(400).height(200);
@@ -159,6 +164,13 @@ public class MainMenuScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 Configuration.debugItemsEnabled = !Configuration.debugItemsEnabled;
                 debugButton.setText(Configuration.debugItemsEnabled ? "Enabled" : "Disabled");
+            }
+        });
+        battleTextButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Configuration.battleTextEnabled = !Configuration.battleTextEnabled;
+                battleTextButton.setText(Configuration.battleTextEnabled ? "Enabled" : "Disabled");
             }
         });
 

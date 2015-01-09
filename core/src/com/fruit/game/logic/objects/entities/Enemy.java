@@ -4,7 +4,6 @@ import com.badlogic.gdx.utils.Array;
 import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.items.Item;
 
-//todo remove or rework this
 public abstract class Enemy extends Character {
     public static final int WEAK_ENEMY = 1;
     public static final int CHAMPION_ENEMY = 2;

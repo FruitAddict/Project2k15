@@ -40,13 +40,20 @@ public abstract class GameObject implements Constants {
     //points are at their bottom left corner.
     protected float width, height;
 
+    //flag set when the object is scheduled to be removed by the object manager
+    //is used by rendering to rework any ongoing tweens and other stuff that depends
+    //on this object
+    protected boolean scheduledForRemoval = false;
+
     //Update method, can contain AI code etc.
     public abstract void update(float delta);
     //Mandatory addToBox2dWorld method, so constructors of game objects doesnt have to bind to the box2d
     //world on creation
     public abstract void addToBox2dWorld(World world);
     //every gameobject needs to know how to kill itself
-    public abstract void killYourself();
+    public void killYourself(){
+        setScheduledForRemoval(true);
+    }
 
     public Body getBody(){
         return body;
@@ -91,5 +98,14 @@ public abstract class GameObject implements Constants {
     public void setHeight(float value){
         this.height = value;
     }
+
+    public boolean isScheduledForRemoval() {
+        return scheduledForRemoval;
+    }
+
+    public void setScheduledForRemoval(boolean scheduledForRemoval) {
+        this.scheduledForRemoval = scheduledForRemoval;
+    }
+
 
 }

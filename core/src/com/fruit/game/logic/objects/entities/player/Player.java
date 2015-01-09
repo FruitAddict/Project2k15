@@ -13,7 +13,6 @@ import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.Value;
 import com.fruit.game.logic.objects.effects.OnDamageTakenEffect;
 import com.fruit.game.logic.objects.effects.OnHitEffect;
-import com.fruit.game.logic.objects.effects.onhit.ForkOnHit;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.projectiles.PlayerProjectile;
 import com.fruit.game.logic.objects.entities.Character;
@@ -62,8 +61,8 @@ public class Player extends Character implements Constants {
         stats.setMaxVelocity(4);
         stats.setSpeed(0.25f);
         setSaveInRooms(true);
-        stats.setHealthPoints(100);
-        stats.setBaseMaximumHealthPoints(100);
+        stats.setHealthPoints(50);
+        stats.setBaseMaximumHealthPoints(50);
         stats.setAttackSpeed(0.3f);
         stats.setAimSway(3);
 
@@ -76,9 +75,7 @@ public class Player extends Character implements Constants {
         //todo more
         nextLevelExpRequirement = 25;
         stats.setNumberOfProjectiles(1);
-        stats.setKnockBack(5);
-
-
+        stats.setKnockBack(0);
     }
 
     public void attack(float directionPercentX, float directionPercentY){
@@ -237,6 +234,7 @@ public class Player extends Character implements Constants {
 
     @Override
     public void killYourself() {
+        super.killYourself();
         objectManager.removeObject(this);
     }
 
@@ -278,8 +276,8 @@ public class Player extends Character implements Constants {
 
     public void addExperiencePoints(int value){
         experiencePoints+=value;
-        Controller.addOnScreenMessage(new TextMessage(value+" exp", getBody().getPosition().x * PIXELS_TO_UNITS,
-                getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.goldenFont,TextMessage.UP_AND_FALL));
+        Controller.addOnScreenMessage(new TextMessage(value+" EXP", getBody().getPosition().x * PIXELS_TO_UNITS,
+                       getBody().getPosition().y * PIXELS_TO_UNITS, 2.0f, TextRenderer.goldenFont, TextMessage.FIXED_POINT_UPFALL));
         if(experiencePoints >= nextLevelExpRequirement){
             experiencePoints = experiencePoints-nextLevelExpRequirement;
             onLevelUp();
@@ -289,13 +287,26 @@ public class Player extends Character implements Constants {
 
     public void onLevelUp(){
         Controller.getUserInterface().getMessageHandler().addMessage("Level up! +1 stat point",new Color(1,215/255f,0f,1f),2.5f);
-        objectManager.getPlayer().onHealingTaken(new Value(15,Value.HEALING));
+        objectManager.getPlayer().onHealingTaken(new Value(stats.getBaseMaximumHealthPoints(),Value.HEALING));
         nextLevelExpRequirement*=1.5f;
         status.setLeveledUp(true);
         level+=1;
         statPoints+=1;
         Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement,statPoints);
         Controller.getUserInterface().updateIcon(statPoints);
+    }
+
+    public float getBodyWidth(){
+        return width;
+    }
+    public float getBodyHeight(){
+        //todo make it logic
+        return height;
+    }
+    @Override
+    public float getHeight(){
+        return height+62;
+        //real height of the player + head;
     }
 
     public int getLevel() {

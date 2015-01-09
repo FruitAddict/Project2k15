@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Array;
+import com.fruit.game.Configuration;
 import com.fruit.game.Controller;
 import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.WorldUpdater;
@@ -96,12 +97,14 @@ import com.fruit.game.visual.tween.TweenUtils;
          tiledMapRenderer.renderTileLayer((TiledMapTileLayer) tiledMapRenderer.getMap().getLayers().get(1));
          //render all objects
          if (lastMapTexture != null) {
+             //draw last map texture from the transition render
              batch.draw(lastMapTexture, lastMapTextureX, lastMaptextureY);
          }
          objectRenderer.render(delta, worldUpdater.getObjectManager().getGameObjects(), batch);
          batch.end();
          lightRenderer.render();
-         if (!paused) {
+         //if the game isnt paused and the battle text is enabled, render it.
+         if (!paused && Configuration.battleTextEnabled) {
              textRenderer.render(batch, delta);
          }
          camera.updateCameraMovement(delta);

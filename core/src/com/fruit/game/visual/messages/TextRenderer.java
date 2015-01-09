@@ -6,7 +6,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import com.fruit.game.Configuration;
+import com.fruit.game.utilities.TweenableValues;
 import com.fruit.game.visual.tween.TextMessageAccessor;
+import com.fruit.game.visual.tween.TweenableValuesAccessor;
 
 /**
  * Text renderer. Takes care of rendering scrolling battle text, boss-taunts
@@ -42,8 +45,9 @@ public class TextRenderer {
 
     public TextRenderer(){
         messageList = new Array<>();
-        //TWEENS - register new accessor for text messages
+        //TWEENS - register new accessors for static and dynamic text messages
         Tween.registerAccessor(TextMessage.class, new TextMessageAccessor());
+        Tween.registerAccessor(TweenableValues.class, new TweenableValuesAccessor());
     }
 
     public void render(SpriteBatch batch, float delta){
@@ -65,11 +69,17 @@ public class TextRenderer {
     }
 
     public void addMessage(String msg,float positionX, float positionY, float lifeSpan){
-        messageList.add(new TextMessage(msg,positionX,positionY,lifeSpan,1));
+        //only accepts new messages if battle text is enabled in config
+        if(Configuration.battleTextEnabled) {
+            messageList.add(new TextMessage(msg, positionX, positionY, lifeSpan, 1));
+        }
     }
 
     public void addMessage(TextMessage message){
-        messageList.add(message);
+        //only accepts new messages if battle text is enabled in config
+        if(Configuration.battleTextEnabled) {
+            messageList.add(message);
+        }
     }
 
     public void removeAll(){

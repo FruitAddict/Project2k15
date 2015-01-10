@@ -1,7 +1,10 @@
 package com.fruit.game;
 
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.fruit.game.logic.WorldUpdater;
+import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.screens.GameScreen;
 import com.fruit.game.visual.messages.TextMessage;
@@ -67,9 +70,15 @@ public class Controller {
         }
     }
 
-    public static void addOnScreenMessage(TextMessage message){
+    public static void addOnScreenMessage(String msg, float positionX, float positionY, float lifeSpan, BitmapFont font, int tweenType){
         if(Controller.worldRenderer!=null){
-            worldRenderer.getTextRenderer().addMessage(message);
+            worldRenderer.getTextRenderer().addMessage(msg,positionX,positionY,lifeSpan,font,tweenType);
+        }
+    }
+
+    public static void addOnScreenMessage(GameObject owner, String message, Vector2 parentPosition, float parentHeight, float lifeTime, BitmapFont font, int tweenType){
+        if(Controller.worldRenderer!=null){
+            worldRenderer.getTextRenderer().addMessage(owner,message,parentPosition,parentHeight,lifeTime,font,tweenType);
         }
     }
 

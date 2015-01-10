@@ -7,10 +7,8 @@ import aurelienribon.tweenengine.TweenCallback;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.fruit.game.Controller;
 import com.fruit.game.visual.Assets;
 import com.fruit.game.visual.tween.SpriteAccessor;
@@ -80,7 +78,7 @@ public class OnCharacterEffectPack {
         shieldedAnimation = new Animation(0.1f, animFramesShielded);
 
         //burned animation effect
-        Texture burnedTexture = (Texture) Assets.getAsset("effects//fireeffect.png", Texture.class);
+        /**Texture burnedTexture = (Texture) Assets.getAsset("effects//fireeffect.png", Texture.class);
         TextureRegion[][] tmp4 = TextureRegion.split(burnedTexture, burnedTexture.getWidth() / 8, burnedTexture.getHeight());
         TextureRegion[] burnedFrames = new TextureRegion[8];
         burnedFrames[0] = tmp4[0][0];
@@ -92,6 +90,11 @@ public class OnCharacterEffectPack {
         burnedFrames[6] = tmp4[0][6];
         burnedFrames[7] = tmp4[0][7];
         burnedAnimation = new Animation(0.1f, burnedFrames);
+         */
+        TextureAtlas burnedAtlas = (TextureAtlas)Assets.getAsset("effects//fire.atlas",TextureAtlas.class);
+        Array<TextureAtlas.AtlasRegion> atlasRegions = new Array<>();
+        atlasRegions = burnedAtlas.findRegions("onfire");
+        burnedAnimation = new Animation(0.1f, atlasRegions);
 
 
         //level up sprites

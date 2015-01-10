@@ -15,9 +15,12 @@
  <tileset firstgid="74" name="tilesadds" tilewidth="64" tileheight="64">
   <image source="tilesets/tilesadds.png" width="128" height="64"/>
  </tileset>
+ <tileset firstgid="76" name="tilesadd" tilewidth="64" tileheight="64">
+  <image source="tilesets/tilesadd.png" width="192" height="128"/>
+ </tileset>
  <layer name="Ground" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJzzZmBg8KYQe5GJR/VTrp+JAv0CFOqXYYAAcvV7jeqnin5KAAB5yELJ
+   eJyl0dEJwCAMBNDQCTpAJ6okdP9p+tEK5cidqQr3I/eiYjOztphzMn+8v6l4H0T5rB9Fz86LJFUfZE73G/Hf7kX8TjzeFfd7/7BnKY97+IeZx74Ti17NmPHZW0Zezco6yleyum4hyUQf
   </data>
  </layer>
  <layer name="Walls" width="16" height="16">

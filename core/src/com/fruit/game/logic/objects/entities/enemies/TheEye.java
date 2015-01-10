@@ -164,7 +164,7 @@ public class TheEye extends Enemy {
             objectManager.removeObject(this);
         }else {
             objectManager.removeObject(this);
-            objectManager.addObject(new Explosion(objectManager,body.getPosition().x,body.getPosition().y,1.5f,1f,stats.getCombinedDamage()));
+            objectManager.addObject(new Explosion(objectManager,body.getPosition().x,body.getPosition().y,1.5f,0.5f,stats.getCombinedDamage()));
 
         }
         Controller.getWorldRenderer().getSplatterRenderer().addMultiBloodSprite(body.getPosition(),0.7f, 1, 0);

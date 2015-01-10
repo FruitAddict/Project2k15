@@ -25,8 +25,8 @@ public class BlockDamage extends OnDamageTakenEffect implements Constants {
     public void onDamageTaken(Value value) {
         if(blockCount>0){
             value.setValue(0);
-            Controller.addOnScreenMessage(new TextMessage("Blocked!", player.getBody().getPosition().x * PIXELS_TO_UNITS,
-                    player.getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.greenFont, TextMessage.FIXED_POINT_UPFALL));
+            Controller.addOnScreenMessage("Blocked!", player.getBody().getPosition().x * PIXELS_TO_UNITS,
+                    player.getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.greenFont, TextMessage.FIXED_POINT_UPFALL);
             blockCount--;
         }else {
             player.removeOnDamageTakenEffect(this);

@@ -155,7 +155,7 @@ public class Player extends Character implements Constants {
         for(OnDamageTakenEffect onDamageTakenEffect : onDamageTakenEffects){
             onDamageTakenEffect.onDamageTaken(copied);
         }
-        if(value.getValue()!=0) {
+        if(value.getValue()>0) {
             stats.changeHealthPoints(-copied.getValue() * stats.getCombinedResistance());
             super.onDamageTaken(copied);
         }
@@ -276,8 +276,8 @@ public class Player extends Character implements Constants {
 
     public void addExperiencePoints(int value){
         experiencePoints+=value;
-        Controller.addOnScreenMessage(new TextMessage(value+" EXP", getBody().getPosition().x * PIXELS_TO_UNITS,
-                       getBody().getPosition().y * PIXELS_TO_UNITS, 2.0f, TextRenderer.goldenFont, TextMessage.FIXED_POINT_UPFALL));
+        Controller.addOnScreenMessage(value+" EXP", getBody().getPosition().x * PIXELS_TO_UNITS,
+                       getBody().getPosition().y * PIXELS_TO_UNITS, 2.0f, TextRenderer.goldenFont, TextMessage.FIXED_POINT_UPFALL);
         if(experiencePoints >= nextLevelExpRequirement){
             experiencePoints = experiencePoints-nextLevelExpRequirement;
             onLevelUp();

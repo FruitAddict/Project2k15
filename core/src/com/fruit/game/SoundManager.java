@@ -9,5 +9,5 @@ import com.badlogic.gdx.audio.Sound;
  * and/or loop/play music in the background.
  */
 public class SoundManager {
-    public static Sound sound = Gdx.audio.newSound(Gdx.files.internal("splash.wav"));
+    public static Sound menuSound = Gdx.audio.newSound(Gdx.files.internal("Drop.wav"));
 }

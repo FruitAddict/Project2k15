@@ -23,6 +23,7 @@ public class ItemAnimationPack implements Constants {
     private Sprite moreProjectilesSprite;
     private Sprite michaelBaySprite;
     private Sprite forkingProjectilesSprite;
+    private Sprite knockbackHammerSprite;
     private boolean loaded = false;
 
     public void load(){
@@ -46,6 +47,8 @@ public class ItemAnimationPack implements Constants {
             michaelBaySprite = new Sprite(michaelBayTexture);
             Texture forkingProjectilesTexture = (Texture)Assets.getAsset("items//tridentx2.png",Texture.class);
             forkingProjectilesSprite = new Sprite(forkingProjectilesTexture);
+            Texture knockbackHammerTexture = (Texture)Assets.getAsset("items//knockback_hammer.png",Texture.class);
+            knockbackHammerSprite = new Sprite(knockbackHammerTexture);
             loaded = true;
         }
     }
@@ -90,6 +93,10 @@ public class ItemAnimationPack implements Constants {
                batch.draw(forkingProjectilesSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
                break;
            }
+           case Item.INCREASED_KNOCKBACK_HAMMER:{
+               batch.draw(knockbackHammerSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
+               break;
+           }
        }
     }
 
@@ -109,6 +116,9 @@ public class ItemAnimationPack implements Constants {
             }
             case Item.FORKING_PROJECTILES:{
                 return forkingProjectilesSprite;
+            }
+            case Item.INCREASED_KNOCKBACK_HAMMER:{
+                return knockbackHammerSprite;
             }
             default:{
                 return heartSprite;

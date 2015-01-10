@@ -83,20 +83,22 @@ public abstract class Character extends GameObject implements Steerable<Vector2>
     //Handles only rendering to the screen using Text Renderer
     public void onDamageTaken(Value value){
         //render to the screen as scrolling battle text based on the type
-        switch(value.getType()) {
-            case Value.NORMAL_DAMAGE: {
-                //Controller.addOnScreenMessage(new TextMessage(Integer.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_UNITS,
-                //        getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.redFont, TextMessage.FIXED_POINT_UP));
-                Controller.addOnScreenMessage(new TextMessage(Integer.toString(value.getValue()),getPosition(),getHeight(),1.5f,TextRenderer.redFont,TextMessage.DYNAMIC_UP));
-                break;
-            }
-            case Value.BURNING_DAMAGE: {
-                Controller.addOnScreenMessage(new TextMessage(Integer.toString(value.getValue()),getPosition(),getHeight(),1.5f,TextRenderer.redFont,TextMessage.DYNAMIC_UP));
-                break;
-            }
-            case Value.POISON_DAMAGE: {
-                Controller.addOnScreenMessage(new TextMessage(Integer.toString(value.getValue()),getPosition(),getHeight(),1.5f,TextRenderer.poisonGreenFont,TextMessage.DYNAMIC_UP));
-                break;
+        if(value.getValue()>0) {
+            switch (value.getType()) {
+                case Value.NORMAL_DAMAGE: {
+                    //Controller.addOnScreenMessage(new TextMessage(Integer.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_UNITS,
+                    //        getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.redFont, TextMessage.FIXED_POINT_UP));
+                    Controller.addOnScreenMessage(this,Integer.toString(value.getValue()), getPosition(), getHeight(), 1.5f, TextRenderer.redFont, TextMessage.DYNAMIC_UP);
+                    break;
+                }
+                case Value.BURNING_DAMAGE: {
+                    Controller.addOnScreenMessage(this,Integer.toString(value.getValue()), getPosition(), getHeight(), 1.5f, TextRenderer.redFont, TextMessage.DYNAMIC_UP);
+                    break;
+                }
+                case Value.POISON_DAMAGE: {
+                    Controller.addOnScreenMessage(this,Integer.toString(value.getValue()), getPosition(), getHeight(), 1.5f, TextRenderer.poisonGreenFont, TextMessage.DYNAMIC_UP);
+                    break;
+                }
             }
         }
         //update the %/max of player's hp (GUI uses that)
@@ -108,7 +110,7 @@ public abstract class Character extends GameObject implements Steerable<Vector2>
     public void onHealingTaken(Value amount){
         switch(amount.getType()) {
             case Value.HEALING: {
-                Controller.addOnScreenMessage(new TextMessage(Integer.toString(amount.getValue())+"HP",getPosition(),getHeight(),1.5f,TextRenderer.greenFont,TextMessage.DYNAMIC_UP));
+                Controller.addOnScreenMessage(this,Integer.toString(amount.getValue())+"HP",getPosition(),getHeight(),1.5f,TextRenderer.greenFont,TextMessage.DYNAMIC_UP);
                 break;
             }
         }
@@ -198,6 +200,13 @@ public abstract class Character extends GameObject implements Steerable<Vector2>
             newVelocity.y = -stats.getMaxVelocity();
         }
         body.setLinearVelocity(newVelocity);
+    }
+
+    @Override
+    public void killYourself(){
+        //on death characters should remove all on screen messages that they own
+        super.killYourself();
+        Controller.getWorldRenderer().getTextRenderer().removeMessageByOwner(this);
     }
 
     @Override

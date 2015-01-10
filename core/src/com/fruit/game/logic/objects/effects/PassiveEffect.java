@@ -12,6 +12,7 @@ public abstract class PassiveEffect {
     public static final int DAMAGE_OVER_TIME = 2;
     public static final int DAMAGE_UP = 3;
     public static final int MORE_PROJECTILES = 4;
+    public static final int INCREASE_KNOCKBACK = 5;
 
     //duration of this effect, e.g. maximum time this effect should be on.
     protected float duration;

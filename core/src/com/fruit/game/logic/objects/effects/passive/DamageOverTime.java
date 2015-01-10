@@ -48,12 +48,10 @@ public class DamageOverTime extends PassiveEffect implements Constants {
     public void apply(){
         if(damageOverTimeType==BURNING) {
             character.status.setBurning(true);
-            Controller.addOnScreenMessage(
-                    new TextMessage("Burning!",character.getPosition(),character.getHeight(),2.0f,TextRenderer.redFont,TextMessage.DYNAMIC_UPFALL));
         }else if(damageOverTimeType ==POISONED){
             character.status.setPoisoned(true);
-            Controller.addOnScreenMessage(
-                    new TextMessage("Poisoned!",character.getPosition(),character.getHeight(),2.0f,TextRenderer.poisonGreenFont,TextMessage.DYNAMIC_UPFALL));
+            //Controller.addOnScreenMessage(
+            //       new TextMessage("Poisoned!",character.getPosition(),character.getHeight(),2.0f,TextRenderer.poisonGreenFont,TextMessage.DYNAMIC_UPFALL));
         }
     }
 

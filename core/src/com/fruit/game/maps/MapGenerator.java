@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.fruit.game.Configuration;
 import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
 import com.fruit.game.logic.objects.items.ForkingProjectiles;
+import com.fruit.game.logic.objects.items.IncreaseKnockbackHammer;
 import com.fruit.game.logic.objects.items.ItemManager;
 import com.fruit.game.logic.objects.entities.enemies.MindlessWalker;
 import com.fruit.game.logic.objects.entities.enemies.TheEye;
@@ -130,6 +131,7 @@ public class MapGenerator {
         //set current room to the one in the center
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
         if(Configuration.debugItemsEnabled) {
+            map.getCurrentRoom().addGameObject(new IncreaseKnockbackHammer(mapManager.getWorldUpdater().getObjectManager(),4,6));
             map.getCurrentRoom().addGameObject(new ForkingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 4, 4));
             map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 5, 4));
         }

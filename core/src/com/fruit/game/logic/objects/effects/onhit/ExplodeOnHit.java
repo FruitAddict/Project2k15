@@ -25,7 +25,7 @@ public class ExplodeOnHit extends OnHitEffect implements Constants {
     @Override
     public void onHit(Projectile proj, Character enemy, Value damage) {
         if(explosionCount >0) {
-            player.getObjectManager().addObject(new Explosion(player.getObjectManager(),enemy.getBody().getPosition().x,enemy.getBody().getPosition().y,1f,1f,2));
+            player.getObjectManager().addObject(new Explosion(player.getObjectManager(),enemy.getBody().getPosition().x,enemy.getBody().getPosition().y,1f,0.5f,2));
             explosionCount--;
         }else {
             player.removeOnHitEffect(this);

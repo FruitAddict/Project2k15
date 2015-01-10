@@ -5,8 +5,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 import com.fruit.game.Configuration;
+import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.utilities.TweenableValues;
 import com.fruit.game.visual.tween.TextMessageAccessor;
 import com.fruit.game.visual.tween.TweenableValuesAccessor;
@@ -18,6 +21,8 @@ import com.fruit.game.visual.tween.TweenableValuesAccessor;
 public class TextRenderer {
     //list of text messages that are currently processed
     private Array<TextMessage> messageList;
+    //Pool for text message objects to be reused
+    private Pool<TextMessage> messagePool;
     //available fonts
     public static BitmapFont redFont;
     public static BitmapFont greenFont;
@@ -45,6 +50,12 @@ public class TextRenderer {
 
     public TextRenderer(){
         messageList = new Array<>();
+        messagePool = new Pool<TextMessage>(50) {
+            @Override
+            protected TextMessage newObject() {
+                return new TextMessage();
+            }
+        };
         //TWEENS - register new accessors for static and dynamic text messages
         Tween.registerAccessor(TextMessage.class, new TextMessageAccessor());
         Tween.registerAccessor(TweenableValues.class, new TweenableValuesAccessor());
@@ -55,6 +66,7 @@ public class TextRenderer {
         for(int i =0 ; i < messageList.size;i++){
             //if the message statetime exceeds its lifespan, remove it
             if(messageList.get(i).getStateTime() > messageList.get(i).getLifeSpan()){
+                messagePool.free(messageList.get(i));
                 messageList.removeIndex(i);
             }
         }
@@ -71,18 +83,52 @@ public class TextRenderer {
     public void addMessage(String msg,float positionX, float positionY, float lifeSpan){
         //only accepts new messages if battle text is enabled in config
         if(Configuration.battleTextEnabled) {
-            messageList.add(new TextMessage(msg, positionX, positionY, lifeSpan, 1));
+            TextMessage mssg = messagePool.obtain();
+            mssg.setMessage(msg);
+            mssg.setPositionX(positionX);
+            mssg.setPositionY(positionY);
+            mssg.setLifeSpan(lifeSpan);
+            mssg.setTweenType(TextMessage.FIXED_POINT_UP);
+            mssg.startTween();
+            messageList.add(mssg);
+        }
+    }
+    public void addMessage(String msg,float positionX, float positionY, float lifeSpan, BitmapFont font, int tweenType){
+        //only accepts new messages if battle text is enabled in config
+        if(Configuration.battleTextEnabled) {
+            TextMessage mssg = messagePool.obtain();
+            mssg.setMessage(msg);
+            mssg.setPositionX(positionX);
+            mssg.setPositionY(positionY);
+            mssg.setLifeSpan(lifeSpan);
+            mssg.setBitmapFont(font);
+            mssg.setTweenType(tweenType);
+            mssg.startTween();
+            messageList.add(mssg);
         }
     }
 
-    public void addMessage(TextMessage message){
+    /**
+     * Dynamic message that needs to know what is its parent
+     */
+    public void addMessage(GameObject owner,String message, Vector2 parentPosition, float parentHeight, float lifeTime, BitmapFont font, int tweenType){
         //only accepts new messages if battle text is enabled in config
         if(Configuration.battleTextEnabled) {
-            messageList.add(message);
+            TextMessage msg = messagePool.obtain();
+            msg.setMessage(message);
+            msg.setParentPosition(parentPosition);
+            msg.setLifeSpan(lifeTime);
+            msg.setParentHeight(parentHeight);
+            msg.setBitmapFont(font);
+            msg.setTweenType(tweenType);
+            msg.setParentObject(owner);
+            msg.startTween();
+            messageList.add(msg);
         }
     }
 
     public void removeAll(){
+        messagePool.freeAll(messageList);
         messageList.clear();
     }
 
@@ -91,6 +137,16 @@ public class TextRenderer {
         greenFont.dispose();
         goldenFont.dispose();
         poisonGreenFont.dispose(); //todo merge with assets
+    }
+
+    //removes dynamic messages by its owner
+    public void removeMessageByOwner(GameObject o){
+        for(int i =0 ;i<messageList.size;i++){
+            if(messageList.get(i).getParentObject()==o){
+                messagePool.free(messageList.get(i));
+                messageList.removeIndex(i);
+            }
+        }
     }
 
     public static void reloadFonts() {

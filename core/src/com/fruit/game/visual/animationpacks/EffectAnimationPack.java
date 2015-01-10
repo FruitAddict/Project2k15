@@ -1,10 +1,10 @@
 package com.fruit.game.visual.animationpacks;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.utilities.Utils;
 import com.fruit.game.visual.Assets;
@@ -20,15 +20,10 @@ public class EffectAnimationPack {
 
     public void load(){
         pos = new Vector2();
-        Texture explosionTexture = (Texture) Assets.getAsset("borrowed//explosion.png", Texture.class);
-        TextureRegion[][] animFrames = TextureRegion.split(explosionTexture, explosionTexture.getWidth() / 5, explosionTexture.getHeight() / 5);
-        TextureRegion[] frames = new TextureRegion[25];
-        for(int i =0 ;i <animFrames.length;i++){
-            for (int j = 0; j < animFrames.length; j++) {
-                frames[i * 5 + j] = animFrames[i][j];
-            }
-        }
-        explosionAnimation = new Animation(1/25f,frames);
+        TextureAtlas burnedAtlas = (com.badlogic.gdx.graphics.g2d.TextureAtlas)Assets.getAsset("effects//explosion.atlas",TextureAtlas.class);
+        Array<TextureAtlas.AtlasRegion> atlasRegions = new Array<>();
+        atlasRegions = burnedAtlas.findRegions("ffireball_hit");
+        explosionAnimation = new Animation(0.5f/9f,atlasRegions);
     }
 
     public void render(float stateTime, GameObject gameObject, SpriteBatch batch) {

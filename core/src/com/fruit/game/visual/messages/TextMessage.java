@@ -6,13 +6,17 @@ import aurelienribon.tweenengine.equations.Quad;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pool;
 import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.utilities.TweenableValues;
+import com.fruit.game.utilities.Utils;
 import com.fruit.game.visual.tween.TextMessageAccessor;
 import com.fruit.game.visual.tween.TweenUtils;
 import com.fruit.game.visual.tween.TweenableValuesAccessor;
+import org.w3c.dom.Text;
 
 
 /**
@@ -21,7 +25,7 @@ import com.fruit.game.visual.tween.TweenableValuesAccessor;
  * Contains many overloaded constructors for different situations.
  * TODO make them poolable and vector resetting
  */
-public class TextMessage implements Constants {
+public class TextMessage implements Constants, Pool.Poolable {
     //tween types
     public static final int FIXED_POINT_UPFALL = 1;
     public static final int FIXED_POINT_UP = 2;
@@ -36,6 +40,7 @@ public class TextMessage implements Constants {
     private float lifeSpan;
     //statetime
     private float stateTime =0;
+
     //content of this msg
     private String message;
     //color of this message;
@@ -44,65 +49,28 @@ public class TextMessage implements Constants {
     private float alpha = 1;
     //parent object position if its specified in the constructor ( only usable for dynamic tween types that follow
     //the parent object and use offset to move)
+    private GameObject parentObject;
     private Vector2 parentPosition;
     //parent height for dynamic tweens
     private float parentHeight;
     //tweenable values to be used as offset in dynamic messages
     private TweenableValues tweenableValues;
+    //left or right tween alignment for dynamic msgs
+    private float tweenSign;
 
     //position of this message;
     private float positionX;
     private float positionY;
 
-    public TextMessage(String msg,float positionX, float positionY, float lifeSpan, BitmapFont bitmapFont,int tweenType) {
-        //constructor for fixed-point tweened message
-        this.message = msg;
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.lifeSpan = lifeSpan;
-        this.bitmapFont = bitmapFont;
-        alpha = bitmapFont.getColor().a;
-        startTween(tweenType);
-        this.tweenType = tweenType;
-    }
-
-    public TextMessage(String msg,float positionX, float positionY, float lifeSpan,int tweenType){
-        //fixed point tweened message with default font
-        this.message = msg;
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.lifeSpan = lifeSpan;
-        bitmapFont = TextRenderer.redFont;
-        startTween(tweenType);
-        this.tweenType = tweenType;
-    }
-
-    public TextMessage(String msg, Vector2 parentPosition, float objectHeight, float lifeSpan, int tweenType){
-        //dynamic tween following the game object with default red font
-        this.message = msg;
-        this.lifeSpan = lifeSpan;
-        bitmapFont = TextRenderer.redFont;
+    public TextMessage(){
+        parentPosition = new Vector2();
         tweenableValues = new TweenableValues();
-        this.parentPosition = parentPosition;
-        this.tweenType = tweenType;
-        this.parentHeight = objectHeight;
-        startTween(tweenType);
+        bitmapFont = TextRenderer.redFont;
+        tweenSign = Math.signum(Utils.randomGenerator.nextInt());
     }
 
-    public TextMessage(String msg, Vector2 parentPosition, float objectHeight, float lifeSpan, BitmapFont font, int tweenType){
-        //dynamic tween following the game object
-        this.message = msg;
-        this.lifeSpan = lifeSpan;
-        bitmapFont = font;
-        tweenableValues = new TweenableValues();
-        this.parentPosition = parentPosition;
-        this.parentHeight = objectHeight;
-        this.tweenType = tweenType;
-        startTween(tweenType);
-    }
-
-    public void startTween(int type){
-        switch(type) {
+    public void startTween(){
+        switch(tweenType) {
             //starts the tweening sequence
             case FIXED_POINT_UPFALL: {
                 Timeline.createSequence()
@@ -128,8 +96,12 @@ public class TextMessage implements Constants {
             case DYNAMIC_UPFALL: {
                 Timeline.createSequence()
                         .push(Tween.set(tweenableValues, TweenableValuesAccessor.ALPHA_VALUE).target(0.7f))
+                        .push(Tween.set(tweenableValues, TweenableValuesAccessor.X_VALUE).target(0f))
                         .push(Tween.set(tweenableValues, TweenableValuesAccessor.Y_VALUE).target(0f))
+                        .push(Tween.set(tweenableValues, TweenableValuesAccessor.Z_VALUE).target(90))
                         .push(Tween.to(tweenableValues, TweenableValuesAccessor.Y_VALUE, lifeSpan * 2 / 3).target(75).ease(Quad.INOUT))
+                        .push(Tween.to(tweenableValues,TweenableValuesAccessor.Z_VALUE,lifeSpan*2/3).target(0).ease(Quad.INOUT))
+                        .push(Tween.to(tweenableValues, TweenableValuesAccessor.X_VALUE, lifeSpan * 2 / 3).target(50).ease(Quad.INOUT))
                         .beginParallel()
                         .push(Tween.to(tweenableValues, TweenableValuesAccessor.Y_VALUE, lifeSpan * 1 / 3).target(0).ease(Quad.INOUT))
                         .push(Tween.to(tweenableValues, TweenableValuesAccessor.ALPHA_VALUE, lifeSpan * 1 / 3).target(0f))
@@ -140,9 +112,13 @@ public class TextMessage implements Constants {
             case DYNAMIC_UP: {
                 Timeline.createSequence()
                         .push(Tween.set(tweenableValues, TweenableValuesAccessor.ALPHA_VALUE).target(0.7f))
-                        .push(Tween.set(tweenableValues,TweenableValuesAccessor.Y_VALUE).target(0f))
+                        .push(Tween.set(tweenableValues, TweenableValuesAccessor.Y_VALUE).target(0f))
+                        .push(Tween.set(tweenableValues, TweenableValuesAccessor.Z_VALUE).target(90))
+                        .push(Tween.set(tweenableValues, TweenableValuesAccessor.X_VALUE).target(0f))
                         .beginParallel()
-                        .push(Tween.to(tweenableValues,  TweenableValuesAccessor.Y_VALUE, lifeSpan).target(75).ease(Quad.INOUT))
+                        .push(Tween.to(tweenableValues, TweenableValuesAccessor.Y_VALUE, lifeSpan).target(75).ease(Quad.INOUT))
+                        .push(Tween.to(tweenableValues, TweenableValuesAccessor.Z_VALUE, lifeSpan).target(0).ease(Quad.INOUT))
+                        .push(Tween.to(tweenableValues, TweenableValuesAccessor.X_VALUE, lifeSpan).target(50).ease(Quad.INOUT))
                         .push(Tween.to(tweenableValues, TweenableValuesAccessor.ALPHA_VALUE, lifeSpan).target(0f))
                         .end()
                         .start(TweenUtils.tweenManager);
@@ -160,11 +136,26 @@ public class TextMessage implements Constants {
         }
         else if (tweenType == DYNAMIC_UP || tweenType == DYNAMIC_UPFALL){
             bitmapFont.setColor(bitmapFont.getColor().r, bitmapFont.getColor().g, bitmapFont.getColor().b, tweenableValues.getAlpha());
-            bitmapFont.draw(batch, message, (parentPosition.x*PIXELS_TO_UNITS)+tweenableValues.getX(),
-                    (parentPosition.y*PIXELS_TO_UNITS)+tweenableValues.getY()+parentHeight);
+            bitmapFont.draw(batch, message,(parentPosition.x*PIXELS_TO_UNITS)+(tweenSign*tweenableValues.getX()* MathUtils.cosDeg(tweenableValues.getZ())),
+                    (parentPosition.y*PIXELS_TO_UNITS)+parentHeight+(tweenableValues.getY()* MathUtils.sinDeg(tweenableValues.getZ())));
         }
         stateTime+=delta;
     }
+
+    @Override
+    public void reset() {
+        TweenUtils.tweenManager.killTarget(tweenableValues);
+        setAlpha(0);
+        setPositionX(-1);
+        setPositionY(-1);
+        stateTime = 0;
+        tweenableValues.setAlpha(0);
+        tweenableValues.setX(0);
+        tweenableValues.setY(0);
+        tweenableValues.setZ(0);
+        getParentPosition().set(0,0);
+    }
+
 
     public float getLifeSpan() {
         return lifeSpan;
@@ -196,5 +187,72 @@ public class TextMessage implements Constants {
 
     public void setAlpha(float alpha) {
         this.alpha = alpha;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Vector2 getParentPosition() {
+        return parentPosition;
+    }
+
+    public void setParentPosition(Vector2 parentPosition) {
+        this.parentPosition = parentPosition;
+    }
+
+    public float getParentHeight() {
+        return parentHeight;
+    }
+
+    public void setParentHeight(float parentHeight) {
+        this.parentHeight = parentHeight;
+    }
+
+    public TweenableValues getTweenableValues() {
+        return tweenableValues;
+    }
+
+    public void setTweenableValues(TweenableValues tweenableValues) {
+        this.tweenableValues = tweenableValues;
+    }
+    public int getTweenType() {
+        return tweenType;
+    }
+
+    public void setTweenType(int tweenType) {
+        this.tweenType = tweenType;
+    }
+
+    public void setLifeSpan(float lifeSpan) {
+        this.lifeSpan = lifeSpan;
+    }
+
+    public BitmapFont getBitmapFont() {
+        return bitmapFont;
+    }
+
+    public void setBitmapFont(BitmapFont bitmapFont) {
+        this.bitmapFont = bitmapFont;
+    }
+
+    public GameObject getParentObject() {
+        return parentObject;
+    }
+
+    public void setParentObject(GameObject parentObject) {
+        this.parentObject = parentObject;
     }
 }

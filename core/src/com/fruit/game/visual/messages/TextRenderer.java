@@ -143,8 +143,8 @@ public class TextRenderer {
     public void removeMessageByOwner(GameObject o){
         for(int i =0 ;i<messageList.size;i++){
             if(messageList.get(i).getParentObject()==o){
-                messagePool.free(messageList.get(i));
-                messageList.removeIndex(i);
+                System.out.println("static upping msg");
+                messageList.get(i).setParentPosition(new Vector2(o.getBody().getPosition().x,o.getBody().getPosition().y));
             }
         }
     }

@@ -52,5 +52,6 @@ public class PoisonProjectiles extends Item {
     @Override
     public void killYourself() {
         objectManager.removeObject(this);
+        super.killYourself();
     }
 }

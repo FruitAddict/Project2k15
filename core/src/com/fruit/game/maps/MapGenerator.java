@@ -5,13 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.game.Configuration;
 import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
-import com.fruit.game.logic.objects.items.ForkingProjectiles;
-import com.fruit.game.logic.objects.items.IncreaseKnockbackHammer;
-import com.fruit.game.logic.objects.items.ItemManager;
+import com.fruit.game.logic.objects.items.*;
 import com.fruit.game.logic.objects.entities.enemies.MindlessWalker;
 import com.fruit.game.logic.objects.entities.enemies.TheEye;
 import com.fruit.game.logic.objects.entities.misc.Box;
-import com.fruit.game.logic.objects.items.PiercingProjectiles;
 import com.fruit.game.utilities.MapObjectParser;
 import com.fruit.game.utilities.Utils;
 import com.fruit.game.visual.Assets;
@@ -134,6 +131,7 @@ public class MapGenerator {
             map.getCurrentRoom().addGameObject(new IncreaseKnockbackHammer(mapManager.getWorldUpdater().getObjectManager(),4,6));
             map.getCurrentRoom().addGameObject(new ForkingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 4, 4));
             map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 5, 4));
+            map.getCurrentRoom().addGameObject(new ExplodingProjectiles(mapManager.getWorldUpdater().getObjectManager(),4,5));
         }
         MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater(), map.getCurrentRoom());
 

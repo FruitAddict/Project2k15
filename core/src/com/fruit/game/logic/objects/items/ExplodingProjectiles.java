@@ -1,8 +1,5 @@
 package com.fruit.game.logic.objects.items;
 
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.game.Controller;
 import com.fruit.game.logic.ObjectManager;
@@ -43,6 +40,12 @@ public class ExplodingProjectiles extends Item {
     }
 
     @Override
+    public void addToBox2dWorld(World world){
+        super.addToBox2dWorld(world);
+        Controller.getWorldRenderer().getLightRenderer().attachPointLightToBody(this, com.badlogic.gdx.graphics.Color.RED,0.5f);
+    }
+
+    @Override
     public void onPickUp(Player player){
         player.addOnHitEffect(new ExplodeOnHit(player,20));
         Controller.getUserInterface().addItemDialogBox(this);
@@ -52,6 +55,7 @@ public class ExplodingProjectiles extends Item {
     @Override
     public void killYourself() {
         objectManager.removeObject(this);
+        super.killYourself();
     }
 
 }

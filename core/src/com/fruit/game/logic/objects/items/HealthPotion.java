@@ -69,5 +69,6 @@ public class HealthPotion extends Item {
     @Override
     public void killYourself() {
         objectManager.removeObject(this);
+        super.killYourself();
     }
 }

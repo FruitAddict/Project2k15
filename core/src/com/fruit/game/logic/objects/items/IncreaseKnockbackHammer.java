@@ -1,5 +1,7 @@
 package com.fruit.game.logic.objects.items;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.game.Controller;
 import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.effects.passive.IncreaseKnockback;
@@ -40,6 +42,12 @@ public class IncreaseKnockbackHammer extends Item {
     @Override
     public void update(float delta) {
 
+    }
+
+    @Override
+    public void addToBox2dWorld(World world){
+        super.addToBox2dWorld(world);
+        Controller.getWorldRenderer().getLightRenderer().attachPointLightToBody(this, Color.PURPLE,0.5f);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.fruit.game.visual;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.utils.Pool.Poolable;
+import com.fruit.game.logic.objects.entities.GameObject;
 
 /**
  * @Author FruitAddict
@@ -10,6 +11,7 @@ import com.badlogic.gdx.utils.Pool.Poolable;
  * Disabled lights have no resource cost.
  */
 public class PoolablePointLight extends PointLight implements Poolable {
+    private GameObject parentObject;
 
     /**
      * @param rayHandler
@@ -23,5 +25,16 @@ public class PoolablePointLight extends PointLight implements Poolable {
     @Override
     public void reset() {
         setActive(false);
+        setStaticLight(false);
+        setDistance(0);
+        setParentObject(null);
+    }
+
+    public GameObject getParentObject() {
+        return parentObject;
+    }
+
+    public void setParentObject(GameObject parentObject) {
+        this.parentObject = parentObject;
     }
 }

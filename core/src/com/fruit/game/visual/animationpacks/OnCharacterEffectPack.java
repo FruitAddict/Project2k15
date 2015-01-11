@@ -147,14 +147,7 @@ public class OnCharacterEffectPack {
                 break;
             }
             case LEVEL_UP_TRIGGER: {
-                if (!levelUpTweenStarted) {
-                    startLevelUpTween(x, y);
-                    levelUpTweenStarted = true;
-                } else {
-                    levelUpText.draw(batch);
-                    wingLeft.draw(batch);
-                    wingRight.draw(batch);
-                }
+
                 break;
             }
             case HP_BAR:{
@@ -164,33 +157,5 @@ public class OnCharacterEffectPack {
             }
 
         }
-    }
-
-    public void startLevelUpTween(float posx, float posy){
-        System.out.println("Starting the tween...");
-        Timeline.createSequence()
-                .push(Tween.set(levelUpText, SpriteAccessor.ALPHA).target(0.4f))
-                .push(Tween.set(wingLeft, SpriteAccessor.ALPHA).target(0.4f))
-                .push(Tween.set(wingLeft, SpriteAccessor.ROTATION).target(-90f))
-                .push(Tween.set(wingRight, SpriteAccessor.ROTATION).target(90f))
-                .push(Tween.set(wingRight, SpriteAccessor.ALPHA).target(0.4f))
-                .push(Tween.set(levelUpText, SpriteAccessor.POSITION_X).target(posx + 18 - levelUpText.getWidth() / 2))
-                .push((Tween.set(levelUpText, SpriteAccessor.POSITION_Y).target(posy)))
-                .push(Tween.set(wingLeft, SpriteAccessor.POSITION_X).target(posx+ 18 - levelUpText.getWidth() / 2 - wingLeft.getWidth()))
-                .push((Tween.set(wingLeft, SpriteAccessor.POSITION_Y).target(posy)))
-                .push(Tween.set(wingRight, SpriteAccessor.POSITION_X).target(posx+ 18 + levelUpText.getWidth() / 2))
-                .push((Tween.set(wingRight, SpriteAccessor.POSITION_Y).target(posy)))
-                .beginParallel()
-                .push(Tween.to(levelUpText, SpriteAccessor.ALPHA, 3f).target(1f))
-                .push(Tween.to(wingLeft, SpriteAccessor.ALPHA, 3f).target(1f))
-                .push(Tween.to(wingRight, SpriteAccessor.ALPHA, 3f).target(1f))
-                .push(Tween.to(wingLeft, SpriteAccessor.ROTATION, 3f).target(0f))
-                .push(Tween.to(wingRight, SpriteAccessor.ROTATION, 3f).target(0f))
-                .push(Tween.to(levelUpText, SpriteAccessor.POSITION_Y, 3f).target(posy + 100))
-                .push(Tween.to(wingLeft, SpriteAccessor.POSITION_Y, 3f).target(posy + 100+levelUpText.getHeight()))
-                .push(Tween.to(wingRight, SpriteAccessor.POSITION_Y, 3f).target(posy+100+levelUpText.getHeight()))
-                        .end()
-                .setCallbackTriggers(TweenCallback.END).setCallback(levelUpCallBack)
-                        .start(TweenUtils.tweenManager);
     }
 }

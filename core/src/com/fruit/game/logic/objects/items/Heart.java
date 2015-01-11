@@ -48,6 +48,7 @@ public class Heart extends Item implements Constants {
     @Override
     public void killYourself() {
         objectManager.removeObject(this);
+        super.killYourself();
     }
 
     public float getRenewValue() {

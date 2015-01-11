@@ -1,12 +1,7 @@
 package com.fruit.game.logic.objects.items;
 
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.game.Controller;
 import com.fruit.game.logic.ObjectManager;
-import com.fruit.game.logic.objects.entities.Character;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.player.Player;
 
@@ -54,6 +49,7 @@ public class DamageUp extends Item {
     @Override
     public void killYourself() {
         objectManager.removeObject(this);
+        super.killYourself();
     }
 
     public float getRenewValue() {

@@ -53,6 +53,7 @@ public class SphereOfProtection extends Item {
 
     @Override
     public void killYourself() {
+        super.killYourself();
         objectManager.removeObject(this);
         Controller.getUserInterface().getMessageHandler().addMessage("You're protected.", Color.GREEN, 3f);
     }

@@ -1,5 +1,6 @@
 package com.fruit.game.logic.objects.items;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -50,7 +51,14 @@ public class PiercingProjectiles extends Item {
     }
 
     @Override
+    public void addToBox2dWorld(World world){
+        super.addToBox2dWorld(world);
+        Controller.getWorldRenderer().getLightRenderer().attachPointLightToBody(this, Color.YELLOW,0.5f);
+    }
+
+    @Override
     public void killYourself() {
+        super.killYourself();
         objectManager.removeObject(this);
     }
 }

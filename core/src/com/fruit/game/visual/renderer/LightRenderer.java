@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.fruit.game.Configuration;
 import com.fruit.game.logic.Constants;
+import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.visual.PoolablePointLight;
 
@@ -73,23 +74,33 @@ public class LightRenderer implements Constants {
         activeLights.add(p);
     }
 
-    public void attachPointLightToBody(Body body,Color color, float length){
+    public void attachPointLightToBody(GameObject owner,Color color, float length){
         PoolablePointLight p = lightPool.obtain();
         p.setColor(color);
         p.setActive(true);
         p.setDistance(length);
-        p.attachToBody(body);
+        p.attachToBody(owner.getBody());
         p.setXray(true);
+        p.setParentObject(owner);
         Filter filter = new Filter();
         filter.maskBits = ENEMY_BIT | CLUTTER_BIT |ITEM_BIT | TERRAIN_BIT | TREASURE_BIT | PORTAL_BIT;
         p.setContactFilter(filter);
         activeLights.add(p);
     }
 
+    public void freeAttachedLight(GameObject owner){
+        for(PoolablePointLight p : activeLights){
+            if(p.getParentObject() == owner){
+                lightPool.free(p);
+                activeLights.removeValue(p, true);
+            }
+        }
+    }
+
     public void setPlayerLight(Player player){
         playerLight.attachToBody(player.getBody());
         playerLight.setDistance(4.5f);
-        playerLight.setColor(new Color(0f,0f,0f,1f));
+        playerLight.setColor(new Color(0.2f,0.2f,0.1f,1f));
         playerLight.setXray(true);
         Filter filter = new Filter();
         filter.maskBits = ENEMY_BIT | CLUTTER_BIT |ITEM_BIT | TERRAIN_BIT | TREASURE_BIT | PORTAL_BIT;

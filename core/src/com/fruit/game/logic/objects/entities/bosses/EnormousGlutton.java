@@ -177,6 +177,8 @@ public class EnormousGlutton extends Enemy {
 
         //dispose shape
         shape.dispose();
+
+        Controller.getWorldRenderer().getLightRenderer().attachPointLightToBody(this, com.badlogic.gdx.graphics.Color.PURPLE,5f);
     }
     @Override
     public void onDamageTaken(Value value) {
@@ -210,5 +212,6 @@ public class EnormousGlutton extends Enemy {
         objectManager.removeObject(this);
         Controller.getWorldUpdater().getPlayer().addExperiencePoints(250);
         Controller.getWorldRenderer().getSplatterRenderer().addMultiBloodSprite(getPosition(),10,2);
+        Controller.getWorldRenderer().getLightRenderer().freeAttachedLight(this);
     }
 }

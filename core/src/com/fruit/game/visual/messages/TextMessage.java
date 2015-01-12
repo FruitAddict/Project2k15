@@ -1,7 +1,9 @@
 package com.fruit.game.visual.messages;
 
+import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.equations.Quad;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -146,8 +148,8 @@ public class TextMessage implements Constants, Pool.Poolable {
     public void reset() {
         TweenUtils.tweenManager.killTarget(tweenableValues);
         setAlpha(0);
-        setPositionX(-1);
-        setPositionY(-1);
+        setPositionX(-100);
+        setPositionY(-100);
         stateTime = 0;
         tweenableValues.setAlpha(0);
         tweenableValues.setX(0);

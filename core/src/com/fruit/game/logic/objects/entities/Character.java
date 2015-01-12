@@ -205,8 +205,9 @@ public abstract class Character extends GameObject implements Steerable<Vector2>
     @Override
     public void killYourself(){
         //on death characters should remove all on screen messages that they own
-        super.killYourself();
         Controller.getWorldRenderer().getTextRenderer().removeMessageByOwner(this);
+        super.killYourself();
+
     }
 
     @Override

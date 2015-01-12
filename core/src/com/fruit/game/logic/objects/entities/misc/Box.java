@@ -53,7 +53,7 @@ public class Box extends Enemy {
 
         //Shape definiton
         CircleShape shape = new CircleShape();
-        shape.setRadius(Math.min(getWidth(),getHeight())/PIXELS_TO_UNITS);
+        shape.setRadius(Math.min(getWidth(),getHeight())/2/PIXELS_TO_UNITS);
 
         //fixture
         FixtureDef fixtureDef = new FixtureDef();

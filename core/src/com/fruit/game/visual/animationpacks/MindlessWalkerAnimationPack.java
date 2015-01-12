@@ -69,9 +69,6 @@ public class MindlessWalkerAnimationPack implements Constants {
 
     public void render(float stateTime, Character character, SpriteBatch batch){
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(character));
-        if(character.status.isBurning()){
-            onCharacteREffectPack.render(character,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,character.getWidth(),character.getHeight());
-        }
         if(character.facingN){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
         }else if(character.facingS){
@@ -82,6 +79,9 @@ public class MindlessWalkerAnimationPack implements Constants {
             batch.draw(playerAnimationWest.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
         } else {
             batch.draw(playerSouthRegion[1],pos.x,pos.y,character.getWidth(),character.getHeight());
+        }
+        if(character.status.isBurning()){
+            onCharacteREffectPack.render(character,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,character.getWidth(),character.getHeight());
         }
         if(character.status.isHealing()){
             onCharacteREffectPack.render(character,batch,stateTime, OnCharacterEffectPack.HEALED,pos.x,pos.y,character.getWidth(),character.getHeight());

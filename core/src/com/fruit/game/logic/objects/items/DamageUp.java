@@ -1,5 +1,7 @@
 package com.fruit.game.logic.objects.items;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.game.Controller;
 import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.entities.GameObject;
@@ -36,6 +38,13 @@ public class DamageUp extends Item {
     public void update(float delta) {
 
     }
+
+    @Override
+    public void addToBox2dWorld(World world){
+        super.addToBox2dWorld(world);
+        Controller.getWorldRenderer().getLightRenderer().attachPointLightToBody(this, Color.BLACK,0.5f);
+    }
+
 
     @Override
     public void onPickUp(Player player){

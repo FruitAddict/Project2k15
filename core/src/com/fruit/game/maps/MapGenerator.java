@@ -93,7 +93,7 @@ public class MapGenerator {
         for (int i = 0; i < map.getRoomMatrix().length; i++) {
             for (int j = 0; j < map.getRoomMatrix().length; j++) {
                 if(map.getRoomMatrix()[i][j]!=null && !map.getRoomMatrix()[i][j].isBossRoom()){
-                    int numofmobs = Utils.mapRandomNumberGenerator.nextInt(10);
+                    int numofmobs = Utils.mapRandomNumberGenerator.nextInt(20);
                     for (int k = 0; k < numofmobs; k++) {
                         int roll  = Utils.mapRandomNumberGenerator.nextInt(100);
                         Vector2 position = map.getRoomMatrix()[i][j].getMobSpawnPoints().get(Utils.mapRandomNumberGenerator.nextInt(map.getRoomMatrix()[i][j].getMobSpawnPoints().size));

@@ -4,6 +4,7 @@ import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -32,19 +33,14 @@ public class OnCharacterEffectPack {
     private Animation poisonedAnimation;
     private Animation shieldedAnimation;
     private Animation burnedAnimation;
-
-    //level up effect sprites
-    private Sprite levelUpText;
-    private Sprite wingLeft;
-    private Sprite wingRight;
+    private Animation levelUpAnimation;
 
     private Texture blackTexture;
     private Texture redTexture;
+    TextureRegion[] animFramesLevelUp;
 
-    //level up effect stuff
-    private boolean levelUpTweenStarted = false;
-    public TweenCallback levelUpCallBack;
-    private float savedPosX, savedPosY;
+    private float levelUpStateTime = 0;
+
 
     public OnCharacterEffectPack(){
         //Healing animation effect
@@ -77,6 +73,14 @@ public class OnCharacterEffectPack {
         animFramesShielded[3] = tmp3[0][3];
         shieldedAnimation = new Animation(0.1f, animFramesShielded);
 
+        Texture levelUpTexture = (Texture) Assets.getAsset("lvl_spritesheet.png",Texture.class);
+        TextureRegion[][] tmp4 = TextureRegion.split(levelUpTexture,levelUpTexture.getWidth()/7,levelUpTexture.getHeight());
+        animFramesLevelUp = new TextureRegion[7];
+        for(int i =0 ;i < animFramesLevelUp.length;i++){
+            animFramesLevelUp[i] = tmp4[0][6-i];
+        }
+        levelUpAnimation = new Animation(0.15f, animFramesLevelUp);
+
         //burned animation effect
         /**Texture burnedTexture = (Texture) Assets.getAsset("effects//fireeffect.png", Texture.class);
         TextureRegion[][] tmp4 = TextureRegion.split(burnedTexture, burnedTexture.getWidth() / 8, burnedTexture.getHeight());
@@ -96,12 +100,6 @@ public class OnCharacterEffectPack {
         atlasRegions = burnedAtlas.findRegions("onfire");
         burnedAnimation = new Animation(0.1f, atlasRegions);
 
-
-        //level up sprites
-        levelUpText = new Sprite((Texture)Assets.getAsset("effects//leveluptext.png", Texture.class));
-        wingLeft = new Sprite((Texture)Assets.getAsset("effects//wing1.png", Texture.class));
-        wingRight = new Sprite((Texture)Assets.getAsset("effects//wing2.png", Texture.class));
-
         //texture for hp bars under mobs
         Pixmap redPixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         redPixmap.setColor(Color.RED);
@@ -113,18 +111,6 @@ public class OnCharacterEffectPack {
         redTexture = new Texture(redPixmap);
         blackTexture = new Texture(blackPixmap);
 
-        //level up tween callback
-        levelUpCallBack = new TweenCallback() {
-            @Override
-            public void onEvent(int i, BaseTween<?> baseTween) {
-                levelUpTweenStarted = false;
-                Controller.getWorldUpdater().getPlayer().status.setLeveledUp(false);
-                levelUpText.setAlpha(0);
-                wingLeft.setAlpha(0);
-                wingRight.setAlpha(0);
-                System.out.println("levle up callback reached");
-            }
-        };
     }
 
     public  <T extends Character> void render(T character, SpriteBatch batch,float stateTime, int effectType, float x, float y, float width, float height){
@@ -147,6 +133,17 @@ public class OnCharacterEffectPack {
                 break;
             }
             case LEVEL_UP_TRIGGER: {
+                if(!levelUpAnimation.isAnimationFinished(levelUpStateTime)) {
+                    levelUpStateTime+= Gdx.graphics.getDeltaTime();
+                    batch.draw(levelUpAnimation.getKeyFrame(levelUpStateTime, true), x - (181 / 2) + (width / 2), y, 181, 176);
+                }else {
+                    batch.draw(animFramesLevelUp[6], x - (181 / 2) + (width / 2), y, 181, 176);
+                    levelUpStateTime+= Gdx.graphics.getDeltaTime();
+                    if(levelUpStateTime>(0.15*7)+0.43) {
+                        levelUpStateTime=0;
+                        Controller.getWorldUpdater().getPlayer().status.setLeveledUp(false);
+                    }
+                }
 
                 break;
             }

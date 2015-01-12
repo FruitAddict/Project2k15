@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.fruit.game.Configuration;
+import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.utilities.TweenableValues;
 import com.fruit.game.visual.tween.TextMessageAccessor;
@@ -18,7 +19,7 @@ import com.fruit.game.visual.tween.TweenableValuesAccessor;
  * Text renderer. Takes care of rendering scrolling battle text, boss-taunts
  * and other texts on the screen that should be part of the world and not the GUI.
  */
-public class TextRenderer {
+public class TextRenderer implements Constants {
     //list of text messages that are currently processed
     private Array<TextMessage> messageList;
     //Pool for text message objects to be reused
@@ -144,7 +145,7 @@ public class TextRenderer {
         for(int i =0 ;i<messageList.size;i++){
             if(messageList.get(i).getParentObject()==o){
                 System.out.println("static upping msg");
-                messageList.get(i).setParentPosition(new Vector2(o.getBody().getPosition().x,o.getBody().getPosition().y));
+                messageList.get(i).setParentPosition(o.getBody().getPosition().cpy());
             }
         }
     }

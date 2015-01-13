@@ -23,7 +23,7 @@ public class Room implements Constants {
 
     //booleans to check whether specific exit points are possible in this room, so when
     //other rooms try to link to this room from unavailable direction no link is made.
-    private boolean exitPointN, exitPointE, exitPointW, exitPointS = false;
+    //private boolean exitPointN, exitPointE, exitPointW, exitPointS = false;
 
     //spawn positions (center must always be present). Auto generated based on the .tmx map
     //properties and portal positions
@@ -40,6 +40,8 @@ public class Room implements Constants {
     private boolean containsPlayer;
     //indicated whether this room is a boss room
     private boolean bossRoom;
+    //indicates whether portals were already added to this room, used by map object parser
+    private boolean mapObjectsAdded = false;
 
     public Room(TiledMap tiledMap){
         this.tiledMap = tiledMap;
@@ -48,7 +50,7 @@ public class Room implements Constants {
         staticLightPositions = new Array<StaticLightContainer>();
 
         //get possible exit points in this room (so room transition can be blocked for the player easily)
-        String exitPoints = tiledMap.getProperties().get("ExitPoints", String.class);
+        /**String exitPoints = tiledMap.getProperties().get("ExitPoints", String.class);
         if(exitPoints.contains("N")){
             exitPointN= true;
         }
@@ -61,6 +63,7 @@ public class Room implements Constants {
         if(exitPoints.contains("E")){
             exitPointE = true;
         }
+         */
         //parse and set spawn points and portals
         MapObjectParser.addInfoFromTiledMapToRoom(this);
     }
@@ -104,27 +107,19 @@ public class Room implements Constants {
 
     public void setLinkedRoomNorth(Room linkNorth) {
         //if it is possible to link something on the X side, create the link
-        if(exitPointN) {
-            this.linkNorth = linkNorth;
-        }
+        this.linkNorth = linkNorth;
     }
 
     public void setLinkedRoomSouth(Room linkSouth) {
-        if(exitPointS) {
-            this.linkSouth = linkSouth;
-        }
+        this.linkSouth = linkSouth;
     }
 
     public void setLinkedRoomEast(Room linkEast) {
-        if(exitPointE) {
-            this.linkEast = linkEast;
-        }
+        this.linkEast = linkEast;
     }
 
     public void setLinkedRoomWest(Room linkWest) {
-        if(exitPointW) {
-            this.linkWest = linkWest;
-        }
+        this.linkWest = linkWest;
     }
 
     public Vector2 getSpawnPointCenter() {
@@ -257,6 +252,14 @@ public class Room implements Constants {
 
     public void setBossRoom(boolean bossRoom) {
         this.bossRoom = bossRoom;
+    }
+
+    public boolean isMapObjectsAdded() {
+        return mapObjectsAdded;
+    }
+
+    public void setMapObjectsAdded(boolean mapObjectsAdded) {
+        this.mapObjectsAdded = mapObjectsAdded;
     }
 
     public class StaticLightContainer{

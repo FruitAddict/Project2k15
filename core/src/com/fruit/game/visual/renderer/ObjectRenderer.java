@@ -56,21 +56,7 @@ public class ObjectRenderer implements Constants {
     public void render(float delta, Array<GameObject> objects, SpriteBatch batch){
         //Sort the objects based on their vertical position in the world
         //to achieve correct rendering order
-        objects.sort(new Comparator<GameObject>() {
-            @Override
-            public int compare(GameObject o1, GameObject o2) {
-                if(o1.getBody().getPosition().y > o2.getBody().getPosition().y){
-                    return -1;
-                }
-                else if(o1.getBody().getPosition().y == o2.getBody().getPosition().y){
-                    return 0;
-                }
-                else {
-                    return 1;
-                }
-            }
-        });
-
+        objects.sort();
         //render the objects based on their entity ID
         for(GameObject e : objects){
             switch(e.getEntityID()){
@@ -117,6 +103,11 @@ public class ObjectRenderer implements Constants {
                 case GameObject.ENORMOUS_GLUTTON:{
                     enormousGluttonPack.load();
                     enormousGluttonPack.render(((EnormousGlutton)e).stateTime,(EnormousGlutton)e,batch);
+                    break;
+                }
+                case GameObject.PORTAL:{
+                    utilityAnimationPack.load();
+                    utilityAnimationPack.render(stateTime,e,batch);
                     break;
                 }
             }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.fruit.game.logic.objects.entities.Enemy;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.enemies.TheEye;
+import com.fruit.game.logic.objects.entities.misc.Portal;
 import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.logic.objects.entities.projectiles.MobProjectile;
 import com.fruit.game.logic.objects.entities.projectiles.PlayerProjectile;
@@ -236,43 +237,11 @@ public class WorldContactListener implements ContactListener,Constants {
         if(f1.getFilterData().categoryBits == PORTAL_BIT || f2.getFilterData().categoryBits == PORTAL_BIT){
             if(f1.getFilterData().categoryBits == PLAYER_BIT || f2.getFilterData().categoryBits == PLAYER_BIT){
                 if(f1.getFilterData().categoryBits == PLAYER_BIT){
-                    switch((Integer)f2.getBody().getUserData()){
-                        case NORTH_DIR: {
-                            worldUpdater.getMapManager().requestChange(NORTH_DIR);
-                            break;
-                        }
-                        case SOUTH_DIR: {
-                            worldUpdater.getMapManager().requestChange(SOUTH_DIR);
-                            break;
-                        }
-                        case WEST_DIR: {
-                            worldUpdater.getMapManager().requestChange(WEST_DIR);
-                            break;
-                        }
-                        case EAST_DIR: {
-                            worldUpdater.getMapManager().requestChange(EAST_DIR);
-                            break;
-                        }
-                    }
+                    Portal p = (Portal)f2.getBody().getUserData();
+                    p.onContactWithPlayer();
                 }else {
-                    switch((Integer)f1.getBody().getUserData()){
-                        case NORTH_DIR: {
-                            worldUpdater.getMapManager().requestChange(NORTH_DIR);
-                            break;
-                        }
-                        case SOUTH_DIR: {
-                            worldUpdater.getMapManager().requestChange(SOUTH_DIR);
-                            break;
-                        }
-                        case WEST_DIR: {
-                            worldUpdater.getMapManager().requestChange(WEST_DIR);
-                            break;
-                        }
-                        case EAST_DIR: {
-                            worldUpdater.getMapManager().requestChange(EAST_DIR);
-                            break;
-                        }
-                    }
+                    Portal p = (Portal)f1.getBody().getUserData();
+                    p.onContactWithPlayer();
                 }
             }
         }

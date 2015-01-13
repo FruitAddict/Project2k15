@@ -4,13 +4,15 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.game.logic.Constants;
 
+import java.util.Comparator;
+
 /**
  * Main abstract game object class from which all game entities will
  * inherit from.
  * EVERY GAME OBJECT MUST TAKE OBJECT MANAGER IN THE CONSTRUCTOR
  * AS THE MEANS TO DESTROY ITSELF.
  */
-public abstract class GameObject implements Constants {
+public abstract class GameObject implements Constants,Comparable<GameObject> {
     //Game Object EntityID's
     public static final int PLAYER = 1;
     public static final int MINDLESS_WALKER =2;
@@ -21,6 +23,7 @@ public abstract class GameObject implements Constants {
     public static final int THE_EYE = 7;
     public static final int EXPLOSION = 8;
     public static final int ENORMOUS_GLUTTON = 9;
+    public static final int PORTAL = 10;
 
     //general boolean for debug purposes, can be used to make some additional functionality of the object available
     public boolean debug = false;
@@ -53,6 +56,20 @@ public abstract class GameObject implements Constants {
     //every gameobject needs to know how to kill itself
     public void killYourself(){
         setScheduledForRemoval(true);
+    }
+    //game object will be sorted by their y axis position for rendering sake
+
+    @Override
+    public int compareTo(GameObject another) {
+        if(body.getPosition().y > another.getBody().getPosition().y){
+            return -1;
+        }
+        else if(body.getPosition().y == another.getBody().getPosition().y){
+            return 0;
+        }
+        else {
+            return 1;
+        }
     }
 
     public Body getBody(){

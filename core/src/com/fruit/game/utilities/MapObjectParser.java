@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.WorldUpdater;
+import com.fruit.game.logic.objects.entities.misc.Portal;
 import com.fruit.game.maps.Room;
 
 /**
@@ -99,6 +100,7 @@ public class MapObjectParser implements Constants {
                 }
             }
         }
+        if(!room.isMapObjectsAdded()){
         for(int i =0 ;i <portalRectangles.size;i++){
             Rectangle rec = portalRectangles.get(i);
             //copypasted from above
@@ -110,35 +112,30 @@ public class MapObjectParser implements Constants {
             originX /= PIXELS_TO_UNITS;
             originY /= PIXELS_TO_UNITS;
             //get half width and half height of the rectangle and divide them by unit scaling
-            float halfWidth = rec.getWidth()/ PIXELS_TO_UNITS /2;
-            float halfHeight = rec.getHeight()/ PIXELS_TO_UNITS /2;
-
-            //create a new bodyDef for static terrain object
-            //Player body definition
-            BodyDef bodyDef = new BodyDef();
-            bodyDef.position.set(originX,originY);
-            bodyDef.type = BodyDef.BodyType.StaticBody;
-
-            //create the body
-            Body body = world.createBody(bodyDef);
-            //add userdata
-            body.setUserData(directions.get(i));
-
-
-            //Shape definiton
-            PolygonShape shape = new PolygonShape();
-            //setAsBox take's half of width and height
-            shape.setAsBox(halfWidth,halfHeight);
-
-            //fixture
-            FixtureDef fixtureDef = new FixtureDef();
-            fixtureDef.density = 100f;
-            fixtureDef.shape = shape;
-            fixtureDef.filter.categoryBits = PORTAL_BIT;
-            body.createFixture(fixtureDef);
-
-            //dispose of shape
-            shape.dispose();
+                int type = 0;
+                switch(directions.get(i)){
+                    case EAST_DIR:{
+                        type = Portal.PORTAL_EAST;
+                        break;
+                    }
+                    case WEST_DIR:{
+                        type = Portal.PORTAL_WEST;
+                        break;
+                    }
+                    case NORTH_DIR:{
+                        type = Portal.PORTAL_NORTH;
+                        break;
+                    }
+                    case SOUTH_DIR:{
+                        type = Portal.PORTAL_SOUTH;
+                        break;
+                    }
+                }
+                Portal p = new Portal(new Vector2(originX,originY),type,rec.getWidth(),rec.getHeight(),
+                        rec.getWidth() > rec.getHeight());
+                room.addGameObject(p);
+                room.setMapObjectsAdded(true);
+            }
         }
 
         //finally add all the objects stored in this room to the object manager

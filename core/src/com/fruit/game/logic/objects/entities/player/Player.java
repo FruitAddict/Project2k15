@@ -34,7 +34,8 @@ public class Player extends Character implements Constants {
     private Vector2 attackDirectionNormalized;
 
     //player level start with 1
-    private int level, experiencePoints, nextLevelExpRequirement, statPoints, expAccumulator, lastAccumulatorUpdate;
+    private int level, experiencePoints, nextLevelExpRequirement, statPoints, expAccumulator;
+    private float lastAccumulatorUpdate, timeSinceLastAttack;
 
     //Players on hit effects, items can result in attacks slowing enemies down etc, it is passed to
     //every newly created projectile
@@ -251,14 +252,14 @@ public class Player extends Character implements Constants {
             steeringOutput.scl(-1);
             applySteering(delta);
         }
-        if( expAccumulator >0 && lastAccumulatorUpdate>2.5){
-            System.out.println("Sending" + expAccumulator);
+        if( expAccumulator >0 && stateTime - lastAttack > 3){
             Controller.getUserInterface().getMessageHandler().addMessage("+"+expAccumulator+" EXP",new Color(1,215/255f,0f,1f),2.5f);
             expAccumulator = 0;
             lastAccumulatorUpdate=0;
         }else {
-            lastAccumulatorUpdate+=delta;
+            lastAccumulatorUpdate += delta;
         }
+
     }
 
     private void onDeath() {
@@ -341,4 +342,5 @@ public class Player extends Character implements Constants {
     public void addSlainEnemy(){
         slainEnemies++;
     }
+
 }

@@ -61,10 +61,10 @@ public abstract class GameObject implements Constants,Comparable<GameObject> {
 
     @Override
     public int compareTo(GameObject another) {
-        if(body.getPosition().y > another.getBody().getPosition().y){
+        if(getBodyPositionY() > another.getBodyPositionY()){
             return -1;
         }
-        else if(body.getPosition().y == another.getBody().getPosition().y){
+        else if(getBodyPositionY() == another.getBodyPositionY()){
             return 0;
         }
         else {
@@ -122,6 +122,13 @@ public abstract class GameObject implements Constants,Comparable<GameObject> {
 
     public void setScheduledForRemoval(boolean scheduledForRemoval) {
         this.scheduledForRemoval = scheduledForRemoval;
+    }
+
+    public float getBodyPositionX(){
+        return body.getPosition().x;
+    }
+    public float getBodyPositionY(){
+        return body.getPosition().y;
     }
 
 

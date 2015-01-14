@@ -27,7 +27,7 @@ public class EffectAnimationPack {
     }
 
     public void render(float stateTime, GameObject gameObject, SpriteBatch batch) {
-        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(gameObject));
+        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(gameObject,pos));
         batch.draw(explosionAnimation.getKeyFrame(stateTime,false),pos.x,pos.y,gameObject.getWidth(),gameObject.getHeight());
     }
 }

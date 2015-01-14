@@ -15,6 +15,7 @@ public class ForkOnHit extends OnHitEffect {
 
     public ForkOnHit(Player player){
         this.player = player;
+        setEffectID(OnHitEffect.FORK_ON_HIT);
     }
     @Override
     public void onHit(Projectile proj, Character enemy, Value damage) {

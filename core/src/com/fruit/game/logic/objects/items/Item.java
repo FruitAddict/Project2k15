@@ -21,6 +21,7 @@ public abstract class Item extends GameObject {
     public static final int MICHAEL_BAY = 8;
     public static final int FORKING_PROJECTILES = 9;
     public static final int INCREASED_KNOCKBACK_HAMMER = 10;
+    public static final int BLOOD_AMULET = 11;
     //each item should have a String containing its description
     protected String description;
     //concrete type of this item (must be one of the types declared at the beginning of this class)

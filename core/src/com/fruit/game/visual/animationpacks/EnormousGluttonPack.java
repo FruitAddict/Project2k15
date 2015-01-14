@@ -44,7 +44,7 @@ public class EnormousGluttonPack {
     }
 
     public void render(float stateTime, Character character, SpriteBatch batch){
-        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(character));
+        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(character,pos));
 
         if(character.idle){
             batch.draw(frames[0], pos.x, pos.y, character.getWidth(), character.getHeight());

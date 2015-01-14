@@ -47,7 +47,7 @@ public class ProjectileAnimationPack implements Constants {
     }
 
     public void render(float stateTime, Projectile projectile, SpriteBatch batch){
-        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(projectile));
+        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(projectile,pos));
         switch(projectile.getTypeID()) {
             case Projectile.PLAYER_PROJECTILE:{
                 mobProjectile2.setPosition(pos.x,pos.y);

@@ -68,7 +68,7 @@ public class MindlessWalkerAnimationPack implements Constants {
     }
 
     public void render(float stateTime, Character character, SpriteBatch batch){
-        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(character));
+        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(character,pos));
         if(character.facingN){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
         }else if(character.facingS){

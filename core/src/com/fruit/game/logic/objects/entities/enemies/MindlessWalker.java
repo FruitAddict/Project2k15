@@ -4,6 +4,7 @@ import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.Flee;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -65,7 +66,8 @@ public class MindlessWalker extends Enemy implements Constants {
         height = 48*1.5f/generationNumber;
 
 
-        steeringBehavior = new Wander<Vector2>(this).setWanderRadius(4).setWanderOrientation(15f);
+        steeringBehavior = new Wander<Vector2>(this).setWanderOffset(50).setWanderRadius(5).setFaceEnabled(false)
+        .setWanderRate(0.5f);
         this.generationNumber = generationNumber;
     }
     @Override

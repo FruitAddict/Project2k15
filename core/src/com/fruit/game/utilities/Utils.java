@@ -39,12 +39,18 @@ public abstract class Utils implements Constants {
         }
     }
 
-    public static Vector2 getDrawPositionBasedOnBox2dCircle(GameObject gameObject){
+    public static Vector2 getDrawPositionBasedOnBox2dCircle(GameObject gameObject, Vector2 position){
         //returns chinese stuff i literally forgot what it does 5 minutes after writing it
-        return new Vector2((gameObject.getBody().getPosition().x* PIXELS_TO_UNITS)-Math.min(gameObject.getWidth(), gameObject.getHeight())/2
-                -(gameObject.getWidth()>gameObject.getHeight()?((gameObject.getWidth()-gameObject.getHeight())/2):0),
-                (gameObject.getBody().getPosition().y* PIXELS_TO_UNITS)-Math.min(gameObject.getWidth(), gameObject.getHeight())/2);
+        return position.set((gameObject.getBody().getPosition().x * PIXELS_TO_UNITS) - Math.min(gameObject.getWidth(), gameObject.getHeight()) / 2
+                        - (gameObject.getWidth() > gameObject.getHeight() ? ((gameObject.getWidth() - gameObject.getHeight()) / 2) : 0),
+                (gameObject.getBody().getPosition().y * PIXELS_TO_UNITS) - Math.min(gameObject.getWidth(), gameObject.getHeight()) / 2);
     }
+
+    public static Vector2 getDrawPositionBasedOnBox2dRectangle(GameObject gameObject, Vector2 position){
+        return position.set((gameObject.getBody().getPosition().x*PIXELS_TO_UNITS - (gameObject.getWidth()/2)),
+                gameObject.getBody().getPosition().y * PIXELS_TO_UNITS - (gameObject.getHeight()/2));
+    }
+
 
     public static <T> void fill2dArray(T[][] array,T value){
         //fills 2d array with given value

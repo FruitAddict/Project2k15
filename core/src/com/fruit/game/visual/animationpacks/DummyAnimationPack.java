@@ -42,7 +42,7 @@ public class DummyAnimationPack implements Constants {
     }
 
     public void render(float stateTime, Dummy dummy, SpriteBatch batch){
-        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(dummy));
+        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(dummy,pos));
                 batch.draw(animation.getKeyFrame(stateTime, true), pos.x, pos.y, dummy.getWidth(), dummy.getHeight());
         if(dummy.status.isHealing()){
             onCharacteREffectPack.render(dummy,batch, stateTime, OnCharacterEffectPack.HEALED, pos.x, pos.y, dummy.getWidth(), dummy.getHeight());

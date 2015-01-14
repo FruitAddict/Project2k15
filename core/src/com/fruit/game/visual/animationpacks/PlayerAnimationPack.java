@@ -101,7 +101,7 @@ public class PlayerAnimationPack implements Constants {
 
     public void render(float stateTime, Player player, SpriteBatch batch){
         //position for rendering, this alghorithm is the same for every renderable object
-        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(player));
+        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(player,pos));
         if(player.status.isBurning()){
             onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,player.getWidth(),player.getBodyHeight());
         }

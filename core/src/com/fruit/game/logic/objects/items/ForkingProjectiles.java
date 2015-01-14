@@ -36,7 +36,8 @@ public class ForkingProjectiles extends Item {
         width=32;
         height=32;
         description = "Your projectiles now fork on hit! Woooo! Just imagine the synergies.";
-        setSaveInRooms(true);        setItemType(Item.FORKING_PROJECTILES);
+        setSaveInRooms(true);
+        setItemType(Item.FORKING_PROJECTILES);
         setEntityID(GameObject.ITEM);
     }
     @Override

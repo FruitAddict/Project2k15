@@ -29,11 +29,12 @@ public class UtilityAnimationPack implements Constants {
     }
 
     public void render(float stateTime, GameObject object, SpriteBatch batch){
-        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(object));
         if(object.getEntityID() == GameObject.BOX){
+            pos.set(Utils.getDrawPositionBasedOnBox2dCircle(object,pos));
             batch.draw(boxSprite,pos.x,pos.y,object.getWidth(),object.getHeight());
         }
         if(object.getEntityID() == GameObject.PORTAL){
+            pos.set(Utils.getDrawPositionBasedOnBox2dRectangle(object,pos));
             if(((Portal)object).isHorizontal()){
                 batch.draw(tempPortalHorizontal,pos.x,pos.y);
             }else {

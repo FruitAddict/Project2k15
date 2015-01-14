@@ -116,18 +116,30 @@ public class MapObjectParser implements Constants {
                 switch(directions.get(i)){
                     case EAST_DIR:{
                         type = Portal.PORTAL_EAST;
+                        if(room.getLinkedRoomEast()==null){
+                            continue;
+                        }
                         break;
                     }
                     case WEST_DIR:{
                         type = Portal.PORTAL_WEST;
+                        if(room.getLinkedRoomWest()==null){
+                            continue;
+                        }
                         break;
                     }
                     case NORTH_DIR:{
                         type = Portal.PORTAL_NORTH;
+                        if(room.getLinkedRoomNorth()==null){
+                            continue;
+                        }
                         break;
                     }
                     case SOUTH_DIR:{
                         type = Portal.PORTAL_SOUTH;
+                        if(room.getLinkedRoomSouth()==null){
+                            continue;
+                        }
                         break;
                     }
                 }

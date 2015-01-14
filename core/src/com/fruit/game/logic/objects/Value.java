@@ -33,6 +33,10 @@ public class Value {
         return type;
     }
 
+    public void setType(int type){
+        this.type = type;
+    }
+
     public Value cpy(){
         return new Value(value,type);
     }

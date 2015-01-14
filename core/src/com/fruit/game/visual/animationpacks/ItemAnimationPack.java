@@ -24,6 +24,7 @@ public class ItemAnimationPack implements Constants {
     private Sprite michaelBaySprite;
     private Sprite forkingProjectilesSprite;
     private Sprite knockbackHammerSprite;
+    private Sprite bloodAmuletSprite;
     private boolean loaded = false;
 
     public void load(){
@@ -49,13 +50,15 @@ public class ItemAnimationPack implements Constants {
             forkingProjectilesSprite = new Sprite(forkingProjectilesTexture);
             Texture knockbackHammerTexture = (Texture)Assets.getAsset("items//knockback_hammer.png",Texture.class);
             knockbackHammerSprite = new Sprite(knockbackHammerTexture);
+            Texture bloodAmuletTexture = (Texture)Assets.getAsset("items//bloodamulet.png",Texture.class);
+            bloodAmuletSprite = new Sprite(bloodAmuletTexture);
             loaded = true;
         }
     }
 
 
     public void render(float stateTime, Item item, SpriteBatch batch){
-        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(item));
+        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(item,pos));
        switch(item.getItemType()){
            case Item.HEART: {
                batch.draw(heartSprite, pos.x, pos.y, item.getWidth(), item.getHeight());
@@ -97,6 +100,10 @@ public class ItemAnimationPack implements Constants {
                batch.draw(knockbackHammerSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
                break;
            }
+           case Item.BLOOD_AMULET:{
+               batch.draw(bloodAmuletSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
+               break;
+           }
        }
     }
 
@@ -119,6 +126,9 @@ public class ItemAnimationPack implements Constants {
             }
             case Item.INCREASED_KNOCKBACK_HAMMER:{
                 return knockbackHammerSprite;
+            }
+            case Item.BLOOD_AMULET:{
+                return bloodAmuletSprite;
             }
             default:{
                 return heartSprite;

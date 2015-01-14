@@ -95,4 +95,9 @@ public class Portal extends GameObject {
     public void setHorizontal(boolean horizontal) {
         this.horizontal = horizontal;
     }
+
+    @Override
+    public float getBodyPositionY(){
+        return 1000;
+    }
 }

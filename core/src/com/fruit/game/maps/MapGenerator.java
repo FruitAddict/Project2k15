@@ -26,6 +26,7 @@ public class MapGenerator {
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout.length; j++) {
                 if(layout[i][j]){
+                    /** todo room type rolling smarter and shit
                    String roomType = "";
                     if(i-1 > 0 && layout[i-1][j]){
                         roomType+="N";
@@ -39,10 +40,9 @@ public class MapGenerator {
                     if(j-1 > 0 && layout[i][j-1]){
                         roomType+="W";
                     }
-
-
-                    System.out.println(roomType);
-                    map.getRoomMatrix()[i][j] = new Room((TiledMap) Assets.getAsset("maps//" + roomType + ".tmx", TiledMap.class));
+                     */
+                    int roomNumber = 1+ Utils.mapRandomNumberGenerator.nextInt(4);
+                    map.getRoomMatrix()[i][j] = new Room((TiledMap) Assets.getAsset("maps//NESW//" + roomNumber + ".tmx", TiledMap.class));
                 }
             }
         }
@@ -128,8 +128,7 @@ public class MapGenerator {
         //set current room to the one in the center
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
         if(Configuration.debugItemsEnabled) {
-            map.getCurrentRoom().addGameObject(new IncreaseKnockbackHammer(mapManager.getWorldUpdater().getObjectManager(),4,6));
-            map.getCurrentRoom().addGameObject(new ForkingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 4, 4));
+            map.getCurrentRoom().addGameObject(new BloodAmulet(mapManager.getWorldUpdater().getObjectManager(),6,5));
             map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 5, 4));
             map.getCurrentRoom().addGameObject(new ExplodingProjectiles(mapManager.getWorldUpdater().getObjectManager(),4,5));
         }

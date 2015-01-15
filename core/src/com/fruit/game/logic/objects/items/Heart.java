@@ -1,9 +1,5 @@
 package com.fruit.game.logic.objects.items;
 
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.entities.GameObject;

@@ -51,7 +51,7 @@ public class TextRenderer implements Constants {
 
     public TextRenderer(){
         messageList = new Array<>();
-        messagePool = new Pool<TextMessage>(50) {
+        messagePool = new Pool<TextMessage>(10,60) {
             @Override
             protected TextMessage newObject() {
                 return new TextMessage();
@@ -63,6 +63,7 @@ public class TextRenderer implements Constants {
     }
 
     public void render(SpriteBatch batch, float delta){
+        //System.out.println(messageList.size+" "+messagePool.getFree());
         //check if the messages should disappear
         for(int i =0 ; i < messageList.size;i++){
             //if the message statetime exceeds its lifespan, remove it
@@ -146,6 +147,7 @@ public class TextRenderer implements Constants {
             if(messageList.get(i).getParentObject()==o){
                 System.out.println("static upping msg");
                 messageList.get(i).setParentPosition(o.getBody().getPosition().cpy());
+                messageList.get(i).setParentObject(null);
             }
         }
     }

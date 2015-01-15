@@ -8,14 +8,12 @@ import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.Projectile;
 import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
 import com.fruit.game.logic.objects.entities.enemies.Dummy;
-import com.fruit.game.logic.objects.entities.enemies.MindlessWalker;
+import com.fruit.game.logic.objects.entities.enemies.Slime;
 import com.fruit.game.logic.objects.entities.enemies.TheEye;
 import com.fruit.game.logic.objects.entities.misc.Explosion;
 import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.logic.objects.items.Item;
 import com.fruit.game.visual.animationpacks.*;
-
-import java.util.Comparator;
 
 
 /**
@@ -30,7 +28,7 @@ public class ObjectRenderer implements Constants {
     public OnCharacterEffectPack onCharacteREffectPack;
     //animation packs that will handle drawing specific entities
     public PlayerAnimationPack playerAnimationPack;
-    public MindlessWalkerAnimationPack mindlessWalkerAnimationPack;
+    public SlimeAnimationPack slimeAnimationPack;
     public UtilityAnimationPack utilityAnimationPack;
     public ProjectileAnimationPack projectileAnimationPack;
     public DummyAnimationPack dummyAnimationPack;
@@ -43,7 +41,7 @@ public class ObjectRenderer implements Constants {
         //some animation packs (for rendering characters) will need instance of effect renderer.
         onCharacteREffectPack = new OnCharacterEffectPack();
         playerAnimationPack = new PlayerAnimationPack(onCharacteREffectPack);
-        mindlessWalkerAnimationPack = new MindlessWalkerAnimationPack(onCharacteREffectPack);
+        slimeAnimationPack = new SlimeAnimationPack(onCharacteREffectPack);
         utilityAnimationPack = new UtilityAnimationPack();
         projectileAnimationPack = new ProjectileAnimationPack();
         dummyAnimationPack = new DummyAnimationPack(onCharacteREffectPack);
@@ -66,8 +64,8 @@ public class ObjectRenderer implements Constants {
                     break;
                 }
                 case GameObject.MINDLESS_WALKER:{
-                    mindlessWalkerAnimationPack.load();
-                    mindlessWalkerAnimationPack.render(((MindlessWalker)e).stateTime,(MindlessWalker)e,batch);
+                    slimeAnimationPack.load();
+                    slimeAnimationPack.render(((Slime)e).stateTime,(Slime)e,batch);
                     break;
                 }
                 case GameObject.BOX:{

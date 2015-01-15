@@ -34,8 +34,8 @@ public class Player extends Character implements Constants {
     private Vector2 attackDirectionNormalized;
 
     //player level start with 1
-    private int level, experiencePoints, nextLevelExpRequirement, statPoints, expAccumulator;
-    private float lastAccumulatorUpdate, timeSinceLastAttack;
+    private int level, experiencePoints, nextLevelExpRequirement, statPoints, expAccumulator, healingAccumulator;
+    private float lastHealingUpdate;
 
     //Players on hit effects, items can result in attacks slowing enemies down etc, it is passed to
     //every newly created projectile
@@ -169,9 +169,9 @@ public class Player extends Character implements Constants {
         Value copied = amount.cpy();
         if(amount.getValue()!=0) {
             stats.changeHealthPoints(copied.getValue() * stats.getHealingModifier());
-            super.onHealingTaken(copied);
+            healingAccumulator+= copied.getValue() * stats.getHealingModifier();
+            stats.setHealthPointPercentOfMax(stats.getHealthPoints()/(float)stats.getBaseMaximumHealthPoints()); //todo in char stats
         }
-
         Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement,statPoints);
     }
 
@@ -252,14 +252,20 @@ public class Player extends Character implements Constants {
             steeringOutput.scl(-1);
             applySteering(delta);
         }
-        if( expAccumulator >0 && stateTime - lastAttack > 3){
+        updateInfoBuffers(delta);
+
+    }
+
+    public void updateInfoBuffers(float delta){
+        if( expAccumulator >0 && stateTime - lastAttack > 1.5f){
             Controller.getUserInterface().getMessageHandler().addMessage("+"+expAccumulator+" EXP",new Color(1,215/255f,0f,1f),2.5f);
             expAccumulator = 0;
-            lastAccumulatorUpdate=0;
-        }else {
-            lastAccumulatorUpdate += delta;
         }
-
+        if(healingAccumulator> 0 && stateTime - lastHealingUpdate > 0.5f){
+            Controller.addOnScreenMessage(this, Integer.toString(healingAccumulator) + "HP", getPosition(), getHeight(), 1.5f, TextRenderer.greenFont, TextMessage.DYNAMIC_UP);
+            lastHealingUpdate = stateTime;
+            healingAccumulator = 0;
+        }
     }
 
     private void onDeath() {

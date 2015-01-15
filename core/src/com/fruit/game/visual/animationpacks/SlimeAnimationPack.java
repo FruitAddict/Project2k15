@@ -11,7 +11,7 @@ import com.fruit.game.utilities.Utils;
 import com.fruit.game.visual.Assets;
 
 
-public class MindlessWalkerAnimationPack implements Constants {
+public class SlimeAnimationPack implements Constants {
     private Vector2 pos;
 
     private Animation playerAnimationNorth;
@@ -34,7 +34,7 @@ public class MindlessWalkerAnimationPack implements Constants {
     private boolean loaded = false;
     private OnCharacterEffectPack onCharacteREffectPack;
 
-    public MindlessWalkerAnimationPack(OnCharacterEffectPack onCharacteREffectPack){
+    public SlimeAnimationPack(OnCharacterEffectPack onCharacteREffectPack){
         this.onCharacteREffectPack = onCharacteREffectPack;
     }
 

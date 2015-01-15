@@ -15,17 +15,20 @@
  <tileset firstgid="74" name="tilesadds" tilewidth="64" tileheight="64">
   <image source="../tilesets/tilesadds.png" width="128" height="64"/>
  </tileset>
- <tileset firstgid="76" name="tilesadd" tilewidth="64" tileheight="64">
+ <tileset firstgid="76" name="walls" tilewidth="64" tileheight="64">
+  <image source="../tilesets/walls.png" width="320" height="128"/>
+ </tileset>
+ <tileset firstgid="86" name="tilesadd" tilewidth="64" tileheight="64">
   <image source="../tilesets/tilesadd.png" width="192" height="128"/>
  </tileset>
  <layer name="Ground" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJylk1EKwCAMQ4P/u5jMst14R5sfE2pIkbpCfrSvKbUC/+MUqkKck+HvJM811L3ilU8kxRvweLV+1oLeRkQ9fjXANarjC/E282Dez6QEvM+PvAev+m+k6F14fgbt6XUt5h/lGubZZPaH+8vu747/6u94fjeOrheHbj34
+   eJy100EKwCAMBMDgvR/zAWno/x9SDwaWJdY0pcKCh4waRZHvoxez8zpT8Rok69FcIyflyfOe6DThvdagntdB3wLr3i32gPfQFl6n9zNwL+gl8Jb03D+f3WCeuX+uW2X3/n/5nvRv/091HCM3Chk9rg==
   </data>
  </layer>
  <layer name="Walls" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJzzZmBg8KYQkwtG9Y/qH9VPuX5KMABRNRGV
+   eJzzZ2BgCCUTBwBxCAP5IGRU/6j+Uf0U6Q9kID//BgExAKIJE78=
   </data>
  </layer>
  <objectgroup name="collisionObjects">
@@ -35,7 +38,7 @@
   <object x="0" y="64" width="64" height="896"/>
   <object x="0" y="960" width="1024" height="64"/>
  </objectgroup>
- <objectgroup name="portalObjects">
+ <objectgroup name="portalObjects" visible="0">
   <object type="NORTH" x="448" y="0" width="128" height="64"/>
   <object type="WEST" x="0" y="448" width="64" height="128"/>
   <object type="SOUTH" x="448" y="960" width="128" height="64"/>

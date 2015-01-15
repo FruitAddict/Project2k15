@@ -2,7 +2,6 @@ package com.fruit.game.logic.objects.entities.bosses;
 
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.MatchVelocity;
-import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -15,10 +14,9 @@ import com.fruit.game.logic.objects.Value;
 import com.fruit.game.logic.objects.effects.OnHitEffect;
 import com.fruit.game.logic.objects.entities.*;
 import com.fruit.game.logic.objects.entities.Character;
-import com.fruit.game.logic.objects.entities.enemies.MindlessWalker;
+import com.fruit.game.logic.objects.entities.enemies.Slime;
 import com.fruit.game.logic.objects.entities.projectiles.MobProjectile;
 import com.fruit.game.logic.objects.entities.projectiles.MobProjectileWithEffect;
-import com.fruit.game.maps.Room;
 
 /**
  * @Author FruitAddict
@@ -102,7 +100,7 @@ public class EnormousGlutton extends Enemy {
             OnHitEffect spawnShit = new OnHitEffect() {
                 @Override
                 public void onHit(Projectile projectile1, Character enemy, Value damage) {
-                    objectManager.addObject(new MindlessWalker(objectManager,enemy.getPosition().x,enemy.getPosition().y,3));
+                    objectManager.addObject(new Slime(objectManager,enemy.getPosition().x,enemy.getPosition().y,3));
                 }
 
                 @Override

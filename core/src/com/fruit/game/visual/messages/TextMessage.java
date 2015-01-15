@@ -137,9 +137,17 @@ public class TextMessage implements Constants, Pool.Poolable {
             bitmapFont.draw(batch, message, positionX, positionY);
         }
         else if (tweenType == DYNAMIC_UP || tweenType == DYNAMIC_UPFALL){
+            float x,y;
+            if(parentObject!=null) {
+                x = parentObject.getBody().getPosition().x * PIXELS_TO_UNITS;
+                y = parentObject.getBody().getPosition().y * PIXELS_TO_UNITS;
+            }else {
+                x = parentPosition.x*PIXELS_TO_UNITS;
+                y= parentPosition.y*PIXELS_TO_UNITS;
+            }
             bitmapFont.setColor(bitmapFont.getColor().r, bitmapFont.getColor().g, bitmapFont.getColor().b, tweenableValues.getAlpha());
-            bitmapFont.draw(batch, message,(parentPosition.x*PIXELS_TO_UNITS)+(tweenSign*tweenableValues.getX()* MathUtils.cosDeg(tweenableValues.getZ())),
-                    (parentPosition.y*PIXELS_TO_UNITS)+parentHeight+(tweenableValues.getY()* MathUtils.sinDeg(tweenableValues.getZ())));
+            bitmapFont.draw(batch, message,(x)+(tweenSign*tweenableValues.getX()* MathUtils.cosDeg(tweenableValues.getZ())),
+                    (y)+parentHeight+(tweenableValues.getY()* MathUtils.sinDeg(tweenableValues.getZ())));
         }
         stateTime+=delta;
     }

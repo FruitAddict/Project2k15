@@ -99,7 +99,7 @@ public class LightRenderer implements Constants {
 
     public void setPlayerLight(Player player){
         playerLight.attachToBody(player.getBody());
-        playerLight.setDistance(4.5f);
+        playerLight.setDistance(5.5f);
         playerLight.setColor(new Color(0.2f,0.2f,0.1f,1f));
         playerLight.setXray(true);
         Filter filter = new Filter();

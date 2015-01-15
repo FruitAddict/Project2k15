@@ -21,7 +21,7 @@ public class BloodAmulet extends Item {
         lastKnownY = spawnCoordY;
         width=32;
         height=32;
-        description = "This smells of blood.";
+        description = "Leech some hp on each hit.";
         setSaveInRooms(true);
         setItemType(Item.BLOOD_AMULET);
         setEntityID(GameObject.ITEM);
@@ -30,7 +30,7 @@ public class BloodAmulet extends Item {
         this.objectManager = objectManager;
         width=32;
         height=32;
-        description = "This smells of blood.";
+        description = "Leech some hp on each hit.";
         setSaveInRooms(true);
         setItemType(Item.BLOOD_AMULET);
         setEntityID(GameObject.ITEM);

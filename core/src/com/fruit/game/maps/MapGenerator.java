@@ -1,12 +1,15 @@
 package com.fruit.game.maps;
 
+import com.badlogic.gdx.ai.steer.behaviors.Seek;
+import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.game.Configuration;
 import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
+import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.logic.objects.items.*;
-import com.fruit.game.logic.objects.entities.enemies.MindlessWalker;
+import com.fruit.game.logic.objects.entities.enemies.Slime;
 import com.fruit.game.logic.objects.entities.enemies.TheEye;
 import com.fruit.game.logic.objects.entities.misc.Box;
 import com.fruit.game.utilities.MapObjectParser;
@@ -26,21 +29,6 @@ public class MapGenerator {
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout.length; j++) {
                 if(layout[i][j]){
-                    /** todo room type rolling smarter and shit
-                   String roomType = "";
-                    if(i-1 > 0 && layout[i-1][j]){
-                        roomType+="N";
-                    }
-                    if(j+1 < layout.length && layout[i][j+1]){
-                        roomType+="E";
-                    }
-                    if(i+1 < layout.length && layout[i+1][j]){
-                        roomType+="S";
-                    }
-                    if(j-1 > 0 && layout[i][j-1]){
-                        roomType+="W";
-                    }
-                     */
                     int roomNumber = 1+ Utils.mapRandomNumberGenerator.nextInt(4);
                     map.getRoomMatrix()[i][j] = new Room((TiledMap) Assets.getAsset("maps//NESW//" + roomNumber + ".tmx", TiledMap.class));
                 }
@@ -113,12 +101,12 @@ public class MapGenerator {
                                 }
                                 map.getRoomMatrix()[i][j].addGameObject(theEye);
                             }else {
-                                MindlessWalker mindlessWalker = new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(), position.x+(Utils.randomGenerator.nextFloat()/10)
+                                Slime slime = new Slime(mapManager.getWorldUpdater().getObjectManager(), position.x+(Utils.randomGenerator.nextFloat()/10)
                                         , position.y+(Utils.randomGenerator.nextFloat()/10),1);
                                 if(Utils.mapRandomNumberGenerator.nextInt(100)>50){
-                                    ItemManager.addItemToEnemy(mapManager.getWorldUpdater().getObjectManager(),mindlessWalker,ItemManager.TYPE_COMMON);
+                                    ItemManager.addItemToEnemy(mapManager.getWorldUpdater().getObjectManager(), slime,ItemManager.TYPE_COMMON);
                                 }
-                                map.getRoomMatrix()[i][j].addGameObject(mindlessWalker);
+                                map.getRoomMatrix()[i][j].addGameObject(slime);
                             }
                         }
                     }
@@ -246,7 +234,7 @@ public class MapGenerator {
         firstRoom.setLinkedRoomNorth(fourthRoom);
         fourthRoom.setLinkedRoomSouth(firstRoom);
 
-        firstRoom.addGameObject(new MindlessWalker(mapManager.getWorldUpdater().getObjectManager(),4,4,1));
+        firstRoom.addGameObject(new Slime(mapManager.getWorldUpdater().getObjectManager(),4,4,1));
 
         map.setCurrentRoom(firstRoom);
         //initially add all the game objects manually as no references to managers exist yet.

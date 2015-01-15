@@ -64,7 +64,7 @@ public class MainMenuScreen implements Screen {
         final VisLabel infoBattleText = new VisLabel("Battle text: ");
         final VisTextButton battleTextButton = new VisTextButton(Configuration.battleTextEnabled?"Enabled":"Disabled");
 
-        optionsWindow.add(infoSeedLabel);
+                optionsWindow.add(infoSeedLabel);
         optionsWindow.add(seedField).width(200);
         optionsWindow.row();
         optionsWindow.add(infoBattleText);

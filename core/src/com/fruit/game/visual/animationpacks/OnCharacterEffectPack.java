@@ -137,12 +137,7 @@ public class OnCharacterEffectPack {
                     levelUpStateTime+= Gdx.graphics.getDeltaTime();
                     batch.draw(levelUpAnimation.getKeyFrame(levelUpStateTime, true), x - (181 / 2) + (width / 2), y, 181, 176);
                 }else {
-                    batch.draw(animFramesLevelUp[6], x - (181 / 2) + (width / 2), y, 181, 176);
-                    levelUpStateTime+= Gdx.graphics.getDeltaTime();
-                    if(levelUpStateTime>(0.15*7)+0.43) {
-                        levelUpStateTime=0;
-                        Controller.getWorldUpdater().getPlayer().status.setLeveledUp(false);
-                    }
+                    Controller.getWorldUpdater().getPlayer().status.setLeveledUp(false);
                 }
 
                 break;

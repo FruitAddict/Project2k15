@@ -4,7 +4,6 @@ import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.Flee;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -21,18 +20,13 @@ import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.Projectile;
 import com.fruit.game.logic.objects.entities.projectiles.MobProjectileWithEffect;
 
-import java.util.Random;
-
-public class MindlessWalker extends Enemy implements Constants {
+public class Slime extends Enemy implements Constants {
     private World world;
     private ObjectManager objectManager;
     private float  lastAttack = 0;
-    private Random rng = new Random();
-    private int random, generationNumber;
+    private int generationNumber;
     private Vector2 attackDirectionNormalized;
     private Vector2 lastKnownPlayerPosition;
-    boolean playerInSight=false;
-    private float lastRayCastCheck = 0;
     public float stateTime;
     private boolean followingPlayer = false;
     private boolean fleeing = false;
@@ -40,10 +34,10 @@ public class MindlessWalker extends Enemy implements Constants {
 
     private SteeringBehavior<Vector2> steeringBehavior;
     //to pass to anonymous class
-    private MindlessWalker reference;
+    private Slime reference;
 
 
-    public MindlessWalker(ObjectManager objectManager, float spawnX, float spawnY, int generationNumber){
+    public Slime(ObjectManager objectManager, float spawnX, float spawnY, int generationNumber){
         this.objectManager = objectManager;
         this.reference = this;
         lastKnownX = spawnX;
@@ -93,7 +87,7 @@ public class MindlessWalker extends Enemy implements Constants {
             MobProjectileWithEffect proj = new MobProjectileWithEffect(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized, 5f, 1, new OnHitEffect() {
                 @Override
                 public void onHit(Projectile proj, Character enemy, Value damage) {
-                    objectManager.addObject(new MindlessWalker(objectManager,enemy.getPosition().x,enemy.getPosition().y,3));
+                    objectManager.addObject(new Slime(objectManager,enemy.getPosition().x,enemy.getPosition().y,3));
                     reference.stats.setHealthPoints(reference.stats.getBaseMaximumHealthPoints());
                 }
 
@@ -150,8 +144,8 @@ public class MindlessWalker extends Enemy implements Constants {
         objectManager.getPlayer().addExperiencePoints(3);
         if(generationNumber<3){
             objectManager.removeObject(this);
-            objectManager.addObject(new MindlessWalker(objectManager,body.getPosition().x+0.1f,body.getPosition().y,generationNumber+1));
-            objectManager.addObject(new MindlessWalker(objectManager,body.getPosition().x,body.getPosition().y,generationNumber+1));
+            objectManager.addObject(new Slime(objectManager,body.getPosition().x+0.1f,body.getPosition().y,generationNumber+1));
+            objectManager.addObject(new Slime(objectManager,body.getPosition().x,body.getPosition().y,generationNumber+1));
         }else {
             lastKnownPlayerPosition = Controller.getWorldUpdater().getPlayer().getPosition();
             objectManager.removeObject(this);
@@ -177,7 +171,7 @@ public class MindlessWalker extends Enemy implements Constants {
                 break;
             }
             case WEST_DIR:{
-
+                break;
             }
         }
     }

@@ -19,6 +19,9 @@ public abstract class Enemy extends Character {
     //every enemy should have its abstract level to be used in mapgen alghorithms. Level 1 should be for weak stuff,
     //Level 2 for champions, level 3 for bosses
     protected int enemyLevel;
+    //when enemy is hit, its status will change to just hit, this timer will keep track of that and remove the status
+    //after 0.1s
+    protected float justHitTimer;
 
     //every enemy should hold items that it will drop on death
     protected Array<Item> lootItems = new Array<>();
@@ -34,6 +37,17 @@ public abstract class Enemy extends Character {
     public void addItemsToLoot(Item... items){
         for(Item item : items){
             lootItems.add(item);
+        }
+    }
+
+    @Override
+    public void update(float delta){
+        if(status.isJustHit()) {
+            justHitTimer += delta;
+            if (justHitTimer > 0.05f) {
+                status.setJustHit(false);
+                justHitTimer = 0;
+            }
         }
     }
 

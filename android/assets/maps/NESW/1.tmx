@@ -44,7 +44,7 @@
   <object type="SOUTH" x="448" y="960" width="128" height="64"/>
   <object type="EAST" x="960" y="448" width="64" height="128"/>
  </objectgroup>
- <objectgroup name="spawnPoints">
+ <objectgroup name="spawnPoints" visible="0">
   <object type="WEST" x="130" y="514"/>
   <object type="EAST" x="880" y="502" width="12" height="17"/>
   <object type="SOUTH" x="514" y="935"/>
@@ -57,5 +57,10 @@
   <object x="391" y="512"/>
   <object x="507" y="289" height="1"/>
   <object type="CENTER" x="548" y="437"/>
+ </objectgroup>
+ <objectgroup name="gameObjects">
+  <object type="TORCH" x="522" y="512"/>
+  <object type="TORCH" x="651" y="280"/>
+  <object type="TORCH" x="260" y="818"/>
  </objectgroup>
 </map>

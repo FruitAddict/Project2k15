@@ -84,6 +84,7 @@ public abstract class Character extends GameObject implements Steerable<Vector2>
     public void onDamageTaken(Value value){
         //render to the screen as scrolling battle text based on the type
         if(value.getValue()>0) {
+            status.setJustHit(true);
             switch (value.getType()) {
                 case Value.NORMAL_DAMAGE: {
                     //Controller.addOnScreenMessage(new TextMessage(Integer.toString(value.getValue()), getBody().getPosition().x * PIXELS_TO_UNITS,
@@ -205,7 +206,6 @@ public abstract class Character extends GameObject implements Steerable<Vector2>
     @Override
     public void killYourself(){
         //on death characters should remove all on screen messages that they own
-        super.killYourself();
         Controller.getWorldRenderer().getTextRenderer().removeMessageByOwner(this);
     }
 

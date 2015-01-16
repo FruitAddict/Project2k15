@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.game.Configuration;
 import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
+import com.fruit.game.logic.objects.entities.misc.Torch;
 import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.logic.objects.items.*;
 import com.fruit.game.logic.objects.entities.enemies.Slime;
@@ -116,6 +117,7 @@ public class MapGenerator {
         //set current room to the one in the center
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
         if(Configuration.debugItemsEnabled) {
+            map.getCurrentRoom().addGameObject(new Torch(mapManager.getWorldUpdater().getObjectManager(),6,6));
             map.getCurrentRoom().addGameObject(new BloodAmulet(mapManager.getWorldUpdater().getObjectManager(),6,5));
             map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 5, 4));
             map.getCurrentRoom().addGameObject(new ExplodingProjectiles(mapManager.getWorldUpdater().getObjectManager(),4,5));

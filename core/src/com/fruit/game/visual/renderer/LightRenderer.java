@@ -1,5 +1,8 @@
 package com.fruit.game.visual.renderer;
 
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.Color;
@@ -13,6 +16,8 @@ import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.visual.PoolablePointLight;
+import com.fruit.game.visual.tween.PoolablePointLightAccessor;
+import com.fruit.game.visual.tween.TweenUtils;
 
 /**
  * @author FruitAddict
@@ -48,6 +53,9 @@ public class LightRenderer implements Constants {
 
         //point light reserved for player.
         playerLight = new PointLight(rayHandler,12);
+
+        //register tween accessor
+        Tween.registerAccessor(PoolablePointLight.class,new PoolablePointLightAccessor());
     }
 
     public void render(){
@@ -74,6 +82,25 @@ public class LightRenderer implements Constants {
         activeLights.add(p);
     }
 
+    public void addFlickeringLight(Color color, float length, float flickerOffset, float posX, float posY){
+        PoolablePointLight p = lightPool.obtain();
+        p.setActive(true);
+        p.setColor(color);
+        p.setDistance(length);
+        p.setPosition(posX, posY);
+        p.setStaticLight(true);
+        Filter filter = new Filter();
+        filter.maskBits = ENEMY_BIT | CLUTTER_BIT |ITEM_BIT | TERRAIN_BIT | TREASURE_BIT | PORTAL_BIT;
+        p.setContactFilter(filter);
+        p.setXray(true);
+        Timeline.createSequence()
+                .push(Tween.set(p,PoolablePointLightAccessor.DISTANCE).target(length-flickerOffset))
+                .push(Tween.to(p, PoolablePointLightAccessor.DISTANCE,0.5f).target(length))
+                .repeatYoyo(Tween.INFINITY,0f)
+                .start(TweenUtils.tweenManager);
+        activeLights.add(p);
+    }
+
     public void attachPointLightToBody(GameObject owner,Color color, float length){
         PoolablePointLight p = lightPool.obtain();
         p.setColor(color);
@@ -92,6 +119,7 @@ public class LightRenderer implements Constants {
         for(PoolablePointLight p : activeLights){
             if(p.getParentObject() == owner){
                 lightPool.free(p);
+                TweenUtils.tweenManager.killTarget(p);
                 activeLights.removeValue(p, true);
             }
         }
@@ -99,8 +127,8 @@ public class LightRenderer implements Constants {
 
     public void setPlayerLight(Player player){
         playerLight.attachToBody(player.getBody());
-        playerLight.setDistance(5.5f);
-        playerLight.setColor(new Color(0.2f,0.2f,0.1f,1f));
+        playerLight.setDistance(4.8f);
+        playerLight.setColor(new Color(0.2f,0.2f,0.1f,0.8f));
         playerLight.setXray(true);
         Filter filter = new Filter();
         filter.maskBits = ENEMY_BIT | CLUTTER_BIT |ITEM_BIT | TERRAIN_BIT | TREASURE_BIT | PORTAL_BIT;

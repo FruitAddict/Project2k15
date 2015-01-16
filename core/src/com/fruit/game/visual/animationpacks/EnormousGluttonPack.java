@@ -43,28 +43,33 @@ public class EnormousGluttonPack {
         }
     }
 
-    public void render(float stateTime, Character character, SpriteBatch batch){
-        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(character,pos));
-
-        if(character.idle){
-            batch.draw(frames[0], pos.x, pos.y, character.getWidth(), character.getHeight());
+    public void render(float stateTime, Enemy glutton, SpriteBatch batch){
+        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(glutton,pos));
+        if(glutton.status.isJustHit()){
+            batch.setColor(1,0.1f,0.1f,1);
+        }
+        if(glutton.idle){
+            batch.draw(frames[0], pos.x, pos.y, glutton.getWidth(), glutton.getHeight());
         }else{
-            batch.draw(bossWalk.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
+            batch.draw(bossWalk.getKeyFrame(stateTime,true),pos.x,pos.y,glutton.getWidth(),glutton.getHeight());
         }
-        if(character.status.isHealing()){
-            onCharacterEffectPack.render(character, batch, stateTime, OnCharacterEffectPack.HEALED, pos.x, pos.y, character.getWidth(), character.getHeight());
+        if(glutton.status.isJustHit()){
+            batch.setColor(1,1f,1f,1);
         }
-        if(character.status.isShielded()){
-            onCharacterEffectPack.render(character, batch, stateTime, OnCharacterEffectPack.SHIELDED, pos.x, pos.y, character.getWidth(), character.getHeight());
+        if(glutton.status.isHealing()){
+            onCharacterEffectPack.render(glutton, batch, stateTime, OnCharacterEffectPack.HEALED, pos.x, pos.y, glutton.getWidth(), glutton.getHeight());
         }
-        if(character.status.isPoisoned()){
-            onCharacterEffectPack.render(character, batch, stateTime, OnCharacterEffectPack.POISONED, pos.x, pos.y, character.getWidth(), character.getHeight());
+        if(glutton.status.isShielded()){
+            onCharacterEffectPack.render(glutton, batch, stateTime, OnCharacterEffectPack.SHIELDED, pos.x, pos.y, glutton.getWidth(), glutton.getHeight());
         }
-        if(character.status.isAttackedByPlayer()){
-            onCharacterEffectPack.render(character, batch, stateTime, OnCharacterEffectPack.HP_BAR, pos.x, pos.y, character.getWidth(), character.getHeight());
+        if(glutton.status.isPoisoned()){
+            onCharacterEffectPack.render(glutton, batch, stateTime, OnCharacterEffectPack.POISONED, pos.x, pos.y, glutton.getWidth(), glutton.getHeight());
         }
-        if(character.status.isBurning()){
-            onCharacterEffectPack.render(character, batch, stateTime, OnCharacterEffectPack.BURNING, pos.x, pos.y, character.getWidth(), character.getHeight());
+        if(glutton.status.isAttackedByPlayer()){
+            onCharacterEffectPack.render(glutton, batch, stateTime, OnCharacterEffectPack.HP_BAR, pos.x, pos.y, glutton.getWidth(), glutton.getHeight());
+        }
+        if(glutton.status.isBurning()){
+            onCharacterEffectPack.render(glutton, batch, stateTime, OnCharacterEffectPack.BURNING, pos.x, pos.y, glutton.getWidth(), glutton.getHeight());
         }
     }
 }

@@ -58,4 +58,5 @@
   <object x="507" y="289" height="1"/>
   <object type="CENTER" x="548" y="437"/>
  </objectgroup>
+ <objectgroup name="gameObjects"/>
 </map>

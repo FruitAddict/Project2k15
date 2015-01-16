@@ -65,6 +65,7 @@ public class EnormousGlutton extends Enemy {
 
     @Override
     public void update(float delta) {
+        super.update(delta);
         if(!barAdded){
             Controller.getUserInterface().addBossHealthBar("Enormous Glutton");
             barAdded=true;

@@ -65,6 +65,11 @@ public class Portal extends GameObject {
         shape.dispose();
     }
 
+    @Override
+    public void killYourself() {
+
+    }
+
     public void onContactWithPlayer(){
         if(active){
             switch(portalType) {

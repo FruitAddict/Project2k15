@@ -1,8 +1,10 @@
 package com.fruit.game.visual.animationpacks;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.objects.entities.GameObject;
@@ -16,6 +18,7 @@ public class UtilityAnimationPack implements Constants {
     private Sprite boxSprite;
     private Sprite tempPortalHorizontal;
     private Sprite tempPortalVertical;
+    private Animation torchAnimation;
 
     public void load(){
         if(!loaded) {
@@ -24,6 +27,13 @@ public class UtilityAnimationPack implements Constants {
             tempPortalHorizontal = new Sprite((Texture)Assets.getAsset("portalhorizontal.png",Texture.class));
             tempPortalVertical = new Sprite((Texture)Assets.getAsset("portalvertical.png",Texture.class));
             boxSprite = new Sprite(boxTexture);
+            Texture torchTexture = (Texture)Assets.getAsset("effects//torch.png",Texture.class);
+            TextureRegion[] torchRegion = new TextureRegion[5];
+            TextureRegion[][] torchTextureSplit = TextureRegion.split(torchTexture,torchTexture.getWidth()/5,torchTexture.getHeight());
+            for(int i =0;i<5;i++){
+                torchRegion[i] = torchTextureSplit[0][i];
+            }
+            torchAnimation = new Animation(0.1f,torchRegion);
             loaded = true;
         }
     }
@@ -40,6 +50,10 @@ public class UtilityAnimationPack implements Constants {
             }else {
                 batch.draw(tempPortalVertical,pos.x,pos.y);
             }
+        }
+        if(object.getEntityID() == GameObject.TORCH){
+            pos.set(Utils.getDrawPositionBasedOnBox2dCircle(object,pos));
+            batch.draw(torchAnimation.getKeyFrame(stateTime,true),pos.x,pos.y,object.getWidth(),object.getHeight());
         }
     }
 }

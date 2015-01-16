@@ -86,6 +86,7 @@ public class TheEye extends Enemy {
 
     @Override
     public void update(float delta) {
+        super.update(delta);
         stateTime+=delta;
         if(stats.getHealthPoints() <= 0) {
             killYourself();

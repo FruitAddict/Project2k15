@@ -1,6 +1,5 @@
 package com.fruit.game.logic.objects.items;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -72,7 +71,6 @@ public abstract class Item extends GameObject {
 
     @Override
     public void killYourself(){
-        super.killYourself();
         Controller.getWorldRenderer().getLightRenderer().freeAttachedLight(this);
     }
 }

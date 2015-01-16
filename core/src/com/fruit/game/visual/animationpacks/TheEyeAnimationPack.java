@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.fruit.game.logic.objects.entities.Enemy;
 import com.fruit.game.utilities.Utils;
 import com.fruit.game.visual.Assets;
 import com.fruit.game.logic.objects.entities.Character;
@@ -62,33 +63,39 @@ public class TheEyeAnimationPack {
         }
     }
 
-    public void render(float stateTime,Character character, SpriteBatch batch){
-        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(character,pos));
-        if(character.facingN ){
-            batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
-        }else if(character.facingS){
-            batch.draw(playerAnimationSouth.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
-        }else if(character.facingE){
-            batch.draw(playerAnimationEast.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
-        }else if(character.facingW){
-            batch.draw(playerAnimationWest.getKeyFrame(stateTime,true),pos.x,pos.y,character.getWidth(),character.getHeight());
+    public void render(float stateTime,Enemy theEye, SpriteBatch batch){
+        pos.set(Utils.getDrawPositionBasedOnBox2dCircle(theEye,pos));
+        if(theEye.status.isJustHit()){
+            batch.setColor(1,0.1f,0.1f,1f);
+        }
+        if(theEye.facingN ){
+            batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,theEye.getWidth(),theEye.getHeight());
+        }else if(theEye.facingS){
+            batch.draw(playerAnimationSouth.getKeyFrame(stateTime,true),pos.x,pos.y,theEye.getWidth(),theEye.getHeight());
+        }else if(theEye.facingE){
+            batch.draw(playerAnimationEast.getKeyFrame(stateTime,true),pos.x,pos.y,theEye.getWidth(),theEye.getHeight());
+        }else if(theEye.facingW){
+            batch.draw(playerAnimationWest.getKeyFrame(stateTime,true),pos.x,pos.y,theEye.getWidth(),theEye.getHeight());
         } else {
-            batch.draw(playerSouthRegion[1],pos.x,pos.y,character.getWidth(),character.getHeight());
+            batch.draw(playerSouthRegion[1],pos.x,pos.y,theEye.getWidth(),theEye.getHeight());
         }
-        if(character.status.isHealing()){
-            onCharacteREffectPack.render(character,batch,stateTime, OnCharacterEffectPack.HEALED,pos.x,pos.y,character.getWidth(),character.getHeight());
+        if(theEye.status.isJustHit()){
+            batch.setColor(1,1f,1f,1f);
         }
-        if(character.status.isShielded()){
-            onCharacteREffectPack.render(character,batch,stateTime, OnCharacterEffectPack.SHIELDED,pos.x,pos.y,character.getWidth(),character.getHeight());
+        if(theEye.status.isHealing()){
+            onCharacteREffectPack.render(theEye,batch,stateTime, OnCharacterEffectPack.HEALED,pos.x,pos.y,theEye.getWidth(),theEye.getHeight());
         }
-        if(character.status.isPoisoned()){
-            onCharacteREffectPack.render(character,batch,stateTime, OnCharacterEffectPack.POISONED,pos.x,pos.y,character.getWidth(),character.getHeight());
+        if(theEye.status.isShielded()){
+            onCharacteREffectPack.render(theEye,batch,stateTime, OnCharacterEffectPack.SHIELDED,pos.x,pos.y,theEye.getWidth(),theEye.getHeight());
         }
-        if(character.status.isAttackedByPlayer()){
-            onCharacteREffectPack.render(character,batch,stateTime, OnCharacterEffectPack.HP_BAR,pos.x,pos.y,character.getWidth(),character.getHeight());
+        if(theEye.status.isPoisoned()){
+            onCharacteREffectPack.render(theEye,batch,stateTime, OnCharacterEffectPack.POISONED,pos.x,pos.y,theEye.getWidth(),theEye.getHeight());
         }
-        if(character.status.isBurning()){
-            onCharacteREffectPack.render(character,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,character.getWidth(),character.getHeight());
+        if(theEye.status.isAttackedByPlayer()){
+            onCharacteREffectPack.render(theEye,batch,stateTime, OnCharacterEffectPack.HP_BAR,pos.x,pos.y,theEye.getWidth(),theEye.getHeight());
+        }
+        if(theEye.status.isBurning()){
+            onCharacteREffectPack.render(theEye,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,theEye.getWidth(),theEye.getHeight());
         }
     }
 

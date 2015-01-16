@@ -24,7 +24,7 @@ public abstract class GameObject implements Constants,Comparable<GameObject> {
     public static final int EXPLOSION = 8;
     public static final int ENORMOUS_GLUTTON = 9;
     public static final int PORTAL = 10;
-
+    public static final int TORCH = 11;
     //general boolean for debug purposes, can be used to make some additional functionality of the object available
     public boolean debug = false;
     //Box2d rigid body representing this object.
@@ -43,20 +43,13 @@ public abstract class GameObject implements Constants,Comparable<GameObject> {
     //points are at their bottom left corner.
     protected float width, height;
 
-    //flag set when the object is scheduled to be removed by the object manager
-    //is used by rendering to rework any ongoing tweens and other stuff that depends
-    //on this object
-    protected boolean scheduledForRemoval = false;
-
     //Update method, can contain AI code etc.
     public abstract void update(float delta);
     //Mandatory addToBox2dWorld method, so constructors of game objects doesnt have to bind to the box2d
     //world on creation
     public abstract void addToBox2dWorld(World world);
     //every gameobject needs to know how to kill itself
-    public void killYourself(){
-        setScheduledForRemoval(true);
-    }
+    public abstract void killYourself();
     //game object will be sorted by their y axis position for rendering sake
 
     @Override
@@ -114,14 +107,6 @@ public abstract class GameObject implements Constants,Comparable<GameObject> {
 
     public void setHeight(float value){
         this.height = value;
-    }
-
-    public boolean isScheduledForRemoval() {
-        return scheduledForRemoval;
-    }
-
-    public void setScheduledForRemoval(boolean scheduledForRemoval) {
-        this.scheduledForRemoval = scheduledForRemoval;
     }
 
     public float getBodyPositionX(){

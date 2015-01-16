@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.WorldUpdater;
 import com.fruit.game.logic.objects.entities.misc.Portal;
+import com.fruit.game.logic.objects.entities.misc.Torch;
 import com.fruit.game.maps.Room;
 
 /**
@@ -101,6 +102,7 @@ public class MapObjectParser implements Constants {
             }
         }
         if(!room.isMapObjectsAdded()){
+            //add portals
         for(int i =0 ;i <portalRectangles.size;i++){
             Rectangle rec = portalRectangles.get(i);
             //copypasted from above
@@ -146,8 +148,23 @@ public class MapObjectParser implements Constants {
                 Portal p = new Portal(new Vector2(originX,originY),type,rec.getWidth(),rec.getHeight(),
                         rec.getWidth() > rec.getHeight());
                 room.addGameObject(p);
-                room.setMapObjectsAdded(true);
             }
+
+            //add other game objects
+            if(room.getTiledMap().getLayers().get("gameObjects")!=null){
+                MapObjects gameObjects = room.getTiledMap().getLayers().get("gameObjects").getObjects();
+
+                for(MapObject mapObject: gameObjects){
+                    RectangleMapObject object = (RectangleMapObject)mapObject;
+                    if(mapObject.getProperties().get("type",String.class).equals("TORCH")){
+                        room.addGameObject(new Torch(worldUpdater.getObjectManager(),object.getRectangle().getX()/PIXELS_TO_UNITS,
+                                object.getRectangle().getY()/PIXELS_TO_UNITS));
+                    }
+                }
+            }else {
+                System.out.println("WARNING! No gameobject layer found in "+room );
+            }
+            room.setMapObjectsAdded(true);
         }
 
         //finally add all the objects stored in this room to the object manager
@@ -255,7 +272,8 @@ public class MapObjectParser implements Constants {
         }
 
          // Static lights section. Obtains info about light color, positioning and length if it exists.
-        //parse portal objects
+        //parse portal objects Static lights should be used for shit that will REALLY be static during the game
+        //like lava pools giving off light, other static light sources like torches should be handled elsewhere
         //TODO Make it handle more shit
         if(room.getTiledMap().getLayers().get("staticLights") != null) {
             MapObjects staticLightObjects = room.getTiledMap().getLayers().get("staticLights").getObjects();
@@ -276,5 +294,6 @@ public class MapObjectParser implements Constants {
         }else {
             System.out.println("WARNING! No static light layer found in " + room);
         }
+
     }
 }

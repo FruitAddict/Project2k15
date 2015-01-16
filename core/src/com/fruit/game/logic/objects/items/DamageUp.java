@@ -42,7 +42,7 @@ public class DamageUp extends Item {
     @Override
     public void addToBox2dWorld(World world){
         super.addToBox2dWorld(world);
-        Controller.getWorldRenderer().getLightRenderer().attachPointLightToBody(this, Color.BLACK,0.5f);
+        Controller.getWorldRenderer().getLightRenderer().attachPointLightToBody(this, Color.BLACK,0.5f );
     }
 
 

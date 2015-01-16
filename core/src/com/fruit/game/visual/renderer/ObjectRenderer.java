@@ -11,6 +11,7 @@ import com.fruit.game.logic.objects.entities.enemies.Dummy;
 import com.fruit.game.logic.objects.entities.enemies.Slime;
 import com.fruit.game.logic.objects.entities.enemies.TheEye;
 import com.fruit.game.logic.objects.entities.misc.Explosion;
+import com.fruit.game.logic.objects.entities.misc.Torch;
 import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.logic.objects.items.Item;
 import com.fruit.game.visual.animationpacks.*;
@@ -106,6 +107,11 @@ public class ObjectRenderer implements Constants {
                 case GameObject.PORTAL:{
                     utilityAnimationPack.load();
                     utilityAnimationPack.render(stateTime,e,batch);
+                    break;
+                }
+                case GameObject.TORCH:{
+                    utilityAnimationPack.load();
+                    utilityAnimationPack.render(((Torch)e).stateTime,e,batch);
                     break;
                 }
             }

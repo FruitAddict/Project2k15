@@ -154,7 +154,6 @@ public class TextMessage implements Constants, Pool.Poolable {
 
     @Override
     public void reset() {
-        TweenUtils.tweenManager.killTarget(tweenableValues);
         setAlpha(0);
         setPositionX(-100);
         setPositionY(-100);

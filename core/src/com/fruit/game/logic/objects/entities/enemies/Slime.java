@@ -66,6 +66,7 @@ public class Slime extends Enemy implements Constants {
     }
     @Override
     public void update(float delta){
+        super.update(delta);
         if(stats.getHealthPoints() <= 0) {
             killYourself();
         }

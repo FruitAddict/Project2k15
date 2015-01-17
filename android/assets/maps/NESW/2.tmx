@@ -3,32 +3,17 @@
  <properties>
   <property name="ExitPoints" value="ES"/>
  </properties>
- <tileset firstgid="1" name="simpletiles" tilewidth="64" tileheight="64" spacing="1">
-  <image source="../tilesets/simpletiles.png" width="130" height="130"/>
- </tileset>
- <tileset firstgid="5" name="cavefloor" tilewidth="64" tileheight="64">
-  <image source="../tilesets/cavefloor.png" width="196" height="196"/>
- </tileset>
- <tileset firstgid="14" name="tiles64" tilewidth="64" tileheight="64">
-  <image source="../tilesets/tiles64.png" width="768" height="320"/>
- </tileset>
- <tileset firstgid="74" name="tilesadds" tilewidth="64" tileheight="64">
-  <image source="../tilesets/tilesadds.png" width="128" height="64"/>
- </tileset>
- <tileset firstgid="76" name="walls" tilewidth="64" tileheight="64">
-  <image source="../tilesets/walls.png" width="320" height="128"/>
- </tileset>
- <tileset firstgid="86" name="tilesadd" tilewidth="64" tileheight="64">
-  <image source="../tilesets/tilesadd.png" width="192" height="128"/>
+ <tileset firstgid="1" name="walls" tilewidth="64" tileheight="64">
+  <image source="../tilesets/walls.png" width="384" height="128"/>
  </tileset>
  <layer name="Ground" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJy100EKwCAMBMDgvR/zAWno/x9SDwaWJdY0pcKCh4waRZHvoxez8zpT8Rok69FcIyflyfOe6DThvdagntdB3wLr3i32gPfQFl6n9zNwL+gl8Jb03D+f3WCeuX+uW2X3/n/5nvRv/091HCM3Chk9rg==
+   eJxjY2BgYBvFo3gUj0gMABC0BgE=
   </data>
  </layer>
  <layer name="Walls" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJzzZ2BgCCUTBwBxCAP5IGRU/6j+Uf0U6Q9kID//BgExAKIJE78=
+   eJxjYWBg4CYTswIxFwP5gGtU/6j+Uf0U6WdnID//cgAxAMWIAmU=
   </data>
  </layer>
  <objectgroup name="collisionObjects">
@@ -38,7 +23,7 @@
   <object x="0" y="64" width="64" height="896"/>
   <object x="0" y="960" width="1024" height="64"/>
  </objectgroup>
- <objectgroup name="portalObjects" visible="0">
+ <objectgroup name="portalObjects">
   <object type="NORTH" x="448" y="0" width="128" height="64"/>
   <object type="WEST" x="0" y="448" width="64" height="128"/>
   <object type="SOUTH" x="448" y="960" width="128" height="64"/>
@@ -59,9 +44,10 @@
   <object type="CENTER" x="548" y="437"/>
  </objectgroup>
  <objectgroup name="gameObjects">
-  <object type="TORCH" x="537" y="510"/>
-  <object type="TORCH" x="383" y="264"/>
-  <object type="TORCH" x="768" y="273" width="16" height="14"/>
-  <object type="TORCH" x="356" y="765"/>
+  <object type="TORCH" x="522" y="512"/>
+  <object type="TORCH" x="672" y="508"/>
+  <object type="TORCH" x="364" y="507"/>
+  <object type="TORCH" x="527" y="371"/>
+  <object type="TORCH" x="518" y="641"/>
  </objectgroup>
 </map>

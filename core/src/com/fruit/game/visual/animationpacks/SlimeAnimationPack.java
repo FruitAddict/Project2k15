@@ -71,7 +71,7 @@ public class SlimeAnimationPack implements Constants {
     public void render(float stateTime, Enemy slime, SpriteBatch batch){
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(slime,pos));
         if(slime.status.isJustHit()){
-                batch.setColor(1, 0.1f, 0.1f, 1f);
+                batch.setColor(1, 0.5f, 0.5f, 0.8f);
         }
         if(slime.facingN){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,slime.getWidth(),slime.getHeight());

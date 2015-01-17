@@ -28,6 +28,7 @@ public class Box extends Enemy {
 
     @Override
     public void update(float delta) {
+        super.update(delta);
         if(stats.getHealthPoints()<0){
             killYourself();
         }
@@ -76,8 +77,8 @@ public class Box extends Enemy {
     @Override
     public void onDamageTaken(Value value) {
         stats.changeHealthPoints(-1);
-        Controller.addOnScreenMessage("-1", getBody().getPosition().x * PIXELS_TO_UNITS,
-                getBody().getPosition().y * PIXELS_TO_UNITS, 1.5f, TextRenderer.redFont, TextMessage.FIXED_POINT_UP);
+        status.setJustHit(true);
+
     }
 
     @Override

@@ -111,7 +111,7 @@ public abstract class Character extends GameObject implements Steerable<Vector2>
     public void onHealingTaken(Value amount){
         switch(amount.getType()) {
             case Value.HEALING: {
-                Controller.addOnScreenMessage(this,Integer.toString(amount.getValue())+"HP",getPosition(),getHeight(),1.5f,TextRenderer.greenFont,TextMessage.DYNAMIC_UP);
+                Controller.addOnScreenMessage(this,Integer.toString(amount.getValue())+" HP",getPosition(),getHeight(),1.5f,TextRenderer.greenFont,TextMessage.DYNAMIC_UP);
                 break;
             }
         }

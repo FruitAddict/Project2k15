@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.fruit.game.logic.Constants;
+import com.fruit.game.logic.objects.entities.Enemy;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.misc.Portal;
 import com.fruit.game.utilities.Utils;
@@ -24,8 +25,8 @@ public class UtilityAnimationPack implements Constants {
         if(!loaded) {
             pos = new Vector2();
             Texture boxTexture = (Texture) Assets.getAsset("box2.png", Texture.class);
-            tempPortalHorizontal = new Sprite((Texture)Assets.getAsset("portalhorizontal.png",Texture.class));
-            tempPortalVertical = new Sprite((Texture)Assets.getAsset("portalvertical.png",Texture.class));
+            tempPortalHorizontal = new Sprite((Texture)Assets.getAsset("portalhor.png",Texture.class));
+            tempPortalVertical = new Sprite((Texture)Assets.getAsset("portalver.png",Texture.class));
             boxSprite = new Sprite(boxTexture);
             Texture torchTexture = (Texture)Assets.getAsset("effects//torch.png",Texture.class);
             TextureRegion[] torchRegion = new TextureRegion[5];
@@ -40,8 +41,14 @@ public class UtilityAnimationPack implements Constants {
 
     public void render(float stateTime, GameObject object, SpriteBatch batch){
         if(object.getEntityID() == GameObject.BOX){
+            if(((Enemy)object).status.isJustHit()){
+                batch.setColor(1,0.5f,0.5f,0.8f);
+            }
             pos.set(Utils.getDrawPositionBasedOnBox2dCircle(object,pos));
             batch.draw(boxSprite,pos.x,pos.y,object.getWidth(),object.getHeight());
+            if(((Enemy)object).status.isJustHit()){
+                batch.setColor(1,1f,1f,1f);
+            }
         }
         if(object.getEntityID() == GameObject.PORTAL){
             pos.set(Utils.getDrawPositionBasedOnBox2dRectangle(object,pos));

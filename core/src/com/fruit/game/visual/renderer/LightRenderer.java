@@ -33,7 +33,7 @@ public class LightRenderer implements Constants {
     public LightRenderer(WorldRenderer worldRenderer, World world){
         this.worldRenderer = worldRenderer;
         rayHandler = new RayHandler(world);
-        rayHandler.setAmbientLight(0.05f);
+        rayHandler.setAmbientLight(0.1f);
         rayHandler.setCulling(true);
 
         if(!Configuration.shadowsEnabled){
@@ -95,7 +95,7 @@ public class LightRenderer implements Constants {
         p.setXray(true);
         Timeline.createSequence()
                 .push(Tween.set(p,PoolablePointLightAccessor.DISTANCE).target(length-flickerOffset))
-                .push(Tween.to(p, PoolablePointLightAccessor.DISTANCE,0.5f).target(length))
+                .push(Tween.to(p, PoolablePointLightAccessor.DISTANCE,0.75f).target(length))
                 .repeatYoyo(Tween.INFINITY,0f)
                 .start(TweenUtils.tweenManager);
         activeLights.add(p);

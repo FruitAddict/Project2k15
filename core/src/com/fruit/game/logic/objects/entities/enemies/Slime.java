@@ -97,8 +97,8 @@ public class Slime extends Enemy implements Constants {
                     //
                 }
             });
-            proj.setWidth(32);
-            proj.setHeight(32);
+            proj.setWidth(18);
+            proj.setHeight(18);
             proj.setTypeID(Projectile.MINDLESS_PROJECTILE);
             objectManager.addObject(proj);
             lastAttack = stateTime;

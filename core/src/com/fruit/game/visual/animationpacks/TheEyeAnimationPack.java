@@ -66,7 +66,7 @@ public class TheEyeAnimationPack {
     public void render(float stateTime,Enemy theEye, SpriteBatch batch){
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(theEye,pos));
         if(theEye.status.isJustHit()){
-            batch.setColor(1,0.1f,0.1f,1f);
+            batch.setColor(1,0.5f,0.5f,0.8f);
         }
         if(theEye.facingN ){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,theEye.getWidth(),theEye.getHeight());

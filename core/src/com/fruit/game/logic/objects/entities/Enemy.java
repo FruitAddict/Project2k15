@@ -44,7 +44,7 @@ public abstract class Enemy extends Character {
     public void update(float delta){
         if(status.isJustHit()) {
             justHitTimer += delta;
-            if (justHitTimer > 0.05f) {
+            if (justHitTimer > 0.1f) {
                 status.setJustHit(false);
                 justHitTimer = 0;
             }

@@ -25,6 +25,7 @@ public abstract class GameObject implements Constants,Comparable<GameObject> {
     public static final int ENORMOUS_GLUTTON = 9;
     public static final int PORTAL = 10;
     public static final int TORCH = 11;
+    public static final int ROCK = 12;
     //general boolean for debug purposes, can be used to make some additional functionality of the object available
     public boolean debug = false;
     //Box2d rigid body representing this object.

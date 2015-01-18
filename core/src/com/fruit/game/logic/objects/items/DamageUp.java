@@ -24,6 +24,7 @@ public class DamageUp extends Item {
         setSaveInRooms(true);
         setItemType(Item.DAMAGE_UP_1);
         setEntityID(GameObject.ITEM);
+        setItemName("Staight Sword");
     }
     public DamageUp(ObjectManager objectManager){
         this.objectManager = objectManager;
@@ -33,6 +34,7 @@ public class DamageUp extends Item {
         setSaveInRooms(true);
         setItemType(Item.DAMAGE_UP_1);
         setEntityID(GameObject.ITEM);
+        setItemName("Staight Sword");
     }
     @Override
     public void update(float delta) {

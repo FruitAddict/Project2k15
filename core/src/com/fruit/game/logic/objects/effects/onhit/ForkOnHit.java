@@ -26,14 +26,12 @@ public class ForkOnHit extends OnHitEffect {
             projectile.setWidth(projectile.getWidth() * (2/3f));
             projectile.setHeight(projectile.getHeight() * (2/3f));
             projectile.setRadius(projectile.getRadius() * (2/3f));
-            projectile.getDamage().setValue(Math.max(1,projectile.getDamage().getValue() / 2));
             player.getObjectManager().addObject(projectile);
             proj.setForked(true);
             proj.getBody().setLinearVelocity(proj.getBody().getLinearVelocity().rotate(-5f));
             proj.setWidth(proj.getWidth()* (2/3f));
             proj.setHeight(proj.getHeight()* (2/3f));
             proj.setRadius(proj.getRadius()* (2/3f));
-            proj.getDamage().setValue(Math.max(1,projectile.getDamage().getValue() / 2));
         }
     }
 

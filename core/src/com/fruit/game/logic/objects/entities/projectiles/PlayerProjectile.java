@@ -35,9 +35,9 @@ public class PlayerProjectile extends Projectile {
         setEntityID(GameObject.PROJECTILE);
         setSaveInRooms(false);
         //setting width, height and radius of the box2d body
-        width =16;
-        height=16;
-        radius = 8;
+        width =24;
+        height=24;
+        radius = 12;
         if(damage.getValue()>=2){
             width*=1.1f;
             height*=1.1f;
@@ -85,7 +85,7 @@ public class PlayerProjectile extends Projectile {
         fixtureDef.density = 50f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = PLAYER_PROJECTILE_BIT;
-        fixtureDef.filter.maskBits = (ENEMY_BIT | TERRAIN_BIT| ITEM_BIT | PORTAL_BIT | TREASURE_BIT);
+        fixtureDef.filter.maskBits = (ENEMY_BIT | TERRAIN_BIT| ITEM_BIT | PORTAL_BIT | TREASURE_BIT | CLUTTER_BIT);
         fixtureDef.isSensor = true;
 
         body.createFixture(fixtureDef);

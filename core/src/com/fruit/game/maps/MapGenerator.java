@@ -1,14 +1,12 @@
 package com.fruit.game.maps;
 
-import com.badlogic.gdx.ai.steer.behaviors.Seek;
-import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.game.Configuration;
 import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
+import com.fruit.game.logic.objects.entities.misc.Rock;
 import com.fruit.game.logic.objects.entities.misc.Torch;
-import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.logic.objects.items.*;
 import com.fruit.game.logic.objects.entities.enemies.Slime;
 import com.fruit.game.logic.objects.entities.enemies.TheEye;
@@ -118,9 +116,10 @@ public class MapGenerator {
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
         if(Configuration.debugItemsEnabled) {
             map.getCurrentRoom().addGameObject(new Torch(mapManager.getWorldUpdater().getObjectManager(),6,6));
+            map.getCurrentRoom().addGameObject(new Rock(mapManager.getWorldUpdater().getObjectManager(),10,10));
             map.getCurrentRoom().addGameObject(new BloodAmulet(mapManager.getWorldUpdater().getObjectManager(),6,5));
             map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 5, 4));
-            map.getCurrentRoom().addGameObject(new ExplodingProjectiles(mapManager.getWorldUpdater().getObjectManager(),4,5));
+            map.getCurrentRoom().addGameObject(new FlamingProjectiles(mapManager.getWorldUpdater().getObjectManager(),4,5));
         }
         MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater(), map.getCurrentRoom());
 

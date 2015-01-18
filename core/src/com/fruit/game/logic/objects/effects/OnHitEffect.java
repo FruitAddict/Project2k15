@@ -15,6 +15,7 @@ public abstract class OnHitEffect {
     public static final int EXPLODE_ON_HIT = 3;
     public static final int HEALTH_DRAIN_ON_HIT = 4;
     public static final int FORK_ON_HIT = 5;
+    public static final int SET_ON_FIRE = 6;
     //instance effect id
     private int effectID;
     //owner

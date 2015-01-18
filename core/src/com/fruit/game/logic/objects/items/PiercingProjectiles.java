@@ -26,6 +26,7 @@ public class PiercingProjectiles extends Item {
         description = "You've failed this city. Your projectiles can now pierce through the enemies.";
         setSaveInRooms(true);        setItemType(Item.PIERCING_PROJECTILE);
         setEntityID(GameObject.ITEM);
+        setItemName("Yellow arrow");
     }
     public PiercingProjectiles(ObjectManager objectManager) {
         this.objectManager = objectManager;
@@ -34,6 +35,7 @@ public class PiercingProjectiles extends Item {
         description = "You've failed this city. Your projectiles can now pierce through the enemies.";
         setSaveInRooms(true);        setItemType(Item.PIERCING_PROJECTILE);
         setEntityID(GameObject.ITEM);
+        setItemName("Yellow arrow");
     }
 
     @Override

@@ -1,9 +1,7 @@
 package com.fruit.game.logic.objects.items;
 
-import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.entities.Enemy;
-import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.utilities.Utils;
 
 /**
@@ -45,7 +43,7 @@ public class ItemManager {
                         break;
                     }
                     case 6:{
-                        objectManager.addObject(new ExplodingProjectiles(objectManager,posX,posY));
+                        objectManager.addObject(new FlamingProjectiles(objectManager,posX,posY));
                     }
                     default:{
                         break;
@@ -84,7 +82,7 @@ public class ItemManager {
                     break;
                 }
                 case 2: {
-                    enemy.addItemToLoot(new ExplodingProjectiles(objectManager));
+                    enemy.addItemToLoot(new FlamingProjectiles(objectManager));
                     break;
                 }
                 case 3: {

@@ -70,7 +70,7 @@ public class UserInterface extends Stage {
         biggerPixMap.fill();
 
         skin.add("touchBackground", Assets.getAsset("touchBackground.png", Texture.class));
-        skin.add("touchKnob", Assets.getAsset("touchKnob.png",Texture.class));
+        skin.add("touchKnob", Assets.getAsset("shadedDark01.png",Texture.class));
         skin.add("characterIcon", Assets.getAsset("pentagram.png",Texture.class));
         skin.add("characterUp",Assets.getAsset("pentagramup.png",Texture.class));
         skin.add("white", new Texture(pixmap));
@@ -83,7 +83,7 @@ public class UserInterface extends Stage {
         //touchpad style
         Touchpad.TouchpadStyle touchpadStyle = new Touchpad.TouchpadStyle();
         touchpadStyle.background = skin.newDrawable("touchBackground",new Color(0,0,0,0f));
-        touchpadStyle.knob = skin.newDrawable("touchKnob", new Color(0,0f,0f,0.4f));
+        touchpadStyle.knob = skin.newDrawable("touchKnob", new Color(1,1,1,0.4f));
         skin.add("default",touchpadStyle);
 
         skin.getFont("default-font").setScale(0.7f,0.7f);
@@ -341,7 +341,7 @@ public class UserInterface extends Stage {
 
     public void addItemDialogBox(Item item){
         Controller.pauseGame();
-        final VisDialog itemDialog = new VisDialog("You've got an item!"){
+        final VisDialog itemDialog = new VisDialog(item.getItemName()){
           @Override
           public void result(Object o){
               int result =(Integer)o;

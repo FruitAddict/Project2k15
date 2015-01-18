@@ -25,6 +25,7 @@ public abstract class Item extends GameObject {
     protected String description;
     //concrete type of this item (must be one of the types declared at the beginning of this class)
     private int itemType;
+    private String itemName;
     //every item should define what should happen when the player picks it up
     public abstract void onPickUp(Player player);
 
@@ -72,5 +73,13 @@ public abstract class Item extends GameObject {
     @Override
     public void killYourself(){
         Controller.getWorldRenderer().getLightRenderer().freeAttachedLight(this);
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 }

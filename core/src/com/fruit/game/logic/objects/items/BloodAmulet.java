@@ -25,6 +25,7 @@ public class BloodAmulet extends Item {
         setSaveInRooms(true);
         setItemType(Item.BLOOD_AMULET);
         setEntityID(GameObject.ITEM);
+        setItemName("Amulet of the Leech");
     }
     public BloodAmulet(ObjectManager objectManager) {
         this.objectManager = objectManager;
@@ -34,6 +35,7 @@ public class BloodAmulet extends Item {
         setSaveInRooms(true);
         setItemType(Item.BLOOD_AMULET);
         setEntityID(GameObject.ITEM);
+        setItemName("Amulet of the Leech");
     }
 
 

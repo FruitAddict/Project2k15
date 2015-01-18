@@ -11,17 +11,16 @@ import com.fruit.game.logic.objects.entities.player.Player;
 public class HealthDrain extends OnHitEffect {
 
     private Player player;
+    private Value value;
 
     public HealthDrain(Player player){
         this.player = player;
         setEffectID(OnHitEffect.HEALTH_DRAIN_ON_HIT);
+        value = new Value(1,Value.HEALING);
     }
     @Override
     public void onHit(Projectile proj, com.fruit.game.logic.objects.entities.Character enemy, Value damage) {
-        Value val = damage.cpy();
-        val.setValue(Math.max(1, damage.getValue() / 4));
-        val.setType(Value.HEALING);
-        player.onHealingTaken(val);
+        player.onHealingTaken(value);
     }
 
     @Override

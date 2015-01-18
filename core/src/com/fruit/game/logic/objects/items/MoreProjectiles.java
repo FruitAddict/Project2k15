@@ -28,6 +28,7 @@ public class MoreProjectiles extends Item {
         description = "One additional projectile for you, but not without a cost.";
         setSaveInRooms(true);        setItemType(Item.MORE_PROJECTILES);
         setEntityID(GameObject.ITEM);
+        setItemName("Three triangles");
     }
     public MoreProjectiles(ObjectManager objectManager) {
         this.objectManager = objectManager;
@@ -36,6 +37,8 @@ public class MoreProjectiles extends Item {
         description = "One additional projectile for you, but not without a cost.";
         setSaveInRooms(true);        setItemType(Item.MORE_PROJECTILES);
         setEntityID(GameObject.ITEM);
+        setItemName("Three triangles");
+
     }
 
 

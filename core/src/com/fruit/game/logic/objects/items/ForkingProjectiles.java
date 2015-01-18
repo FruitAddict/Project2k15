@@ -39,6 +39,7 @@ public class ForkingProjectiles extends Item {
         setSaveInRooms(true);
         setItemType(Item.FORKING_PROJECTILES);
         setEntityID(GameObject.ITEM);
+        setItemName("Fork of chaos");
     }
     @Override
     public void update(float delta) {

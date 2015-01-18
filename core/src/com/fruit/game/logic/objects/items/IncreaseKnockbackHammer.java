@@ -31,6 +31,7 @@ public class IncreaseKnockbackHammer extends Item {
         description = "A mighty hammer, your shots will push the foes away.";
         setSaveInRooms(true);        setItemType(Item.INCREASED_KNOCKBACK_HAMMER);
         setEntityID(GameObject.ITEM);
+        setItemName("Mighty hammer");
     }
     @Override
     public void onPickUp(Player player) {

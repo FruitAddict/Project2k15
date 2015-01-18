@@ -6,9 +6,12 @@
  <tileset firstgid="1" name="walls" tilewidth="64" tileheight="64">
   <image source="../tilesets/walls.png" width="384" height="128"/>
  </tileset>
+ <tileset firstgid="13" name="UDjRi65" tilewidth="64" tileheight="64">
+  <image source="../tilesets/UDjRi65.png" width="64" height="64"/>
+ </tileset>
  <layer name="Ground" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjY2BgYBvFo3gUj0gMABC0BgE=
+   eJzjZWBg4B3Fo3gUj0gMAB+GDQE=
   </data>
  </layer>
  <layer name="Walls" width="16" height="16">
@@ -48,5 +51,8 @@
   <object type="TORCH" x="150" y="880"/>
   <object type="TORCH" x="118" y="142"/>
   <object type="TORCH" x="864" y="869"/>
+  <object type="ROCK" x="499" y="401" width="64" height="64"/>
+  <object type="ROCK" x="378" y="560" width="64" height="64"/>
+  <object type="ROCK" x="619" y="558" width="64" height="64"/>
  </objectgroup>
 </map>

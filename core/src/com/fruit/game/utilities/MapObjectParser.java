@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.WorldUpdater;
 import com.fruit.game.logic.objects.entities.misc.Portal;
+import com.fruit.game.logic.objects.entities.misc.Rock;
 import com.fruit.game.logic.objects.entities.misc.Torch;
 import com.fruit.game.maps.Room;
 
@@ -160,7 +161,12 @@ public class MapObjectParser implements Constants {
                         room.addGameObject(new Torch(worldUpdater.getObjectManager(),object.getRectangle().getX()/PIXELS_TO_UNITS,
                                 object.getRectangle().getY()/PIXELS_TO_UNITS));
                     }
+                    if(mapObject.getProperties().get("type",String.class).equals("ROCK")){
+                        room.addGameObject(new Rock(worldUpdater.getObjectManager(),(object.getRectangle().getX()+32)/PIXELS_TO_UNITS,
+                                (object.getRectangle().getY()+32)/PIXELS_TO_UNITS));
+                    }
                 }
+
             }else {
                 System.out.println("WARNING! No gameobject layer found in "+room );
             }

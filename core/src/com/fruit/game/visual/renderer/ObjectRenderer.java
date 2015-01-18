@@ -114,6 +114,11 @@ public class ObjectRenderer implements Constants {
                     utilityAnimationPack.render(((Torch)e).stateTime,e,batch);
                     break;
                 }
+                case GameObject.ROCK:{
+                    utilityAnimationPack.load();
+                    utilityAnimationPack.render(stateTime,e,batch);
+                    break;
+                }
             }
         }
         //increase state time by delta.

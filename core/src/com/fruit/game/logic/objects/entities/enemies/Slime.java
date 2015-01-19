@@ -19,6 +19,7 @@ import com.fruit.game.logic.objects.entities.Character;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.Projectile;
 import com.fruit.game.logic.objects.entities.projectiles.MobProjectileWithEffect;
+import com.fruit.game.utilities.Utils;
 
 public class Slime extends Enemy implements Constants {
     private World world;
@@ -56,12 +57,13 @@ public class Slime extends Enemy implements Constants {
         attackDirectionNormalized = new Vector2();
         lastKnownPlayerPosition = new Vector2();
 
-        width = 32*1.5f/generationNumber;
-        height = 48*1.5f/generationNumber;
+        float offsetWidth = Math.signum(Utils.randomGenerator.nextInt()) * Utils.randomGenerator.nextFloat()*9.6f/generationNumber;
+        float offsetHeight = Math.signum(Utils.randomGenerator.nextInt()) * Utils.randomGenerator.nextFloat()*14.4f/generationNumber;
+        width = (48+offsetWidth)/generationNumber;
+        height = (72+offsetHeight)/generationNumber;
 
 
-        steeringBehavior = new Wander<Vector2>(this).setWanderOffset(50).setWanderRadius(5).setFaceEnabled(false)
-        .setWanderRate(0.5f);
+        steeringBehavior = new Wander<Vector2>(this).setWanderRadius(0.5f).setWanderOrientation(90f).setFaceEnabled(true);
         this.generationNumber = generationNumber;
     }
     @Override

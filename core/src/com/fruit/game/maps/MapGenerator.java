@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.fruit.game.Configuration;
 import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
+import com.fruit.game.logic.objects.entities.enemies.Zombie;
 import com.fruit.game.logic.objects.entities.misc.Rock;
 import com.fruit.game.logic.objects.entities.misc.Torch;
 import com.fruit.game.logic.objects.items.*;
@@ -99,7 +100,16 @@ public class MapGenerator {
                                     ItemManager.addItemToEnemy(mapManager.getWorldUpdater().getObjectManager(),theEye,ItemManager.TYPE_COMMON);
                                 }
                                 map.getRoomMatrix()[i][j].addGameObject(theEye);
-                            }else {
+                            }
+                            else if(roll>25){
+                                Zombie zombie = new Zombie(mapManager.getWorldUpdater().getObjectManager(), position.x+(Utils.randomGenerator.nextFloat()/10)
+                                        , position.y+(Utils.randomGenerator.nextFloat()/10));
+                                if(Utils.mapRandomNumberGenerator.nextInt(100)>50){
+                                    ItemManager.addItemToEnemy(mapManager.getWorldUpdater().getObjectManager(),zombie,ItemManager.TYPE_COMMON);
+                                }
+                                map.getRoomMatrix()[i][j].addGameObject(zombie);
+                            }
+                            else {
                                 Slime slime = new Slime(mapManager.getWorldUpdater().getObjectManager(), position.x+(Utils.randomGenerator.nextFloat()/10)
                                         , position.y+(Utils.randomGenerator.nextFloat()/10),1);
                                 if(Utils.mapRandomNumberGenerator.nextInt(100)>50){
@@ -117,6 +127,7 @@ public class MapGenerator {
         if(Configuration.debugItemsEnabled) {
             map.getCurrentRoom().addGameObject(new Torch(mapManager.getWorldUpdater().getObjectManager(),6,6));
             map.getCurrentRoom().addGameObject(new Rock(mapManager.getWorldUpdater().getObjectManager(),10,10));
+            map.getCurrentRoom().addGameObject(new Zombie(mapManager.getWorldUpdater().getObjectManager(),1,1));
             map.getCurrentRoom().addGameObject(new BloodAmulet(mapManager.getWorldUpdater().getObjectManager(),6,5));
             map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 5, 4));
             map.getCurrentRoom().addGameObject(new FlamingProjectiles(mapManager.getWorldUpdater().getObjectManager(),4,5));

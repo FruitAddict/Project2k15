@@ -10,6 +10,7 @@ import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
 import com.fruit.game.logic.objects.entities.enemies.Dummy;
 import com.fruit.game.logic.objects.entities.enemies.Slime;
 import com.fruit.game.logic.objects.entities.enemies.TheEye;
+import com.fruit.game.logic.objects.entities.enemies.Zombie;
 import com.fruit.game.logic.objects.entities.misc.Explosion;
 import com.fruit.game.logic.objects.entities.misc.Torch;
 import com.fruit.game.logic.objects.entities.player.Player;
@@ -37,6 +38,7 @@ public class ObjectRenderer implements Constants {
     public TheEyeAnimationPack theEyeAnimationPack;
     public EffectAnimationPack effectAnimationPack;
     public EnormousGluttonPack enormousGluttonPack;
+    public ZombieAnimationPack zombieAnimationPack;
 
     public ObjectRenderer(){
         //some animation packs (for rendering characters) will need instance of effect renderer.
@@ -50,6 +52,7 @@ public class ObjectRenderer implements Constants {
         theEyeAnimationPack = new TheEyeAnimationPack(onCharacteREffectPack);
         effectAnimationPack = new EffectAnimationPack();
         enormousGluttonPack = new EnormousGluttonPack(onCharacteREffectPack);
+        zombieAnimationPack = new ZombieAnimationPack(onCharacteREffectPack);
     }
 
     public void render(float delta, Array<GameObject> objects, SpriteBatch batch){
@@ -117,6 +120,11 @@ public class ObjectRenderer implements Constants {
                 case GameObject.ROCK:{
                     utilityAnimationPack.load();
                     utilityAnimationPack.render(stateTime,e,batch);
+                    break;
+                }
+                case GameObject.ZOMBIE:{
+                    zombieAnimationPack.load();
+                    zombieAnimationPack.render(((Zombie)e).stateTime,(Zombie)e,batch);
                     break;
                 }
             }

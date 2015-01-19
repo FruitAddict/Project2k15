@@ -35,9 +35,9 @@ public class PlayerProjectile extends Projectile {
         setEntityID(GameObject.PROJECTILE);
         setSaveInRooms(false);
         //setting width, height and radius of the box2d body
-        width =24;
-        height=24;
-        radius = 12;
+        width =16;
+        height=16;
+        radius = 8;
         if(damage.getValue()>=2){
             width*=1.1f;
             height*=1.1f;

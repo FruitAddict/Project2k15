@@ -12,7 +12,9 @@ import com.fruit.game.Controller;
 import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.Value;
 import com.fruit.game.logic.objects.entities.*;
+import com.fruit.game.logic.objects.entities.Character;
 import com.fruit.game.utilities.Utils;
+import com.fruit.game.visual.renderer.ParticleRenderer;
 
 /**
  * @Author FruitAddict
@@ -62,8 +64,8 @@ public class Zombie extends Enemy {
                 changeSteeringBehavior(new Seek<Vector2>(this, objectManager.getPlayer()));
                 followingPlayer = true;
             }
+            character.onDamageTaken(this,new Value(stats.getCombinedDamage(),Value.NORMAL_DAMAGE));
         }
-        character.onDamageTaken(new Value(stats.getCombinedDamage(),Value.NORMAL_DAMAGE));
     }
 
     @Override
@@ -126,13 +128,14 @@ public class Zombie extends Enemy {
         super.killYourself();
         Controller.getWorldRenderer().getSplatterRenderer().addMultiBloodSprite(body.getPosition(), 3, 0);
         Controller.getWorldUpdater().getPlayer().addSlainEnemy();
+        Controller.getWorldRenderer().getParticleRenderer().addParticleEffect(this, ParticleRenderer.BLOOD);
         dropAllLoot(objectManager);
         objectManager.getPlayer().addExperiencePoints(5);
         objectManager.removeObject(this);
     }
 
     @Override
-    public void onDamageTaken(Value value) {
+    public void onDamageTaken(Character source, Value value) {
         stats.changeHealthPoints(-value.getValue() * stats.getDamageResistanceModifier());
         if(value.getValue()!=0) {
             status.setAttackedByPlayer(true);
@@ -140,7 +143,7 @@ public class Zombie extends Enemy {
                 changeSteeringBehavior(new Seek<Vector2>(this, objectManager.getPlayer()));
                 followingPlayer = true;
             }
-            super.onDamageTaken(value);
+            super.onDamageTaken(source,value);
         }
     }
 }

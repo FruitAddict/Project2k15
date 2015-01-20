@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.fruit.game.Controller;
 import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.Value;
 import com.fruit.game.logic.objects.effects.OnHitEffect;
@@ -24,11 +25,13 @@ public class PlayerProjectile extends Projectile {
     private Array<OnHitEffect> onHitEffects;
     private boolean piercing;
     private float knockBack;
+    private Player player;
 
     public PlayerProjectile(Player player, ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity) {
         this.objectManager = objectManager;
         this.spawnX = spawnX;
         this.spawnY = spawnY;
+        this.player = player;
         onHitEffects = player.getOnHitEffects();
         damage = new Value(player.stats.getCombinedDamage(),Value.NORMAL_DAMAGE);
         setTypeID(Projectile.PLAYER_PROJECTILE);
@@ -54,7 +57,7 @@ public class PlayerProjectile extends Projectile {
         for(OnHitEffect onHitEffect : onHitEffects ){
             onHitEffect.onHit(this,character,damage);
         }
-        character.onDamageTaken(damage);
+        character.onDamageTaken(player,damage);
         character.addLinearVelocity(direction.x*knockBack,direction.y*knockBack);
         if(!piercing) {
             killYourself();

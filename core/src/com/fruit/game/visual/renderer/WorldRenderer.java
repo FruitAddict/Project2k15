@@ -51,6 +51,9 @@ import com.fruit.game.visual.tween.TweenUtils;
      private LightRenderer lightRenderer;
      //Splatter renderer that will render all the blood & gore & other delicious stuff on the ground
      private SplatterRenderer splatterRenderer;
+
+     //Particle effects renderer
+     private ParticleRenderer particleRenderer;
      //texture region for map transition effects and its position, frame buffer for screen capturing and
      //additional game object array to filter out player during transition rendering phase
      private TextureRegion lastMapTexture;
@@ -72,6 +75,7 @@ import com.fruit.game.visual.tween.TweenUtils;
          lightRenderer = new LightRenderer(this, worldUpdater.getWorld());
          lightRenderer.setPlayerLight(worldUpdater.getPlayer());
          splatterRenderer = new SplatterRenderer(batch);
+         particleRenderer = new ParticleRenderer(batch);
          //initially add all the lights from the room if those exist
          for (Room.StaticLightContainer container : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()) {
              lightRenderer.addPointLight(container.color, container.length, container.position.x, container.position.y, true);
@@ -101,6 +105,10 @@ import com.fruit.game.visual.tween.TweenUtils;
              batch.draw(lastMapTexture, lastMapTextureX, lastMaptextureY);
          }
          objectRenderer.render(delta, worldUpdater.getObjectManager().getGameObjects(), batch);
+         //render particle effects
+         if(!paused) {
+             particleRenderer.render(delta);
+         }
          batch.end();
          lightRenderer.render();
          //if the game isnt paused and the battle text is enabled, render it.
@@ -258,6 +266,8 @@ import com.fruit.game.visual.tween.TweenUtils;
          tiledMapRenderer = new OrthogonalTiledMapRenderer(worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getTiledMap(), batch);
          //free all the lights
          lightRenderer.freeAllLights();
+         //clear all particle effects
+         particleRenderer.removeAllParticleEffects();
          for (Room.StaticLightContainer container : worldUpdater.getMapManager().getCurrentMap().getCurrentRoom().getStaticLightPositions()) {
              lightRenderer.addPointLight(container.color, container.length, container.position.x, container.position.y, true);
          }
@@ -311,4 +321,9 @@ import com.fruit.game.visual.tween.TweenUtils;
      public ObjectRenderer getObjectRenderer(){
          return objectRenderer;
      }
+
+     public ParticleRenderer getParticleRenderer() {
+         return particleRenderer;
+     }
+
  }

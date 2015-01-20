@@ -4,6 +4,7 @@ import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.Flee;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -18,8 +19,10 @@ import com.fruit.game.logic.objects.entities.Enemy;
 import com.fruit.game.logic.objects.entities.Character;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.Projectile;
+import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.logic.objects.entities.projectiles.MobProjectileWithEffect;
 import com.fruit.game.utilities.Utils;
+import com.fruit.game.visual.renderer.ParticleRenderer;
 
 public class Slime extends Enemy implements Constants {
     private World world;
@@ -87,7 +90,7 @@ public class Slime extends Enemy implements Constants {
             attackDirectionNormalized.nor();
             attackDirectionNormalized.x*=-1;
             attackDirectionNormalized.y*=-1;
-            MobProjectileWithEffect proj = new MobProjectileWithEffect(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized, 5f, 1, new OnHitEffect() {
+            MobProjectileWithEffect proj = new MobProjectileWithEffect(this,objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized, 5f, 1, new OnHitEffect() {
                 @Override
                 public void onHit(Projectile proj, Character enemy, Value damage) {
                     objectManager.addObject(new Slime(objectManager,enemy.getPosition().x,enemy.getPosition().y,3));
@@ -141,8 +144,9 @@ public class Slime extends Enemy implements Constants {
     @Override
     public void killYourself(){
         super.killYourself();
-        Controller.getWorldRenderer().getSplatterRenderer().addMultiBloodSprite(body.getPosition(), 3, 0);
+        Controller.getWorldRenderer().getSplatterRenderer().addMultiBloodSprite(body.getPosition(), 4-generationNumber, 0, Color.GREEN);
         Controller.getWorldUpdater().getPlayer().addSlainEnemy();
+        Controller.getWorldRenderer().getParticleRenderer().addParticleEffect(this, ParticleRenderer.BLOOD);
         dropAllLoot(objectManager);
         objectManager.getPlayer().addExperiencePoints(3);
         if(generationNumber<3){
@@ -158,7 +162,9 @@ public class Slime extends Enemy implements Constants {
 
     @Override
     public void onDirectContact(Character character) {
-        character.onDamageTaken(new Value(stats.getCombinedDamage(), Value.NORMAL_DAMAGE));
+        if(character.getEntityID() == GameObject.PLAYER) {
+            character.onDamageTaken(this, new Value(stats.getCombinedDamage(), Value.NORMAL_DAMAGE));
+        }
     }
 
     @Override
@@ -180,7 +186,7 @@ public class Slime extends Enemy implements Constants {
     }
 
     @Override
-    public void onDamageTaken(Value value) {
+    public void onDamageTaken(Character source, Value value) {
         stats.changeHealthPoints(-value.getValue() * stats.getDamageResistanceModifier());
         if(value.getValue()!=0) {
             status.setAttackedByPlayer(true);
@@ -188,7 +194,7 @@ public class Slime extends Enemy implements Constants {
                 changeSteeringBehavior(new Seek<Vector2>(this, objectManager.getPlayer()));
                 followingPlayer = true;
             }
-            super.onDamageTaken(value);
+            super.onDamageTaken(source, value);
         }
         if(stats.getHealthPoints()> 0 && stats.getHealthPoints() < stats.getBaseMaximumHealthPoints()/5 && !fleeing){
             changeSteeringBehavior(new Flee<Vector2>(this,objectManager.getPlayer()));

@@ -46,6 +46,7 @@ public class UserInterface extends Stage {
     private MessageHandler messageHandler;
     private float angle;
     private Vector2 movementVector;
+    public boolean paused;
 
     public UserInterface(GameCamera camera, WorldUpdater worldUpdater){
         this.gameCamera = camera;
@@ -83,7 +84,7 @@ public class UserInterface extends Stage {
         //touchpad style
         Touchpad.TouchpadStyle touchpadStyle = new Touchpad.TouchpadStyle();
         touchpadStyle.background = skin.newDrawable("touchBackground",new Color(0,0,0,0f));
-        touchpadStyle.knob = skin.newDrawable("touchKnob", new Color(1,1,1,0.4f));
+        touchpadStyle.knob = skin.newDrawable("touchKnob", new Color(1,1,1,0.1f));
         skin.add("default",touchpadStyle);
 
         skin.getFont("default-font").setScale(0.7f,0.7f);
@@ -440,8 +441,9 @@ public class UserInterface extends Stage {
                 worldUpdater.getObjectManager().getPlayer().attack(touchpadAttack.getKnobPercentX(), touchpadAttack.getKnobPercentY());
             }
         }
-
-        messageHandler.update(delta);
+        if(!paused) {
+            messageHandler.update(delta);
+        }
     }
 
     @Override

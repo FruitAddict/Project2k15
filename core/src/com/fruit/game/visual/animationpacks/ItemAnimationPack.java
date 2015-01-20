@@ -25,6 +25,7 @@ public class ItemAnimationPack implements Constants {
     private Sprite forkingProjectilesSprite;
     private Sprite knockbackHammerSprite;
     private Sprite bloodAmuletSprite;
+    private Sprite voodooDollSprite;
     private boolean loaded = false;
 
     public void load(){
@@ -52,6 +53,8 @@ public class ItemAnimationPack implements Constants {
             knockbackHammerSprite = new Sprite(knockbackHammerTexture);
             Texture bloodAmuletTexture = (Texture)Assets.getAsset("items//bloodamulet.png",Texture.class);
             bloodAmuletSprite = new Sprite(bloodAmuletTexture);
+            Texture voodooDollTexture = (Texture)Assets.getAsset("items//puppet.png",Texture.class);
+            voodooDollSprite = new Sprite(voodooDollTexture);
             loaded = true;
         }
     }
@@ -104,6 +107,10 @@ public class ItemAnimationPack implements Constants {
                batch.draw(bloodAmuletSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
                break;
            }
+           case Item.VOODO_DOLL:{
+               batch.draw(voodooDollSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
+               break;
+           }
        }
     }
 
@@ -129,6 +136,9 @@ public class ItemAnimationPack implements Constants {
             }
             case Item.BLOOD_AMULET:{
                 return bloodAmuletSprite;
+            }
+            case Item.VOODO_DOLL:{
+                return voodooDollSprite;
             }
             default:{
                 return heartSprite;

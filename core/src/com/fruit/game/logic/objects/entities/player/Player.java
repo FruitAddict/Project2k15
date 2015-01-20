@@ -13,6 +13,8 @@ import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.Value;
 import com.fruit.game.logic.objects.effects.OnDamageTakenEffect;
 import com.fruit.game.logic.objects.effects.OnHitEffect;
+import com.fruit.game.logic.objects.effects.ondamaged.ReflectDamage;
+import com.fruit.game.logic.objects.entities.Enemy;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.projectiles.PlayerProjectile;
 import com.fruit.game.logic.objects.entities.Character;
@@ -35,7 +37,7 @@ public class Player extends Character implements Constants {
 
     //player level start with 1
     private int level, experiencePoints, nextLevelExpRequirement, statPoints, expAccumulator, healingAccumulator;
-    private float lastHealingUpdate;
+    private float lastHealingUpdate, lastAttackUpdate;
 
     //Players on hit effects, items can result in attacks slowing enemies down etc, it is passed to
     //every newly created projectile
@@ -77,6 +79,7 @@ public class Player extends Character implements Constants {
         nextLevelExpRequirement = 25;
         stats.setNumberOfProjectiles(1);
         stats.setKnockBack(0);
+
     }
 
     public void attack(float directionPercentX, float directionPercentY){
@@ -120,7 +123,7 @@ public class Player extends Character implements Constants {
 
     public void addOnDamageTakenEffect(OnDamageTakenEffect onDamageTakenEffect){
         for(OnDamageTakenEffect effect : onDamageTakenEffects){
-            if(onDamageTakenEffect.getEffectID() == onDamageTakenEffect.getEffectID()){
+            if(effect.getEffectID() == onDamageTakenEffect.getEffectID()){
                 effect.join(onDamageTakenEffect);
                 return;
             }
@@ -151,14 +154,14 @@ public class Player extends Character implements Constants {
     }
 
     @Override
-    public void onDamageTaken(Value value){
+    public void onDamageTaken(Character source, Value value){
         Value copied = value.cpy();
         for(OnDamageTakenEffect onDamageTakenEffect : onDamageTakenEffects){
-            onDamageTakenEffect.onDamageTaken(copied);
+            onDamageTakenEffect.onDamageTaken(source, copied, value);
         }
-        if(value.getValue()>0) {
+        if(copied.getValue()>0) {
             stats.changeHealthPoints(-copied.getValue() * stats.getCombinedResistance());
-            super.onDamageTaken(copied);
+            super.onDamageTaken(source,copied);
         }
 
         Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement,statPoints);
@@ -257,9 +260,10 @@ public class Player extends Character implements Constants {
     }
 
     public void updateInfoBuffers(float delta){
-        if( expAccumulator >0 && stateTime - lastAttack > 1.5f){
+        if( expAccumulator >0 && stateTime -lastAttackUpdate> 4f){
             Controller.getUserInterface().getMessageHandler().addMessage("+"+expAccumulator+" EXP",new Color(1,215/255f,0f,1f),2.5f);
             expAccumulator = 0;
+            lastAttackUpdate = stateTime;
         }
         if(healingAccumulator> 0 && stateTime - lastHealingUpdate > 0.5f){
             Controller.addOnScreenMessage(this, Integer.toString(healingAccumulator) + "HP", getPosition(), getHeight(), 1.5f, TextRenderer.greenFont, TextMessage.DYNAMIC_UP);

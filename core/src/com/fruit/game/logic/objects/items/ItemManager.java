@@ -72,7 +72,7 @@ public class ItemManager {
             }
         }
         if(type == TYPE_RARE){
-            switch(Utils.mapRandomNumberGenerator.nextInt(7)){
+            switch(Utils.mapRandomNumberGenerator.nextInt(8)){
                 case 0:{
                     enemy.addItemToLoot(new MoreProjectiles(objectManager));
                     break;
@@ -99,6 +99,10 @@ public class ItemManager {
                 }
                 case 6:{
                     enemy.addItemToLoot(new BloodAmulet(objectManager));
+                    break;
+                }
+                case 7:{
+                    enemy.addItemToLoot(new ReflectDamageDoll(objectManager));
                     break;
                 }
 

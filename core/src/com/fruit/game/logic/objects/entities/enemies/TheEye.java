@@ -1,8 +1,6 @@
 package com.fruit.game.logic.objects.entities.enemies;
 
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
-import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
-import com.badlogic.gdx.ai.steer.behaviors.CollisionAvoidance;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -16,7 +14,6 @@ import com.fruit.game.logic.objects.entities.Enemy;
 import com.fruit.game.logic.objects.entities.Character;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.misc.Explosion;
-import com.fruit.game.logic.objects.items.HealthPotion;
 import com.fruit.game.utilities.Utils;
 
 /**
@@ -57,7 +54,7 @@ public class TheEye extends Enemy {
 
     @Override
     public void onDirectContact(Character character) {
-        character.onDamageTaken(new Value(stats.getCombinedDamage(),Value.BURNING_DAMAGE));
+        character.onDamageTaken(this,new Value(stats.getCombinedDamage(),Value.BURNING_DAMAGE));
     }
 
     @Override
@@ -140,12 +137,12 @@ public class TheEye extends Enemy {
     }
 
     @Override
-    public void onDamageTaken(Value value) {
+    public void onDamageTaken(Character source, Value value) {
         stats.changeHealthPoints(-value.getValue() * stats.getDamageResistanceModifier());
         if(value.getValue()!=0) {
             status.setAttackedByPlayer(true);
             onPlayerDetected();
-            super.onDamageTaken(value);
+            super.onDamageTaken(source,value);
         }
     }
 
@@ -168,7 +165,6 @@ public class TheEye extends Enemy {
             objectManager.addObject(new Explosion(objectManager,body.getPosition().x,body.getPosition().y,1.5f,0.5f,stats.getCombinedDamage()));
 
         }
-        Controller.getWorldRenderer().getSplatterRenderer().addMultiBloodSprite(body.getPosition(),0.7f, 1, 0);
         dropAllLoot(objectManager);
         objectManager.getPlayer().addExperiencePoints(4);
     }

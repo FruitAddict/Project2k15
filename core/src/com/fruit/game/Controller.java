@@ -86,6 +86,7 @@ public class Controller {
         if(Controller.gameScreen!=null){
             Controller.getGameScreen().paused = true;
             Controller.worldRenderer.pauseRendering();
+            Controller.getUserInterface().paused = true;
             Controller.getGameScreen().getWorldInputProcessor().resetAll();
         }
     }
@@ -93,6 +94,7 @@ public class Controller {
     public static synchronized void unpauseGame(){
         if(Controller.getGameScreen()!=null){
             Controller.getGameScreen().paused = false;
+            Controller.getUserInterface().paused = false;
             Controller.getWorldRenderer().unpauseRendering();
             Controller.getGameScreen().getWorldInputProcessor().resetAll();
         }

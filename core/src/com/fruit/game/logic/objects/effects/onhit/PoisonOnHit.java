@@ -24,7 +24,7 @@ public class PoisonOnHit extends OnHitEffect implements Constants {
     @Override
     public void onHit(Projectile proj, Character enemy, Value damage) {
         if(poisonCount>0) {
-            enemy.addPassiveEffect(new DamageOverTime(enemy, 5f, 0.5f, new Value(Math.max(1,damage.getValue() / 2), Value.POISON_DAMAGE), DamageOverTime.POISONED));
+            enemy.addPassiveEffect(new DamageOverTime(player,enemy, 5f, 0.5f, new Value(Math.max(1,damage.getValue() / 2), Value.POISON_DAMAGE), DamageOverTime.POISONED));
             poisonCount--;
         }else {
             player.removeOnHitEffect(this);

@@ -1,12 +1,9 @@
 package com.fruit.game.logic.objects.effects.passive;
 
 
-import com.fruit.game.Controller;
 import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.objects.Value;
 import com.fruit.game.logic.objects.effects.PassiveEffect;
-import com.fruit.game.visual.messages.TextMessage;
-import com.fruit.game.visual.messages.TextRenderer;
 import com.fruit.game.logic.objects.entities.Character;
 
 /**
@@ -19,13 +16,14 @@ public class DamageOverTime extends PassiveEffect implements Constants {
     //amount of healing every tick.
     private Value amount;
     private int damageOverTimeType;
-    private Character character;
+    private Character target;
+    private Character source;
 
-    public DamageOverTime(Character character, float duration, float delay, Value amount, int dOTType){
+    public DamageOverTime(Character source, Character target, float duration, float delay, Value amount, int dOTType){
         this.duration = duration;
         this.delay = delay;
         this.amount = amount;
-        this.character = character;
+        this.target = target;
         setEffectType(PassiveEffect.DAMAGE_OVER_TIME);
         damageOverTimeType = dOTType;
     }
@@ -36,7 +34,7 @@ public class DamageOverTime extends PassiveEffect implements Constants {
             onRemove();
         }else{
             if(lastUpdateTime>=delay){
-                character.onDamageTaken(amount);
+                target.onDamageTaken(null, amount);
                 lastUpdateTime=0;
             }else {
                 lastUpdateTime+=delta;
@@ -47,22 +45,22 @@ public class DamageOverTime extends PassiveEffect implements Constants {
     @Override
     public void apply(){
         if(damageOverTimeType==BURNING) {
-            character.status.setBurning(true);
+            target.status.setBurning(true);
         }else if(damageOverTimeType ==POISONED){
-            character.status.setPoisoned(true);
+            target.status.setPoisoned(true);
             //Controller.addOnScreenMessage(
-            //       new TextMessage("Poisoned!",character.getPosition(),character.getHeight(),2.0f,TextRenderer.poisonGreenFont,TextMessage.DYNAMIC_UPFALL));
+            //       new TextMessage("Poisoned!",target.getPosition(),target.getHeight(),2.0f,TextRenderer.poisonGreenFont,TextMessage.DYNAMIC_UPFALL));
         }
     }
 
     @Override
     public void onRemove() {
         if(damageOverTimeType==BURNING) {
-            character.status.setBurning(false);
+            target.status.setBurning(false);
         }else if(damageOverTimeType == POISONED){
-            character.status.setPoisoned(false);
+            target.status.setPoisoned(false);
         }
-        character.removePassiveEffect(this);
+        target.removePassiveEffect(this);
     }
 
 

@@ -52,5 +52,8 @@
   <object type="TORCH" x="150" y="880"/>
   <object type="TORCH" x="118" y="142"/>
   <object type="TORCH" x="864" y="869"/>
+  <object type="ROCK" x="289" y="266" width="64" height="64"/>
+  <object type="ROCK" x="279" y="459" width="64" height="64"/>
+  <object type="ROCK" x="704" y="691" width="64" height="64"/>
  </objectgroup>
 </map>

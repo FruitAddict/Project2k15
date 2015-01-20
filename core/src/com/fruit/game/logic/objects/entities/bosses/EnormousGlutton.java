@@ -55,7 +55,7 @@ public class EnormousGlutton extends Enemy {
 
     @Override
     public void onDirectContact(com.fruit.game.logic.objects.entities.Character character) {
-        character.onDamageTaken(new Value(stats.getCombinedDamage(),Value.NORMAL_DAMAGE));
+        character.onDamageTaken(this, new Value(stats.getCombinedDamage(),Value.NORMAL_DAMAGE));
     }
 
     @Override
@@ -109,9 +109,9 @@ public class EnormousGlutton extends Enemy {
 
                 }
             };
-            MobProjectileWithEffect proj = new MobProjectileWithEffect(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized, 9f, stats.getCombinedDamage(),spawnShit);
-            MobProjectileWithEffect proj2 = new MobProjectileWithEffect(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(-7),9f, stats.getCombinedDamage(),spawnShit);
-            MobProjectileWithEffect proj3 = new MobProjectileWithEffect(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(7), 9f, stats.getCombinedDamage(),spawnShit);
+            MobProjectileWithEffect proj = new MobProjectileWithEffect(this,objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized, 9f, stats.getCombinedDamage(),spawnShit);
+            MobProjectileWithEffect proj2 = new MobProjectileWithEffect(this,objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(-7),9f, stats.getCombinedDamage(),spawnShit);
+            MobProjectileWithEffect proj3 = new MobProjectileWithEffect(this,objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(7), 9f, stats.getCombinedDamage(),spawnShit);
 
             proj.setTypeID(Projectile.MINDLESS_PROJECTILE);
             proj2.setTypeID(Projectile.MINDLESS_PROJECTILE);
@@ -131,11 +131,11 @@ public class EnormousGlutton extends Enemy {
             attackDirectionNormalized.nor();
             attackDirectionNormalized.x*=-1;
             attackDirectionNormalized.y*=-1;
-            MobProjectile proj = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized, 7f, stats.getCombinedDamage(),stats.getKnockBack());
-            MobProjectile proj2 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(-7), 5f, stats.getCombinedDamage(),stats.getKnockBack());
-            MobProjectile proj3 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(7), 5f, stats.getCombinedDamage(),stats.getKnockBack());
-            MobProjectile proj4 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(-14), 7f, stats.getCombinedDamage(),stats.getKnockBack());
-            MobProjectile proj5 = new MobProjectile(objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(14), 7f, stats.getCombinedDamage(),stats.getKnockBack());
+            MobProjectile proj = new MobProjectile(this,objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized, 7f, stats.getCombinedDamage(),stats.getKnockBack());
+            MobProjectile proj2 = new MobProjectile(this,objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(-7), 5f, stats.getCombinedDamage(),stats.getKnockBack());
+            MobProjectile proj3 = new MobProjectile(this,objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(7), 5f, stats.getCombinedDamage(),stats.getKnockBack());
+            MobProjectile proj4 = new MobProjectile(this,objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(-14), 7f, stats.getCombinedDamage(),stats.getKnockBack());
+            MobProjectile proj5 = new MobProjectile(this,objectManager, getBody().getPosition().x, getBody().getPosition().y, attackDirectionNormalized.cpy().rotate(14), 7f, stats.getCombinedDamage(),stats.getKnockBack());
 
             objectManager.addObject(proj);
             objectManager.addObject(proj2);
@@ -180,11 +180,11 @@ public class EnormousGlutton extends Enemy {
         Controller.getWorldRenderer().getLightRenderer().attachPointLightToBody(this, com.badlogic.gdx.graphics.Color.PURPLE,5f);
     }
     @Override
-    public void onDamageTaken(Value value) {
+    public void onDamageTaken(Character source, Value value) {
         stats.changeHealthPoints(-value.getValue() * stats.getDamageResistanceModifier());
         if(value.getValue()!=0) {
             status.setAttackedByPlayer(true);
-            super.onDamageTaken(value);
+            super.onDamageTaken(source,value);
             if(!enragedBehavior){
                 changeSteeringBehavior(new MatchVelocity<Vector2>(this,Controller.getWorldUpdater().getPlayer()));
                 enragedBehavior = true;

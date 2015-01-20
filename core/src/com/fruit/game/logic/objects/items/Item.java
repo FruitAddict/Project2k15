@@ -21,6 +21,7 @@ public abstract class Item extends GameObject {
     public static final int FORKING_PROJECTILES = 9;
     public static final int INCREASED_KNOCKBACK_HAMMER = 10;
     public static final int BLOOD_AMULET = 11;
+    public static final int VOODO_DOLL = 12;
     //each item should have a String containing its description
     protected String description;
     //concrete type of this item (must be one of the types declared at the beginning of this class)
@@ -63,7 +64,7 @@ public abstract class Item extends GameObject {
         fixtureDef.density = 50f;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = ITEM_BIT;
-        fixtureDef.filter.maskBits = PLAYER_BIT | TERRAIN_BIT | PORTAL_BIT | ITEM_BIT | ENEMY_BIT;
+        fixtureDef.filter.maskBits = PLAYER_BIT | TERRAIN_BIT | PORTAL_BIT | ITEM_BIT | ENEMY_BIT | CLUTTER_BIT;
         body.createFixture(fixtureDef);
 
         //dispose shape

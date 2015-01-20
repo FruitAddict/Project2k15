@@ -1,6 +1,7 @@
 package com.fruit.game.visual.renderer;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -101,6 +102,7 @@ public class SplatterRenderer implements Constants {
                         blood1Sprite.setRotation(splatter.rotation);
                         blood1Sprite.setAlpha(splatter.alpha);
                         blood1Sprite.setScale(splatter.scale);
+                        blood1Sprite.setColor(splatter.getTint());
                         blood1Sprite.draw(batch);
                         break;
                     }
@@ -109,6 +111,7 @@ public class SplatterRenderer implements Constants {
                         blood2Sprite.setRotation(splatter.rotation);
                         blood2Sprite.setAlpha(splatter.alpha);
                         blood2Sprite.setScale(splatter.scale);
+                        blood2Sprite.setColor(splatter.getTint());
                         blood2Sprite.draw(batch);
                         break;
                     }
@@ -117,6 +120,7 @@ public class SplatterRenderer implements Constants {
                         blood3Sprite.setRotation(splatter.rotation);
                         blood3Sprite.setAlpha(splatter.alpha);
                         blood3Sprite.setScale(splatter.scale);
+                        blood3Sprite.setColor(splatter.getTint());
                         blood3Sprite.draw(batch);
                         break;
                     }
@@ -125,6 +129,7 @@ public class SplatterRenderer implements Constants {
                         blood4Sprite.setRotation(splatter.rotation);
                         blood4Sprite.setAlpha(splatter.alpha);
                         blood4Sprite.setScale(splatter.scale);
+                        blood4Sprite.setColor(splatter.getTint());
                         blood4Sprite.draw(batch);
                         break;
                     }
@@ -133,6 +138,7 @@ public class SplatterRenderer implements Constants {
                         blood5Sprite.setRotation(splatter.rotation);
                         blood5Sprite.setAlpha(splatter.alpha);
                         blood5Sprite.setScale(splatter.scale);
+                        blood5Sprite.setColor(splatter.getTint());
                         blood5Sprite.draw(batch);
                         break;
                     }
@@ -181,6 +187,17 @@ public class SplatterRenderer implements Constants {
             }
         }
     }
+    public void addMultiBloodSprite(Vector2 position, int numberOfSplatters, int range, Color tint) {
+        for (int i = 0; i < numberOfSplatters; i++) {
+            if (range > 0) {
+                float randomSign = Math.signum(Utils.randomGenerator.nextInt());
+                splatterArray.add(new Splatter(position.cpy().add(Utils.randomGenerator.nextFloat()*randomSign*range, Utils.randomGenerator.nextFloat()*randomSign*range),
+                        1 + Utils.randomGenerator.nextInt(5), Utils.randomGenerator.nextInt(360)).setTint(tint));
+            } else {
+                splatterArray.add(new Splatter(position,1 + Utils.randomGenerator.nextInt(5), Utils.randomGenerator.nextInt(360)).setTint(tint));
+            }
+        }
+    }
 
     public void addMultiBloodSprite(Vector2 position, float scale, int numberOfSplatters, int range) {
         for (int i = 0; i < numberOfSplatters; i++) {
@@ -194,13 +211,21 @@ public class SplatterRenderer implements Constants {
         }
     }
 
+    public void addMultiBloodSprite(Vector2 position, float scale, int numberOfSplatters, int range, Color tint) {
+        for (int i = 0; i < numberOfSplatters; i++) {
+            if (range > 0) {
+                float randomSign = Math.signum(Utils.randomGenerator.nextInt());
+                splatterArray.add(new Splatter(position.cpy().add(Utils.randomGenerator.nextFloat()*randomSign*range, Utils.randomGenerator.nextFloat()*randomSign*range),
+                        1 + Utils.randomGenerator.nextInt(5), scale, Utils.randomGenerator.nextInt(360)).setTint(tint));
+            } else {
+                splatterArray.add(new Splatter(position,1 + Utils.randomGenerator.nextInt(5), Utils.randomGenerator.nextInt(360)).setTint(tint));
+            }
+        }
+    }
+
     public void addExplosionSplatter(Vector2 position, float scale){
         int randomRotation = Utils.randomGenerator.nextInt(360);
-        splatterArray.add(new Splatter(position,SplatterRenderer.EXPLOSION_BLAST_1,0.5f, scale, randomRotation));
-        randomRotation = Utils.randomGenerator.nextInt(360);
         splatterArray.add(new Splatter(position,SplatterRenderer.EXPLOSION_BLAST_1,0.7f, scale*0.7f, randomRotation));
-        randomRotation = Utils.randomGenerator.nextInt(360);
-        splatterArray.add(new Splatter(position,SplatterRenderer.EXPLOSION_BLAST_1,0.8f, scale*0.4f, randomRotation));
     }
 
     public void updateFrameBufferAndCamera(){
@@ -225,6 +250,7 @@ public class SplatterRenderer implements Constants {
         private float rotation;
         private float scale = 1f;
         private float alpha = 0.9f;
+        private Color tint = new Color(1,1,1,1); //default color
 
         public Splatter(Vector2 position, int type, float rotation){
             this.position = position.cpy();
@@ -245,6 +271,17 @@ public class SplatterRenderer implements Constants {
             this.rotation = rotation;
             this.scale = scale;
             this.alpha = alpha;
+        }
+
+
+        public Color getTint() {
+            return tint;
+        }
+
+        public Splatter setTint(Color tint) {
+            this.tint = tint;
+            System.out.println(tint);
+            return this;
         }
     }
 }

@@ -102,11 +102,14 @@ public class PlayerAnimationPack implements Constants {
     public void render(float stateTime, Player player, SpriteBatch batch){
         //position for rendering, this alghorithm is the same for every renderable object
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(player,pos));
-        if(player.status.isBurning()){
-            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,player.getWidth(),player.getBodyHeight());
-        }
         if(player.status.isShielded()){
             onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.SHIELDED,pos.x,pos.y,player.getWidth(),player.getBodyHeight());
+        }
+        if(player.status.isHealing()){
+            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.HEALED,pos.x,pos.y,player.getWidth(),player.getBodyHeight());
+        }
+        if(player.status.isBurning()){
+            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,player.getWidth(),player.getBodyHeight());
         }
         if(player.facingN ){
             batch.draw(playerAnimationNorth.getKeyFrame(stateTime,true),pos.x,pos.y,player.getWidth(),player.getBodyHeight());
@@ -129,14 +132,11 @@ public class PlayerAnimationPack implements Constants {
             batch.draw(playerHeadAnimationSouth.getKeyFrame(stateTime,true),pos.x-15f ,pos.y+player.getBodyHeight()-25
                    ,64,88);
         }
-        if(player.status.isHealing()){
-            onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.HEALED,pos.x,pos.y,player.getWidth(),player.getBodyHeight());
-        }
         if(player.status.isPoisoned()){
             onCharacteREffectPack.render(player,batch,stateTime, OnCharacterEffectPack.POISONED,pos.x,pos.y,player.getWidth(),player.getBodyHeight());
         }
         if(player.status.isLeveledUp()){
-            onCharacteREffectPack.render(player,batch,stateTime,onCharacteREffectPack.LEVEL_UP_TRIGGER,pos.x,pos.y,player.getWidth(),player.getHeight());
+            //onCharacteREffectPack.render(player,batch,stateTime,onCharacteREffectPack.LEVEL_UP_TRIGGER,pos.x,pos.y,player.getWidth(),player.getHeight());
         }
 
     }

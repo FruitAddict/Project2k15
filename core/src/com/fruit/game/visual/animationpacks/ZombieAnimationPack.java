@@ -167,6 +167,9 @@ public class ZombieAnimationPack {
 
     public void render(float stateTime,Enemy zombie, SpriteBatch batch){
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(zombie, pos));
+        if(zombie.status.isBurning()){
+            onCharEffectPack.render(zombie,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,zombie.getWidth(),zombie.getHeight());
+        }
         if(zombie.status.isJustHit()){
             batch.setColor(1,0.5f,0.5f,0.8f);
         }
@@ -298,9 +301,6 @@ public class ZombieAnimationPack {
         }
         if(zombie.status.isAttackedByPlayer()){
             onCharEffectPack.render(zombie,batch,stateTime, OnCharacterEffectPack.HP_BAR,pos.x,pos.y,zombie.getWidth(),zombie.getHeight());
-        }
-        if(zombie.status.isBurning()){
-            onCharEffectPack.render(zombie,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,zombie.getWidth(),zombie.getHeight());
         }
     }
 }

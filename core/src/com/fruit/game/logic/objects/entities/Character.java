@@ -81,9 +81,9 @@ public abstract class Character extends GameObject implements Steerable<Vector2>
 
     //what happens when character is damaged, child classes should call this after all the logic is done.
     //Handles only rendering to the screen using Text Renderer
-    public void onDamageTaken(Value value){
+    public void onDamageTaken(Character source, Value value){
         //render to the screen as scrolling battle text based on the type
-        if(value.getValue()>0) {
+        if(value.getValue()>0 && stats.getHealthPoints() > 0) {
             status.setJustHit(true);
             switch (value.getType()) {
                 case Value.NORMAL_DAMAGE: {

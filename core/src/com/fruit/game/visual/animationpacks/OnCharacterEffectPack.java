@@ -143,8 +143,10 @@ public class OnCharacterEffectPack {
                 break;
             }
             case HP_BAR:{
-                batch.draw(blackTexture,x,y-10,width,10);
-                batch.draw(redTexture,x,y-9,width*character.stats.getHealthPointPercentOfMax(),8);
+                if(character.stats.getHealthPoints()>0) {
+                    batch.draw(blackTexture, x, y - 10, width, 10);
+                    batch.draw(redTexture, x, y - 9, width * character.stats.getHealthPointPercentOfMax(), 8);
+                }
                 break;
             }
 

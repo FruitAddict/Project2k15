@@ -11,7 +11,6 @@ import com.fruit.game.logic.objects.entities.player.Player;
  * @Author FruitAddict
  */
 public class SetOnFire extends OnHitEffect {
-    private int explosionCount;
     private Player player;
     private Value value;
 
@@ -24,7 +23,7 @@ public class SetOnFire extends OnHitEffect {
     @Override
     public void onHit(Projectile proj, Character enemy, Value damage) {
         value.setValue(Math.max(1,damage.getValue()/2));
-        enemy.addPassiveEffect(new DamageOverTime(enemy,5f,0.5f,value,DamageOverTime.BURNING));
+        enemy.addPassiveEffect(new DamageOverTime(player,enemy,5f,0.5f,value,DamageOverTime.BURNING));
     }
 
     @Override

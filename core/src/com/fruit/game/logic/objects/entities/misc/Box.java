@@ -75,7 +75,7 @@ public class Box extends Enemy {
     }
 
     @Override
-    public void onDamageTaken(Value value) {
+    public void onDamageTaken(Character source,Value value) {
         stats.changeHealthPoints(-1);
         status.setJustHit(true);
 

@@ -7,9 +7,11 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.Value;
+import com.fruit.game.logic.objects.entities.Enemy;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.Projectile;
 import com.fruit.game.logic.objects.entities.Character;
+import com.fruit.game.logic.objects.entities.player.Player;
 
 /**
  * Projectile that will be shot by mobs.
@@ -20,12 +22,14 @@ public class MobProjectile extends Projectile {
     protected float spawnX;
     protected float spawnY;
     protected float knockback;
+    protected Enemy parent;
 
-    public MobProjectile(ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity, int damage){
+    public MobProjectile(Enemy parent,ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity, int damage){
         this.spawnX = spawnX;
         this.spawnY = spawnY;
         this.objectManager = objectManager;
         this.direction = dir;
+        this.parent = parent;
         setEntityID(GameObject.PROJECTILE);
         setSaveInRooms(false);
         setTypeID(Projectile.MOB_PROJECTILE);
@@ -36,11 +40,12 @@ public class MobProjectile extends Projectile {
         height=24;
         radius = 12;
     }
-    public MobProjectile(ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity, int damage, float knockback){
+    public MobProjectile(Enemy parent, ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity, int damage, float knockback){
         this.spawnX = spawnX;
         this.spawnY = spawnY;
         this.objectManager = objectManager;
         this.direction = dir;
+        this.parent = parent;
         setEntityID(GameObject.PROJECTILE);
         setSaveInRooms(false);
         setTypeID(Projectile.MOB_PROJECTILE);
@@ -54,8 +59,10 @@ public class MobProjectile extends Projectile {
     }
     @Override
     public void onHit(Character character){
-        character.onDamageTaken(damage);
-        character.addLinearVelocity(direction.x*knockback,direction.y*knockback);
+        if(character.getEntityID() == GameObject.PLAYER) {
+            ((Player)character).onDamageTaken(parent,damage);
+            character.addLinearVelocity(direction.x * knockback, direction.y * knockback);
+        }
         killYourself();
     }
     @Override

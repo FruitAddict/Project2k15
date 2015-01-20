@@ -70,6 +70,9 @@ public class SlimeAnimationPack implements Constants {
 
     public void render(float stateTime, Enemy slime, SpriteBatch batch){
         pos.set(Utils.getDrawPositionBasedOnBox2dCircle(slime,pos));
+        if(slime.status.isBurning()){
+            onCharacteREffectPack.render(slime,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,slime.getWidth(),slime.getHeight());
+        }
         if(slime.status.isJustHit()){
                 batch.setColor(1, 0.5f, 0.5f, 0.8f);
         }
@@ -86,9 +89,6 @@ public class SlimeAnimationPack implements Constants {
         }
         if(slime.status.isJustHit()){
             batch.setColor(1,1f,1f,1f);
-        }
-        if(slime.status.isBurning()){
-            onCharacteREffectPack.render(slime,batch,stateTime, OnCharacterEffectPack.BURNING,pos.x,pos.y,slime.getWidth(),slime.getHeight());
         }
         if(slime.status.isHealing()){
             onCharacteREffectPack.render(slime,batch,stateTime, OnCharacterEffectPack.HEALED,pos.x,pos.y,slime.getWidth(),slime.getHeight());

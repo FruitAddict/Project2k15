@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.fruit.game.Controller;
 import com.fruit.game.logic.ObjectManager;
 import com.fruit.game.logic.objects.entities.GameObject;
+import com.fruit.game.visual.renderer.ParticleRenderer;
 
 /**
  * @Author FruitAddict
@@ -52,6 +53,7 @@ public class Torch extends GameObject {
 
         //dispose of shape
         shape.dispose();
+        Controller.getWorldRenderer().getParticleRenderer().addParticleEffect(this, ParticleRenderer.TORCH);
         Controller.getWorldRenderer().getLightRenderer()
                 .addFlickeringLight(new Color(255/255f, 147/255f, 41/255f,0.9f),1.5f,0.25f,getBodyPositionX(),getBodyPositionY());
         //Controller.getWorldRenderer().getLightRenderer().addPointLight(new Color(255/255f, 147/255f, 41/255f,0.9f),1.5f,getBodyPositionX(),getBodyPositionY(),true);

@@ -79,9 +79,9 @@ public class Dummy extends Enemy {
     }
 
     @Override
-    public void onDamageTaken(Value value) {
+    public void onDamageTaken(Character source, Value value) {
         stats.changeHealthPoints(-value.getValue()*stats.getDamageResistanceModifier());
-        super.onDamageTaken(value);
+        super.onDamageTaken(source, value);
     }
 
     @Override

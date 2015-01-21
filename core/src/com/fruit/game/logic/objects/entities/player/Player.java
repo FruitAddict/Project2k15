@@ -14,6 +14,7 @@ import com.fruit.game.logic.objects.Value;
 import com.fruit.game.logic.objects.effects.OnDamageTakenEffect;
 import com.fruit.game.logic.objects.effects.OnHitEffect;
 import com.fruit.game.logic.objects.effects.ondamaged.ReflectDamage;
+import com.fruit.game.logic.objects.effects.passive.HealOverTime;
 import com.fruit.game.logic.objects.entities.Enemy;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.projectiles.PlayerProjectile;
@@ -162,6 +163,8 @@ public class Player extends Character implements Constants {
         if(copied.getValue()>0) {
             stats.changeHealthPoints(-copied.getValue() * stats.getCombinedResistance());
             super.onDamageTaken(source,copied);
+            //change light distance
+            Controller.getWorldRenderer().getLightRenderer().scalePlayerLight(stats.getHealthPointPercentOfMax());
         }
 
         Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement,statPoints);
@@ -174,6 +177,8 @@ public class Player extends Character implements Constants {
             stats.changeHealthPoints(copied.getValue() * stats.getHealingModifier());
             healingAccumulator+= copied.getValue() * stats.getHealingModifier();
             stats.setHealthPointPercentOfMax(stats.getHealthPoints()/(float)stats.getBaseMaximumHealthPoints()); //todo in char stats
+            //change light distance
+            Controller.getWorldRenderer().getLightRenderer().scalePlayerLight(stats.getHealthPointPercentOfMax());
         }
         Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement,statPoints);
     }
@@ -307,7 +312,7 @@ public class Player extends Character implements Constants {
 
     public void onLevelUp(){
         Controller.getUserInterface().getMessageHandler().addMessage("Level up! +1 stat point",new Color(1,215/255f,0f,1f),2.5f);
-        objectManager.getPlayer().onHealingTaken(new Value(stats.getBaseMaximumHealthPoints(),Value.HEALING));
+        objectManager.getPlayer().addPassiveEffect(new HealOverTime(this,5,0.5f,new Value(stats.getBaseMaximumHealthPoints()/10,Value.HEALING)));
         nextLevelExpRequirement*=1.5f;
         status.setLeveledUp(true);
         level+=1;

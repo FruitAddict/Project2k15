@@ -127,12 +127,16 @@ public class LightRenderer implements Constants {
 
     public void setPlayerLight(Player player){
         playerLight.attachToBody(player.getBody());
-        playerLight.setDistance(4.8f);
+        playerLight.setDistance(5.5f);
         playerLight.setColor(new Color(0.2f,0.2f,0.1f,0.8f));
         playerLight.setXray(true);
         Filter filter = new Filter();
         filter.maskBits = ENEMY_BIT | CLUTTER_BIT |ITEM_BIT | TERRAIN_BIT | TREASURE_BIT | PORTAL_BIT;
         playerLight.setContactFilter(filter);
+    }
+
+    public void scalePlayerLight(float scalar){
+        playerLight.setDistance(5.5f*scalar);
     }
 
     public void updatePlayerLightLength(float length){

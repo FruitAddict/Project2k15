@@ -8,6 +8,7 @@ import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
 import com.fruit.game.logic.objects.entities.enemies.Zombie;
 import com.fruit.game.logic.objects.entities.misc.Rock;
 import com.fruit.game.logic.objects.entities.misc.Torch;
+import com.fruit.game.logic.objects.entities.player.Player;
 import com.fruit.game.logic.objects.items.*;
 import com.fruit.game.logic.objects.entities.enemies.Slime;
 import com.fruit.game.logic.objects.entities.enemies.TheEye;

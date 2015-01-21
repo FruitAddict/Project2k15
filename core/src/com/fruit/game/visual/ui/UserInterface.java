@@ -71,7 +71,7 @@ public class UserInterface extends Stage {
         biggerPixMap.fill();
 
         skin.add("touchBackground", Assets.getAsset("touchBackground.png", Texture.class));
-        skin.add("touchKnob", Assets.getAsset("shadedDark01.png",Texture.class));
+        skin.add("touchKnob", Assets.getAsset("knob.png",Texture.class));
         skin.add("characterIcon", Assets.getAsset("pentagram.png",Texture.class));
         skin.add("characterUp",Assets.getAsset("pentagramup.png",Texture.class));
         skin.add("white", new Texture(pixmap));
@@ -84,7 +84,7 @@ public class UserInterface extends Stage {
         //touchpad style
         Touchpad.TouchpadStyle touchpadStyle = new Touchpad.TouchpadStyle();
         touchpadStyle.background = skin.newDrawable("touchBackground",new Color(0,0,0,0f));
-        touchpadStyle.knob = skin.newDrawable("touchKnob", new Color(1,1,1,0.1f));
+        touchpadStyle.knob = skin.newDrawable("touchKnob", new Color(1,1,1,0.3f));
         skin.add("default",touchpadStyle);
 
         skin.getFont("default-font").setScale(0.7f,0.7f);
@@ -216,8 +216,8 @@ public class UserInterface extends Stage {
     public void createStatusBars(){
         healthBar = new ProgressBar(0,100,1,false,skin.get("health-bar", ProgressBar.ProgressBarStyle.class));
         experienceBar = new ProgressBar(0,100,1,false,skin.get("exp-bar", ProgressBar.ProgressBarStyle.class));
-        healthBar.getStyle().knob.setMinHeight(20);
-        experienceBar.getStyle().knob.setMinHeight(20);
+        healthBar.getStyle().knob.setMinHeight(32);
+        experienceBar.getStyle().knob.setMinHeight(32);
         healthBar.getStyle().knobBefore = skin.newDrawable("bigPix",new Color(1f,0,0,0.9f));
         experienceBar.getStyle().knobBefore = skin.newDrawable("bigPix", new Color(1f,255/215f,0,0.9f));
         healthBar.setValue(Controller.getWorldUpdater().getPlayer().stats.getHealthPoints()/Controller.getWorldUpdater().getPlayer().stats.getBaseMaximumHealthPoints()*100);

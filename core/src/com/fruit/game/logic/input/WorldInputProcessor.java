@@ -1,10 +1,13 @@
 package com.fruit.game.logic.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.fruit.game.Controller;
 import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.objects.entities.player.Player;
 
@@ -31,6 +34,8 @@ public class WorldInputProcessor implements InputProcessor, Constants {
     private Vector3 firstAttackingPosition;
     private Vector3 secondAttackingPosition;
     private Vector2 velocityNormalized;
+    private Vector2 touchpad1, touchpad2;
+    private int movePointer,attackPointer;
 
     private boolean movingDown,movingUp,movingLeft,movingRight = false;
     private boolean attackingLeft,attackingRight,attackingUp,attackingDown = false;
@@ -42,7 +47,8 @@ public class WorldInputProcessor implements InputProcessor, Constants {
         firstAttackingPosition = new Vector3(-1, -1, 0);
         secondAttackingPosition = new Vector3();
         velocityNormalized = new Vector2();
-
+        touchpad1 = new Vector2();
+        touchpad2 = new Vector2();
         this.player = player;
         setMapSize(2048,2048);
     }
@@ -132,17 +138,33 @@ public class WorldInputProcessor implements InputProcessor, Constants {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        /**
-         * If the pointer is the first one or the second one ( id 0 or 1 ), sets the corresponding vector to those coordinates.
-         */
-        if (pointer == 0) {
-            firstMovementPosition.set(screenX, screenY, 0);
-            return true;
-        } else if (pointer == 1) {
-            firstAttackingPosition.set(screenX, screenY, 0);
-            return true;
+        //naive check if the pointer is on the left or right side of the screen
+        System.out.println(pointer+" pointer");
+        if(screenX < Gdx.graphics.getWidth()/2) {
+            touchpad1.set(Controller.getUserInterface().screenToStageCoordinates(touchpad1.set(screenX, screenY)));
+            Controller.getUserInterface().getTouchpadMove().setPosition(touchpad1.x - Controller.getUserInterface().getTouchpadMove().getWidth() / 2, touchpad1.y -
+                    +Controller.getUserInterface().getTouchpadMove().getHeight() / 2);
+            InputEvent fake = new InputEvent();
+            fake.setStageX(touchpad1.x);
+            fake.setStageY(touchpad1.y);
+            fake.setType(InputEvent.Type.touchDown);
+            fake.setPointer(pointer);
+            Controller.getUserInterface().getTouchpadMove().fire(fake);
+            Controller.getUserInterface().getTouchpadMove().setVisible(true);
+        }else {
+            touchpad2.set(Controller.getUserInterface().screenToStageCoordinates(touchpad2.set(screenX, screenY)));
+            Controller.getUserInterface().getTouchpadAttack().setPosition(touchpad2.x - Controller.getUserInterface().getTouchpadAttack().getWidth() / 2, touchpad1.y -
+                    +Controller.getUserInterface().getTouchpadAttack().getHeight() / 2);
+            InputEvent fake = new InputEvent();
+            fake.setStageX(touchpad2.x);
+            fake.setStageY(touchpad2.y);
+            fake.setPointer(pointer);
+            fake.setType(InputEvent.Type.touchDown);
+            Controller.getUserInterface().getTouchpadAttack().fire(fake);
+            Controller.getUserInterface().getTouchpadAttack().setVisible(true);
+            attackPointer = pointer;
         }
-        return false;
+       return false;
     }
 
     @Override
@@ -150,7 +172,7 @@ public class WorldInputProcessor implements InputProcessor, Constants {
         /**
          * After touch event with id 0 or 1 is over, sets the touchdownposition to -1,-1 (offscreen), player movement or
          * attacking will cease in the .update() method.
-         */
+
         if (pointer == 0) {
             firstMovementPosition.set(-1, -1, 0);
             return true;
@@ -158,6 +180,7 @@ public class WorldInputProcessor implements InputProcessor, Constants {
             firstAttackingPosition.set(-1, -1, 0);
             return true;
         }
+         */
         return false;
     }
 
@@ -166,7 +189,7 @@ public class WorldInputProcessor implements InputProcessor, Constants {
         /**
          * If touch event with id 0 or 1 is dragged, constantly saves the new position
          * to corresponding vector. For use with player movement & attacking
-         */
+         *
         if (pointer == 0) {
             secondMovementPosition.set(screenX, screenY, 0);
             return true;
@@ -174,6 +197,7 @@ public class WorldInputProcessor implements InputProcessor, Constants {
             secondAttackingPosition.set(screenX, screenY, 0);
             return true;
         }
+        */
         return false;
     }
 

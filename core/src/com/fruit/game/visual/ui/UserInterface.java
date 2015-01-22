@@ -213,6 +213,15 @@ public class UserInterface extends Stage {
         bossBarContainer.setVisible(false);
     }
 
+    public Touchpad getTouchpadAttack() {
+        return touchpadAttack;
+    }
+
+    public Touchpad getTouchpadMove() {
+        return touchpadMove;
+    }
+
+
     public void createStatusBars(){
         healthBar = new ProgressBar(0,100,1,false,skin.get("health-bar", ProgressBar.ProgressBarStyle.class));
         experienceBar = new ProgressBar(0,100,1,false,skin.get("exp-bar", ProgressBar.ProgressBarStyle.class));
@@ -306,8 +315,11 @@ public class UserInterface extends Stage {
         containerAttack.align(Align.bottomRight);
         containerAttack.setFillParent(true);
 
-        addActor(containerMove);
         addActor(containerAttack);
+        addActor(containerMove);
+
+        touchpadAttack.setVisible(false);
+        touchpadMove.setVisible(false);
     }
 
     public Table getMiniMap(){
@@ -443,6 +455,13 @@ public class UserInterface extends Stage {
         }
         if(!paused) {
             messageHandler.update(delta);
+        }
+
+        if(!touchpadAttack.isTouched()){
+            touchpadAttack.setVisible(false);
+        }
+        if(!touchpadMove.isTouched()){
+            touchpadMove.setVisible(false);
         }
     }
 

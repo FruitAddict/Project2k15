@@ -127,7 +127,7 @@ public class LightRenderer implements Constants {
 
     public void setPlayerLight(Player player){
         playerLight.attachToBody(player.getBody());
-        playerLight.setDistance(5.5f);
+        playerLight.setDistance(6.5f);
         playerLight.setColor(new Color(0.2f,0.2f,0.1f,0.8f));
         playerLight.setXray(true);
         Filter filter = new Filter();
@@ -136,7 +136,7 @@ public class LightRenderer implements Constants {
     }
 
     public void scalePlayerLight(float scalar){
-        playerLight.setDistance(5.5f*scalar);
+        playerLight.setDistance(3.25f + (3.25f*scalar));
     }
 
     public void updatePlayerLightLength(float length){

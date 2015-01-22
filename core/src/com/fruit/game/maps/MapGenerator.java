@@ -126,9 +126,10 @@ public class MapGenerator {
         //set current room to the one in the center
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
         if(Configuration.debugItemsEnabled) {
-            map.getCurrentRoom().addGameObject(new BloodAmulet(mapManager.getWorldUpdater().getObjectManager(),6,5));
-            map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 5, 4));
-            map.getCurrentRoom().addGameObject(new ReflectDamageDoll(mapManager.getWorldUpdater().getObjectManager(),4,5));
+            map.getCurrentRoom().addGameObject(new MoreProjectiles(mapManager.getWorldUpdater().getObjectManager(),2,2));
+            map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 2, 2));
+            map.getCurrentRoom().addGameObject(new MoreProjectiles(mapManager.getWorldUpdater().getObjectManager(),2,2));
+
         }
         MapObjectParser.addMapObjectsToWorld(mapManager.getWorldUpdater(), map.getCurrentRoom());
 

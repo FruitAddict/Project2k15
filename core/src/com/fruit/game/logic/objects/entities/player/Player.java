@@ -312,7 +312,7 @@ public class Player extends Character implements Constants {
 
     public void onLevelUp(){
         Controller.getUserInterface().getMessageHandler().addMessage("Level up! +1 stat point",new Color(1,215/255f,0f,1f),2.5f);
-        objectManager.getPlayer().addPassiveEffect(new HealOverTime(this,5,0.5f,new Value(stats.getBaseMaximumHealthPoints()/10,Value.HEALING)));
+        objectManager.getPlayer().addPassiveEffect(new HealOverTime(this,5,0.1f,new Value(stats.getBaseMaximumHealthPoints()/50,Value.HEALING)));
         nextLevelExpRequirement*=1.5f;
         status.setLeveledUp(true);
         level+=1;

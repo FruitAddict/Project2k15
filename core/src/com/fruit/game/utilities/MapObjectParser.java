@@ -280,7 +280,6 @@ public class MapObjectParser implements Constants {
          // Static lights section. Obtains info about light color, positioning and length if it exists.
         //parse portal objects Static lights should be used for shit that will REALLY be static during the game
         //like lava pools giving off light, other static light sources like torches should be handled elsewhere
-        //TODO Make it handle more shit
         if(room.getTiledMap().getLayers().get("staticLights") != null) {
             MapObjects staticLightObjects = room.getTiledMap().getLayers().get("staticLights").getObjects();
 

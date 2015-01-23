@@ -139,7 +139,6 @@ public class WorldInputProcessor implements InputProcessor, Constants {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         //naive check if the pointer is on the left or right side of the screen
-        System.out.println(pointer+" pointer");
         if(screenX < Gdx.graphics.getWidth()/2) {
             touchpad1.set(Controller.getUserInterface().screenToStageCoordinates(touchpad1.set(screenX, screenY)));
             Controller.getUserInterface().getTouchpadMove().setPosition(touchpad1.x - Controller.getUserInterface().getTouchpadMove().getWidth() / 2, touchpad1.y -
@@ -152,17 +151,16 @@ public class WorldInputProcessor implements InputProcessor, Constants {
             Controller.getUserInterface().getTouchpadMove().fire(fake);
             Controller.getUserInterface().getTouchpadMove().setVisible(true);
         }else {
-            touchpad2.set(Controller.getUserInterface().screenToStageCoordinates(touchpad2.set(screenX, screenY)));
-            Controller.getUserInterface().getTouchpadAttack().setPosition(touchpad2.x - Controller.getUserInterface().getTouchpadAttack().getWidth() / 2, touchpad1.y -
+            touchpad1.set(Controller.getUserInterface().screenToStageCoordinates(touchpad1.set(screenX, screenY)));
+            Controller.getUserInterface().getTouchpadAttack().setPosition(touchpad1.x - Controller.getUserInterface().getTouchpadAttack().getWidth() / 2, touchpad1.y -
                     +Controller.getUserInterface().getTouchpadAttack().getHeight() / 2);
             InputEvent fake = new InputEvent();
-            fake.setStageX(touchpad2.x);
-            fake.setStageY(touchpad2.y);
-            fake.setPointer(pointer);
+            fake.setStageX(touchpad1.x);
+            fake.setStageY(touchpad1.y);
             fake.setType(InputEvent.Type.touchDown);
+            fake.setPointer(pointer);
             Controller.getUserInterface().getTouchpadAttack().fire(fake);
             Controller.getUserInterface().getTouchpadAttack().setVisible(true);
-            attackPointer = pointer;
         }
        return false;
     }

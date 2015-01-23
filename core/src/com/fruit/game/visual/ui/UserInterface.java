@@ -306,13 +306,11 @@ public class UserInterface extends Stage {
         Container<Touchpad> containerMove = new Container<>();
         touchpadMove = new Touchpad(20,skin);
         containerMove.setActor(touchpadMove);
-        containerMove.align(Align.bottomLeft);
         containerMove.setFillParent(true);
 
         Container<Touchpad> containerAttack = new Container<>();
         touchpadAttack = new Touchpad(20,skin);
         containerAttack.setActor(touchpadAttack);
-        containerAttack.align(Align.bottomRight);
         containerAttack.setFillParent(true);
 
         addActor(containerAttack);

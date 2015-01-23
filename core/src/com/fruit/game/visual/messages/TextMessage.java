@@ -25,7 +25,6 @@ import org.w3c.dom.Text;
  * Text message.
  * On creation it starts the basic tween (go up 2/3 of the lifespan, then go down and set the alpha to 0)
  * Contains many overloaded constructors for different situations.
- * TODO make them poolable and vector resetting
  */
 public class TextMessage implements Constants, Pool.Poolable {
     //tween types

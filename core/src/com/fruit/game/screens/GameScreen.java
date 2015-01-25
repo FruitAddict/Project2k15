@@ -67,7 +67,7 @@ public class GameScreen implements Screen {
         userInterface = new UserInterface(camera,worldUpdater);
 
         //input stuff
-        worldInputProcessor = new WorldInputProcessor(worldUpdater.getObjectManager().getPlayer(), camera);
+        worldInputProcessor = new WorldInputProcessor(worldUpdater.getObjectManager().getPlayer());
         customInputMultiplexer = new CustomInputMultiplexer(userInterface, worldInputProcessor, new CustomGestureProcessor(worldUpdater.getObjectManager().getPlayer()));
         Gdx.input.setInputProcessor(customInputMultiplexer);
 

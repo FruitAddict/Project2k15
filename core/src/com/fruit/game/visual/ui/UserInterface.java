@@ -44,8 +44,6 @@ public class UserInterface extends Stage {
     private TextButton menuButtonPortrait;
     private VisWindow optionsWindow;
     private MessageHandler messageHandler;
-    private float angle;
-    private Vector2 movementVector;
     public boolean paused;
 
     public UserInterface(GameCamera camera, WorldUpdater worldUpdater){
@@ -54,7 +52,6 @@ public class UserInterface extends Stage {
         miniMapContainer = new Container<>();
         Controller.registerUserInterface(this);
         messageHandler = new MessageHandler(this);
-        movementVector = new Vector2();
         //init gui
         initializeGUI();
     }
@@ -415,35 +412,6 @@ public class UserInterface extends Stage {
             if (touchpadMove.getKnobPercentX() != 0 && touchpadMove.getKnobPercentY() != 0) {
                 worldUpdater.getObjectManager().getPlayer().addLinearVelocity(touchpadMove.getKnobPercentX() * worldUpdater
                         .getObjectManager().getPlayer().stats.getSpeed(), touchpadMove.getKnobPercentY() * worldUpdater.getObjectManager().getPlayer().stats.getSpeed());
-                /**
-                angle = movementVector.set(touchpadMove.getKnobPercentX(), touchpadMove.getKnobPercentY()).angle();
-                float speed = worldUpdater.getObjectManager().getPlayer().stats.getSpeed();
-                if (angle > 337.5 || angle <= 22.5) {
-                    //right
-                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(speed, 0 );
-                } else if (angle > 22.5 && angle <= 67.5) {
-                    //northeast
-                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(speed,speed);
-                } else if (angle >67.5 && angle <= 112.5) {
-                    //north
-                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(0, speed);
-                } else if (angle > 112.5 && angle <= 157.5) {
-                    //northwest
-                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(-speed,speed);
-                } else if(angle > 157.5 && angle <= 202.5){
-                    //west
-                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(-speed,0);
-                } else if(angle > 202.5 && angle <= 247.5){
-                    //southwest
-                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(-speed,-speed);
-                } else if(angle>  247.5 && angle <= 292.5){
-                    //south
-                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(0,-speed);
-                } else if(angle > 292.5 && angle <= 337.5){
-                    //southeast
-                    worldUpdater.getObjectManager().getPlayer().addLinearVelocity(speed,-speed);
-                }
-                 */
             }
 
             //update attacking

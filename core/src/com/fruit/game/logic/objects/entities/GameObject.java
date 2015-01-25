@@ -18,7 +18,7 @@ public abstract class GameObject implements Constants,Comparable<GameObject> {
     public static final int MINDLESS_WALKER =2;
     public static final int BOX = 3;
     public static final int ITEM = 4;
-    public static final int DUMMY = 5;
+    //5 is free
     public static final int PROJECTILE = 6;
     public static final int THE_EYE = 7;
     public static final int EXPLOSION = 8;

@@ -79,7 +79,4 @@ public class CustomGestureProcessor implements GestureDetector.GestureListener {
         this.gestureDetector = parent;
     }
 
-    public GestureDetector getParent() {
-        return gestureDetector;
-    }
 }

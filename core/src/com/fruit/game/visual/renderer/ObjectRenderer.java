@@ -7,7 +7,6 @@ import com.fruit.game.logic.Constants;
 import com.fruit.game.logic.objects.entities.GameObject;
 import com.fruit.game.logic.objects.entities.Projectile;
 import com.fruit.game.logic.objects.entities.bosses.EnormousGlutton;
-import com.fruit.game.logic.objects.entities.enemies.Dummy;
 import com.fruit.game.logic.objects.entities.enemies.Slime;
 import com.fruit.game.logic.objects.entities.enemies.TheEye;
 import com.fruit.game.logic.objects.entities.enemies.Zombie;
@@ -33,7 +32,6 @@ public class ObjectRenderer implements Constants {
     public SlimeAnimationPack slimeAnimationPack;
     public UtilityAnimationPack utilityAnimationPack;
     public ProjectileAnimationPack projectileAnimationPack;
-    public DummyAnimationPack dummyAnimationPack;
     public ItemAnimationPack itemAnimationPack;
     public TheEyeAnimationPack theEyeAnimationPack;
     public EffectAnimationPack effectAnimationPack;
@@ -47,7 +45,6 @@ public class ObjectRenderer implements Constants {
         slimeAnimationPack = new SlimeAnimationPack(onCharacteREffectPack);
         utilityAnimationPack = new UtilityAnimationPack();
         projectileAnimationPack = new ProjectileAnimationPack();
-        dummyAnimationPack = new DummyAnimationPack(onCharacteREffectPack);
         itemAnimationPack = new ItemAnimationPack();
         theEyeAnimationPack = new TheEyeAnimationPack(onCharacteREffectPack);
         effectAnimationPack = new EffectAnimationPack();
@@ -56,6 +53,7 @@ public class ObjectRenderer implements Constants {
     }
 
     public void render(float delta, Array<GameObject> objects, SpriteBatch batch){
+
         //Sort the objects based on their vertical position in the world
         //to achieve correct rendering order
         objects.sort();
@@ -85,11 +83,6 @@ public class ObjectRenderer implements Constants {
                 case GameObject.PROJECTILE:{
                     projectileAnimationPack.load();
                     projectileAnimationPack.render(((Projectile)e).stateTime,(Projectile)e,batch);
-                    break;
-                }
-                case GameObject.DUMMY:{
-                    dummyAnimationPack.load();
-                    dummyAnimationPack.render(stateTime,(Dummy)e,batch);
                     break;
                 }
                 case GameObject.THE_EYE:{

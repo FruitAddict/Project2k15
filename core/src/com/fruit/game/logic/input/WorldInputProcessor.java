@@ -15,40 +15,17 @@ import com.fruit.game.logic.objects.entities.player.Player;
  * Game world input processor. Takes care of steering, attacking and other things not releated to GUI
  */
 public class WorldInputProcessor implements InputProcessor, Constants {
-    /**
-     * Orthographic camera used in the game screen, used to translate the camera to follow the player
-     * Player object, used for making the player move around during input
-     * Width/height of the current map, used to bound the camera.
-     * Vectors used to save touch down position of the first&second touch events and to store their new positions
-     * after drag is detected. Used for movement & attacking
-     * Vector to store normalized velocity derived in the attacking alghorithm in the update() method
-     * MapManager to obtain current map width/height
-     * Controller containing references to everything else in this program
-     */
-
     protected Player player;
     protected float mapWidth;
     protected float mapHeight;
-    private Vector3 firstMovementPosition;
-    private Vector3 secondMovementPosition;
-    private Vector3 firstAttackingPosition;
-    private Vector3 secondAttackingPosition;
-    private Vector2 velocityNormalized;
-    private Vector2 touchpad1, touchpad2;
-    private int movePointer,attackPointer;
-
+    private Vector2 touchpad1;
     private boolean movingDown,movingUp,movingLeft,movingRight = false;
     private boolean attackingLeft,attackingRight,attackingUp,attackingDown = false;
 
-    public WorldInputProcessor(Player player, OrthographicCamera camera) {
+    public WorldInputProcessor(Player player) {
         //initiators
-        firstMovementPosition = new Vector3(-1, -1, 0);
-        secondMovementPosition = new Vector3();
-        firstAttackingPosition = new Vector3(-1, -1, 0);
-        secondAttackingPosition = new Vector3();
-        velocityNormalized = new Vector2();
+
         touchpad1 = new Vector2();
-        touchpad2 = new Vector2();
         this.player = player;
         setMapSize(2048,2048);
     }
@@ -167,35 +144,11 @@ public class WorldInputProcessor implements InputProcessor, Constants {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        /**
-         * After touch event with id 0 or 1 is over, sets the touchdownposition to -1,-1 (offscreen), player movement or
-         * attacking will cease in the .update() method.
-
-        if (pointer == 0) {
-            firstMovementPosition.set(-1, -1, 0);
-            return true;
-        } else if (pointer == 1) {
-            firstAttackingPosition.set(-1, -1, 0);
-            return true;
-        }
-         */
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        /**
-         * If touch event with id 0 or 1 is dragged, constantly saves the new position
-         * to corresponding vector. For use with player movement & attacking
-         *
-        if (pointer == 0) {
-            secondMovementPosition.set(screenX, screenY, 0);
-            return true;
-        } else if (pointer == 1) {
-            secondAttackingPosition.set(screenX, screenY, 0);
-            return true;
-        }
-        */
         return false;
     }
 

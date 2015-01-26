@@ -1,1 +1,0 @@
-java -cp CLibGDX1.4.1gdx.jar;CLibGDX1.4.1extensionsgdx-toolsgdx-tools.jar com.badlogic.gdx.tools.texturepacker.TexturePacker EGitVisSceneEditorUIui_skin_raw EGitVisSceneEditorUIsrcplkotcrabvisui uiskin

@@ -1,5 +1,6 @@
 package com.fruit.game.logic.objects.entities.projectiles;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -26,8 +27,9 @@ public class PlayerProjectile extends Projectile {
     private boolean piercing;
     private float knockBack;
     private Player player;
+    private Color tint;
 
-    public PlayerProjectile(Player player, ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir, float velocity) {
+    public PlayerProjectile(Player player, ObjectManager objectManager, float spawnX, float spawnY, Vector2 dir) {
         this.objectManager = objectManager;
         this.spawnX = spawnX;
         this.spawnY = spawnY;
@@ -38,18 +40,19 @@ public class PlayerProjectile extends Projectile {
         setEntityID(GameObject.PROJECTILE);
         setSaveInRooms(false);
         //setting width, height and radius of the box2d body
-        width =12;
-        height=12;
-        radius = 6;
-        if(damage.getValue()>=2){
-            width*=1.1f;
-            height*=1.1f;
-            radius*=1.1f;
-        }
+        radius = player.getProjectileRadius();
+        velocity = player.getProjectileVelocity();
+        tint = player.getProjectileTint();
         direction = dir;
-        this.velocity = velocity;
         piercing = player.stats.isPiercingProjectiles();
         knockBack = player.stats.getKnockBack();
+        width = radius*2;
+        height = radius*2;
+    }
+
+    public PlayerProjectile setRadiusChain(float radius){
+        this.radius = radius;
+        return this;
     }
 
     @Override

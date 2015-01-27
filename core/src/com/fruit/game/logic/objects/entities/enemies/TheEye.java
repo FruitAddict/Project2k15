@@ -2,6 +2,7 @@ package com.fruit.game.logic.objects.entities.enemies;
 
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -49,7 +50,12 @@ public class TheEye extends Enemy {
         height = 32;
         directionX = Math.signum((Utils.randomGenerator.nextInt()));
         directionY = Math.signum((Utils.randomGenerator.nextInt()));
-        steeringBehavior = new Wander<>(this).setWanderRadius(15).setWanderOrientation(10f);
+        steeringBehavior = new Wander<Vector2>(this) //
+                .setFaceEnabled(false) //
+                .setWanderOffset(50) //
+                .setWanderOrientation(15) //
+                .setWanderRadius(4) //
+                .setWanderRate(MathUtils.PI / 4);
     }
 
     @Override

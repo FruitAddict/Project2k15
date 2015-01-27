@@ -21,7 +21,7 @@ public class ForkOnHit extends OnHitEffect {
     public void onHit(Projectile proj, Character enemy, Value damage) {
         if(!proj.isForked()) {
             PlayerProjectile projectile = new PlayerProjectile(player, player.getObjectManager(), enemy.getPosition().x, enemy.getPosition().y, proj.getDirection()
-                    .rotate(5f), proj.getVelocity());
+                    .rotate(5f));
             projectile.setForked(true);
             projectile.setWidth(projectile.getWidth() * (2/3f));
             projectile.setHeight(projectile.getHeight() * (2/3f));

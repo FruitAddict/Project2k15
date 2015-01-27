@@ -15,25 +15,14 @@ public class PlayerAnimationPack implements Constants {
     private Vector2 pos;
 
     private Animation playerAnimationNorth;
-    private Animation playerAnimationNorthEast;
-    private Animation playerAnimationNorthWest;
-    private Animation playerAnimationSouthWest;
-    private Animation playerAnimationSouthEast;
     private Animation playerAnimationSouth;
     private Animation playerAnimationWest;
     private Animation playerAnimationEast;
-
-    //debug test
-
 
     private TextureRegion[] playerSouthRegion;
     private TextureRegion[] playerNorthRegion;
     private TextureRegion[] playerEastRegion;
     private TextureRegion[] playerWestRegion;
-    private TextureRegion[] playerNorthEastRegion;
-    private TextureRegion[] playerNorthWestRegion;
-    private TextureRegion[] playerSouthEastRegion;
-    private TextureRegion[] playerSouthWestRegion;
 
     private TextureRegion[] playerHeadNorth;
     private TextureRegion[] playerHeadSouth;
@@ -63,10 +52,6 @@ public class PlayerAnimationPack implements Constants {
             playerNorthRegion = new TextureRegion[8];
             playerEastRegion = new TextureRegion[8];
             playerWestRegion = new TextureRegion[8];
-            playerNorthEastRegion = new TextureRegion[8];
-            playerNorthWestRegion = new TextureRegion[8];
-            playerSouthEastRegion = new TextureRegion[8];
-            playerSouthWestRegion = new TextureRegion[8];
             for (int i = 0; i < 8; i++) {
                 playerSouthRegion[i] = tmp[0][i];
                 playerNorthRegion[i] = tmp[1][i];

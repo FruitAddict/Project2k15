@@ -216,7 +216,7 @@ public abstract class Character extends GameObject implements Steerable<Vector2>
 
     @Override
     public float getOrientation() {
-        return body.getLinearVelocity().angle();
+        return (float)Math.toRadians(body.getLinearVelocity().angle());
     }
 
     @Override
@@ -257,7 +257,7 @@ public abstract class Character extends GameObject implements Steerable<Vector2>
     @Override
     public Vector2 angleToVector(Vector2 vector2, float v) {
         vector2.set(1,0);
-        vector2.rotate(v);
+        vector2.rotateRad(v);
         return vector2;
     }
 

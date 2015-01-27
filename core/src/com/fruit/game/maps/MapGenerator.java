@@ -30,7 +30,7 @@ public class MapGenerator {
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout.length; j++) {
                 if(layout[i][j]){
-                    int roomNumber = 1+ Utils.mapRandomNumberGenerator.nextInt(4);
+                    int roomNumber = 1+ Utils.mapRandomNumberGenerator.nextInt(6);
                     map.getRoomMatrix()[i][j] = new Room((TiledMap) Assets.getAsset("maps//NESW//" + roomNumber + ".tmx", TiledMap.class));
                 }
             }
@@ -126,7 +126,7 @@ public class MapGenerator {
         //set current room to the one in the center
         map.setCurrentRoom(map.getRoomMatrix()[4][4]);
         if(Configuration.debugItemsEnabled) {
-            map.getCurrentRoom().addGameObject(new MoreProjectiles(mapManager.getWorldUpdater().getObjectManager(),2,2));
+            map.getCurrentRoom().addGameObject(new SlowerProjectilesRing(mapManager.getWorldUpdater().getObjectManager(),2,2));
             map.getCurrentRoom().addGameObject(new PiercingProjectiles(mapManager.getWorldUpdater().getObjectManager(), 2, 2));
             map.getCurrentRoom().addGameObject(new MoreProjectiles(mapManager.getWorldUpdater().getObjectManager(),2,2));
 

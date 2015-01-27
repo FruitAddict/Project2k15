@@ -5,6 +5,7 @@ import com.badlogic.gdx.ai.steer.behaviors.Flee;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -66,7 +67,12 @@ public class Slime extends Enemy implements Constants {
         height = (72+offsetHeight)/generationNumber;
 
 
-        steeringBehavior = new Wander<Vector2>(this).setWanderRadius(0.5f).setWanderOrientation(90f).setFaceEnabled(true);
+        changeSteeringBehavior(new Wander<Vector2>(this) //
+                .setFaceEnabled(false)
+                .setWanderOffset(25) //
+                .setWanderOrientation(20) //
+                .setWanderRadius(4) //
+                .setWanderRate(MathUtils.PI / 4));
         this.generationNumber = generationNumber;
     }
     @Override

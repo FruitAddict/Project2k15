@@ -20,21 +20,21 @@ public class DamageUp extends Item {
         lastKnownY = spawnCoordY;
         width = 32;
         height = 32;
-        description = "Power of the ancient surges through your veins as you feel stronger and sexier.";
+        description = "Your attacks are more fierce as you lust for murder.";
         setSaveInRooms(true);
         setItemType(Item.DAMAGE_UP_1);
         setEntityID(GameObject.ITEM);
-        setItemName("Staight Sword");
+        setItemName("Blood stained dagger");
     }
     public DamageUp(ObjectManager objectManager){
         this.objectManager = objectManager;
         width = 32;
         height = 32;
-        description = "Power of the ancient surges through your veins as you feel stronger and sexier.";
+        description = "Your attacks are more fierce as you lust for murder.";
         setSaveInRooms(true);
         setItemType(Item.DAMAGE_UP_1);
         setEntityID(GameObject.ITEM);
-        setItemName("Staight Sword");
+        setItemName("Blood stained dagger");
     }
     @Override
     public void update(float delta) {

@@ -21,21 +21,21 @@ public class BloodAmulet extends Item {
         lastKnownY = spawnCoordY;
         width=32;
         height=32;
-        description = "Leech some hp on each hit.";
+        description = "Feed upon the wounded!";
         setSaveInRooms(true);
         setItemType(Item.BLOOD_AMULET);
         setEntityID(GameObject.ITEM);
-        setItemName("Amulet of the Leech");
+        setItemName("Ornament of the Leech");
     }
     public BloodAmulet(ObjectManager objectManager) {
         this.objectManager = objectManager;
         width=32;
         height=32;
-        description = "Leech some hp on each hit.";
+        description = "Feed upon the wounded!";
         setSaveInRooms(true);
         setItemType(Item.BLOOD_AMULET);
         setEntityID(GameObject.ITEM);
-        setItemName("Amulet of the Leech");
+        setItemName("Ornament of the Leech");
     }
 
 

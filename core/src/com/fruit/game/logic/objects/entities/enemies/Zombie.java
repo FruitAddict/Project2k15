@@ -3,6 +3,8 @@ package com.fruit.game.logic.objects.entities.enemies;
 import com.badlogic.gdx.ai.steer.behaviors.Flee;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.behaviors.Wander;
+import com.badlogic.gdx.ai.steer.limiters.LinearAccelerationLimiter;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -41,7 +43,12 @@ public class Zombie extends Enemy {
         setEntityID(GameObject.ZOMBIE);
         setSaveInRooms(true);
         setZombieType(1+Utils.randomGenerator.nextInt(8));
-        changeSteeringBehavior(new Wander<Vector2>(this).setWanderOffset(50).setWanderRadius(0.5f).setFaceEnabled(false));
+        changeSteeringBehavior(new Wander<Vector2>(this) //
+                .setFaceEnabled(false)
+                .setWanderOffset(20) //
+                .setWanderOrientation(10) //
+                .setWanderRadius(5) //
+                .setWanderRate(MathUtils.PI / 3));
         stats.setBaseMaximumHealthPoints(25);
         stats.setHealthPoints(25);
         stats.setMaxVelocity(2f);

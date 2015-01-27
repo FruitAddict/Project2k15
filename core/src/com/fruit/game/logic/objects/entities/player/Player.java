@@ -38,7 +38,7 @@ public class Player extends Character implements Constants {
 
     //player level start with 1
     private int level, experiencePoints, nextLevelExpRequirement, statPoints, expAccumulator, healingAccumulator;
-    private float lastHealingUpdate, lastAttackUpdate;
+    private float lastHealingUpdate, lastAttackUpdate, justHitTimer;
 
     //Players on hit effects, items can result in attacks slowing enemies down etc, it is passed to
     //every newly created projectile
@@ -49,8 +49,12 @@ public class Player extends Character implements Constants {
     //projectile spawn point offset when colliding with walls
     private float xOffset, yOffset;
 
+    /**
+     * PLAYER-RELEATED STATS SECTION
+     */
     //slain enemies int
-    private float slainEnemies;
+    private float slainEnemies, projectileRadius, projectileVelocity, invicibilityPeriod;
+    private Color projectileTint;
 
     public Player(ObjectManager objectManager, float spawnCoordX, float spawnCoordY){
         //constructor of every entity should take object manager, initial spawn coords and width and height of this entity
@@ -69,6 +73,10 @@ public class Player extends Character implements Constants {
         stats.setBaseMaximumHealthPoints(50);
         stats.setAttackSpeed(0.3f);
         stats.setAimSway(3);
+        setProjectileRadius(6);
+        setProjectileVelocity(6);
+        setProjectileTint(new Color(1,1,1,1));
+        setInvicibilityPeriod(0.5f);
 
         //initialize throwYourselfAtPlayer direction vector
         attackDirectionNormalized = new Vector2();
@@ -98,23 +106,23 @@ public class Player extends Character implements Constants {
             switch(stats.getNumberOfProjectiles()){
                 case 1: {
                     objectManager.addObject(new PlayerProjectile(this, objectManager, getBody().getPosition().x+xOffset, getBody().getPosition().y+yOffset,
-                            attackDirectionNormalized.cpy(), 6f));
+                            attackDirectionNormalized.cpy()));
                     break;
                 }
                 case 2: {
                     objectManager.addObject(new PlayerProjectile(this, objectManager, getBody().getPosition().x+xOffset, getBody().getPosition().y+yOffset,
-                            attackDirectionNormalized.rotate(-5), 6f));
+                            attackDirectionNormalized.rotate(-5)));
                     objectManager.addObject(new PlayerProjectile(this, objectManager, getBody().getPosition().x+xOffset, getBody().getPosition().y+yOffset,
-                            attackDirectionNormalized.cpy().rotate(10), 6f));
+                            attackDirectionNormalized.cpy().rotate(10)));
                     break;
                 }
                 case 3:{
                     objectManager.addObject(new PlayerProjectile(this, objectManager, getBody().getPosition().x+xOffset, getBody().getPosition().y+yOffset,
-                            attackDirectionNormalized, 6f));
+                            attackDirectionNormalized));
                     objectManager.addObject(new PlayerProjectile(this, objectManager, getBody().getPosition().x+xOffset, getBody().getPosition().y+yOffset,
-                            attackDirectionNormalized.cpy().rotate(7), 6f));
+                            attackDirectionNormalized.cpy().rotate(7)));
                     objectManager.addObject(new PlayerProjectile(this, objectManager, getBody().getPosition().x+xOffset, getBody().getPosition().y+yOffset,
-                            attackDirectionNormalized.cpy().rotate(-7), 6f));
+                            attackDirectionNormalized.cpy().rotate(-7)));
                     break;
                 }
             }
@@ -156,18 +164,21 @@ public class Player extends Character implements Constants {
 
     @Override
     public void onDamageTaken(Character source, Value value){
-        Value copied = value.cpy();
-        for(OnDamageTakenEffect onDamageTakenEffect : onDamageTakenEffects){
-            onDamageTakenEffect.onDamageTaken(source, copied, value);
-        }
-        if(copied.getValue()>0) {
-            stats.changeHealthPoints(-copied.getValue() * stats.getCombinedResistance());
-            super.onDamageTaken(source,copied);
-            //change light distance
-            Controller.getWorldRenderer().getLightRenderer().scalePlayerLight(stats.getHealthPointPercentOfMax());
-        }
+        if(!status.isJustHit()) { //if invicibility period is off
+            Value copied = value.cpy();
+            status.setJustHit(true);
+            for (OnDamageTakenEffect onDamageTakenEffect : onDamageTakenEffects) {
+                onDamageTakenEffect.onDamageTaken(source, copied, value);
+            }
+            if (copied.getValue() > 0) {
+                stats.changeHealthPoints(-copied.getValue() * stats.getCombinedResistance());
+                super.onDamageTaken(source, copied);
+                //change light distance
+                Controller.getWorldRenderer().getLightRenderer().scalePlayerLight(stats.getHealthPointPercentOfMax());
+            }
 
-        Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(),stats.getBaseMaximumHealthPoints(),experiencePoints,nextLevelExpRequirement,statPoints);
+            Controller.getUserInterface().updateStatusBars(stats.getHealthPoints(), stats.getBaseMaximumHealthPoints(), experiencePoints, nextLevelExpRequirement, statPoints);
+        }
     }
 
     @Override
@@ -275,6 +286,13 @@ public class Player extends Character implements Constants {
             lastHealingUpdate = stateTime;
             healingAccumulator = 0;
         }
+        if(status.isJustHit()) {
+            justHitTimer += delta;
+            if (justHitTimer > invicibilityPeriod) {
+                status.setJustHit(false);
+                justHitTimer = 0;
+            }
+        }
     }
 
     private void onDeath() {
@@ -358,4 +376,35 @@ public class Player extends Character implements Constants {
         slainEnemies++;
     }
 
+    public float getProjectileRadius() {
+        return projectileRadius;
+    }
+
+    public void setProjectileRadius(float projectileRadius) {
+        this.projectileRadius = projectileRadius;
+    }
+
+    public Color getProjectileTint() {
+        return projectileTint;
+    }
+
+    public void setProjectileTint(Color projectileTint) {
+        this.projectileTint = projectileTint;
+    }
+
+    public float getProjectileVelocity() {
+        return projectileVelocity;
+    }
+
+    public void setProjectileVelocity(float projectileVelocity) {
+        this.projectileVelocity = projectileVelocity;
+    }
+
+    public float getInvicibilityPeriod() {
+        return invicibilityPeriod;
+    }
+
+    public void setInvicibilityPeriod(float invicibilityPeriod) {
+        this.invicibilityPeriod = invicibilityPeriod;
+    }
 }

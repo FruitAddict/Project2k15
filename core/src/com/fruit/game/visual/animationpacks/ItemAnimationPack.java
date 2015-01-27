@@ -26,6 +26,7 @@ public class ItemAnimationPack implements Constants {
     private Sprite knockbackHammerSprite;
     private Sprite bloodAmuletSprite;
     private Sprite voodooDollSprite;
+    private Sprite slowerProjectileRingSprite;
     private boolean loaded = false;
 
     public void load(){
@@ -33,11 +34,11 @@ public class ItemAnimationPack implements Constants {
             pos = new Vector2();
             Texture heartTexture = (Texture) Assets.getAsset("heart.png", Texture.class);
             heartSprite = new Sprite(heartTexture);
-            Texture dmgUpTexture = (Texture) Assets.getAsset("dmgup.png",Texture.class);
+            Texture dmgUpTexture = (Texture) Assets.getAsset("items//dagger.png",Texture.class);
             dmgUpSprite = new Sprite(dmgUpTexture);
             Texture healthPotiontexture = (Texture)Assets.getAsset("items//hppotion_col.png", Texture.class);
             healthPotionSprite = new Sprite(healthPotiontexture);
-            Texture sphereOfProtectionTexture = (Texture)Assets.getAsset("items//sphere.png", Texture.class);
+            Texture sphereOfProtectionTexture = (Texture)Assets.getAsset("items//healingrune.png", Texture.class);
             sphereOfProtectionSprite = new Sprite(sphereOfProtectionTexture);
             Texture poisonTouchTexture = (Texture)Assets.getAsset("items//poisontouch.png", Texture.class);
             poisonTouchSprite = new Sprite(poisonTouchTexture);
@@ -55,6 +56,8 @@ public class ItemAnimationPack implements Constants {
             bloodAmuletSprite = new Sprite(bloodAmuletTexture);
             Texture voodooDollTexture = (Texture)Assets.getAsset("items//puppet.png",Texture.class);
             voodooDollSprite = new Sprite(voodooDollTexture);
+            Texture slowerProjectileRingTexture = (Texture)Assets.getAsset("items//slowring.png",Texture.class);
+            slowerProjectileRingSprite = new Sprite(slowerProjectileRingTexture);
             loaded = true;
         }
     }
@@ -111,6 +114,10 @@ public class ItemAnimationPack implements Constants {
                batch.draw(voodooDollSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
                break;
            }
+           case Item.SLOWER_PROJECTILE_RING:{
+               batch.draw(slowerProjectileRingSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
+               break;
+           }
        }
     }
 
@@ -139,6 +146,9 @@ public class ItemAnimationPack implements Constants {
             }
             case Item.VOODO_DOLL:{
                 return voodooDollSprite;
+            }
+            case Item.SLOWER_PROJECTILE_RING:{
+                return slowerProjectileRingSprite;
             }
             default:{
                 return heartSprite;

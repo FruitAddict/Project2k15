@@ -30,7 +30,7 @@ public class MapGenerator {
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout.length; j++) {
                 if(layout[i][j]){
-                    int roomNumber = 1+ Utils.mapRandomNumberGenerator.nextInt(6);
+                    int roomNumber = 1+ Utils.mapRandomNumberGenerator.nextInt(9);
                     map.getRoomMatrix()[i][j] = new Room((TiledMap) Assets.getAsset("maps//NESW//" + roomNumber + ".tmx", TiledMap.class));
                 }
             }

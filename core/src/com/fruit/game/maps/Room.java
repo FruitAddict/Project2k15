@@ -37,7 +37,7 @@ public class Room implements Constants {
     //array to hold info about lights
     private Array<StaticLightContainer> staticLightPositions;
     //holds boolean indicating player presence in this room
-    private boolean containsPlayer;
+    private boolean containsPlayer, playerVisitedThisRoom;
     //indicated whether this room is a boss room
     private boolean bossRoom;
     //indicates whether portals were already added to this room, used by map object parser
@@ -260,6 +260,14 @@ public class Room implements Constants {
 
     public void setMapObjectsAdded(boolean mapObjectsAdded) {
         this.mapObjectsAdded = mapObjectsAdded;
+    }
+
+    public boolean isPlayerVisitedThisRoom() {
+        return playerVisitedThisRoom;
+    }
+
+    public void setPlayerVisitedThisRoom(boolean playerVisitedThisRoom) {
+        this.playerVisitedThisRoom = playerVisitedThisRoom;
     }
 
     public class StaticLightContainer{

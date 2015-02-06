@@ -29,6 +29,7 @@ public class ItemAnimationPack implements Constants {
     private Sprite slowerProjectileRingSprite;
     private Sprite increaseProjectileSizeBallSprite;
     private Sprite tomeOfKnowledgeSprite;
+    private Sprite runeOfRevealSprite;
     private boolean loaded = false;
 
     public void load(){
@@ -64,6 +65,8 @@ public class ItemAnimationPack implements Constants {
             increaseProjectileSizeBallSprite = new Sprite(increaseProjectileSizeBallTexture);
             Texture tomeOfKnowledgeTexture = (Texture)Assets.getAsset("items//ancienttome.png",Texture.class);
             tomeOfKnowledgeSprite = new Sprite(tomeOfKnowledgeTexture);
+            Texture runeOfRevealTexture = (Texture)Assets.getAsset("items//eyerune.png",Texture.class);
+            runeOfRevealSprite = new Sprite(runeOfRevealTexture);
             loaded = true;
         }
     }
@@ -130,6 +133,10 @@ public class ItemAnimationPack implements Constants {
            }
            case Item.TOME_OF_KNOWLEDGE:{
                batch.draw(tomeOfKnowledgeSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
+               break;
+           }
+           case Item.RUNE_OF_REVEAL:{
+               batch.draw(runeOfRevealSprite,pos.x,pos.y,item.getWidth(),item.getHeight());
                break;
            }
        }

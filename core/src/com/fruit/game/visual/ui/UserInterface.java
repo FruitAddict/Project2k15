@@ -327,11 +327,11 @@ public class UserInterface extends Stage {
                         Image img = new Image((Texture)Assets.getAsset("mini1.png",Texture.class));
                         img.setScale(1f);
                         minimap.add(img).fill().expand();
-                    }else if(matrix[i][j].isBossRoom())  {
+                    }else if(matrix[i][j].isBossRoom() && matrix[i][j].isPlayerVisitedThisRoom())  {
                         Image img = new Image((Texture)Assets.getAsset("mini4.png",Texture.class));
                         img.setScale(1f);
                         minimap.add(img).fill().expand();
-                    }else {
+                    }else if (matrix[i][j].isPlayerVisitedThisRoom()) {
                         Image img = new Image((Texture)Assets.getAsset("mini2.png",Texture.class));
                         img.setScale(1f);
                         minimap.add(img).fill().expand();

@@ -1,7 +1,9 @@
 package com.fruit.game.maps;
 
 
+import com.fruit.game.Controller;
 import com.fruit.game.logic.Constants;
+import com.fruit.game.visual.ui.UserInterface;
 
 public class Map implements Constants {
     //map must contain reference to the map manager
@@ -24,6 +26,19 @@ public class Map implements Constants {
         }
         currentRoom = room;
         currentRoom.setContainsPlayer(true);
+        currentRoom.setPlayerVisitedThisRoom(true);
+        if(currentRoom.getLinkedRoomEast() != null){
+            currentRoom.getLinkedRoomEast().setPlayerVisitedThisRoom(true);
+        }
+        if(currentRoom.getLinkedRoomWest() != null) {
+            currentRoom.getLinkedRoomWest().setPlayerVisitedThisRoom(true);
+        }
+        if(currentRoom.getLinkedRoomNorth() != null) {
+            currentRoom.getLinkedRoomNorth().setPlayerVisitedThisRoom(true);
+        }
+        if(currentRoom.getLinkedRoomSouth() != null) {
+            currentRoom.getLinkedRoomSouth().setPlayerVisitedThisRoom(true);
+        }
     }
 
     public Room[][] getRoomMatrix(){
@@ -32,6 +47,17 @@ public class Map implements Constants {
 
     public Room getCurrentRoom(){
         return currentRoom;
+    }
+
+    public void revealMap(){
+        for (int i = 0; i < roomMatrix.length; i++) {
+            for (int j = 0; j < roomMatrix.length; j++) {
+                if(roomMatrix[i][j] != null){
+                    roomMatrix[i][j].setPlayerVisitedThisRoom(true);
+                }
+            }
+        }
+        Controller.getUserInterface().updateMinimap();
     }
 
 

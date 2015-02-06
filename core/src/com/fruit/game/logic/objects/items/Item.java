@@ -25,6 +25,7 @@ public abstract class Item extends GameObject {
     public static final int SLOWER_PROJECTILE_RING = 13;
     public static final int INCREASE_PROJECTILE_SIZE_BALL = 14;
     public static final int TOME_OF_KNOWLEDGE = 15;
+    public static final int RUNE_OF_REVEAL = 16;
     //each item should have a String containing its description
     protected String description;
     //concrete type of this item (must be one of the types declared at the beginning of this class)

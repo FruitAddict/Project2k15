@@ -24,7 +24,7 @@ public class MapGenerator {
 
     public static Map generateMap(MapManager mapManager,int circleLevel){
         Map map = new Map(mapManager,9);
-        Boolean[][] layout = obtainLayout(9,9);
+        Boolean[][] layout = obtainLayout(9,7+Utils.mapRandomNumberGenerator.nextInt(5));
 
         //first run, creating rooms based on the layout.
         for (int i = 0; i < layout.length; i++) {

@@ -15,7 +15,7 @@ public class ItemManager {
 
     public static void addItemToEnemy(ObjectManager objectManager, Enemy enemy, int type){
         if(type == TYPE_COMMON){
-            switch(Utils.mapRandomNumberGenerator.nextInt(3)){
+            switch(Utils.mapRandomNumberGenerator.nextInt(4)){
                 case 0: {
                     enemy.addItemToLoot(new HealthPotion(objectManager,5f,0.5f,2));
                     break;
@@ -26,6 +26,10 @@ public class ItemManager {
                 }
                 case 2: {
                     enemy.addItemToLoot(new PoisonProjectiles(objectManager));
+                    break;
+                }
+                case 3: {
+                    enemy.addItemToLoot(new RuneOfReveal(objectManager));
                     break;
                 }
             }

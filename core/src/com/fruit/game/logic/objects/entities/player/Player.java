@@ -96,7 +96,6 @@ public class Player extends Character implements Constants {
         if(stateTime - lastAttack > stats.getCombinedAttackSpeed()) {
             float sign = (float)Math.signum(Utils.randomGenerator.nextInt());
             float sway = Utils.randomGenerator.nextFloat()/stats.getAimSway()*sign;
-            float lastDegreeDifference = 7f;
             //normalize the throwYourselfAtPlayer direction vector using new values
             attackDirectionNormalized.set(0 - directionPercentX, 0 - directionPercentY);
             attackDirectionNormalized.add(sway, sway);

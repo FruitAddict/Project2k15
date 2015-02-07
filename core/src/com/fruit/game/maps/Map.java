@@ -3,7 +3,6 @@ package com.fruit.game.maps;
 
 import com.fruit.game.Controller;
 import com.fruit.game.logic.Constants;
-import com.fruit.game.visual.ui.UserInterface;
 
 public class Map implements Constants {
     //map must contain reference to the map manager
